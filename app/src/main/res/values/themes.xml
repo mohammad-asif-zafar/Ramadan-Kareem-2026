@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.RamadanKareem2026" parent="android:Theme.Material.Light.NoActionBar" >
+
+    </style>
+
+    <!-- App Theme (POST splash) -->
+    //parent="android:Theme.Material3.DayNight.NoActionBar
+    <style name="Theme.RamadanKareem"  parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Compose controls UI -->
+    </style>
+
+    <style name="Theme.RamadanKareem.Splash" parent="Theme.SplashScreen">
+        <!-- Solid background -->
+        <item name="windowSplashScreenBackground">@color/ramadan_green</item>
+
+        <!-- MUST be launcher icon -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!-- Icon background -->
+        <item name="windowSplashScreenIconBackgroundColor">@color/ramadan_gold</item>
+
+        <!-- Smooth exit -->
+        <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.RamadanKareem</item>
+    </style>
+</resources>

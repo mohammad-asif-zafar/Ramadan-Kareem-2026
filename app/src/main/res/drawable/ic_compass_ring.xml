@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="300dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Outer ring -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#B0BEC5"
+        android:strokeWidth="3"
+        android:pathData="M50,2
+                          A48,48 0 1,1 49.9,2" />
+
+    <!-- Inner ring -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#CFD8DC"
+        android:strokeWidth="1.5"
+        android:pathData="M50,10
+                          A40,40 0 1,1 49.9,10" />
+
+    <!-- North marker -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M50,0 L53,10 L47,10 Z" />
+</vector>
