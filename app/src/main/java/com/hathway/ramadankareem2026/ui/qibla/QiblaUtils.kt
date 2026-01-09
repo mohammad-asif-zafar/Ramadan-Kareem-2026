@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.qibla
 
+import android.hardware.SensorManager
 import kotlin.math.*
 import kotlin.math.abs
 import kotlin.math.min
@@ -31,6 +32,18 @@ data class Quadruple<A, B, C, D>(
     val fourth: D
 )
 
+fun accuracyLabel(accuracy: Int): String = when (accuracy) {
+    SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> "High accuracy"
+    SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> "Medium accuracy"
+    SensorManager.SENSOR_STATUS_ACCURACY_LOW -> "Low accuracy"
+    else -> "Unreliable"
+}
+
+fun accuracyColor(accuracy: Int) = when (accuracy) {
+    SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> androidx.compose.ui.graphics.Color(0xFF2E7D32) // Green
+    SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> androidx.compose.ui.graphics.Color(0xFFF9A825) // Amber
+    else -> androidx.compose.ui.graphics.Color(0xFFC62828) // Red
+}
 
 fun isQiblaAligned(
     qiblaBearing: Float,

@@ -3,6 +3,10 @@ package com.hathway.ramadankareem2026.ui.qibla
 import android.hardware.SensorManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -12,12 +16,18 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.navigation.Routes
+import com.hathway.ramadankareem2026.ui.qibla.accuracyLabel
+import com.hathway.ramadankareem2026.ui.qibla.accuracyColor
+
 
 @Composable
 fun QiblaScreen(
-    viewModel: QiblaViewModel = viewModel(), title: String
+    viewModel: QiblaViewModel = viewModel(), title: String, navController: NavController
 ) {
+
     val state by viewModel.uiState.collectAsState()
 
     DisposableEffect(Unit) { onDispose { viewModel.stopCompass() } }
@@ -25,10 +35,9 @@ fun QiblaScreen(
     LaunchedEffect(Unit) { viewModel.startCompass() }
 
     val needsCalibration =
-        state.sensorAccuracy == SensorManager.SENSOR_STATUS_UNRELIABLE
-                || state.sensorAccuracy == SensorManager.SENSOR_STATUS_ACCURACY_LOW
+        state.sensorAccuracy == SensorManager.SENSOR_STATUS_UNRELIABLE || state.sensorAccuracy == SensorManager.SENSOR_STATUS_ACCURACY_LOW
 
-    if (needsCalibration) {
+    if (needsCalibration && state.preferences.showCalibrationHint) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Move your phone in a figure-8 to calibrate compass",
@@ -93,6 +102,36 @@ fun QiblaScreen(
 
         Text(
             text = "Rotate your phone to align", style = MaterialTheme.typography.bodySmall
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = accuracyLabel(state.sensorAccuracy),
+            style = MaterialTheme.typography.bodySmall,
+            color = accuracyColor(state.sensorAccuracy)
+        )
+        if (state.isAligned && state.preferences.showAlignmentText) {
+            Text(
+                text = "✓ Qibla aligned",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+    if (state.isAligned) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "✓ Qibla aligned",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+    IconButton(
+        onClick = {
+            navController.navigate(Routes.QIBLA_SETTINGS)
+        }) {
+        Icon(
+            imageVector = Icons.Outlined.Settings, contentDescription = "Qibla Settings"
         )
     }
 }

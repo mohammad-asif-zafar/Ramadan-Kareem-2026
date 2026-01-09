@@ -10,4 +10,5 @@ object Routes {
     const val TASBIH = "tasbih"
     const val QIBLA = "qibla"
     const val CALENDAR = "calendar"
+    const val QIBLA_SETTINGS = "qibla_settings"
 }

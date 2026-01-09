@@ -12,4 +12,5 @@
     <string name="feature_qibla">Qibla</string>
     <string name="feature_quran">Quran</string>
     <string name="feature_calendar">Calendar</string>
+    <string name="qibla_settings">Qibla Settings</string>
 </resources>

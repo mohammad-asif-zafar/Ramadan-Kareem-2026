@@ -82,4 +82,7 @@ dependencies {
     
     // dataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // adhan
+    implementation(libs.adhan)
 }

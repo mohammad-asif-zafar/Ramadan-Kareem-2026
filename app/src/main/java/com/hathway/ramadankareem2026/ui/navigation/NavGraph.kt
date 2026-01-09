@@ -15,6 +15,7 @@ import com.hathway.ramadankareem2026.ui.home.HomeScreen
 import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
 import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
+import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 
 @Composable
@@ -90,7 +91,7 @@ private fun HomeScaffold() {
             composable(Routes.REMINDER) { SimpleScreen(Routes.REMINDER) }
             composable(Routes.TIPS) { SimpleScreen(Routes.TIPS) }
             composable(Routes.TASBIH) { SimpleScreen(Routes.TASBIH) }
-            composable(Routes.QIBLA) { QiblaScreen(title = Routes.QIBLA) }
+            composable(Routes.QIBLA) { QiblaScreen(title = Routes.QIBLA,navController = navController) }
             composable(Routes.QURAN) { SimpleScreen(Routes.QURAN) }
             composable(Routes.CALENDAR) { SimpleScreen(Routes.CALENDAR) }
             composable("location_picker") {
@@ -98,6 +99,9 @@ private fun HomeScaffold() {
             }
             composable("manual_city_picker") {
                 ManualCityPickerScreen(navController)
+            }
+            composable(Routes.QIBLA_SETTINGS) {
+                QiblaSettingsScreen(navController)
             }
         }
     }

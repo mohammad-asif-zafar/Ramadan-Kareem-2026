@@ -37,6 +37,7 @@ lifecycleRuntimeKtx = "2.10.0"
 
 playServicesLocation = "21.0.1"
 
+adhan = "1.2.1"
 [libraries]
 
 # Core
@@ -89,6 +90,7 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 
+adhan = { module = "com.batoulapps.adhan:adhan", version.ref = "adhan" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
