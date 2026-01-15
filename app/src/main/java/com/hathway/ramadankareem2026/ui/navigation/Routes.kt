@@ -11,4 +11,6 @@ object Routes {
     const val QIBLA = "qibla"
     const val CALENDAR = "calendar"
     const val QIBLA_SETTINGS = "qibla_settings"
+    const val RAMADAN_CALENDAR = "ramadan_calendar"
+
 }

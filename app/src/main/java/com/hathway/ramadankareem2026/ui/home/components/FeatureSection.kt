@@ -49,7 +49,7 @@ private val featureList = listOf(
     FeatureModel(R.string.feature_tasbih, Icons.Outlined.Refresh, Routes.TASBIH),
     FeatureModel(R.string.feature_qibla, Icons.Outlined.Explore, Routes.QIBLA),
     FeatureModel(R.string.feature_quran, Icons.AutoMirrored.Outlined.MenuBook, Routes.QURAN),
-    FeatureModel(R.string.feature_calendar, Icons.Outlined.CalendarMonth, Routes.CALENDAR)
+    FeatureModel(R.string.feature_calendar, Icons.Outlined.CalendarMonth, Routes.RAMADAN_CALENDAR)
 )
 
 @Composable
@@ -71,8 +71,8 @@ fun FeatureSection(navController: NavController) {
             modifier = Modifier.height(200.dp)
         ) {
             items(featureList) { item ->
-                FeatureItem(item = item,
-                    onClick = {
+                FeatureItem(
+                    item = item, onClick = {
                         navController.navigate(item.route)
                     })
             }

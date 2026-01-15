@@ -10,8 +10,7 @@ object PrayerTimeUiMapper {
 
     private val formatter = DateTimeFormatter.ofPattern("hh:mm a")
 
-    fun map(state: PrayerTimeUiState): List<PrayerTimeModel> {
-        val now = LocalTime.now()
+    fun map(state: PrayerTimeUiState, now: LocalTime = LocalTime.now()): List<PrayerTimeModel> {
 
         val prayers = listOf(
             PrayerTimeModel(

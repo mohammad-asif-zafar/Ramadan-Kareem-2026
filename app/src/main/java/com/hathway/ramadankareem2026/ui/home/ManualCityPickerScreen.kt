@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,13 +27,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.home.data.cityList
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManualCityPickerScreen(
-    navController: NavController
+    navController: NavController,
+    onBack: () -> Unit,
+    onViewFullCalendar: () -> Unit,
+    onSettings: () -> Unit
 ) {
     // 🔥 Share HomeViewModel
     val parentEntry = remember(navController) {
@@ -41,14 +49,20 @@ fun ManualCityPickerScreen(
     var query by remember { mutableStateOf("") }
 
     val filteredCities = cityList.filter {
-        it.city.contains(query, ignoreCase = true)
-                || it.country.contains(query, ignoreCase = true)
+        it.city.contains(query, ignoreCase = true) || it.country.contains(query, ignoreCase = true)
     }
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Select City") })
+            RamadanToolbar(
+                title = R.string.select_the_location,
+                showBack = true,
+                onBackClick = onBack,
+                rightIcon1 = Icons.Default.CalendarMonth,
+                onRightIcon1Click = onViewFullCalendar,
+                rightIcon2 = Icons.Default.Settings,
+                onRightIcon2Click = onSettings
+            )
         }) { padding ->
 
         Column(

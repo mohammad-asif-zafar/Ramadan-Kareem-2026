@@ -85,4 +85,9 @@ dependencies {
 
     // adhan
     implementation(libs.adhan)
+
+    // glance for widget
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material3)
+    testImplementation(kotlin("test"))
 }

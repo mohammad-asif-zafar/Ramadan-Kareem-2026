@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
-import com.hathway.ramadankareem2026.ui.dua.DuaScreen
+import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
 import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
 import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
@@ -45,13 +45,14 @@ fun NavGraph() {
 private fun HomeScaffold() {
 
     val navController = rememberNavController()
-    val listState = rememberLazyListState()
 
-    val isBottomBarVisible by remember {
-        derivedStateOf {
-            listState.firstVisibleItemScrollOffset == 0 || listState.firstVisibleItemIndex == 0
-        }
-    }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val isBottomBarVisible = currentRoute in setOf(
+        Routes.HOME, Routes.QURAN, Routes.QIBLA, Routes.TASBIH
+    )
+
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
@@ -60,7 +61,6 @@ private fun HomeScaffold() {
                 exit = slideOutVertically { it }) {
                 RamadanBottomBar(navController)
             }
-
         }) { padding ->
 
         NavHost(
@@ -69,43 +69,55 @@ private fun HomeScaffold() {
             modifier = Modifier.padding(padding)
         ) {
 
-            composable(route = Routes.HOME) {
-                HomeScreen(
-                    navController, listState = listState
-                ) // 👈 pass it)
+            composable(Routes.HOME) {
+                HomeScreen(navController)
             }
 
-            composable(route = Routes.QURAN) {
-                SimpleScreen(title = Routes.QURAN)
+            composable(Routes.QURAN) {
+                SimpleScreen(Routes.QURAN)
             }
 
-            composable(route = Routes.QIBLA) {
-                SimpleScreen(title = Routes.QIBLA)
+            composable(Routes.QIBLA) {
+                QiblaScreen(
+                    title = Routes.QIBLA,
+                    navController = navController,
+                    onBack = {},
+                    onSettings = {},
+                    onViewFullCalendar = {})
             }
 
-            composable(route = Routes.TASBIH) {
-                SimpleScreen(title = Routes.TASBIH)
+            composable(Routes.TASBIH) {
+                SimpleScreen(Routes.TASBIH)
             }
-            composable(Routes.DUA) { DuaScreen(Routes.DUA, navController = navController) }
-            composable(Routes.ZAKAT) { SimpleScreen(Routes.ZAKAT) }
-            composable(Routes.REMINDER) { SimpleScreen(Routes.REMINDER) }
-            composable(Routes.TIPS) { SimpleScreen(Routes.TIPS) }
-            composable(Routes.TASBIH) { SimpleScreen(Routes.TASBIH) }
-            composable(Routes.QIBLA) { QiblaScreen(title = Routes.QIBLA,navController = navController) }
-            composable(Routes.QURAN) { SimpleScreen(Routes.QURAN) }
-            composable(Routes.CALENDAR) { SimpleScreen(Routes.CALENDAR) }
+
+            // 👇 Bottom bar hidden automatically
+            composable(Routes.DUA) {
+                DuaRoute(routeName = "", navController = navController)
+            }
+
+            composable(Routes.CALENDAR) {
+                SimpleScreen(Routes.CALENDAR)
+            }
+
             composable("location_picker") {
-                LocationPickerScreen(navController)
+                LocationPickerScreen(navController, {}, {}, {})
             }
+
             composable("manual_city_picker") {
-                ManualCityPickerScreen(navController)
+                ManualCityPickerScreen(navController, {}, {}, {})
             }
+
             composable(Routes.QIBLA_SETTINGS) {
-                QiblaSettingsScreen(navController)
+                QiblaSettingsScreen(navController, onBack = {}, onSettings = {}, onViewFullCalendar = {})
+            }
+
+            composable(Routes.RAMADAN_CALENDAR) {
+                RamadanCalendarRoute(navController)
             }
         }
     }
 }
+
 
 @Composable
 fun SimpleScreen(title: String) {

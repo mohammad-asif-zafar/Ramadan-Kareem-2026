@@ -18,11 +18,7 @@ class LocationDataStore(private val context: Context) {
     }
 
     suspend fun saveLocation(
-        city: String,
-        country: String,
-        lat: Double,
-        lng: Double,
-        source: LocationSource
+        city: String, country: String, lat: Double, lng: Double, source: LocationSource
     ) {
         context.dataStore.edit { prefs ->
             prefs[CITY] = city
@@ -42,13 +38,7 @@ class LocationDataStore(private val context: Context) {
         val lng = prefs[LNG]
         val source = prefs[SOURCE]
 
-        return if (
-            city != null &&
-            country != null &&
-            lat != null &&
-            lng != null &&
-            source != null
-        ) {
+        return if (city != null && country != null && lat != null && lng != null && source != null) {
             LocationUiState(
                 city = city,
                 country = country,
@@ -57,5 +47,10 @@ class LocationDataStore(private val context: Context) {
                 source = LocationSource.valueOf(source)
             )
         } else null
+    }
+
+    // 👇 FOR WIDGETS ONLY
+    fun getLocationBlocking(): LocationUiState? = kotlinx.coroutines.runBlocking {
+        getLocation()
     }
 }

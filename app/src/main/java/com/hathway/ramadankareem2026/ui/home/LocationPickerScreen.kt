@@ -4,6 +4,9 @@ import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -12,12 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationPickerScreen(
-    navController: NavController
+    navController: NavController,
+    onBack: () -> Unit,
+    onViewFullCalendar: () -> Unit,
+    onSettings: () -> Unit
 ) {
     // 🔥 SHARE HomeViewModel with HomeScreen
     val parentEntry = remember(navController) {
@@ -39,6 +47,15 @@ fun LocationPickerScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Select Location") }
+            )
+            RamadanToolbar(
+                title = R.string.feature_dua,
+                showBack = true,
+                onBackClick = onBack,
+                rightIcon1 = Icons.Default.CalendarMonth,
+                onRightIcon1Click = onViewFullCalendar,
+                rightIcon2 = Icons.Default.Settings,
+                onRightIcon2Click = onSettings
             )
         }
     ) { padding ->

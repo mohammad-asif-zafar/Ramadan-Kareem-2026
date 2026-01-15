@@ -32,7 +32,9 @@ import com.hathway.ramadankareem2026.ui.home.HeaderCard
 import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
 import com.hathway.ramadankareem2026.ui.home.model.PrayerTimeModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
+import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
+import com.hathway.ramadankareem2026.ui.ramadan.model.FastingState
 import kotlinx.coroutines.delay
 
 @Composable
