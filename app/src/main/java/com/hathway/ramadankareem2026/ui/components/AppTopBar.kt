@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
@@ -23,7 +24,7 @@ fun AppTopBar(
         if (showBack) {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
-                    imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back"
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back"
                 )
             }
         }

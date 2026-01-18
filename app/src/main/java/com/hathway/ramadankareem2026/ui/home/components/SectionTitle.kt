@@ -22,24 +22,3 @@ fun SectionTitle(title: String) {
         style = MaterialTheme.typography.titleMedium
     )
 }
-
-@Composable
-fun PagerDots(
-    totalDots: Int, selectedIndex: Int
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center, modifier = Modifier.Companion.fillMaxWidth()
-    ) {
-        repeat(totalDots) { index ->
-            Box(
-                modifier = Modifier.Companion
-                    .padding(4.dp)
-                    .size(if (index == selectedIndex) 10.dp else 8.dp)
-                    .background(
-                        color = if (index == selectedIndex) RamadanGold
-                        else Color.Companion.Gray.copy(alpha = 0.4f), shape = RoundedCornerShape(50)
-                    )
-            )
-        }
-    }
-}

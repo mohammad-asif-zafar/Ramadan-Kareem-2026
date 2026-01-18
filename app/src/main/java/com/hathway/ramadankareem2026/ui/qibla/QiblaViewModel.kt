@@ -7,63 +7,97 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.hathway.ramadankareem2026.ui.home.data.LocationDataStore
+import com.hathway.ramadankareem2026.core.location.LocationDataStore
 import com.hathway.ramadankareem2026.ui.qibla.data.QiblaPreferencesDataStore
 import com.hathway.ramadankareem2026.ui.qibla.sensor.CompassSensor
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class QiblaViewModel(
     app: Application
 ) : AndroidViewModel(app) {
+
+    /** Prevents repeated vibration when aligned */
     private var hasVibrated = false
 
+    /** User preferences (vibration, hints, etc.) */
     private val preferencesStore = QiblaPreferencesDataStore(app)
 
-    private val dataStore = LocationDataStore(app)
+    /** Location source (always returns DEMO or REAL) */
+    private val locationStore = LocationDataStore(app)
+
+    /** Compass sensor wrapper */
     private val compass = CompassSensor(app)
 
+    /** Main UI state */
     private val _uiState = MutableStateFlow(QiblaUiState())
     val uiState: StateFlow<QiblaUiState> = _uiState
+
+    /** Jobs to safely cancel compass collectors */
+    private var azimuthJob: Job? = null
+    private var accuracyJob: Job? = null
 
     init {
         restoreLocation()
         restorePreferences()
     }
 
+    /**
+     * Restore saved user preferences from DataStore
+     */
     private fun restorePreferences() {
         viewModelScope.launch {
             val prefs = preferencesStore.getPreferences()
+            _uiState.value = _uiState.value.copy(preferences = prefs)
+        }
+    }
+
+    /**
+     * Restore last known location (DEMO or REAL)
+     * and calculate Qibla bearing
+     */
+    private fun restoreLocation() {
+        viewModelScope.launch {
+
+            // ✅ get() ALWAYS returns a valid location
+            val saved = locationStore.get()
+
+            val bearing = calculateQiblaBearing(
+                saved.latitude,
+                saved.longitude
+            )
+
             _uiState.value = _uiState.value.copy(
-                preferences = prefs
+                qiblaBearing = bearing
             )
         }
     }
 
-    private fun restoreLocation() {
-        viewModelScope.launch {
-            val saved = dataStore.getLocation()
-            if (saved?.latitude != null && saved.longitude != null) {
-                val bearing = calculateQiblaBearing(
-                    saved.latitude,
-                    saved.longitude
-                )
-                _uiState.value = _uiState.value.copy(
-                    qiblaBearing = bearing
-                )
-            }
-        }
-    }
-
+    /**
+     * Starts compass sensor and listens for updates
+     */
     fun startCompass() {
+
         if (!compass.isAvailable) {
-            _uiState.value = _uiState.value.copy(isSensorAvailable = false)
+            _uiState.value = _uiState.value.copy(
+                isSensorAvailable = false
+            )
             return
         }
 
         compass.start()
 
-        viewModelScope.launch {
+        // Cancel old collectors to avoid leaks
+        azimuthJob?.cancel()
+        accuracyJob?.cancel()
+
+        /**
+         * Listen for device rotation (azimuth)
+         */
+        azimuthJob = viewModelScope.launch {
             compass.azimuth.collect { azimuth ->
 
                 val aligned = isQiblaAligned(
@@ -71,14 +105,15 @@ class QiblaViewModel(
                     deviceAzimuth = azimuth
                 )
 
-                if (!aligned) {
-                    hasVibrated = false
-                }
+                // Reset vibration when misaligned
+                if (!aligned) hasVibrated = false
 
-                if (aligned &&
+                // Vibrate ONCE when aligned
+                if (
+                    aligned &&
                     !hasVibrated &&
-                    _uiState.value.preferences.vibrationEnabled) {
-
+                    _uiState.value.preferences.vibrationEnabled
+                ) {
                     vibrateOnce(getApplication())
                     hasVibrated = true
                 }
@@ -90,7 +125,10 @@ class QiblaViewModel(
             }
         }
 
-        viewModelScope.launch {
+        /**
+         * Listen for sensor accuracy updates
+         */
+        accuracyJob = viewModelScope.launch {
             compass.accuracy.collect { accuracy ->
                 _uiState.value = _uiState.value.copy(
                     sensorAccuracy = accuracy
@@ -99,16 +137,28 @@ class QiblaViewModel(
         }
     }
 
+    /**
+     * Stops compass and cancels collectors
+     */
     fun stopCompass() {
         compass.stop()
+        azimuthJob?.cancel()
+        accuracyJob?.cancel()
     }
 
+    /**
+     * Updates Qibla bearing when user changes location manually
+     */
     fun setUserLocation(lat: Double, lng: Double) {
         val bearing = calculateQiblaBearing(lat, lng)
         _uiState.value = _uiState.value.copy(
             qiblaBearing = bearing
         )
     }
+
+    /**
+     * Vibrates device once (safe & short)
+     */
     @SuppressLint("MissingPermission")
     private fun vibrateOnce(context: Context) {
         val vibrator =
@@ -123,6 +173,10 @@ class QiblaViewModel(
             )
         }
     }
+
+    /**
+     * Updates user preferences and persists them
+     */
     fun updatePreferences(
         vibrationEnabled: Boolean? = null,
         showAlignmentText: Boolean? = null,

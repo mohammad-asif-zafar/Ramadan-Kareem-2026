@@ -2,7 +2,8 @@ package com.hathway.ramadankareem2026.ui.prayer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import com.hathway.ramadankareem2026.ui.home.model.PrayerTimeModel
+import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
+import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -10,43 +11,76 @@ object PrayerTimeUiMapper {
 
     private val formatter = DateTimeFormatter.ofPattern("hh:mm a")
 
-    fun map(state: PrayerTimeUiState, now: LocalTime = LocalTime.now()): List<PrayerTimeModel> {
+    fun map(
+        state: PrayerTimeUiState,
+        now: LocalTime = LocalTime.now()
+    ): List<PrayerDomain> {
 
         val prayers = listOf(
-            PrayerTimeModel(
-                "Fajr",
-                state.fajr.format(formatter),
-                Icons.Outlined.WbTwilight
-            ),
-            PrayerTimeModel(
-                "Dhuhr",
-                state.dhuhr.format(formatter),
-                Icons.Outlined.LightMode
-            ),
-            PrayerTimeModel(
-                "Asr",
-                state.asr.format(formatter),
-                Icons.Outlined.WbSunny
-            ),
-            PrayerTimeModel(
-                "Maghrib",
-                state.maghrib.format(formatter),
-                Icons.Outlined.NightsStay
-            ),
-            PrayerTimeModel(
-                "Isha",
-                state.isha.format(formatter),
-                Icons.Outlined.DarkMode
-            )
+            "Fajr" to state.fajr,
+            "Dhuhr" to state.dhuhr,
+            "Asr" to state.asr,
+            "Maghrib" to state.maghrib,
+            "Isha" to state.isha
         )
 
-        val nextPrayerIndex =
-            prayers.indexOfFirst {
-                LocalTime.parse(it.time, formatter).isAfter(now)
-            }.let { if (it == -1) 0 else it }
-
-        return prayers.mapIndexed { index, prayer ->
-            prayer.copy(isCurrent = index == nextPrayerIndex)
+        val nextIndex = prayers.indexOfFirst { (_, time) ->
+            time.isAfter(now)
         }
+
+        val currentIndex = when {
+            nextIndex > 0 -> nextIndex - 1
+            nextIndex == -1 -> prayers.lastIndex // after Isha
+            else -> 0
+        }
+
+        val nextPrayerTime = if (nextIndex == -1) {
+            state.fajr.plusHours(24) // tomorrow fajr
+        } else {
+            prayers[nextIndex].second
+        }
+
+        val remainingMinutes =
+            Duration.between(now, nextPrayerTime).toMinutes().toInt()
+
+        return prayers.mapIndexed { index, (name, time) ->
+            PrayerDomain(
+                name = name,
+                time = time, // ✅ LocalTime ONLY
+
+                isCurrent = index == currentIndex,
+                isNext = index == nextIndex,
+                remainingMinutes = if (index == nextIndex) remainingMinutes else null
+            )
+        }
+    }
+
+
+    private fun iconFor(name: String) = when (name) {
+        "Fajr" -> Icons.Outlined.WbTwilight
+        "Dhuhr" -> Icons.Outlined.LightMode
+        "Asr" -> Icons.Outlined.WbSunny
+        "Maghrib" -> Icons.Outlined.NightsStay
+        "Isha" -> Icons.Outlined.DarkMode
+        else -> Icons.Outlined.AccessTime
+    }
+
+    // 🔹 UI helper
+    // 🔹 UI helper (FINAL)
+    fun formatRemaining(
+        minutes: Int?,
+        isCurrent: Boolean
+    ): String = when {
+        minutes == null -> "Calculating…"
+        minutes < 0 -> "Passed"
+        isCurrent -> "${formatDuration(minutes)} left"
+        else -> "Starts in ${formatDuration(minutes)}"
+    }
+
+
+    private fun formatDuration(minutes: Int): String {
+        val h = minutes / 60
+        val m = minutes % 60
+        return if (h > 0) "${h}h ${m}m" else "${m}m"
     }
 }

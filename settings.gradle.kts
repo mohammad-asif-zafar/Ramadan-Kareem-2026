@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Ramadan Kareem 2026"
 include(":app")
+include(":baselineprofile")

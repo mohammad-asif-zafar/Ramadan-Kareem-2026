@@ -40,7 +40,7 @@ fun ManualCityPickerScreen(
     onViewFullCalendar: () -> Unit,
     onSettings: () -> Unit
 ) {
-    // 🔥 Share HomeViewModel
+    // 🔥 Share HomeViewModel with HomeScreen
     val parentEntry = remember(navController) {
         navController.getBackStackEntry("home")
     }
@@ -48,8 +48,13 @@ fun ManualCityPickerScreen(
 
     var query by remember { mutableStateOf("") }
 
-    val filteredCities = cityList.filter {
-        it.city.contains(query, ignoreCase = true) || it.country.contains(query, ignoreCase = true)
+    val filteredCities = remember(query) {
+        cityList.filter {
+            it.city.contains(query, ignoreCase = true) || it.country.contains(
+                query,
+                ignoreCase = true
+            )
+        }
     }
 
     Scaffold(
@@ -88,13 +93,16 @@ fun ManualCityPickerScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
+                                // ✅ User explicitly selects location
                                 viewModel.setUserLocation(
                                     city = city.city,
                                     country = city.country,
-                                    lat = city.lat,
-                                    lng = city.lng
+                                    latitude = city.lat,
+                                    longitude = city.lng
                                 )
-                                navController.popBackStack("home", false)
+
+                                // 🔙 Go back to Home
+                                navController.popBackStack("home", inclusive = false)
                             }
                             .padding(vertical = 12.dp),
                         style = MaterialTheme.typography.bodyLarge)

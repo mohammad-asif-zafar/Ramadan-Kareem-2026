@@ -38,7 +38,7 @@ class RamadanMonthlyOverviewSnapshotTest {
         assertEquals(FastingDayStatus.UPCOMING, result[3].status)
 
         // Day numbers correct
-        assertEquals(1, result[0].dayNumber)
-        assertEquals(30, result.last().dayNumber)
+        assertEquals(1, result[0].ramadanDay)
+        assertEquals(30, result.last().ramadanDay)
     }
 }

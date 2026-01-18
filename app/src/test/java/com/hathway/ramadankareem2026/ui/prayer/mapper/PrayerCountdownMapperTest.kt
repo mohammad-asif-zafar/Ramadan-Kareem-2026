@@ -1,6 +1,6 @@
 package com.hathway.ramadankareem2026.ui.prayer.mapper
 
-import com.hathway.ramadankareem2026.ui.home.model.PrayerTimeModel
+import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
 import org.junit.Test
@@ -52,7 +52,7 @@ class PrayerCountdownMapperTest {
             isha = LocalTime.of(20, 30)
         )
 
-        val result: List<PrayerTimeModel> = PrayerTimeUiMapper.map(state)
+        val result: List<PrayerDomain> = PrayerTimeUiMapper.map(state)
 
         // Basic sanity
         assertEquals(5, result.size)

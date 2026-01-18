@@ -18,39 +18,64 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+
+// 🔹 Core location models
+import com.hathway.ramadankareem2026.core.location.LocationUiState
+
+import com.hathway.ramadankareem2026.core.location.LocationSource
+import com.hathway.ramadankareem2026.core.location.LocationSelectionMode
+
+// 🔹 UI components
 import com.hathway.ramadankareem2026.ui.home.components.FeatureSection
 import com.hathway.ramadankareem2026.ui.home.components.HomeHeaderSlider
 import com.hathway.ramadankareem2026.ui.home.components.PrayerTimeSection
 import com.hathway.ramadankareem2026.ui.home.components.TodayTipSection
 import com.hathway.ramadankareem2026.ui.home.components.TopBarSection
+
+// 🔹 ViewModels
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
+import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
+
+// 🔹 Preview only
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.hathway.ramadankareem2026.ui.home.data.LocationUiState
-import com.hathway.ramadankareem2026.ui.home.data.LocationSource
-
 
 @Composable
 fun HomeScreen(
     navController: NavController
 ) {
-    val viewModel: HomeViewModel = viewModel()
-    val locationState by viewModel.locationState.collectAsState()
+    val homeViewModel: HomeViewModel = viewModel()
+    val prayerViewModel: PrayerViewModel = viewModel()
 
+    // Sealed UI state
+    val locationState by homeViewModel.locationState.collectAsState()
+
+    // Permission launcher (upgrade path)
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) viewModel.loadLocation()
+        if (granted) {
+            homeViewModel.loadLocation()
+        }
     }
 
+    // Initial load (DEMO → REAL)
     LaunchedEffect(Unit) {
+        homeViewModel.loadLocation()
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
-    // 🔒 Disable back press & back gesture on Home
-    BackHandler(enabled = true) {
-        // Do nothing → prevents back navigation
+    // 🔹 Load prayers ONLY when location is SUCCESS
+    LaunchedEffect(locationState) {
+        if (locationState is LocationUiState.Success) {
+            val success = locationState as LocationUiState.Success
+            prayerViewModel.load(
+                lat = success.latitude, lng = success.longitude
+            )
+        }
     }
+
+    BackHandler(enabled = true) {}
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -59,13 +84,13 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
         ) {
-            item {
+            item(key = "top_bar") {
                 TopBarSection(
                     locationState = locationState, onLocationClick = {
-                        // 👇 user explicitly tapped location
                         navController.navigate("location_picker")
                     })
             }
+
             item { HomeHeaderSlider() }
             item { FeatureSection(navController) }
             item { PrayerTimeSection() }
@@ -74,6 +99,7 @@ fun HomeScreen(
         }
     }
 }
+
 
 @Composable
 private fun HomeScreenPreviewContent(
@@ -82,18 +108,14 @@ private fun HomeScreenPreviewContent(
     val navController = rememberNavController()
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         HomeBackground()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 24.dp)
+            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item {
                 TopBarSection(
-                    locationState = locationState,
-                    onLocationClick = {}
-                )
+                    locationState = locationState, onLocationClick = {})
             }
             item { HomeHeaderSlider() }
             item { FeatureSection(navController) }
@@ -103,27 +125,33 @@ private fun HomeScreenPreviewContent(
         }
     }
 }
-@Preview(showBackground = true, name = "Home – Auto Location")
+
+@Preview(showBackground = true, name = "Home – Demo Location")
 @Composable
-private fun PreviewHome_AutoLocation() {
+private fun PreviewHome_Demo() {
     HomeScreenPreviewContent(
-        locationState = LocationUiState(
+        locationState = LocationUiState.Success(
             city = "Kuala Lumpur",
             country = "Malaysia",
-            latitude = 3.1390,
-            longitude = 101.6869,
-            source = LocationSource.AUTO_DETECTED
+            latitude = 3.1085715,
+            longitude = 101.6769629,
+            source = LocationSource.DEMO,
+            selectionMode = LocationSelectionMode.AUTO_DETECTED
         )
     )
 }
-@Preview(showBackground = true, name = "Home – User Selected")
+
+@Preview(showBackground = true, name = "Home – GPS Location")
 @Composable
-private fun PreviewHome_UserSelected() {
+private fun PreviewHome_Gps() {
     HomeScreenPreviewContent(
-        locationState = LocationUiState(
+        locationState = LocationUiState.Success(
             city = "Mecca",
             country = "Saudi Arabia",
-            source = LocationSource.USER_SELECTED
+            latitude = 21.4225,
+            longitude = 39.8262,
+            source = LocationSource.GPS,
+            selectionMode = LocationSelectionMode.USER_SELECTED
         )
     )
 }
@@ -132,9 +160,7 @@ private fun PreviewHome_UserSelected() {
 @Composable
 private fun PreviewHome_Loading() {
     HomeScreenPreviewContent(
-        locationState = LocationUiState(
-            source = LocationSource.NONE
-        )
+        locationState = LocationUiState.Loading
     )
 }
 
@@ -142,9 +168,8 @@ private fun PreviewHome_Loading() {
 @Composable
 private fun PreviewHome_Error() {
     HomeScreenPreviewContent(
-        locationState = LocationUiState(
-            error = "Location permission denied",
-            source = LocationSource.NONE
+        locationState = LocationUiState.Error(
+            message = "Location permission denied"
         )
     )
 }
@@ -157,11 +182,17 @@ private fun PreviewHome_Error() {
 @Composable
 private fun PreviewHome_Dark() {
     HomeScreenPreviewContent(
-        locationState = LocationUiState(
+        locationState = LocationUiState.Success(
             city = "Kuala Lumpur",
             country = "Malaysia",
-            source = LocationSource.AUTO_DETECTED
+            latitude = 3.1085715,
+            longitude = 101.6769629,
+            source = LocationSource.DEMO,
+            selectionMode = LocationSelectionMode.AUTO_DETECTED
         )
     )
 }
+
+
+
 

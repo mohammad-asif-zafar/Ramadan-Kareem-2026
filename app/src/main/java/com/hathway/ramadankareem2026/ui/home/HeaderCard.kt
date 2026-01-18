@@ -1,111 +1,129 @@
 package com.hathway.ramadankareem2026.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.NightsStay
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
+import com.hathway.ramadankareem2026.ui.home.model.HeaderType
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.RamadanGreenDark
 
 @Composable
 fun HeaderCard(
-    title: String, subtitle: String, hint: String = "Stay mindful & blessed today"
+    type: HeaderType, title: String, subtitle: String, hint: String
 ) {
     Card(
-        shape = RoundedCornerShape(26.dp),
         modifier = Modifier
-            .padding(start = 10.dp, end = 10.dp)
             .fillMaxWidth()
             .height(150.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.linearGradient(
-                        colors = listOf(
-                            RamadanGreen, RamadanGreen.copy(alpha = 0.85f)
-                        )
-                    )
+                .background(headerGradient(type))
+                .padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    top = 20.dp,
+                    bottom = 20.dp
                 )
-                .padding(20.dp)
         ) {
-
-            // 🌙 Decorative moon (very subtle)
-            Icon(
-                imageVector = Icons.Outlined.NightsStay,
-                contentDescription = null,
-                tint = Color.White.copy(alpha = 0.08f),
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(Alignment.TopEnd)
-            )
-
             Column(
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                // Small badge
-                Surface(
-                    color = RamadanGold.copy(alpha = 0.2f), shape = RoundedCornerShape(50)
-                ) {
+                // 🔝 Icon + Title
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = headerIcon(type),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
+
+                    Spacer(Modifier.width(8.dp))
+
                     Text(
-                        text = "Ramadan 2026", modifier = Modifier.padding(
-                            horizontal = 10.dp, vertical = 4.dp
-                        ), style = MaterialTheme.typography.labelSmall, color = RamadanGold
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Title
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // Subtitle
+                // 🔹 Subtitle
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.9f)
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Hint / secondary line
+                // 🔻 Hint
                 Text(
                     text = hint,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.75f)
+                    color = Color.White.copy(alpha = 0.9f)
                 )
             }
         }
     }
 }
+
+private fun headerIcon(type: HeaderType) = when (type) {
+    HeaderType.DYNAMIC_PRAYER -> Icons.Outlined.NightsStay
+    HeaderType.NEXT_PRAYER -> Icons.Outlined.AccessTime
+    HeaderType.REMINDER -> Icons.Outlined.AutoStories
+}
+
+@Composable
+private fun headerGradient(type: HeaderType): Brush = when (type) {
+
+    HeaderType.DYNAMIC_PRAYER -> Brush.linearGradient(
+        colors = listOf(
+            RamadanGreen, RamadanGreenDark
+        )
+    )
+
+    HeaderType.NEXT_PRAYER -> Brush.linearGradient(
+        colors = listOf(
+            RamadanGreenDark, RamadanGreen
+        )
+    )
+
+    HeaderType.REMINDER -> Brush.linearGradient(
+        colors = listOf(
+            RamadanGold, RamadanGreen
+        )
+    )
+}
+
+
 

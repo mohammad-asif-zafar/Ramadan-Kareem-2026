@@ -46,7 +46,7 @@ fun CountdownCircularProgress(
             modifier = Modifier.fillMaxSize(),
             color = trackColor,
             strokeWidth = 6.dp,
-            trackColor = ProgressIndicatorDefaults.circularTrackColor,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
             strokeCap = StrokeCap.Butt,
         )
 
@@ -56,7 +56,7 @@ fun CountdownCircularProgress(
             modifier = Modifier.fillMaxSize(),
             color = progressColor,
             strokeWidth = 6.dp,
-            trackColor = ProgressIndicatorDefaults.circularTrackColor,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
             strokeCap = StrokeCap.Round,
         )
 
