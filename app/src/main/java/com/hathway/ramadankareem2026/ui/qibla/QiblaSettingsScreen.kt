@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -30,7 +31,7 @@ fun QiblaSettingsScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = R.string.qibla_settings,
+                title = stringResource(R.string.qibla_settings),
                 showBack = true,
                 onBackClick = onBack,
                 rightIcon1 = Icons.Default.CalendarMonth,

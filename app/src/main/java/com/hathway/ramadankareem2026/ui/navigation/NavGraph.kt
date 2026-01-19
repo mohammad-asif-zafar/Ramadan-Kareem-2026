@@ -8,8 +8,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
+import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
+import com.hathway.ramadankareem2026.ui.dua.components.DuaDetailScreen
+import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
 import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
 import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
@@ -114,6 +119,39 @@ private fun HomeScaffold() {
             composable(Routes.RAMADAN_CALENDAR) {
                 RamadanCalendarRoute(navController)
             }
+
+            composable(
+                route = "dua_detail/{duaId}",
+                arguments = listOf(
+                    navArgument("duaId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+
+                val duaId = backStackEntry.arguments!!.getString("duaId")!!
+                val dua = DuaRepository().getDuaById(duaId)
+
+                DuaDetailScreen(
+                    dua = dua,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(
+                route = "${Routes.DUA_CATEGORY}/{categoryId}",
+                arguments = listOf(
+                    navArgument("categoryId") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+
+                val categoryId =
+                    backStackEntry.arguments?.getString("categoryId") ?: return@composable
+
+                DuaCategoryScreen(
+                    categoryId = categoryId,
+                    navController = navController
+                )
+            }
+
         }
     }
 }

@@ -21,10 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 
 @Composable
 fun RamadanToolbar(
-    title: Int,
+    title: String,
     showBack: Boolean = true,
     onBackClick: () -> Unit = {},
     rightIcon1: ImageVector? = null,
@@ -60,7 +61,7 @@ fun RamadanToolbar(
 
             // 📝 Title
             Text(
-                text = stringResource(title),
+                text = stringResource(R.string.feature_dua),
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
