@@ -104,4 +104,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)
 
+    // Network
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
+
+
+    // ViewModel
+    implementation(libs.lifecycle.viewmodel)
+
 }

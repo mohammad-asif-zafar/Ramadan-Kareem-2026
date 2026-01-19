@@ -23,6 +23,7 @@ import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
 import com.hathway.ramadankareem2026.ui.home.model.HeaderType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
+
 import kotlinx.coroutines.delay
 
 
@@ -30,22 +31,30 @@ import kotlinx.coroutines.delay
 fun HomeHeaderSlider(
     prayerViewModel: PrayerViewModel = viewModel()
 ) {
-    val prayerState by prayerViewModel.prayerState.collectAsState()
+    // ✅ FIX 1: use `state`, not `prayerState`
+    val prayerState by prayerViewModel.state.collectAsState()
 
-    // Find current prayer
-    val currentPrayer = remember(prayerState) {
-        prayerState?.let {
-            PrayerTimeUiMapper.map(it).firstOrNull { p -> p.isCurrent }
-        }
+    val now = remember { java.time.LocalTime.now() }
+
+    // ✅ FIX 2: mapper requires time, and state is non-null
+    val mappedPrayers = remember(prayerState) {
+        PrayerTimeUiMapper.map(
+            state = prayerState,
+            now = now
+        )
     }
-    val nextPrayer = remember(prayerState) {
-        prayerState?.let {
-            PrayerTimeUiMapper.map(it).firstOrNull { p -> p.isNext }
-        }
+
+    // Find current & next prayer
+    val currentPrayer = remember(mappedPrayers) {
+        mappedPrayers.firstOrNull { it.isCurrent }
+    }
+
+    val nextPrayer = remember(mappedPrayers) {
+        mappedPrayers.firstOrNull { it.isNext }
     }
 
     // 🔹 Build pages dynamically
-    val pages = remember(currentPrayer) {
+    val pages = remember(nextPrayer) {
         listOf(
             buildDynamicPrayerHeader(nextPrayer),
 
@@ -66,9 +75,11 @@ fun HomeHeaderSlider(
     }
 
     val pagerState = rememberPagerState(
-        initialPage = 0, pageCount = { pages.size })
+        initialPage = 0,
+        pageCount = { pages.size }
+    )
 
-    // ✅ Safe auto-scroll
+    // ✅ Safe auto-scroll (unchanged behavior)
     LaunchedEffect(pagerState) {
         while (true) {
             delay(4000)
@@ -88,11 +99,11 @@ fun HomeHeaderSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp),
-            pageSpacing = 12.dp, // 👈 SPACE BETWEEN SLIDES
-            contentPadding = PaddingValues(horizontal = 12.dp) // 👈 EDGE SPACE
+            pageSpacing = 12.dp,
+            contentPadding = PaddingValues(horizontal = 12.dp)
         ) { page ->
 
-            HeaderCard(/* title = pages[page].title, subtitle = pages[page].subtitle, hint = pages[page].hint*/
+            HeaderCard(
                 type = pages[page].type,
                 title = pages[page].title,
                 subtitle = pages[page].subtitle,

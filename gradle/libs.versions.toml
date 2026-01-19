@@ -48,6 +48,9 @@ baselineprofile = "1.2.4"
 
 gson = "2.10.1"
 
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+
 
 [libraries]
 # GSON
@@ -116,6 +119,16 @@ glance-material3 = { module = "androidx.glance:glance-material3", version.ref = 
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+
+# Retrofit
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+# OkHttp
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+# ViewModel
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

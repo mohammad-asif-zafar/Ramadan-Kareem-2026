@@ -1,6 +1,8 @@
 package com.hathway.ramadankareem2026.ui.home
 
 import android.Manifest
+import android.app.Application
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -39,16 +42,28 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 // 🔹 Preview only
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
+
+private const val TAG = "HomeScreen"
 
 @Composable
 fun HomeScreen(
     navController: NavController
 ) {
     val homeViewModel: HomeViewModel = viewModel()
-    val prayerViewModel: PrayerViewModel = viewModel()
+
+    val context = LocalContext.current
+    val app = context.applicationContext as Application
+
+    val prayerViewModel: PrayerViewModel = viewModel(
+        factory = PrayerViewModelFactory(app)
+    )
+
 
     // Sealed UI state
     val locationState by homeViewModel.locationState.collectAsState()
+
+    Log.e(TAG, "HomeScreen1: $locationState")
 
     // Permission launcher (upgrade path)
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -56,6 +71,8 @@ fun HomeScreen(
     ) { granted ->
         if (granted) {
             homeViewModel.loadLocation()
+            Log.e(TAG, "HomeScreen:2 $locationState")
+
         }
     }
 
@@ -63,6 +80,8 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         homeViewModel.loadLocation()
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        Log.e(TAG, "HomeScreen2: $locationState")
+
     }
 
     // 🔹 Load prayers ONLY when location is SUCCESS

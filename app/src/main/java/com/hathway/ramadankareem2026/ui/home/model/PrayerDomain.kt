@@ -10,5 +10,6 @@ data class PrayerDomain(
     val time: LocalTime,
     val isCurrent: Boolean,
     val isNext: Boolean,
-    val remainingMinutes: Int?
+    val remainingMinutes: Int?,
+    val isPast: Boolean   // ✅ NEW
 )

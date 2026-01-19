@@ -1,7 +1,7 @@
 package com.hathway.ramadankareem2026.ui.prayer.mapper
 
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
-import com.hathway.ramadankareem2026.ui.prayer.data.api.PrayerApiResponse
+import com.hathway.ramadankareem2026.ui.prayer.data.model.PrayerApiResponse
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter

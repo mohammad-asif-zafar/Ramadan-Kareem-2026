@@ -10,42 +10,48 @@ import java.time.ZoneId
 object PrayerAdhanMapper {
 
     fun map(
-        prayerTimes: PrayerTimes,
-        now: LocalDateTime
+        prayerTimes: PrayerTimes, now: LocalDateTime
     ): List<PrayerDomain> {
 
         val currentPrayer = prayerTimes.currentPrayer()
         val nextPrayer = prayerTimes.nextPrayer()
         val zoneId = ZoneId.systemDefault()
 
-        return Prayer.values()
-            .filter { it != Prayer.NONE }
-            .mapNotNull { prayer ->
+        // Build ordered list of prayers with times
+        val prayers = Prayer.values().filter { it != Prayer.NONE }.mapNotNull { prayer ->
+            val date = prayerTimes.timeForPrayer(prayer) ?: return@mapNotNull null
+            val localTime = date.toInstant().atZone(zoneId).toLocalTime()
+            prayer to localTime
+        }
 
-                val time = prayerTimes.timeForPrayer(prayer) ?: return@mapNotNull null
+        return prayers.mapIndexed { index, (prayer, localTime) ->
 
-                // ✅ CORRECT CONVERSION
-                val localTime = time.toInstant()
-                    .atZone(zoneId)
-                    .toLocalTime()
+            val isCurrent = prayer == currentPrayer
+            val isNext = prayer == nextPrayer
 
-                val remainingMinutes =
-                    if (prayer == nextPrayer)
-                        Duration.between(
-                            now.toLocalTime(),
-                            localTime
-                        ).toMinutes().toInt()
-                    else null
-
-                PrayerDomain(
-                    name = prayer.name
-                        .lowercase()
-                        .replaceFirstChar { it.uppercase() },
-                    time = localTime,
-                    isCurrent = prayer == currentPrayer,
-                    isNext = prayer == nextPrayer,
-                    remainingMinutes = remainingMinutes
-                )
+            // ✅ Explicit past calculation
+            val isPast = when {
+                isCurrent || isNext -> false
+                currentPrayer == Prayer.NONE -> false
+                else -> {
+                    val currentIndex = prayers.indexOfFirst { it.first == currentPrayer }
+                    currentIndex != -1 && index < currentIndex
+                }
             }
+
+            val remainingMinutes = if (isNext) Duration.between(
+                now.toLocalTime(), localTime
+            ).toMinutes().toInt()
+            else null
+
+            PrayerDomain(
+                name = prayer.name.lowercase().replaceFirstChar { it.uppercase() },
+                time = localTime,
+                isCurrent = isCurrent,
+                isNext = isNext,
+                remainingMinutes = remainingMinutes,
+                isPast = isPast          // ✅ CRITICAL FIX
+            )
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.hathway.ramadankareem2026.ui.prayer.data.api
+package com.hathway.ramadankareem2026.ui.prayer.data.model
 
 /**
  * Hijri date details

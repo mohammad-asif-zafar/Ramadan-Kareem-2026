@@ -12,8 +12,7 @@ object PrayerTimeUiMapper {
     private val formatter = DateTimeFormatter.ofPattern("hh:mm a")
 
     fun map(
-        state: PrayerTimeUiState,
-        now: LocalTime = LocalTime.now()
+        state: PrayerTimeUiState, now: LocalTime = LocalTime.now()
     ): List<PrayerDomain> {
 
         val prayers = listOf(
@@ -40,17 +39,26 @@ object PrayerTimeUiMapper {
             prayers[nextIndex].second
         }
 
-        val remainingMinutes =
-            Duration.between(now, nextPrayerTime).toMinutes().toInt()
+        val remainingMinutes = Duration.between(now, nextPrayerTime).toMinutes().toInt()
 
         return prayers.mapIndexed { index, (name, time) ->
-            PrayerDomain(
-                name = name,
-                time = time, // ✅ LocalTime ONLY
 
-                isCurrent = index == currentIndex,
-                isNext = index == nextIndex,
-                remainingMinutes = if (index == nextIndex) remainingMinutes else null
+            val isPast = when {
+                index < currentIndex -> true
+                currentIndex == prayers.lastIndex && index != currentIndex -> true
+                else -> false
+            }
+
+            PrayerDomain(
+                name = name, time = time,
+
+                isCurrent = index == currentIndex, isNext = index == nextIndex,
+
+                // ✅ Only NEXT prayer gets countdown
+                remainingMinutes = if (index == nextIndex) remainingMinutes else null,
+
+                // ✅ ADD THIS
+                isPast = isPast
             )
         }
     }
@@ -65,22 +73,30 @@ object PrayerTimeUiMapper {
         else -> Icons.Outlined.AccessTime
     }
 
-    // 🔹 UI helper
-    // 🔹 UI helper (FINAL)
+    // 🔹 UI helper (FINAL & CORRECT)
     fun formatRemaining(
-        minutes: Int?,
-        isCurrent: Boolean
+        minutes: Int?, isCurrent: Boolean
     ): String = when {
         minutes == null -> "Calculating…"
+
+        // ✅ CURRENT prayer always wins
+        isCurrent -> "Now"
+
+        // ✅ Only non-current prayers can be passed
         minutes < 0 -> "Passed"
-        isCurrent -> "${formatDuration(minutes)} left"
+
         else -> "Starts in ${formatDuration(minutes)}"
     }
 
 
-    private fun formatDuration(minutes: Int): String {
+     fun formatDuration(minutes: Int): String {
         val h = minutes / 60
         val m = minutes % 60
         return if (h > 0) "${h}h ${m}m" else "${m}m"
+    }
+
+    fun minutesUntil(prayerTime: LocalTime): Int {
+        val now = LocalTime.now()
+        return Duration.between(now, prayerTime).toMinutes().toInt()
     }
 }
