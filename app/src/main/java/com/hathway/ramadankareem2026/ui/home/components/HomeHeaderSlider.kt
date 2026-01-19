@@ -39,8 +39,7 @@ fun HomeHeaderSlider(
     // ✅ FIX 2: mapper requires time, and state is non-null
     val mappedPrayers = remember(prayerState) {
         PrayerTimeUiMapper.map(
-            state = prayerState,
-            now = now
+            state = prayerState, now = now
         )
     }
 
@@ -56,7 +55,11 @@ fun HomeHeaderSlider(
     // 🔹 Build pages dynamically
     val pages = remember(nextPrayer) {
         listOf(
-            buildDynamicPrayerHeader(nextPrayer),
+            buildDynamicPrayerHeader(
+                prayer = nextPrayer,
+                gregorianDate = prayerState.gregorianDate,
+                hijriDate = prayerState.hijriDate
+            ),
 
             HeaderPage(
                 type = HeaderType.NEXT_PRAYER,
@@ -75,9 +78,7 @@ fun HomeHeaderSlider(
     }
 
     val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { pages.size }
-    )
+        initialPage = 0, pageCount = { pages.size })
 
     // ✅ Safe auto-scroll (unchanged behavior)
     LaunchedEffect(pagerState) {

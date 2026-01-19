@@ -43,59 +43,68 @@ fun HeaderCard(
             .fillMaxWidth()
             .height(150.dp),
         shape = RoundedCornerShape(24.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = if (type == HeaderType.DYNAMIC_PRAYER) 8.dp else 4.dp
+        )
     ) {
         Box(
             modifier = Modifier
                 .background(headerGradient(type))
-                .padding(
-                    start = 24.dp,
-                    end = 24.dp,
-                    top = 20.dp,
-                    bottom = 20.dp
-                )
+                .padding(horizontal = 20.dp, vertical = 18.dp)
+                .height(150.dp)
+                .fillMaxWidth()
+
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                // 🔝 Icon + Title
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // 🔝 Icon + Title (secondary)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         imageVector = headerIcon(type),
                         contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(28.dp)
+                        tint = Color.White.copy(alpha = 0.9f),
+                        modifier = Modifier.size(26.dp)
                     )
 
                     Spacer(Modifier.width(8.dp))
 
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontWeight = FontWeight.Medium
                     )
                 }
 
-                // 🔹 Subtitle
+                Spacer(Modifier.height(6.dp))
+
+                // 🔹 MAIN MESSAGE (primary focus)
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2
                 )
 
-                // 🔻 Hint
+                Spacer(Modifier.height(4.dp))
+
+                // 🔻 Supporting info (date / countdown)
                 Text(
                     text = hint,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.9f)
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White.copy(alpha = 0.75f),
+                    maxLines = 1
                 )
             }
         }
     }
 }
+
 
 private fun headerIcon(type: HeaderType) = when (type) {
     HeaderType.DYNAMIC_PRAYER -> Icons.Outlined.NightsStay

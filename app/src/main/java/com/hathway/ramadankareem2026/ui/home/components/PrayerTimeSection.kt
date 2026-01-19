@@ -163,9 +163,7 @@ fun PrayerItem(
             // 🟢 Current prayer
             prayer.isCurrent -> {
                 Text(
-                    "Now",
-                    color = highlight,
-                    style = MaterialTheme.typography.labelSmall
+                    "Now", color = highlight, style = MaterialTheme.typography.labelSmall
                 )
             }
 
@@ -173,11 +171,8 @@ fun PrayerItem(
             prayer.isNext && prayer.remainingMinutes != null -> {
                 Text(
                     PrayerTimeUiMapper.formatRemaining(
-                        prayer.remainingMinutes,
-                        isCurrent = false
-                    ),
-                    color = highlight,
-                    style = MaterialTheme.typography.labelSmall
+                        prayer.remainingMinutes, isCurrent = false
+                    ), color = highlight, style = MaterialTheme.typography.labelSmall
                 )
             }
 
@@ -195,9 +190,7 @@ fun PrayerItem(
             // 🔴 Past prayer
             else -> {
                 Text(
-                    "Passed",
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.labelSmall
+                    "Passed", color = Color.Gray, style = MaterialTheme.typography.labelSmall
                 )
             }
         }
