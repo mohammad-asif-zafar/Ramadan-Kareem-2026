@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.R
@@ -28,9 +29,9 @@ fun RamadanToolbar(
     title: String,
     showBack: Boolean = true,
     onBackClick: () -> Unit = {},
-    rightIcon1: ImageVector? = null,
+    rightIcon1: Int? = null,
     onRightIcon1Click: () -> Unit = {},
-    rightIcon2: ImageVector? = null,
+    rightIcon2: Int? = null,
     onRightIcon2Click: () -> Unit = {},
     backgroundColor: Color = Color.White,
     contentColor: Color = Color.Black
@@ -70,19 +71,20 @@ fun RamadanToolbar(
             )
 
             // 🔔 Right Icon 1
-            rightIcon1?.let {
+            if (rightIcon1 != null) {
                 IconButton(onClick = onRightIcon1Click) {
                     Icon(
-                        imageVector = it, contentDescription = "Action 1", tint = contentColor
+                        painter = painterResource(rightIcon1), contentDescription = "Favorites"
                     )
                 }
             }
 
             // ⚙️ Right Icon 2
-            rightIcon2?.let {
+            if (rightIcon2 != null) {
                 IconButton(onClick = onRightIcon2Click) {
                     Icon(
-                        imageVector = it, contentDescription = "Action 2", tint = contentColor
+                        painter = painterResource(rightIcon2),
+                        contentDescription = "Notifications"
                     )
                 }
             }

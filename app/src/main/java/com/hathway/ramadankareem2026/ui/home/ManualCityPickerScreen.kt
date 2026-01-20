@@ -64,9 +64,9 @@ fun ManualCityPickerScreen(
                 title = stringResource(R.string.select_the_location),
                 showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = Icons.Default.CalendarMonth,
+                rightIcon1 = R.drawable.bell,
                 onRightIcon1Click = onViewFullCalendar,
-                rightIcon2 = Icons.Default.Settings,
+                rightIcon2 = R.drawable.bell,
                 onRightIcon2Click = onSettings
             )
         }) { padding ->

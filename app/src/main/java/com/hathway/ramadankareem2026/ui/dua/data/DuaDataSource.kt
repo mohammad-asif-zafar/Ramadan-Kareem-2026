@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.ui.dua.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.*
 import com.hathway.ramadankareem2026.ui.dua.model.DuaCategory
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
@@ -29,7 +30,7 @@ object DuaDataSource {
             id = "quran",
             title = "Duʿāʾs from Qur’an",
             subtitle = "Supplications revealed in the Qur’an",
-            icon = Icons.Outlined.MenuBook
+            icon = Icons.AutoMirrored.Outlined.MenuBook
         ), DuaCategory(
             id = "prophets",
             title = "Duʿāʾs of Prophets",

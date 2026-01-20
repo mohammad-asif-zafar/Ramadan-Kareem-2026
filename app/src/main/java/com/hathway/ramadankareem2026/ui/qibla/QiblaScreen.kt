@@ -82,9 +82,9 @@ fun QiblaScreen(
                 title = stringResource(R.string.qibla_direction),
                 showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = Icons.Default.CalendarMonth,
+                rightIcon1 = R.drawable.bell,
                 onRightIcon1Click = onViewFullCalendar,
-                rightIcon2 = Icons.Default.Settings,
+                rightIcon2 = R.drawable.bell,
                 onRightIcon2Click = onSettings
             )
         }) { padding ->
@@ -152,23 +152,22 @@ fun QiblaScreen(
     }
 
 
-
-   /* if (state.isAligned) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "✓ Qibla aligned",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
-    IconButton(
-        onClick = {
-            navController.navigate(Routes.QIBLA_SETTINGS)
-        })
-         {
-        Icon(
-            imageVector = Icons.Outlined.Settings, contentDescription = "Qibla Settings"
-        )
-    }*/
+    /* if (state.isAligned) {
+         Spacer(modifier = Modifier.height(16.dp))
+         Text(
+             text = "✓ Qibla aligned",
+             style = MaterialTheme.typography.bodyMedium,
+             color = MaterialTheme.colorScheme.primary
+         )
+     }
+     IconButton(
+         onClick = {
+             navController.navigate(Routes.QIBLA_SETTINGS)
+         })
+          {
+         Icon(
+             imageVector = Icons.Outlined.Settings, contentDescription = "Qibla Settings"
+         )
+     }*/
 }
 

@@ -14,13 +14,11 @@ class PrayerViewModelFactory(
         if (modelClass.isAssignableFrom(PrayerViewModel::class.java)) {
 
             val repository = PrayerRepository(
-                context = app,
-                api = NetworkModule.prayerApi
+                context = app, api = NetworkModule.prayerApi
             )
 
             return PrayerViewModel(
-                app = app,
-                repository = repository
+                app = app, repository = repository
             ) as T
         }
 
