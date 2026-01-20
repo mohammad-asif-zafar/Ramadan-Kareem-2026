@@ -1,7 +1,9 @@
 package com.hathway.ramadankareem2026.ui.dua
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -73,6 +75,9 @@ fun DuaScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+            item {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
             /*  Ramadan Collections label */
             item {
@@ -98,6 +103,9 @@ fun DuaScreen(
                     categories = DuaCategoryData.list, onClick = { category ->
                         navController.navigate("dua_category/${category.id}")
                     })
+            }
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }

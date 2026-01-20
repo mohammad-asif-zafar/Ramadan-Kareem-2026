@@ -114,6 +114,8 @@ fun RamadanDuaCard(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.hathway.ramadankareem2026.ui.dua.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items   // ✅ REQUIRED
@@ -36,6 +38,9 @@ fun DuaListScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            item {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
             items(duas) { dua ->
                 DuaItemCard(dua = dua)
             }

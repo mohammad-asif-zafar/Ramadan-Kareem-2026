@@ -1,20 +1,14 @@
 package com.hathway.ramadankareem2026.ui.dua.data
 
-import com.hathway.ramadankareem2026.ui.dua.model.DuaCategory
-import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
-
 class DuaRepository {
 
-    fun getCategories(): List<DuaCategory> =
-        DuaDataSource.categories
+    fun getCategories() = DuaCategoryData.list
 
-    fun getRamadanDuas(): List<DuaItem> =
-        DuaDataSource.duas.filter { it.categoryId == "ramadan" }
+    fun getRamadanDuas() = DuaDataSource.duas.filter { it.categoryId == "ramadan" }
 
-    fun getDuasByCategory(categoryId: String): List<DuaItem> =
+    fun getDuasByCategory(categoryId: String) =
         DuaDataSource.duas.filter { it.categoryId == categoryId }
 
-    fun getDuaById(id: String): DuaItem =
-        DuaDataSource.duas.first { it.id == id }
+    fun getDuaById(id: String) = DuaDataSource.duas.first { it.id == id }
 
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,11 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.core.util.capitalizeFirst
 
 @Composable
 fun RamadanToolbar(
@@ -47,7 +46,7 @@ fun RamadanToolbar(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // 🔙 Back Button
+            // 🔙 Back button
             if (showBack) {
                 IconButton(onClick = onBackClick) {
                     Icon(
@@ -62,7 +61,7 @@ fun RamadanToolbar(
 
             // 📝 Title
             Text(
-                text = stringResource(R.string.feature_dua),
+                text = title.capitalizeFirst(),
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
@@ -70,24 +69,45 @@ fun RamadanToolbar(
                 color = contentColor
             )
 
-            // 🔔 Right Icon 1
-            if (rightIcon1 != null) {
+            // ⭐ Right icon 1 (e.g. Favorite)
+            rightIcon1?.let {
                 IconButton(onClick = onRightIcon1Click) {
                     Icon(
-                        painter = painterResource(rightIcon1), contentDescription = "Favorites"
+                        painter = painterResource(it),
+                        contentDescription = "Action 1",
+                        tint = contentColor
                     )
                 }
             }
 
-            // ⚙️ Right Icon 2
-            if (rightIcon2 != null) {
+            // 🔔 Right icon 2 (e.g. Notification)
+            rightIcon2?.let {
                 IconButton(onClick = onRightIcon2Click) {
                     Icon(
-                        painter = painterResource(rightIcon2),
-                        contentDescription = "Notifications"
+                        painter = painterResource(it),
+                        contentDescription = "Action 2",
+                        tint = contentColor
                     )
                 }
             }
         }
+    }
+}
+
+
+@Preview(
+    name = "Ramadan Toolbar – Dua", showBackground = true
+)
+@Composable
+fun RamadanToolbarPreview() {
+    MaterialTheme {
+        RamadanToolbar(
+            title = "Dua",
+            showBack = true,
+            rightIcon1 = R.drawable.ic_favorite_outline,
+            rightIcon2 = R.drawable.ic_notification,
+            onBackClick = {},
+            onRightIcon1Click = {},
+            onRightIcon2Click = {})
     }
 }

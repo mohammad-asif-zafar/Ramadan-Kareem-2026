@@ -18,6 +18,7 @@ fun RamadanDuaHorizontal(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
+
         items(duas) { dua ->
             RamadanDuaCard(
                 dua = dua,

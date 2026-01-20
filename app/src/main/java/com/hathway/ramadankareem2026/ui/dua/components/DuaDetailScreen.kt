@@ -48,7 +48,7 @@ fun DuaDetailScreen(
         /* 🔝 Top App Bar */
         topBar = {
             RamadanToolbar(
-                title = stringResource(R.string.feature_dua), showBack = true, onBackClick = onBack,
+                title = dua.categoryId, showBack = true, onBackClick = onBack,
                 // Saved
                 rightIcon1 = R.drawable.ic_saved, onRightIcon1Click = { },
 
@@ -93,6 +93,9 @@ fun DuaDetailScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
+            item {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
             /* 🟢 Duʿāʾ Title */
             item {
                 Text(
