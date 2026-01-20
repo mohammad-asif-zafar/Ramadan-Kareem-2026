@@ -46,7 +46,7 @@ private val featureList = listOf(
     FeatureModel(R.string.feature_zakat, Icons.Outlined.VolunteerActivism, Routes.ZAKAT),
     FeatureModel(R.string.feature_reminder, Icons.Outlined.NotificationsNone, Routes.REMINDER),
     FeatureModel(R.string.feature_tips, Icons.Outlined.Lightbulb, Routes.TIPS),
-    FeatureModel(R.string.feature_tasbih, Icons.Outlined.Refresh, Routes.TASBIH),
+    FeatureModel(R.string.allah_name, Icons.Outlined.Refresh, Routes.ALLAH_NAMES),
     FeatureModel(R.string.feature_qibla, Icons.Outlined.Explore, Routes.QIBLA),
     FeatureModel(R.string.feature_quran, Icons.AutoMirrored.Outlined.MenuBook, Routes.QURAN),
     FeatureModel(R.string.feature_calendar, Icons.Outlined.CalendarMonth, Routes.RAMADAN_CALENDAR)

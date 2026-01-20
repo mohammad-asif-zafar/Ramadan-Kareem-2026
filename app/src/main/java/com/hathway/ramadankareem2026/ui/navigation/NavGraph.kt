@@ -8,9 +8,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.hathway.ramadankareem2026.ui.allahnames.AllahNameDetailRoute
+import com.hathway.ramadankareem2026.ui.allahnames.AllahNamesScreen
+import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
 import com.hathway.ramadankareem2026.ui.dua.components.DuaDetailScreen
@@ -84,7 +88,7 @@ private fun HomeScaffold() {
 
             composable(Routes.QIBLA) {
                 QiblaScreen(
-                    title = Routes.QIBLA,
+
                     navController = navController,
                     onBack = {},
                     onSettings = {},
@@ -113,7 +117,11 @@ private fun HomeScaffold() {
             }
 
             composable(Routes.QIBLA_SETTINGS) {
-                QiblaSettingsScreen(navController, onBack = {}, onSettings = {}, onViewFullCalendar = {})
+                QiblaSettingsScreen(
+                    navController,
+                    onBack = {},
+                    onSettings = {},
+                    onViewFullCalendar = {})
             }
 
             composable(Routes.RAMADAN_CALENDAR) {
@@ -121,36 +129,65 @@ private fun HomeScaffold() {
             }
 
             composable(
-                route = "dua_detail/{duaId}",
-                arguments = listOf(
-                    navArgument("duaId") { type = NavType.StringType }
-                )
+                route = "dua_detail/{duaId}", arguments = listOf(
+                    navArgument("duaId") { type = NavType.StringType })
             ) { backStackEntry ->
 
                 val duaId = backStackEntry.arguments!!.getString("duaId")!!
                 val dua = DuaRepository().getDuaById(duaId)
 
                 DuaDetailScreen(
-                    dua = dua,
-                    onBack = { navController.popBackStack() }
-                )
+                    dua = dua, onBack = { navController.popBackStack() })
             }
 
             composable(
-                route = "${Routes.DUA_CATEGORY}/{categoryId}",
-                arguments = listOf(
-                    navArgument("categoryId") { type = NavType.StringType }
-                )
+                route = "${Routes.DUA_CATEGORY}/{categoryId}", arguments = listOf(
+                    navArgument("categoryId") { type = NavType.StringType })
             ) { backStackEntry ->
 
                 val categoryId =
                     backStackEntry.arguments?.getString("categoryId") ?: return@composable
 
                 DuaCategoryScreen(
-                    categoryId = categoryId,
-                    navController = navController
+                    categoryId = categoryId, navController = navController
                 )
             }
+
+            // 🔹 ALLAH NAMES (NEW)
+            composable(Routes.ALLAH_NAMES) {
+
+                val viewModel: AllahNamesViewModel = viewModel()
+
+                AllahNamesScreen(
+                    names = viewModel.names,
+                    onBack = { navController.popBackStack() },
+                    onNameClick = { name ->
+                        navController.navigate(
+                            Routes.allahNameDetail(name.id)
+                        )
+                    })
+            }
+
+            composable(
+                route = "${Routes.ALLAH_NAME_DETAIL}/{id}", arguments = listOf(
+                    navArgument("id") { type = NavType.IntType })
+            ) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getInt("id") ?: return@composable
+
+                AllahNameDetailRoute(
+                    id = id, navController = navController
+                )
+            }
+
+           /* composable(
+                route = Routes.ALLAH_NAME_DETAIL,
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments!!.getInt("id")
+                AllahNameDetailRoute(id = id, navController = navController)
+            }
+            */
 
         }
     }

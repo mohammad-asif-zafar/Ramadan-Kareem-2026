@@ -14,4 +14,7 @@ object Routes {
     const val RAMADAN_CALENDAR = "ramadan_calendar"
     const val DUA_CATEGORY = "dua_category"
     const val DUA_DETAIL = "dua_detail"
+    const val ALLAH_NAMES = "allah_names"
+    const val ALLAH_NAME_DETAIL = "allah_name_detail"
+    fun allahNameDetail(id: Int) = "$ALLAH_NAME_DETAIL/$id"
 }
