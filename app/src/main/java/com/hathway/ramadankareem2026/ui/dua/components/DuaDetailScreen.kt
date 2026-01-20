@@ -18,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
@@ -26,22 +28,30 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 
 @Composable
 fun DuaDetailScreen(
-    dua: DuaItem,
-    onBack: () -> Unit
+    dua: DuaItem, onBack: () -> Unit
 ) {
     Scaffold(
+
+        /* 🔝 Top App Bar */
         topBar = {
             RamadanToolbar(
-                title = stringResource( R.string.feature_dua),
-                showBack = true,
-                onBackClick = onBack
-            )
+                title = stringResource(R.string.feature_dua), showBack = true, onBackClick = onBack,
+                // Saved
+                rightIcon1 = R.drawable.ic_saved, onRightIcon1Click = { },
+
+                //  Notification  icon
+                rightIcon2 = R.drawable.bell, onRightIcon2Click = { })
+
         },
+
+        /* 🔽 Bottom action bar (Save / Share / Audio etc.) */
         bottomBar = {
             DuaActionBar(dua)
         }
+
     ) { padding ->
 
+        /* 📜 Scrollable content */
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,8 +60,8 @@ fun DuaDetailScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
+            /* 🟢 Duʿāʾ Title */
             item {
-                // 🟢 Title
                 Text(
                     text = dua.title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -59,8 +69,8 @@ fun DuaDetailScreen(
                 )
             }
 
+            /* 🕌 Arabic Text (Main focus card) */
             item {
-                // 🕌 Arabic (Main focus)
                 Surface(
                     shape = RoundedCornerShape(20.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant
@@ -77,6 +87,7 @@ fun DuaDetailScreen(
                 }
             }
 
+            /* 🔤 Transliteration (optional) */
             if (dua.transliteration.isNotBlank()) {
                 item {
                     Text(
@@ -88,6 +99,7 @@ fun DuaDetailScreen(
                 }
             }
 
+            /* 🌍 Translation (optional) */
             if (dua.translation.isNotBlank()) {
                 item {
                     Text(
@@ -98,8 +110,8 @@ fun DuaDetailScreen(
                 }
             }
 
+            /* 📚 Source / Reference */
             item {
-                // 📚 Source
                 Text(
                     text = dua.source,
                     style = MaterialTheme.typography.labelMedium,
@@ -107,10 +119,32 @@ fun DuaDetailScreen(
                 )
             }
 
+            /* 🧘 Spacer so content is not hidden by bottom bar */
             item {
-                Spacer(modifier = Modifier.height(80.dp)) // space for bottom bar
+                Spacer(modifier = Modifier.height(80.dp))
             }
         }
     }
 }
+
+
+@Preview(
+    name = "Dua Detail Screen", showBackground = true, device = Devices.PIXEL_6
+)
+@Composable
+fun DuaDetailScreenPreview() {
+    MaterialTheme {
+        DuaDetailScreen(
+            dua = DuaItem(
+                id = "1",
+                title = "Ramadan Moon Sighting Duʿāʾ",
+                arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ",
+                transliteration = "Allahumma ahlilhu ‘alaynā bil-yumni wal-īmān",
+                translation = "O Allah, bring it upon us with blessings and faith.",
+                source = "Tirmidhi",
+                categoryId = "ramadan"
+            ), onBack = {})
+    }
+}
+
 

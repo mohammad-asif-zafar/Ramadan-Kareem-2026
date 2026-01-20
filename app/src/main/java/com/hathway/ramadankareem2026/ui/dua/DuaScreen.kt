@@ -48,24 +48,24 @@ fun DuaScreen(
 ) {
     Scaffold(
 
-        /* 🔝 Top App Bar */
+        /*  Top App Bar */
         topBar = {
             RamadanToolbar(
                 title = stringResource(R.string.feature_dua),     // ✅ string resource ID
                 showBack = true, onBackClick = onBack,
 
-                // 📅 Calendar icon
-                rightIcon1 = R.drawable.bell, onRightIcon1Click = onCalendarClick,
+                // Saved
+                rightIcon1 = R.drawable.ic_saved, onRightIcon1Click = onCalendarClick,
 
-                // ⚙️ Settings icon
-                rightIcon2 =  R.drawable.bell, onRightIcon2Click = {
+                //  Notification  icon
+                rightIcon2 = R.drawable.bell, onRightIcon2Click = {
                     navController.navigate(Routes.QIBLA_SETTINGS)
                 })
         }
 
     ) { padding ->
 
-        /* 📜 Main scrollable content */
+        /*  Main scrollable content */
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,12 +74,12 @@ fun DuaScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
 
-            /* 2️⃣ Ramadan Collections label */
+            /*  Ramadan Collections label */
             item {
                 SectionTitle("Ramadan Collections")
             }
 
-            /* 3️⃣ Ramadan Duas – horizontal cards */
+            /*  Ramadan Duas – horizontal cards */
             item {
                 RamadanDuaHorizontal(
                     duas = viewModel.ramadanDuas, onClick = { dua ->
@@ -87,12 +87,12 @@ fun DuaScreen(
                     })
             }
 
-            /* 4️⃣ All Duʿāʾs label */
+            /*  All Duʿāʾs label */
             item {
                 SectionTitle("All Duʿāʾs")
             }
 
-            /* 5️⃣ Dua Categories – 2×2 grid */
+            /*  Dua Categories – 2×2 grid */
             item {
                 DuaCategoriesGrid(
                     categories = DuaCategoryData.list, onClick = { category ->
