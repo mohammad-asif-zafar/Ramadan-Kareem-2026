@@ -7,5 +7,6 @@ data class DuaItem(
     val translation: String,
     val source: String,
     val categoryId: String,
-    val transliteration: String = ""  // ✅ MUST EXIST
+    val transliteration: String = "",
+    val audioResId: Int? = null //  Audio (raw resource OR URL later)
 )
