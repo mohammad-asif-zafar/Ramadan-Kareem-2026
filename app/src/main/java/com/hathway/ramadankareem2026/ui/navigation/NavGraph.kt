@@ -4,16 +4,20 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.hathway.ramadankareem2026.ui.allahnames.AllahNameDetailRoute
+import com.hathway.ramadankareem2026.ui.allahnames.AllahNameDetailScreen
 import com.hathway.ramadankareem2026.ui.allahnames.AllahNamesScreen
+import com.hathway.ramadankareem2026.ui.allahnames.data.source.AllahNamesLocalData
+import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
@@ -26,6 +30,8 @@ import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
+import com.hathway.ramadankareem2026.ui.zakat.route.ZakatBreakdownRoute
+import com.hathway.ramadankareem2026.ui.zakat.route.ZakatRoute
 
 @Composable
 fun NavGraph() {
@@ -179,15 +185,15 @@ private fun HomeScaffold() {
                     id = id, navController = navController
                 )
             }
-
-           /* composable(
-                route = Routes.ALLAH_NAME_DETAIL,
-                arguments = listOf(navArgument("id") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val id = backStackEntry.arguments!!.getInt("id")
-                AllahNameDetailRoute(id = id, navController = navController)
+            // 🔹 ZAKAT SCREEN
+            composable(Routes.ZAKAT) {
+                ZakatRoute(navController = navController)
             }
-            */
+
+            composable(Routes.ZAKAT_BREAKDOWN) {
+                ZakatBreakdownRoute(navController)
+            }
+
 
         }
     }
@@ -198,3 +204,28 @@ private fun HomeScaffold() {
 fun SimpleScreen(title: String) {
     androidx.compose.material3.Text(text = title)
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun AllahNamesScreenPreview() {
+    MaterialTheme {
+        AllahNamesScreen(names = AllahNamesLocalData.getAll(), onBack = {}, onNameClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AllahNameDetailPreview() {
+    MaterialTheme {
+        AllahNameDetailScreen(
+            name = AllahName(
+                id = 1,
+                arabic = "الرَّحْمٰنُ",
+                transliteration = "Ar-Rahman",
+                english = "The Most Merciful",
+                meaning = "The One who has plenty of mercy for the believers."
+            ), onBack = {})
+    }
+}
+

@@ -6,6 +6,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class FeatureModel(
     @StringRes val titleRes: Int,
-    val icon: ImageVector,
+    val icon: FeatureIcon,
     val route: String
 )

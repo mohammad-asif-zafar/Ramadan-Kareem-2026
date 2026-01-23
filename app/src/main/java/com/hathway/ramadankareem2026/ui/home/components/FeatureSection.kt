@@ -22,7 +22,6 @@ import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.NotificationsNone
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,21 +34,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.home.model.FeatureIcon
 import com.hathway.ramadankareem2026.ui.home.model.FeatureModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
+import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 
 private val featureList = listOf(
-    FeatureModel(R.string.feature_dua, Icons.Outlined.FavoriteBorder, Routes.DUA),
-    FeatureModel(R.string.feature_zakat, Icons.Outlined.VolunteerActivism, Routes.ZAKAT),
-    FeatureModel(R.string.feature_reminder, Icons.Outlined.NotificationsNone, Routes.REMINDER),
-    FeatureModel(R.string.feature_tips, Icons.Outlined.Lightbulb, Routes.TIPS),
-    FeatureModel(R.string.allah_name, Icons.Outlined.Refresh, Routes.ALLAH_NAMES),
-    FeatureModel(R.string.feature_qibla, Icons.Outlined.Explore, Routes.QIBLA),
-    FeatureModel(R.string.feature_quran, Icons.AutoMirrored.Outlined.MenuBook, Routes.QURAN),
-    FeatureModel(R.string.feature_calendar, Icons.Outlined.CalendarMonth, Routes.RAMADAN_CALENDAR)
+    FeatureModel(
+        R.string.feature_dua, FeatureIcon.Vector(Icons.Outlined.FavoriteBorder), Routes.DUA
+    ),
+    FeatureModel(
+        R.string.feature_zakat, FeatureIcon.Vector(Icons.Outlined.VolunteerActivism), Routes.ZAKAT
+    ),
+    FeatureModel(
+        R.string.feature_reminder,
+        FeatureIcon.Vector(Icons.Outlined.NotificationsNone),
+        Routes.REMINDER
+    ),
+    FeatureModel(R.string.feature_tips, FeatureIcon.Vector(Icons.Outlined.Lightbulb), Routes.TIPS),
+    FeatureModel(
+        R.string.allah, FeatureIcon.Drawable(R.drawable.ic_allah), Routes.ALLAH_NAMES
+    ),
+    FeatureModel(R.string.feature_qibla, FeatureIcon.Vector(Icons.Outlined.Explore), Routes.QIBLA),
+    FeatureModel(
+        R.string.feature_quran,
+        FeatureIcon.Vector(Icons.AutoMirrored.Outlined.MenuBook),
+        Routes.QURAN
+    ),
+    FeatureModel(
+        R.string.feature_calendar,
+        FeatureIcon.Vector(Icons.Outlined.CalendarMonth),
+        Routes.RAMADAN_CALENDAR
+    )
 )
 
 @Composable
@@ -105,12 +126,31 @@ fun FeatureItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = item.icon,
-                contentDescription = stringResource(item.titleRes),
-                modifier = Modifier.size(28.dp),
-                tint = Color(0xFFB89A2B)
-            )
+            when (val icon = item.icon) {
+                is FeatureIcon.Vector -> {
+                    Icon(
+                        imageVector = icon.imageVector,
+                        contentDescription = stringResource(item.titleRes),
+                        modifier = Modifier.size(28.dp),
+                        tint = Color(0xFFB89A2B)
+                    )
+                }
+
+                is FeatureIcon.Drawable -> {/*Image(
+                        painter = painterResource(icon.resId),
+                        contentDescription = stringResource(item.titleRes),
+                        modifier = Modifier.size(158.dp),
+
+                    )*/
+                    Text(
+                        text = "ﷲ",
+                        fontSize = 24.sp,
+                        color = RamadanGold,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
+
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
