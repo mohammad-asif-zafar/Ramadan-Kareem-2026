@@ -1,30 +1,53 @@
 package com.hathway.ramadankareem2026.ui.mosques.presentation.route
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.hathway.ramadankareem2026.ui.mosques.MosqueMapWithList
-import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueViewModel
+import com.hathway.ramadankareem2026.core.location.LocationRepository
+import com.hathway.ramadankareem2026.ui.mosques.NearbyMosquesScreen
+import com.hathway.ramadankareem2026.ui.mosques.data.remote.PlacesApiProvider
+import com.hathway.ramadankareem2026.ui.mosques.data.repository.MosqueRepositoryImpl
+import com.hathway.ramadankareem2026.ui.mosques.domain.usecase.GetNearbyMosquesUseCase
+import com.hathway.ramadankareem2026.ui.mosques.domain.usecase.GetUserLocationForMosquesUseCase
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.NearbyMosquesViewModel
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.NearbyMosquesViewModelFactory
 
 @Composable
 fun MosqueRoute(
-    navController: NavController,
-    viewModel: MosqueViewModel = viewModel(),
+    navController: NavController
 ) {
-    val mosques by viewModel.mosques.collectAsState()
+    val context = LocalContext.current
 
-    // TODO: replace with real location
-    LaunchedEffect(Unit) {
-        viewModel.loadNearby(
-            lat = 3.1390,  // Kuala Lumpur
-            lng = 101.6869
+    // --- Core dependency (already exists in your app)
+    val locationRepository = remember {
+        LocationRepository(context)
+    }
+
+    // --- Mosque feature dependencies
+    val mosqueRepository = remember {
+        MosqueRepositoryImpl(
+            api = PlacesApiProvider.create() // retrofit provider
         )
     }
 
-   /* MosqueMapWithList(
-        mosques = mosques
-    )*/
+    val viewModel: NearbyMosquesViewModel = viewModel(
+        factory = NearbyMosquesViewModelFactory(
+            getLocation = GetUserLocationForMosquesUseCase(locationRepository),
+            getNearbyMosques = GetNearbyMosquesUseCase(mosqueRepository)
+        )
+    )
+
+    val state by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.load()
+    }
+
+    NearbyMosquesScreen(
+        state = state,
+        onBack = { navController.popBackStack() },
+        onMosqueClick = viewModel::selectMosque
+    )
 }
+

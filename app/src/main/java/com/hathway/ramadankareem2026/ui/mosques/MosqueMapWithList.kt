@@ -16,42 +16,27 @@ import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 
 @Composable
 fun MosqueMapWithList(
-    mosques: List<Mosque>,
-    focusedMosque: Mosque?
+    mosques: List<Mosque>, focusedMosque: Mosque?
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    val cameraState = rememberCameraPositionState()
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(
-            LatLng(3.1390, 101.6869),
-            13f
-        )
-    }
-
-    // 🔁 React to list click
     LaunchedEffect(focusedMosque) {
         focusedMosque?.let {
-            cameraPositionState.animate(
+            cameraState.animate(
                 CameraUpdateFactory.newLatLngZoom(
-                    LatLng(it.lat, it.lng),
-                    16f
+                    LatLng(it.lat, it.lng), 16f
                 )
             )
         }
     }
 
     GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState
+        modifier = Modifier.fillMaxSize(), cameraPositionState = cameraState
     ) {
-        mosques.forEach { mosque ->
+        mosques.forEach {
             Marker(
-                state = MarkerState(LatLng(mosque.lat, mosque.lng)),
-                title = mosque.name
+                state = MarkerState(LatLng(it.lat, it.lng)), title = it.name
             )
         }
     }
 }
-
-
-

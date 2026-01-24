@@ -42,6 +42,7 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 // 🔹 Preview only
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.hathway.ramadankareem2026.BuildConfig
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 
 private const val TAG = "HomeScreen"
@@ -59,6 +60,7 @@ fun HomeScreen(
         factory = PrayerViewModelFactory(app)
     )
 
+    Log.d(TAG, "api name: "+BuildConfig.MAPS_API_KEY)
 
     // Sealed UI state
     val locationState by homeViewModel.locationState.collectAsState()

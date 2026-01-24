@@ -1,13 +1,12 @@
 package com.hathway.ramadankareem2026.ui.mosques.domain.usecase
 
-import com.hathway.ramadankareem2026.ui.mosques.data.repository.MosqueRepository
-import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
+import com.hathway.ramadankareem2026.ui.mosques.domain.repository.MosqueRepository
 
 class GetNearbyMosquesUseCase(
-    private val repository: MosqueRepository = MosqueRepository()
+    private val repository: MosqueRepository
 ) {
-    operator fun invoke(lat: Double, lng: Double): List<Mosque> {
-        return repository.getNearbyMosques(lat, lng)
-    }
-
+    suspend operator fun invoke(
+        lat: Double,
+        lng: Double
+    ) = repository.getNearbyMosques(lat, lng)
 }

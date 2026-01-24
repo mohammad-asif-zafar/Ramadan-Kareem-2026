@@ -196,9 +196,9 @@ private fun HomeScaffold() {
                 ZakatBreakdownRoute(navController)
             }
             composable(Routes.MOSQUES) {
-                NearbyMosquesScreen(
-                    onBack = { navController.popBackStack() })
+                MosqueRoute(navController = navController)
             }
+
         }
     }
 }
