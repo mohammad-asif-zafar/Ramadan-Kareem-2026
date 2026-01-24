@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -35,6 +37,25 @@ fun NearbyMosquesScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val openNavigation: (Mosque) -> Unit = { mosque ->
+        val googleMapsIntent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("google.navigation:q=${mosque.lat},${mosque.lng}")
+        ).apply {
+            setPackage("com.google.android.apps.maps")
+        }
+
+        runCatching {
+            context.startActivity(googleMapsIntent)
+        }.onFailure {
+            val fallback = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${mosque.lat},${mosque.lng}")
+            )
+            context.startActivity(fallback)
+        }
+    }
 
     val cameraPositionState = rememberCameraPositionState {
         state.userLocation?.let {
@@ -80,6 +101,7 @@ fun NearbyMosquesScreen(
 
         BottomSheetScaffold(
             scaffoldState = scaffoldState,
+            sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             topBar = {
                 RamadanToolbar(
                     title = "المساجد القريبة",
@@ -93,6 +115,14 @@ fun NearbyMosquesScreen(
                     mosques = state.mosques,
                     onMosqueClick = { mosque ->
                         onMosqueClick(mosque)
+                        scope.launch {
+                            scaffoldState.bottomSheetState.partialExpand()
+                        }
+                    },
+                    onDirectionsClick = { mosque ->
+                        openNavigation(mosque)
+                    },
+                    onClose = {
                         scope.launch {
                             scaffoldState.bottomSheetState.partialExpand()
                         }
@@ -111,23 +141,7 @@ fun NearbyMosquesScreen(
                         ),
                         title = mosque.name,
                         onClick = {
-                            val googleMapsIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("google.navigation:q=${mosque.lat},${mosque.lng}")
-                            ).apply {
-                                setPackage("com.google.android.apps.maps")
-                            }
-
-                            runCatching {
-                                context.startActivity(googleMapsIntent)
-                            }.onFailure {
-                                val fallback = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${mosque.lat},${mosque.lng}")
-                                )
-                                context.startActivity(fallback)
-                            }
-
+                            openNavigation(mosque)
                             true
                         }
                     )
