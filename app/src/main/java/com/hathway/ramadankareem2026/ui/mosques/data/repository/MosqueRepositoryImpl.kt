@@ -19,7 +19,7 @@ class MosqueRepositoryImpl(
 
         val response = api.nearbyMosques(
             location = "$userLat,$userLng",
-            apiKey = /*BuildConfig.MAPS_API_KEY*/  "AIzaSyA4s01jDklJR5A2nNu6yG5-0VKi_wcWdWA"
+            apiKey = BuildConfig.MAPS_API_KEY
         )
         Log.d(TAG, "getNearbyMosques: "+BuildConfig.MAPS_API_KEY)
         Log.d("MOSQUE_API", "Results count: ${response.results.size}")

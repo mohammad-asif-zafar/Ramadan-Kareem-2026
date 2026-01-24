@@ -1,10 +1,26 @@
+ import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.baselineprofile)
 }
-println("MAPS_API_KEY from Gradle = ${project.findProperty("MAPS_API_KEY")}")
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { stream ->
+        localProperties.load(stream)
+    }
+}
+
+val hasMapsApiKey =
+    (project.findProperty("MAPS_API_KEY") as String?)?.isNotBlank() == true ||
+        (System.getenv("MAPS_API_KEY") as String?)?.isNotBlank() == true ||
+        localProperties.getProperty("MAPS_API_KEY")?.isNotBlank() == true
+
+println("MAPS_API_KEY is set = $hasMapsApiKey")
 
 android {
     namespace = "com.hathway.ramadankareem2026"
@@ -20,7 +36,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val mapsApiKey: String =
-            project.findProperty("MAPS_API_KEY") as String? ?: ""
+            (project.findProperty("MAPS_API_KEY") as String?)
+                ?.takeIf { it.isNotBlank() }
+                ?: (System.getenv("MAPS_API_KEY") as String?)
+                    ?.takeIf { it.isNotBlank() }
+                ?: localProperties.getProperty("MAPS_API_KEY")?.takeIf { it.isNotBlank() }
+                ?: ""
 
         buildConfigField(
             "String",

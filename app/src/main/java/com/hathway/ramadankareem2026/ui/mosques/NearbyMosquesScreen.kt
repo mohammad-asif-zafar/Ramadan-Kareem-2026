@@ -1,11 +1,18 @@
 package com.hathway.ramadankareem2026.ui.mosques
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -17,7 +24,9 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.state.MosqueUiState
+import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NearbyMosquesScreen(
@@ -25,8 +34,11 @@ fun NearbyMosquesScreen(
     onBack: () -> Unit,
     onMosqueClick: (Mosque) -> Unit
 ) {
-   // val cameraPositionState = rememberCameraPositionState()
-    val cameraPositionState = rememberCameraPositionState {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    val cameraPositionState = rememberCameraPositionState()
+  /*  val cameraPositionState = rememberCameraPositionState {
         state.userLocation?.let {
             CameraPosition.fromLatLngZoom(
                 LatLng(it.latitude, it.longitude),
@@ -36,7 +48,7 @@ fun NearbyMosquesScreen(
             LatLng(3.1390, 101.6869),
             12f
         )
-    }
+    }*/
 
 
 
@@ -64,34 +76,66 @@ fun NearbyMosquesScreen(
         }
     }
 
-    BottomSheetScaffold(
-        topBar = {
-            RamadanToolbar(
-                title = "المساجد القريبة",
-                showBack = true,
-                onBackClick = onBack
-            )
-        },
-        sheetPeekHeight = 120.dp,
-        sheetContent = {
-            MosqueList(
-                mosques = state.mosques,
-                onMosqueClick = onMosqueClick
-            )
-        }
-    ) {
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
-        ) {
-            state.mosques.forEach { mosque ->
-                Marker(
-                    state = MarkerState(
-                        LatLng(mosque.lat, mosque.lng)
-                    ),
-                    title = mosque.name
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val halfScreenPeekHeight = maxHeight / 2
+        val scaffoldState = rememberBottomSheetScaffoldState()
+
+        BottomSheetScaffold(
+            scaffoldState = scaffoldState,
+            topBar = {
+                RamadanToolbar(
+                    title = "المساجد القريبة",
+                    showBack = true,
+                    onBackClick = onBack
                 )
+            },
+            sheetPeekHeight = halfScreenPeekHeight,
+            sheetContent = {
+                MosqueList(
+                    mosques = state.mosques,
+                    onMosqueClick = { mosque ->
+                        onMosqueClick(mosque)
+                        scope.launch {
+                            scaffoldState.bottomSheetState.partialExpand()
+                        }
+                    }
+                )
+            }
+        ) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                state.mosques.forEach { mosque ->
+                    Marker(
+                        state = MarkerState(
+                            LatLng(mosque.lat, mosque.lng)
+                        ),
+                        title = mosque.name,
+                        onClick = {
+                            val googleMapsIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("google.navigation:q=${mosque.lat},${mosque.lng}")
+                            ).apply {
+                                setPackage("com.google.android.apps.maps")
+                            }
+
+                            runCatching {
+                                context.startActivity(googleMapsIntent)
+                            }.onFailure {
+                                val fallback = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${mosque.lat},${mosque.lng}")
+                                )
+                                context.startActivity(fallback)
+                            }
+
+                            true
+                        }
+                    )
+                }
             }
         }
     }
 }
+
