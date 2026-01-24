@@ -25,21 +25,24 @@ import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 @SuppressLint("DefaultLocale")
 @Composable
 fun MosqueListItem(
-    mosque: Mosque,
-    onClick: () -> Unit,
-    onDirectionsClick: () -> Unit
+    mosque: Mosque, onClick: () -> Unit, onDirectionsClick: () -> Unit
 ) {
     val distanceKm = mosque.distanceMeters / 1000f
 
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             Text(
-                text = mosque.name,
-                style = MaterialTheme.typography.titleMedium
+                text = mosque.name, style = MaterialTheme.typography.titleMedium
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -73,8 +76,7 @@ fun MosqueListItem(
                             imageVector = Icons.Outlined.Directions,
                             contentDescription = "Directions"
                         )
-                    }
-                )
+                    })
             }
         }
     }

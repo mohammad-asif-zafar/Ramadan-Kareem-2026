@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items   // ✅ REQUIRED
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,19 +17,14 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 
 @Composable
 fun DuaListScreen(
-    title: String,
-    duas: List<DuaItem>,
-    onBack: () -> Unit
+    title: String, duas: List<DuaItem>, onBack: () -> Unit
 ) {
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "name",        // ✅ FIXED
-                showBack = true,
-                onBackClick = onBack
+                title = "name", showBack = true, onBackClick = onBack
             )
-        }
-    ) { padding ->
+        }) { padding ->
 
         LazyColumn(
             modifier = Modifier
@@ -47,12 +42,10 @@ fun DuaListScreen(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DuaListScreenPreview() {
     DuaListScreen(
-        title = "Duʿāʾs",
-        duas = emptyList(),
-        onBack = {}
-    )
+        title = "Duʿāʾs", duas = emptyList(), onBack = {})
 }

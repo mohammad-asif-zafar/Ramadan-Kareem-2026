@@ -6,7 +6,6 @@ class GetNearbyMosquesUseCase(
     private val repository: MosqueRepository
 ) {
     suspend operator fun invoke(
-        lat: Double,
-        lng: Double
+        lat: Double, lng: Double
     ) = repository.getNearbyMosques(lat, lng)
 }

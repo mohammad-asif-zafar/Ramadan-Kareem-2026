@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hathway.ramadankareem2026.core.location.LocationRepository
 import com.hathway.ramadankareem2026.core.location.LocationSource
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.domain.usecase.GetNearbyMosquesUseCase

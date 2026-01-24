@@ -31,17 +31,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NearbyMosquesScreen(
-    state: MosqueUiState,
-    onBack: () -> Unit,
-    onMosqueClick: (Mosque) -> Unit
+    state: MosqueUiState, onBack: () -> Unit, onMosqueClick: (Mosque) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val openNavigation: (Mosque) -> Unit = { mosque ->
         val googleMapsIntent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse("google.navigation:q=${mosque.lat},${mosque.lng}")
+            Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${mosque.lat},${mosque.lng}")
         ).apply {
             setPackage("com.google.android.apps.maps")
         }
@@ -60,24 +57,19 @@ fun NearbyMosquesScreen(
     val cameraPositionState = rememberCameraPositionState {
         state.userLocation?.let {
             CameraPosition.fromLatLngZoom(
-                LatLng(it.latitude, it.longitude),
-                14f
+                LatLng(it.latitude, it.longitude), 14f
             )
         } ?: CameraPosition.fromLatLngZoom(
-            LatLng(3.1390, 101.6869),
-            12f
+            LatLng(3.1390, 101.6869), 12f
         )
     }
-
-
 
     // 🎯 Center on user location (DEMO → REAL)
     LaunchedEffect(state.userLocation) {
         state.userLocation?.let {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLngZoom(
-                    LatLng(it.latitude, it.longitude),
-                    14f
+                    LatLng(it.latitude, it.longitude), 14f
                 )
             )
         }
@@ -88,8 +80,7 @@ fun NearbyMosquesScreen(
         state.selectedMosque?.let {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLngZoom(
-                    LatLng(it.lat, it.lng),
-                    16f
+                    LatLng(it.lat, it.lng), 16f
                 )
             )
         }
@@ -104,47 +95,35 @@ fun NearbyMosquesScreen(
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             topBar = {
                 RamadanToolbar(
-                    title = "المساجد القريبة",
-                    showBack = true,
-                    onBackClick = onBack
+                    title = "المساجد القريبة", showBack = true, onBackClick = onBack
                 )
             },
             sheetPeekHeight = halfScreenPeekHeight,
             sheetContent = {
-                MosqueList(
-                    mosques = state.mosques,
-                    onMosqueClick = { mosque ->
-                        onMosqueClick(mosque)
-                        scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
-                        }
-                    },
-                    onDirectionsClick = { mosque ->
-                        openNavigation(mosque)
-                    },
-                    onClose = {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
-                        }
+                MosqueList(mosques = state.mosques, onMosqueClick = { mosque ->
+                    onMosqueClick(mosque)
+                    scope.launch {
+                        scaffoldState.bottomSheetState.partialExpand()
                     }
-                )
-            }
-        ) {
+                }, onDirectionsClick = { mosque ->
+                    openNavigation(mosque)
+                }, onClose = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.partialExpand()
+                    }
+                })
+            }) {
             GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState
+                modifier = Modifier.fillMaxSize(), cameraPositionState = cameraPositionState
             ) {
                 state.mosques.forEach { mosque ->
                     Marker(
                         state = MarkerState(
                             LatLng(mosque.lat, mosque.lng)
-                        ),
-                        title = mosque.name,
-                        onClick = {
+                        ), title = mosque.name, onClick = {
                             openNavigation(mosque)
                             true
-                        }
-                    )
+                        })
                 }
             }
         }

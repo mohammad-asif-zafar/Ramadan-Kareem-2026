@@ -103,5 +103,3 @@ fun DuaActionBarPreview() {
         )
     }
 }
-
-// Below is a clean, crash-safe, MVVM-friendly TTS implementation tailored for your Dua app.

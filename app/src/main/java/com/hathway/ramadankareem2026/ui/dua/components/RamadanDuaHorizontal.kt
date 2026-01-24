@@ -11,8 +11,7 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 
 @Composable
 fun RamadanDuaHorizontal(
-    duas: List<DuaItem>,
-    onClick: (DuaItem) -> Unit
+    duas: List<DuaItem>, onClick: (DuaItem) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -21,9 +20,7 @@ fun RamadanDuaHorizontal(
 
         items(duas) { dua ->
             RamadanDuaCard(
-                dua = dua,
-                onClick = { onClick(dua) }
-            )
+                dua = dua, onClick = { onClick(dua) })
         }
     }
 }

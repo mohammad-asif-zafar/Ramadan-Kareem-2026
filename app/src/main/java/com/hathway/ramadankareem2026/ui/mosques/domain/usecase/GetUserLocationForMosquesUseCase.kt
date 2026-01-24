@@ -3,7 +3,6 @@ package com.hathway.ramadankareem2026.ui.mosques.domain.usecase
 import com.hathway.ramadankareem2026.core.location.LocationRepository
 import com.hathway.ramadankareem2026.core.location.LocationUiState
 
-// ui/mosques/domain/usecase/GetUserLocationForMosquesUseCase.kt
 class GetUserLocationForMosquesUseCase(
     private val locationRepository: LocationRepository
 ) {

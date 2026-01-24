@@ -19,5 +19,4 @@ object Routes {
     fun allahNameDetail(id: Int) = "$ALLAH_NAME_DETAIL/$id"
     const val ZAKAT_BREAKDOWN = "zakat_breakdown"
     const val MOSQUES = "mosques"
-    fun zakatBreakdown(): String = ZAKAT_BREAKDOWN
 }

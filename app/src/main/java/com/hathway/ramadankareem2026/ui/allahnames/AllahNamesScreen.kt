@@ -14,19 +14,14 @@ import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 
 @Composable
 fun AllahNamesScreen(
-    names: List<AllahName>,
-    onBack: () -> Unit,
-    onNameClick: (AllahName) -> Unit
+    names: List<AllahName>, onBack: () -> Unit, onNameClick: (AllahName) -> Unit
 ) {
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Names of Allah",
-                showBack = true,
-                onBackClick = onBack
+                title = "Names of Allah", showBack = true, onBackClick = onBack
             )
-        },
-        containerColor = MaterialTheme.colorScheme.background
+        }, containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
 
         LazyColumn(
@@ -36,9 +31,7 @@ fun AllahNamesScreen(
         ) {
             items(names) { name ->
                 AllahNameCard(
-                    name = name,
-                    onClick = { onNameClick(name) }
-                )
+                    name = name, onClick = { onNameClick(name) })
             }
         }
     }

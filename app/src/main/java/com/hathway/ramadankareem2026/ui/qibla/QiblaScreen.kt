@@ -97,7 +97,7 @@ fun QiblaScreenPreviewAligned() {
 private fun QiblaScreenContent(
     degree: Int, location: String, deviceAzimuth: Float, qiblaBearing: Float
 ) {
-    // 🔹 SNAP LOGIC IS USED HERE
+    // SNAP LOGIC IS USED HERE
     val (snappedRotation, isAligned) = snappedQiblaRotation(
         deviceAzimuth = deviceAzimuth, qiblaBearing = qiblaBearing
     )

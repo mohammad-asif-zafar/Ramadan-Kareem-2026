@@ -52,14 +52,14 @@ fun RamadanDuaCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            // 🔝 Top Row: Icon + Badge
+            // Top Row: Icon + Badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                // 📘 Icon
+                // Icon
                 Box(
                     modifier = Modifier
                         .size(40.dp)
@@ -75,7 +75,7 @@ fun RamadanDuaCard(
                     )
                 }
 
-                // 🌙 Ramadan badge (optional)
+                //  Ramadan badge (optional)
                 Box(
                     modifier = Modifier
                         .background(
@@ -94,21 +94,21 @@ fun RamadanDuaCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 🕌 Arabic (Primary Focus)
+            //  Arabic (Primary Focus)
             Text(
                 text = dua.arabic, style = MaterialTheme.typography.titleLarge, maxLines = 2
             )
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            // 🏷 Title
+            //  Title
             Text(
                 text = dua.title,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )
 
-            // 📚 Source
+            //  Source
             Text(
                 text = dua.source,
                 style = MaterialTheme.typography.labelSmall,

@@ -69,7 +69,7 @@ fun RamadanDayCard(
                 else Color.Transparent, shape = RoundedCornerShape(20.dp)
             )
             .padding(2.dp) // glow spacing
-            .clickable { onClick(day) }
+        .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 0.dp,
                 color = RamadanGreen,

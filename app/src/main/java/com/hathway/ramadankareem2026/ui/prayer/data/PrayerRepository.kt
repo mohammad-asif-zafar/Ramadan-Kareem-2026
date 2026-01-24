@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.ui.prayer.data
 
 
 import android.content.Context
-import android.util.Log
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
 import com.hathway.ramadankareem2026.data.datastore.PrayerCacheStore
@@ -20,12 +19,11 @@ class PrayerRepository(context: Context, private val api: PrayerApiService) {
     suspend fun load(
         latitude: Double?, longitude: Double?
     ): List<PrayerDomain> {
-        Log.e(TAG, "load:latitude " + latitude)
-        Log.e(TAG, "load:longitude " + longitude)
-        // 1️⃣ Try cache
+
+        // ️ Try cache
         cache.load()?.let { return it }
 
-        // 2️⃣ Try Adhan API
+        // Try Adhan API
         if (latitude != null && longitude != null) {
 
             val params = CalculationMethod.MUSLIM_WORLD_LEAGUE.parameters
@@ -45,7 +43,7 @@ class PrayerRepository(context: Context, private val api: PrayerApiService) {
             return mapped
         }
 
-        // 3️⃣ Fallback demo
+        // Fallback demo
         return PrayerDemoData.get()
     }
 

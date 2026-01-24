@@ -12,8 +12,7 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaCategory
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DuaCategoriesGrid(
-    categories: List<DuaCategory>,
-    onClick: (DuaCategory) -> Unit
+    categories: List<DuaCategory>, onClick: (DuaCategory) -> Unit
 ) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
@@ -25,8 +24,7 @@ fun DuaCategoriesGrid(
             DuaCategoryCard(
                 modifier = Modifier.weight(1f),
                 category = category,
-                onClick = { onClick(category) }
-            )
+                onClick = { onClick(category) })
         }
     }
 }

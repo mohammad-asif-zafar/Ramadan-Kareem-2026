@@ -1,28 +1,25 @@
 package com.hathway.ramadankareem2026.ui.mosques
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
@@ -35,7 +32,7 @@ fun MosqueList(
     mosques: List<Mosque>,
     onMosqueClick: (Mosque) -> Unit,
     onDirectionsClick: (Mosque) -> Unit,
-    title: String = "nearest mosque near me",
+    title: String = "Nearest Mosque Near Me",
     onClose: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(16.dp),
     chipSpacing: Dp = 8.dp
@@ -57,7 +54,7 @@ fun MosqueList(
             )
         }
 
-        androidx.compose.foundation.layout.Row(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -76,45 +73,6 @@ fun MosqueList(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(chipSpacing)
-        ) {
-            item {
-                AssistChip(
-                    onClick = {},
-                    label = { Text("Relevance") },
-                    colors = AssistChipDefaults.assistChipColors()
-                )
-            }
-            item {
-                AssistChip(
-                    onClick = {},
-                    label = { Text("Open now") },
-                    colors = AssistChipDefaults.assistChipColors()
-                )
-            }
-            item {
-                AssistChip(
-                    onClick = {},
-                    label = { Text("Top-rated") },
-                    colors = AssistChipDefaults.assistChipColors()
-                )
-            }
-            item {
-                AssistChip(
-                    onClick = {},
-                    label = { Text("Nearest") },
-                    colors = AssistChipDefaults.assistChipColors()
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = contentPadding,
@@ -124,8 +82,7 @@ fun MosqueList(
                 MosqueListItem(
                     mosque = mosque,
                     onClick = { onMosqueClick(mosque) },
-                    onDirectionsClick = { onDirectionsClick(mosque) }
-                )
+                    onDirectionsClick = { onDirectionsClick(mosque) })
             }
         }
     }

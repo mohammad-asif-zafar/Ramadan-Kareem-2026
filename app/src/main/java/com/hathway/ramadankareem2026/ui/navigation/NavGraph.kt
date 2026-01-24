@@ -160,7 +160,7 @@ private fun HomeScaffold() {
                 )
             }
 
-            // 🔹 ALLAH NAMES (NEW)
+            //  ALLAH NAMES (NEW)
             composable(Routes.ALLAH_NAMES) {
 
                 val viewModel: AllahNamesViewModel = viewModel()
@@ -186,7 +186,7 @@ private fun HomeScaffold() {
                     id = id, navController = navController
                 )
             }
-            // 🔹 ZAKAT SCREEN
+            //  ZAKAT SCREEN
             composable(Routes.ZAKAT) {
                 ZakatRoute(navController = navController)
             }

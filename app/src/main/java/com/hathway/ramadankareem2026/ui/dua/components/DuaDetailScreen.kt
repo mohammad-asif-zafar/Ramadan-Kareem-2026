@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,7 +43,7 @@ fun DuaDetailScreen(
 ) {
     Scaffold(
 
-        /* 🔝 Top App Bar */
+        /*  Top App Bar */
         topBar = {
             RamadanToolbar(
                 title = dua.categoryId, showBack = true, onBackClick = onBack,
@@ -57,7 +55,7 @@ fun DuaDetailScreen(
 
         },
 
-        /* 🔽 Bottom action bar (Save / Share / Audio etc.) */
+        /*  Bottom action bar (Save / Share / Audio etc.) */
         bottomBar = {
             DuaActionBar(dua)
         }
@@ -74,8 +72,7 @@ fun DuaDetailScreen(
             context.startService(intent)
 
             val notification = DuaTtsNotification.build(
-                context = context,
-                isPlaying = false
+                context = context, isPlaying = false
             )
             NotificationManagerCompat.from(context)
                 .notify(DuaTtsNotification.NOTIFICATION_ID, notification)
@@ -84,7 +81,6 @@ fun DuaDetailScreen(
         }
 
 
-        /* 📜 Scrollable content */
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -96,7 +92,6 @@ fun DuaDetailScreen(
             item {
                 Spacer(modifier = Modifier.height(4.dp))
             }
-            /* 🟢 Duʿāʾ Title */
             item {
                 Text(
                     text = dua.title,
@@ -105,7 +100,6 @@ fun DuaDetailScreen(
                 )
             }
 
-            /* 🕌 Arabic Text (Main focus card) */
             item {
                 Surface(
                     shape = RoundedCornerShape(20.dp),
@@ -123,7 +117,6 @@ fun DuaDetailScreen(
                 }
             }
 
-            /* 🔤 Transliteration (optional) */
             if (dua.transliteration.isNotBlank()) {
                 item {
                     Text(
@@ -135,7 +128,6 @@ fun DuaDetailScreen(
                 }
             }
 
-            /* 🌍 Translation (optional) */
             if (dua.translation.isNotBlank()) {
                 item {
                     Text(
@@ -146,7 +138,6 @@ fun DuaDetailScreen(
                 }
             }
 
-            /* 📚 Source / Reference */
             item {
                 Text(
                     text = dua.source,
@@ -155,7 +146,6 @@ fun DuaDetailScreen(
                 )
             }
 
-            /* 🧘 Spacer so content is not hidden by bottom bar */
             item {
                 Spacer(modifier = Modifier.height(80.dp))
             }
@@ -182,8 +172,3 @@ fun DuaDetailScreenPreview() {
             ), onBack = {})
     }
 }
-
-
-// Below is a clean,
-// crash-safe,
-// MVVM-friendly TTS implementation tailored for your Dua app.

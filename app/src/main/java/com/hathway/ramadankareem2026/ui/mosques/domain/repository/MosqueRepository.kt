@@ -4,7 +4,6 @@ import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 
 interface MosqueRepository {
     suspend fun getNearbyMosques(
-        userLat: Double,
-        userLng: Double
+        userLat: Double, userLng: Double
     ): List<Mosque>
 }

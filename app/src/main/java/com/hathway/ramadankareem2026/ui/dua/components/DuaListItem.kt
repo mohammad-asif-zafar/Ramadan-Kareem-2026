@@ -33,7 +33,7 @@ fun DuaCardItem(
     onClick: () -> Unit             // 👉 Navigate to detail
 ) {
 
-    // 🧱 Card container
+    //  Card container
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +45,7 @@ fun DuaCardItem(
         )
     ) {
 
-        // 🔹 Horizontal layout
+        //  Horizontal layout
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -53,7 +53,7 @@ fun DuaCardItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // 📘 Left icon (visual anchor)
+            //  Left icon (visual anchor)
             Icon(
                 imageVector = Icons.Outlined.AutoStories,
                 contentDescription = null,
@@ -68,7 +68,7 @@ fun DuaCardItem(
                 modifier = Modifier.weight(1f) // Takes remaining space
             ) {
 
-                // 🔠 Title
+                //  Title
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -77,7 +77,7 @@ fun DuaCardItem(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                // 📌 Subtitle (optional)
+                //  Subtitle (optional)
                 if (!subtitle.isNullOrBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -90,7 +90,7 @@ fun DuaCardItem(
                 }
             }
 
-            // ➡️ Right chevron (navigation hint)
+            //  Right chevron (navigation hint)
             Icon(
                 imageVector = Icons.Outlined.ChevronRight,
                 contentDescription = null,

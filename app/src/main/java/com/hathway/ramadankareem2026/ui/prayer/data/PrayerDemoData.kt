@@ -32,35 +32,35 @@ object PrayerDemoData {
             isCurrent = false,
             isNext = false,
             remainingMinutes = null,
-            isPast = true            // ✅ PASSED
+            isPast = true
         ), PrayerDomain(
             name = "Dhuhr",
             time = LocalTime.of(13, 20),
             isCurrent = true,
             isNext = false,
             remainingMinutes = null,
-            isPast = false           // ✅ CURRENT
+            isPast = false
         ), PrayerDomain(
             name = "Asr",
             time = LocalTime.of(16, 45),
             isCurrent = false,
             isNext = true,
             remainingMinutes = 28,
-            isPast = false           // ✅ NEXT
+            isPast = false
         ), PrayerDomain(
             name = "Maghrib",
             time = LocalTime.of(19, 22),
             isCurrent = false,
             isNext = false,
             remainingMinutes = null,
-            isPast = false           // ✅ FUTURE (not passed)
+            isPast = false
         ), PrayerDomain(
             name = "Isha",
             time = LocalTime.of(20, 40),
             isCurrent = false,
             isNext = false,
             remainingMinutes = null,
-            isPast = false           // ✅ FUTURE (not passed)
+            isPast = false
         )
     )
 

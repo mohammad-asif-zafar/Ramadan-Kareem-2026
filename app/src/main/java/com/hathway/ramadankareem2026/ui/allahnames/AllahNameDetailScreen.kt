@@ -31,7 +31,7 @@ fun AllahNameDetailScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title =name.transliteration, showBack = true, onBackClick = onBack
+                title = name.transliteration, showBack = true, onBackClick = onBack
             )
         }, containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->

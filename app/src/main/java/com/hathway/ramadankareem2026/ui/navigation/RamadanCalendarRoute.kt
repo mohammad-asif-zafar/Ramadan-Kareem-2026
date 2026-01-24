@@ -19,7 +19,7 @@ fun RamadanCalendarRoute(
         navController = navController,
         days = days,
         onBack = { navController.popBackStack() },
-        onViewFullCalendar = { /* future full view */ },
+        onViewFullCalendar = { },
         onSettings = { navController.navigate("settings") }
     )
 }

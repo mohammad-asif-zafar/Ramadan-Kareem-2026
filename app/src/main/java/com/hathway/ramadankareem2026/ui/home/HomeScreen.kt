@@ -42,7 +42,6 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 // 🔹 Preview only
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.hathway.ramadankareem2026.BuildConfig
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 
 private const val TAG = "HomeScreen"
@@ -60,12 +59,10 @@ fun HomeScreen(
         factory = PrayerViewModelFactory(app)
     )
 
-    Log.d(TAG, "api name: "+BuildConfig.MAPS_API_KEY)
-
     // Sealed UI state
     val locationState by homeViewModel.locationState.collectAsState()
 
-    Log.e(TAG, "HomeScreen1: $locationState")
+    Log.d(TAG, "HomeScreen1: $locationState")
 
     // Permission launcher (upgrade path)
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -73,7 +70,7 @@ fun HomeScreen(
     ) { granted ->
         if (granted) {
             homeViewModel.loadLocation()
-            Log.e(TAG, "HomeScreen:2 $locationState")
+            Log.d(TAG, "HomeScreen:2 $locationState")
 
         }
     }
@@ -82,7 +79,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         homeViewModel.loadLocation()
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        Log.e(TAG, "HomeScreen2: $locationState")
+        Log.d(TAG, "HomeScreen2: $locationState")
 
     }
 

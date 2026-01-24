@@ -7,9 +7,7 @@ import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 
 @Composable
 fun AllahNameDetailRoute(
-    id: Int,
-    navController: NavController,
-    viewModel: AllahNamesViewModel = viewModel()
+    id: Int, navController: NavController, viewModel: AllahNamesViewModel = viewModel()
 ) {
     // 🔹 Safe lookup (no crash)
     val name = viewModel.names.firstOrNull { it.id == id } ?: return

@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026.ui.dua.components
 
-import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,7 @@ fun DuaItemCard(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // 🕋 Arabic
+            //  Arabic
             Text(
                 text = dua.arabic,
                 style = MaterialTheme.typography.headlineSmall
@@ -54,13 +53,13 @@ fun DuaItemCard(
                     )
                 }
 
-            // 🌍 Translation
+            //  Translation
             Text(
                 text = dua.translation,
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            // 📖 Source
+            //  Source
             Text(
                 text = dua.source,
                 style = MaterialTheme.typography.labelSmall,
