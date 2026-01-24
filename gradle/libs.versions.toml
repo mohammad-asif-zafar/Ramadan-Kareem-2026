@@ -36,7 +36,9 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 
 playServicesLocation = "21.0.1"
-
+google-maps = "18.2.0"
+maps-compose = "2.15.0"
+places = "3.3.0"
 adhan = "1.2.1"
 
 glance = "1.1.0"
@@ -129,6 +131,18 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 
 # ViewModel
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+# Google Maps SDK
+google-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google-maps" }
+
+# Maps Compose
+maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "maps-compose" }
+maps-compose-utils = { group = "com.google.maps.android", name = "maps-compose-utils", version.ref = "maps-compose" }
+maps-compose-widgets = { group = "com.google.maps.android", name = "maps-compose-widgets", version.ref = "maps-compose" }
+
+# Google Places (for nearby mosques)
+google-places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.home.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Mosque
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.Card
@@ -33,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -52,13 +55,11 @@ private val featureList = listOf(
         R.string.feature_zakat, FeatureIcon.Vector(Icons.Outlined.VolunteerActivism), Routes.ZAKAT
     ),
     FeatureModel(
-        R.string.feature_reminder,
-        FeatureIcon.Vector(Icons.Outlined.NotificationsNone),
-        Routes.REMINDER
+        R.string.mosque, FeatureIcon.Vector(Icons.Outlined.Mosque), Routes.MOSQUES
     ),
     FeatureModel(R.string.feature_tips, FeatureIcon.Vector(Icons.Outlined.Lightbulb), Routes.TIPS),
     FeatureModel(
-        R.string.allah, FeatureIcon.Drawable(R.drawable.ic_allah), Routes.ALLAH_NAMES
+        R.string.allah, FeatureIcon.Text("ﷲ"), Routes.ALLAH_NAMES
     ),
     FeatureModel(R.string.feature_qibla, FeatureIcon.Vector(Icons.Outlined.Explore), Routes.QIBLA),
     FeatureModel(
@@ -136,14 +137,18 @@ fun FeatureItem(
                     )
                 }
 
-                is FeatureIcon.Drawable -> {/*Image(
+                is FeatureIcon.Drawable -> {
+                    Image(
                         painter = painterResource(icon.resId),
                         contentDescription = stringResource(item.titleRes),
                         modifier = Modifier.size(158.dp),
 
-                    )*/
+                        )
+                }
+
+                is FeatureIcon.Text -> {
                     Text(
-                        text = "ﷲ",
+                        text = icon.value,
                         fontSize = 24.sp,
                         color = RamadanGold,
                         fontFamily = FontFamily.Serif

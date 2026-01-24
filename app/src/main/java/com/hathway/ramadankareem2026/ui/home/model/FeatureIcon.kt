@@ -6,4 +6,5 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class FeatureIcon {
     data class Vector(val imageVector: ImageVector) : FeatureIcon()
     data class Drawable(@DrawableRes val resId: Int) : FeatureIcon()
+    data class Text(val value: String) : FeatureIcon()
 }

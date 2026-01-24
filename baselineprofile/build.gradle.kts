@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.androidx.benchmark.macro.junit4)
 }
 
+/*
 androidComponents {
     onVariants { v ->
         val artifactsLoader = v.artifacts.getBuiltArtifactsLoader()
@@ -49,4 +50,4 @@ androidComponents {
             v.testedApks.map { artifactsLoader.load(it)?.applicationId }
         )
     }
-}
+}*/

@@ -113,4 +113,18 @@ dependencies {
     // ViewModel
     implementation(libs.lifecycle.viewmodel)
 
+    // Google Maps
+    implementation(libs.google.maps)
+
+    // Maps Compose
+    implementation(libs.maps.compose)
+    implementation(libs.maps.compose.utils)
+    implementation(libs.maps.compose.widgets)
+
+    // Location
+   // implementation(libs.play.services.location)
+
+    // Google Places (Nearby mosques)
+    implementation(libs.google.places)
+
 }
