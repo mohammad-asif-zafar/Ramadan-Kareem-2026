@@ -27,7 +27,6 @@ import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
 import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
 import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
-import com.hathway.ramadankareem2026.ui.mosques.NearbyMosquesScreen
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueRoute
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen

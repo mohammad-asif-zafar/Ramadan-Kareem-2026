@@ -13,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -37,8 +36,7 @@ fun NearbyMosquesScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val cameraPositionState = rememberCameraPositionState()
-  /*  val cameraPositionState = rememberCameraPositionState {
+    val cameraPositionState = rememberCameraPositionState {
         state.userLocation?.let {
             CameraPosition.fromLatLngZoom(
                 LatLng(it.latitude, it.longitude),
@@ -48,7 +46,7 @@ fun NearbyMosquesScreen(
             LatLng(3.1390, 101.6869),
             12f
         )
-    }*/
+    }
 
 
 

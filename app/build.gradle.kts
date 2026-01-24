@@ -15,13 +15,6 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-val hasMapsApiKey =
-    (project.findProperty("MAPS_API_KEY") as String?)?.isNotBlank() == true ||
-        (System.getenv("MAPS_API_KEY") as String?)?.isNotBlank() == true ||
-        localProperties.getProperty("MAPS_API_KEY")?.isNotBlank() == true
-
-println("MAPS_API_KEY is set = $hasMapsApiKey")
-
 android {
     namespace = "com.hathway.ramadankareem2026"
     compileSdk = 36
@@ -118,9 +111,6 @@ dependencies {
     // GPS
     implementation(libs.play.services.location)
     
-    // dataStore
-    implementation(libs.androidx.datastore.preferences)
-
     // adhan
     implementation(libs.adhan)
 
