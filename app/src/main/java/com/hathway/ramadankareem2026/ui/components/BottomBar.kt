@@ -32,8 +32,11 @@ sealed class BottomNavItem(
         route = Routes.QIBLA, title = Routes.QIBLA, Icons.Outlined.Explore, badgeCount = 4
     )
 
-    object Tasbih : BottomNavItem(
-        route = Routes.TASBIH, title = Routes.TASBIH, Icons.Outlined.Timer, badgeCount = 9
+    object Setting : BottomNavItem(
+        route = Routes.QIBLA_SETTINGS,
+        title = Routes.QIBLA_SETTINGS,
+        Icons.Outlined.Timer,
+        badgeCount = 9
     )
 }
 
@@ -41,7 +44,7 @@ sealed class BottomNavItem(
 fun RamadanBottomBar(navController: NavController) {
 
     val items = listOf(
-        BottomNavItem.Home, BottomNavItem.Quran, BottomNavItem.Qibla, BottomNavItem.Tasbih
+        BottomNavItem.Home, BottomNavItem.Quran, BottomNavItem.Qibla, BottomNavItem.Setting
     )
 
     NavigationBar(
@@ -60,18 +63,7 @@ fun RamadanBottomBar(navController: NavController) {
                     restoreState = true
                 }
             }, icon = {
-                if (item.badgeCount != null) {
-                    BadgedBox(
-                        badge = {
-                            Badge {
-                                Text(item.badgeCount.toString())
-                            }
-                        }) {
-                        Icon(item.icon, contentDescription = null)
-                    }
-                } else {
-                    Icon(item.icon, contentDescription = null)
-                }
+                Icon(item.icon, contentDescription = null)
             }, label = {
                 Text(text = item.title)
             }, colors = NavigationBarItemDefaults.colors(
@@ -80,7 +72,7 @@ fun RamadanBottomBar(navController: NavController) {
                 indicatorColor = RamadanGreen.copy(alpha = 0.15f),
                 unselectedIconColor = Color.Gray,
                 unselectedTextColor = Color.Gray
-            ), alwaysShowLabel = false // 👈 smooth animation
+            ), alwaysShowLabel = false
             )
         }
     }

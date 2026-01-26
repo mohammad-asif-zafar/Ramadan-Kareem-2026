@@ -106,7 +106,6 @@ private fun HomeScaffold() {
                 SimpleScreen(Routes.TASBIH)
             }
 
-            // 👇 Bottom bar hidden automatically
             composable(Routes.DUA) {
                 DuaRoute(routeName = "", navController = navController)
             }
@@ -160,7 +159,6 @@ private fun HomeScaffold() {
                 )
             }
 
-            //  ALLAH NAMES (NEW)
             composable(Routes.ALLAH_NAMES) {
 
                 val viewModel: AllahNamesViewModel = viewModel()
@@ -186,7 +184,7 @@ private fun HomeScaffold() {
                     id = id, navController = navController
                 )
             }
-            //  ZAKAT SCREEN
+
             composable(Routes.ZAKAT) {
                 ZakatRoute(navController = navController)
             }
