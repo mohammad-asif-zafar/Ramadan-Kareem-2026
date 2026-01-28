@@ -2,6 +2,7 @@ package com.hathway.ramadankareem2026.ui.quran.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hathway.ramadankareem2026.ui.quran.audio.AyahAudioManager
 import com.hathway.ramadankareem2026.ui.quran.data.local.LastReadDataStore
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
 import com.hathway.ramadankareem2026.ui.quran.domain.repository.BookmarkRepository
@@ -18,12 +19,16 @@ class QuranViewModel(
     private val getSurahList: GetSurahListUseCase,
     private val getAyahs: GetAyahListUseCase,
     private val bookmarkRepository: BookmarkRepository,
-    private val lastReadStore: LastReadDataStore
+    private val lastReadStore: LastReadDataStore,
+    private val audioManager: AyahAudioManager = AyahAudioManager()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuranUiState())
     val state = _state.asStateFlow()
 
+    // Audio playback state from AudioManager
+    val currentlyPlayingAyah = audioManager.currentUrl
+    val isAudioPlaying = audioManager.isPlaying
 
     val lastReadAyah = lastReadStore.lastReadAyah
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
@@ -105,5 +110,16 @@ class QuranViewModel(
         viewModelScope.launch {
             lastReadStore.saveLastRead(surahId, ayahNumber)
         }
+    }
+
+    fun toggleAudioPlayback(audioUrl: String?) {
+        audioUrl?.let { url ->
+            audioManager.togglePlayback(url)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioManager.release()
     }
 }

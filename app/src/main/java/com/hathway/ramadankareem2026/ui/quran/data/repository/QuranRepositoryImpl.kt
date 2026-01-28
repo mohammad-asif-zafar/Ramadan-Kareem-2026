@@ -62,7 +62,8 @@ class QuranRepositoryImpl(
                     Ayah(
                         number = dto.numberInSurah,
                         arabicText = dto.text,
-                        translation = ""
+                        translation = "",
+                        audio = dto.audio
                     )
                 }
             }
