@@ -95,6 +95,7 @@ dependencies {
 
     // Splash Screen API
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.room.runtime.android)
 
     // Testing
     testImplementation(libs.junit)
@@ -152,5 +153,10 @@ dependencies {
 
     // Google Places (Nearby mosques)
     implementation(libs.google.places)
+
+    // Test
+
+    testImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.kotlinx.coroutines.test)
 
 }

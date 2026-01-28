@@ -1,5 +1,7 @@
 package com.hathway.ramadankareem2026.ui.navigation
 
+import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
+
 object Routes {
     const val HOME = "home"
     const val QURAN = "quran"

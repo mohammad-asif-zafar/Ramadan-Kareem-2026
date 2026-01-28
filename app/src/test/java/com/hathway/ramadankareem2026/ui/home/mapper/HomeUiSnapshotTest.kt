@@ -19,7 +19,9 @@ class HomeUiSnapshotTest {
             dhuhr = LocalTime.of(13, 15),
             asr = LocalTime.of(16, 30),
             maghrib = LocalTime.of(19, 10),
-            isha = LocalTime.of(20, 30)
+            isha = LocalTime.of(20, 30),
+            gregorianDate = TODO(),
+            hijriDate = TODO()
         )
 
         val now = LocalDateTime.of(

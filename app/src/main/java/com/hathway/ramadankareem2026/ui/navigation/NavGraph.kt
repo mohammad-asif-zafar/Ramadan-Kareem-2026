@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -30,6 +31,10 @@ import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueRoute
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen
+import com.hathway.ramadankareem2026.ui.quran.presentation.QuranScreen
+import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
+import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
+import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatBreakdownRoute
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatRoute
@@ -87,10 +92,6 @@ private fun HomeScaffold() {
 
             composable(Routes.HOME) {
                 HomeScreen(navController)
-            }
-
-            composable(Routes.QURAN) {
-                SimpleScreen(Routes.QURAN)
             }
 
             composable(Routes.QIBLA) {
@@ -196,8 +197,59 @@ private fun HomeScaffold() {
                 MosqueRoute(navController = navController)
             }
 
+            composable(route = NavRoutes.Quran.route, arguments = listOf(navArgument("surahId") {
+                type = NavType.IntType
+                defaultValue = -1
+            }, navArgument("ayah") {
+                type = NavType.IntType
+                defaultValue = -1
+            })) { backStackEntry ->
+
+                val context = LocalContext.current
+
+                val surahIdArg = backStackEntry.arguments?.getInt("surahId") ?: -1
+                val ayahArg = backStackEntry.arguments?.getInt("ayah") ?: -1
+
+                val viewModel: QuranViewModel = viewModel(
+                    factory = QuranViewModelFactory(
+                        context = context.applicationContext
+                    )
+                )
+
+                QuranScreen(
+                    viewModel = viewModel,
+                    initialSurahId = surahIdArg,
+                    initialAyah = ayahArg,
+                    onAyahClick = { ayahId ->
+                        navController.navigate(
+                            NavRoutes.AyahDetail.createRoute(ayahId)
+                        )
+                    })
+            }
+
+            composable(
+                route = NavRoutes.AyahDetail.route,
+                arguments = listOf(
+                    navArgument("ayahId") { type = NavType.IntType }
+                )
+            ) { backStackEntry ->
+
+                val ayahId = backStackEntry.arguments?.getInt("ayahId")
+                    ?: return@composable
+
+                AyahDetailScreen(
+                    ayahId = ayahId,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
         }
     }
+}
+
+@Composable
+fun AyahDetailScreen(ayahId: Int, onBack: () -> Boolean) {
+    TODO("Not yet implemented")
 }
 
 
