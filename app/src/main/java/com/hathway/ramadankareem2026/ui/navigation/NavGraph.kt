@@ -31,7 +31,8 @@ import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueRoute
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
 import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen
-import com.hathway.ramadankareem2026.ui.quran.presentation.QuranScreen
+import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahAyahsScreen
+import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahListScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
@@ -197,7 +198,48 @@ private fun HomeScaffold() {
                 MosqueRoute(navController = navController)
             }
 
-            composable(route = NavRoutes.Quran.route, arguments = listOf(navArgument("surahId") {
+            composable(Routes.QURAN) {
+                val context = LocalContext.current
+                val viewModel: QuranViewModel = viewModel(
+                    factory = QuranViewModelFactory(
+                        context = context.applicationContext
+                    )
+                )
+
+                QuranSurahListScreen(
+                    viewModel = viewModel,
+                    onBack = { navController.popBackStack() },
+                    onSurahClick = { surah ->
+                        navController.navigate(
+                            com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(
+                                surah.id
+                            )
+                        )
+                    }
+                )
+            }
+
+            composable(
+                route = com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.route,
+                arguments = listOf(navArgument("surahId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val context = LocalContext.current
+                val surahId = backStackEntry.arguments?.getInt("surahId") ?: return@composable
+
+                val viewModel: QuranViewModel = viewModel(
+                    factory = QuranViewModelFactory(
+                        context = context.applicationContext
+                    )
+                )
+
+                QuranSurahAyahsScreen(
+                    viewModel = viewModel,
+                    surahId = surahId,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(route = NavRoutes.QuranLegacy.route, arguments = listOf(navArgument("surahId") {
                 type = NavType.IntType
                 defaultValue = -1
             }, navArgument("ayah") {
@@ -216,15 +258,25 @@ private fun HomeScaffold() {
                     )
                 )
 
-                QuranScreen(
-                    viewModel = viewModel,
-                    initialSurahId = surahIdArg,
-                    initialAyah = ayahArg,
-                    onAyahClick = { ayahId ->
-                        navController.navigate(
-                            NavRoutes.AyahDetail.createRoute(ayahId)
-                        )
-                    })
+                if (surahIdArg > 0) {
+                    QuranSurahAyahsScreen(
+                        viewModel = viewModel,
+                        surahId = surahIdArg,
+                        onBack = { navController.popBackStack() }
+                    )
+                } else {
+                    QuranSurahListScreen(
+                        viewModel = viewModel,
+                        onBack = { navController.popBackStack() },
+                        onSurahClick = { surah ->
+                            navController.navigate(
+                                com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(
+                                    surah.id
+                                )
+                            )
+                        }
+                    )
+                }
             }
 
             composable(

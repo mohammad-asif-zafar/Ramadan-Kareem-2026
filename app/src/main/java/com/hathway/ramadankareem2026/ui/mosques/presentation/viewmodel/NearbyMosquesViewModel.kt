@@ -21,36 +21,42 @@ class NearbyMosquesViewModel(
 
     fun load() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-            // 1️⃣ Always get DEMO or cached first
-            val location = getLocation()
+            runCatching {
+                val location = getLocation()
+                val mosques = getNearbyMosques(location.latitude, location.longitude)
 
-            // 2️⃣ Fetch mosques using current location
-            val mosques = getNearbyMosques(
-                location.latitude, location.longitude
-            )
+                _uiState.value = MosqueUiState(
+                    userLocation = location,
+                    mosques = mosques,
+                    isLoading = false,
+                    error = null
+                )
 
-            _uiState.value = MosqueUiState(
-                userLocation = location, mosques = mosques
-            )
-
-            // 3️⃣ LocationRepository may auto-upgrade to REAL later
-            refreshIfLocationUpgraded()
+                refreshIfLocationUpgraded()
+            }.onFailure { e ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.localizedMessage ?: "Failed to load nearby mosques"
+                )
+            }
         }
     }
 
     private suspend fun refreshIfLocationUpgraded() {
-        val upgraded = getLocation()
+        runCatching {
+            val upgraded = getLocation()
 
-        if (upgraded.source == LocationSource.GPS) {
-            val mosques = getNearbyMosques(
-                upgraded.latitude, upgraded.longitude
-            )
+            if (upgraded.source == LocationSource.GPS) {
+                val mosques = getNearbyMosques(upgraded.latitude, upgraded.longitude)
 
-            _uiState.value = _uiState.value.copy(
-                userLocation = upgraded, mosques = mosques
-            )
+                _uiState.value = _uiState.value.copy(
+                    userLocation = upgraded,
+                    mosques = mosques,
+                    error = null
+                )
+            }
         }
     }
 

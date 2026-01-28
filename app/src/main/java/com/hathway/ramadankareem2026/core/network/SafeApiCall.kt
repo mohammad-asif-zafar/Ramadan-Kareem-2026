@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.core.network
 
 import retrofit2.Response
+
 suspend fun <T> safeApiCall(
     apiCall: suspend () -> Response<T>
 ): ApiResult<T> {
@@ -11,10 +12,25 @@ suspend fun <T> safeApiCall(
                 ApiResult.Success(it)
             } ?: ApiResult.Error("Empty body", response.code())
         } else {
-            ApiResult.Error(response.message(), response.code())
+            val errorBody = try {
+                response.errorBody()?.string()
+            } catch (_: Exception) {
+                null
+            }
+
+            val message = buildString {
+                append(response.message())
+                if (!errorBody.isNullOrBlank()) {
+                    append(" | ")
+                    append(errorBody)
+                }
+            }.ifBlank { "HTTP ${response.code()}" }
+
+            ApiResult.Error(message, response.code())
         }
     } catch (e: Exception) {
-        ApiResult.Error(e.localizedMessage ?: "Unknown error")
+        val msg = e.localizedMessage ?: "Unknown error"
+        ApiResult.Error("${e.javaClass.simpleName}: $msg")
     }
 }
 

@@ -9,7 +9,7 @@ object QuranFakeData {
         Surah(
             id = 1,
             name = "سُورَةُ ٱلْفَاتِحَةِ",
-            englishName = "Al-Faatiha",
+            englishName = "Asifff",
             numberOfAyahs = 7,
             englishNameTranslation = "The Opening",
             revelationType = "Meccan"

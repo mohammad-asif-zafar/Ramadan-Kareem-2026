@@ -35,10 +35,10 @@ class QuranViewModel(
     )
 
     init {
-        loadInitialData()
+        loadSurahs()
     }
 
-    private fun loadInitialData() = viewModelScope.launch {
+    fun loadSurahs() = viewModelScope.launch {
 
         // 🔹 Tell UI we are loading
         _state.value = _state.value.copy(
@@ -48,33 +48,48 @@ class QuranViewModel(
 
         try {
             val surahs = getSurahList()
-
-            val selected = surahs.firstOrNull()
-
             _state.value = _state.value.copy(
                 isLoading = false,
                 surahList = surahs,
-                selectedSurah = selected,
-                ayahs = selected?.let { getAyahs(it.id) } ?: emptyList()
+                errorMessage = null
             )
 
         } catch (e: Exception) {
             _state.value = _state.value.copy(
                 isLoading = false,
-                errorMessage = "Failed to load Quran data"
+                errorMessage = "Failed to load surahs"
             )
         }
     }
 
-
-
-    fun onSurahSelected(surah: Surah) = viewModelScope.launch {
-        val ayahs = getAyahs(surah.id)
-
+    fun loadAyahs(surah: Surah) = viewModelScope.launch {
         _state.value = _state.value.copy(
+            isLoading = true,
+            errorMessage = null,
             selectedSurah = surah,
-            ayahs = ayahs
+            ayahs = emptyList()
         )
+
+        try {
+            val ayahs = getAyahs(surah.id)
+            _state.value = _state.value.copy(
+                isLoading = false,
+                selectedSurah = surah,
+                ayahs = ayahs,
+                errorMessage = null
+            )
+        } catch (e: Exception) {
+            _state.value = _state.value.copy(
+                isLoading = false,
+                errorMessage = "Failed to load ayahs"
+            )
+        }
+    }
+
+    fun loadAyahsById(surahId: Int) = viewModelScope.launch {
+        val surah = _state.value.surahList.firstOrNull { it.id == surahId }
+            ?: Surah(id = surahId)
+        loadAyahs(surah)
     }
 
 

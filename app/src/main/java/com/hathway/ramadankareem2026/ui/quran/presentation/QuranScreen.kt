@@ -46,7 +46,7 @@ fun QuranScreen(
         if (initialSurahId > 0) {
             state.surahList
                 .firstOrNull { it.id == initialSurahId }
-                ?.let(viewModel::onSurahSelected)
+                ?.let(viewModel::loadAyahs)
         }
     }
 
@@ -119,7 +119,7 @@ fun QuranScreen(
                     SurahDropdown(
                         surahList = state.surahList,
                         selected = state.selectedSurah,
-                        onSelect = viewModel::onSurahSelected
+                        onSelect = viewModel::loadAyahs
                     )
 
                     Spacer(Modifier.height(16.dp))

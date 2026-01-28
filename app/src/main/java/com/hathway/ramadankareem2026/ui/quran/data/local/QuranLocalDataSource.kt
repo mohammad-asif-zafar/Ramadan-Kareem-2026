@@ -15,7 +15,6 @@ class QuranLocalDataSource {
 
     fun getAyahs(surahId: Int): List<Ayah> {
         val ayahs = QuranFakeData.ayahs(surahId)
-        println("QuranLocalDataSource → surahId=$surahId, ayahs=${ayahs.size}")
         return ayahs
     }
 

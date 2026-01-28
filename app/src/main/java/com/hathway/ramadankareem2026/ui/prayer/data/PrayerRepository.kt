@@ -2,10 +2,12 @@ package com.hathway.ramadankareem2026.ui.prayer.data
 
 
 import android.content.Context
+import android.util.Log
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
 import com.hathway.ramadankareem2026.data.datastore.PrayerCacheStore
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
+import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
 import com.hathway.ramadankareem2026.ui.prayer.data.api.PrayerApiService
 import com.hathway.ramadankareem2026.ui.prayer.mapper.PrayerAdhanMapper
 import com.hathway.ramadankareem2026.ui.prayer.mapper.PrayerApiMapper
@@ -49,7 +51,14 @@ class PrayerRepository(context: Context, private val api: PrayerApiService) {
 
     suspend fun loadFromApi(
         date: String, lat: Double, lng: Double
-    ) = PrayerApiMapper.map(
-        api.getTimings(date, lat, lng)
-    )
+    ): PrayerTimeUiState {
+        return try {
+            PrayerApiMapper.map(
+                api.getTimings(date, lat, lng)
+            )
+        } catch (e: Exception) {
+            Log.d(TAG, "Prayer API failed, using demo fallback", e)
+            PrayerDemoData.demo()
+        }
+    }
 }

@@ -27,6 +27,8 @@ class QuranRepositoryImpl(
         return when (val result = remote.getSurahs()) {
 
             is ApiResult.Success -> {
+
+                Log.e(TAG, "SurahList: "+result )
                 val surahs = result.data.map { dto ->
                     Surah(
                         id = dto.number,
@@ -50,8 +52,26 @@ class QuranRepositoryImpl(
     }
 
     override suspend fun getAyahs(surahId: Int): List<Ayah> {
-        // ✅ REQUIRED
-        return local.getAyahs(surahId)
+        if (!networkMonitor.isNetworkAvailable()) {
+            return local.getAyahs(surahId)
+        }
+
+        return when (val result = remote.getSurahDetail(surahId)) {
+            is ApiResult.Success -> {
+                result.data.ayahs.map { dto ->
+                    Ayah(
+                        number = dto.numberInSurah,
+                        arabicText = dto.text,
+                        translation = ""
+                    )
+                }
+            }
+
+            is ApiResult.Error -> {
+                Log.e(TAG, "Remote error (ayahs): ${result.message}")
+                local.getAyahs(surahId)
+            }
+        }
     }
 }
 
