@@ -28,7 +28,7 @@ class ZakatViewModel : ViewModel() {
             debts = _uiState.value.debts.toDoubleOrNull() ?: 0.0
         )
 
-        val result = useCase(assets, _uiState.value.selectedNisab)
+        val result = useCase(assets, NisabType.GOLD)
         update { copy(result = result) }
     }
 
