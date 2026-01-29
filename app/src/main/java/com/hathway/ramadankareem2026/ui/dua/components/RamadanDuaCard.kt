@@ -37,7 +37,7 @@ fun RamadanDuaCard(
     Card(
         modifier = Modifier
             .width(260.dp)
-            .height(160.dp)
+            .height(220.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(3.dp),

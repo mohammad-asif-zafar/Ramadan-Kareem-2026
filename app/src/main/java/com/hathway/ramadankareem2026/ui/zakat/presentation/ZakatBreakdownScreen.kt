@@ -50,4 +50,24 @@ fun ZakatBreakdownScreen(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ZakatBreakdownScreenPreview() {
+    ZakatBreakdownScreen(
+        result = ZakatResult(
+            assets = ZakatAssets(
+                gold = 20000.0,
+                silver = 5000.0,
+                cash = 10000.0,
+                debts = 3000.0
+            ),
+            nisabValue = 45000.0,
+            zakatAmount = 800.0,
+            isEligible = true,
+            nisabType = NisabType.GOLD
+        ),
+        onBack = {}
+    )
+}
+
 

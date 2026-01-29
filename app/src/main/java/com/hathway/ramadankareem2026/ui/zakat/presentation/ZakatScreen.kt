@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
@@ -262,6 +263,27 @@ fun ZakatScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ZakatScreenPreview() {
+    ZakatScreen(
+        state = ZakatUiState(
+            gold = "20000",
+            silver = "5000",
+            cash = "10000",
+            debts = "3000"
+        ),
+        onGold = {},
+        onSilver = {},
+        onCash = {},
+        onDebts = {},
+        onNisab = {},
+        onCalculate = {},
+        onViewBreakdown = {},
+        onBack = {}
+    )
 }
 
 

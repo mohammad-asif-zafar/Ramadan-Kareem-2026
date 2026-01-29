@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.baselineprofile)
+    kotlin("kapt")
 }
 
 val localProperties = Properties()
@@ -96,6 +97,10 @@ dependencies {
     // Splash Screen API
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.room.runtime.android)
+    implementation(libs.androidx.room.ktx)
+    
+    // Room compiler
+    kapt(libs.androidx.room.compiler)
 
     // Testing
     testImplementation(libs.junit)

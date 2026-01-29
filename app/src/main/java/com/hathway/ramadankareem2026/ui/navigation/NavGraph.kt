@@ -20,6 +20,7 @@ import com.hathway.ramadankareem2026.ui.allahnames.AllahNamesScreen
 import com.hathway.ramadankareem2026.ui.allahnames.data.source.AllahNamesLocalData
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
+import com.hathway.ramadankareem2026.ui.bookmarks.route.BookmarksRoute
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
 import com.hathway.ramadankareem2026.ui.dua.components.DuaDetailScreen
@@ -145,7 +146,10 @@ private fun HomeScaffold() {
                 val dua = DuaRepository().getDuaById(duaId)
 
                 DuaDetailScreen(
-                    dua = dua, onBack = { navController.popBackStack() })
+                    dua = dua, 
+                    onBack = { navController.popBackStack() },
+                    navController = navController
+                )
             }
 
             composable(
@@ -196,6 +200,10 @@ private fun HomeScaffold() {
             }
             composable(Routes.MOSQUES) {
                 MosqueRoute(navController = navController)
+            }
+
+            composable(Routes.BOOKMARKS) {
+                BookmarksRoute(navController)
             }
 
             composable(Routes.QURAN) {

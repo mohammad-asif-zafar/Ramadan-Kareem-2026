@@ -10,8 +10,6 @@ fun DuaRoute(routeName: String, navController: NavController) {
     DuaScreen(
         navController = navController,
         onBack = { navController.popBackStack() },
-        onCalendarClick = { navController.navigate("calendar") },
         viewModel = DuaViewModel()
     )
-
 }

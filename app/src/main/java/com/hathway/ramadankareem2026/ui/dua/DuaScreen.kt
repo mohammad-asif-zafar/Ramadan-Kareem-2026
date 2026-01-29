@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,10 @@ import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 /**
@@ -45,9 +50,13 @@ import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 fun DuaScreen(
     navController: NavController,
     onBack: () -> Unit,
-    onCalendarClick: () -> Unit,
-    viewModel: DuaViewModel = viewModel()
+    viewModel: DuaViewModel = viewModel(),
+    bookmarkViewModel: DuaBookmarkViewModel = viewModel(),
+    countViewModel: BookmarkCountViewModel = viewModel()
 ) {
+    val bookmarkCount by countViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+
+
     Scaffold(
 
         /*  Top App Bar */
@@ -55,9 +64,13 @@ fun DuaScreen(
             RamadanToolbar(
                 title = stringResource(R.string.feature_dua),     // ✅ string resource ID
                 showBack = true, onBackClick = onBack,
-
-                // Saved
-                rightIcon1 = R.drawable.ic_saved, onRightIcon1Click = onCalendarClick,
+                onRightIcon1Click = {
+                    // Navigate to bookmarks list
+                    navController.navigate(Routes.BOOKMARKS)
+                },
+                rightIcon1Badge = bookmarkCount,
+                // Bookmarks
+                rightIcon1 = R.drawable.ic_saved,
 
                 //  Notification  icon
                 rightIcon2 = R.drawable.bell, onRightIcon2Click = {
@@ -118,6 +131,6 @@ fun DuaScreen(
 @Composable
 fun DuaScreenPreview() {
     RamadanKareemTheme {
-        DuaScreen(navController = rememberNavController(), onBack = {}, onCalendarClick = {})
+        DuaScreen(navController = rememberNavController(), onBack = {})
     }
 }

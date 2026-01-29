@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ZakatMoneyField(
@@ -21,6 +22,17 @@ fun ZakatMoneyField(
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ZakatMoneyFieldPreview() {
+    ZakatMoneyField(
+        label = "Gold Value",
+        value = "10000",
+        onChange = {},
+        keyboardType = KeyboardType.Number
     )
 }
 
