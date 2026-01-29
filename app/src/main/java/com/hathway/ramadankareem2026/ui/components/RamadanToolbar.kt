@@ -35,6 +35,8 @@ fun RamadanToolbar(
     title: String,
     showBack: Boolean = true,
     onBackClick: () -> Unit = {},
+    leftIcon: Int? = null,
+    onLeftIconClick: () -> Unit = {},
     rightIcon1: Int? = null,
     onRightIcon1Click: () -> Unit = {},
     rightIcon1Badge: Int? = null,
@@ -54,12 +56,20 @@ fun RamadanToolbar(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // 🔙 Back button
+            // 🔙 Back button or Left icon
             if (showBack) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
+                        tint = contentColor
+                    )
+                }
+            } else if (leftIcon != null) {
+                IconButton(onClick = onLeftIconClick) {
+                    Icon(
+                        painter = painterResource(leftIcon),
+                        contentDescription = "Left Action",
                         tint = contentColor
                     )
                 }

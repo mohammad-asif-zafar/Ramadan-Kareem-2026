@@ -14,12 +14,20 @@ fun ZakatMoneyField(
     label: String,
     value: String,
     onChange: (String) -> Unit,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    currencySymbol: String = ""
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
-        label = { Text(label) },
+        label = { 
+            Text(
+                text = if (currencySymbol.isNotEmpty()) "$label ($currencySymbol)" else label
+            ) 
+        },
+        placeholder = if (currencySymbol.isNotEmpty()) {
+            { Text("0.00 $currencySymbol") }
+        } else null,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = Modifier.fillMaxWidth()
     )

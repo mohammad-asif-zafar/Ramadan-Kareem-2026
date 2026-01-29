@@ -37,8 +37,11 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahListScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
+import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
+import com.hathway.ramadankareem2026.ui.ramadan.RamadanCalendarScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatBreakdownRoute
+import com.hathway.ramadankareem2026.ui.zakat.route.ZakatHistoryRoute
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatRoute
 
 @Composable
@@ -73,7 +76,7 @@ private fun HomeScaffold() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     val isBottomBarVisible = currentRoute in setOf(
-        Routes.HOME, Routes.QURAN, Routes.QIBLA, Routes.TASBIH
+        Routes.HOME, Routes.QURAN, Routes.QIBLA
     )
 
     Scaffold(
@@ -103,10 +106,6 @@ private fun HomeScaffold() {
                     onBack = {},
                     onSettings = {},
                     onViewFullCalendar = {})
-            }
-
-            composable(Routes.TASBIH) {
-                SimpleScreen(Routes.TASBIH)
             }
 
             composable(Routes.DUA) {
@@ -206,29 +205,16 @@ private fun HomeScaffold() {
                 BookmarksRoute(navController)
             }
 
-            composable(Routes.QURAN) {
-                val context = LocalContext.current
-                val viewModel: QuranViewModel = viewModel(
-                    factory = QuranViewModelFactory(
-                        context = context.applicationContext
-                    )
-                )
+            composable(Routes.ZAKAT_HISTORY) {
+                ZakatHistoryRoute(navController)
+            }
 
-                QuranSurahListScreen(
-                    viewModel = viewModel,
-                    onBack = { navController.popBackStack() },
-                    onSurahClick = { surah ->
-                        navController.navigate(
-                            com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(
-                                surah.id
-                            )
-                        )
-                    }
-                )
+            composable(Routes.QURAN) {
+                QuranRoute(navController)
             }
 
             composable(
-                route = com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.route,
+                route = NavRoutes.QuranSurahAyahs.route,
                 arguments = listOf(navArgument("surahId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val context = LocalContext.current

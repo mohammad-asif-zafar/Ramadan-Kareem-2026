@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.zakat.presentation
 
+import com.hathway.ramadankareem2026.core.currency.CountryCurrencyMapper
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.ZakatResult
 
@@ -13,7 +14,11 @@ data class ZakatUiState(
     val cash: String = "",
     val debts: String = "",
     val selectedNisab: NisabType = NisabType.GOLD,
-    val result: ZakatResult? = null
+    val result: ZakatResult? = null,
+    val currency: CountryCurrencyMapper.CurrencyInfo = CountryCurrencyMapper.defaultCurrency,
+    val country: String = "",
+    val isLoadingCurrency: Boolean = false,
+    val currencyError: String? = null
 )
 
 

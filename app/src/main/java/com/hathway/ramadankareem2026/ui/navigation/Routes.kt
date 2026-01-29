@@ -17,6 +17,7 @@ object Routes {
     const val ALLAH_NAME_DETAIL = "allah_name_detail"
     fun allahNameDetail(id: Int) = "$ALLAH_NAME_DETAIL/$id"
     const val ZAKAT_BREAKDOWN = "zakat_breakdown"
+    const val ZAKAT_HISTORY = "zakat_history"
     const val MOSQUES = "mosques"
     const val BOOKMARKS = "bookmarks"
 }
