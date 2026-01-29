@@ -1,18 +1,21 @@
 package com.hathway.ramadankareem2026.ui.zakat.presentation
 
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
 import kotlinx.coroutines.launch
 
@@ -31,7 +34,6 @@ fun ZakatScreen(
 ) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
-    val density = LocalDensity.current
     
     // Auto-scroll to breakdown when result is available
     LaunchedEffect(state.result) {
@@ -75,7 +77,7 @@ fun ZakatScreen(
                     Text(
                         text = "Zakat Calculator",
                         style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = RamadanGold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -87,11 +89,27 @@ fun ZakatScreen(
             }
             
             // Assets Section
-            Text(
-                text = "Assets",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Assets",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = RamadanGold
+                )
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = RamadanGold.copy(alpha = 0.1f)
+                ) {
+                    Text(
+                        text = "💰",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontSize = 16.sp
+                    )
+                }
+            }
             
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -102,18 +120,34 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField("Gold Value", state.gold, onGold)
-                    ZakatMoneyField("Silver Value", state.silver, onSilver)
-                    ZakatMoneyField("Cash & Savings", state.cash, onCash)
+                    ZakatMoneyField("Gold Value", state.gold, onGold, KeyboardType.Number)
+                    ZakatMoneyField("Silver Value", state.silver, onSilver, KeyboardType.Number)
+                    ZakatMoneyField("Cash & Savings", state.cash, onCash, KeyboardType.Number)
                 }
             }
             
             // Liabilities Section
-            Text(
-                text = "Liabilities",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Liabilities",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = RamadanGold
+                )
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = RamadanGold.copy(alpha = 0.1f)
+                ) {
+                    Text(
+                        text = "📋",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontSize = 16.sp
+                    )
+                }
+            }
             
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -124,7 +158,7 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField("Debts / Loans", state.debts, onDebts)
+                    ZakatMoneyField("Debts / Loans", state.debts, onDebts, KeyboardType.Number)
                 }
             }
             
@@ -133,11 +167,11 @@ fun ZakatScreen(
                 onClick = onCalculate,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = RamadanGreen,
+                    contentColor = Color.White
                 )
             ) {
-                Text("Calculate Zakat")
+                Text("Calculate Zakat", fontWeight = FontWeight.Medium)
             }
             
             // Breakdown Section (shown after calculation)
@@ -154,7 +188,7 @@ fun ZakatScreen(
                         Text(
                             text = "Zakat Breakdown",
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = RamadanGold
                         )
                         
                         HorizontalDivider()
@@ -198,7 +232,8 @@ fun ZakatScreen(
                         // Final Zakat
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)
+                            color = RamadanGold.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -212,7 +247,8 @@ fun ZakatScreen(
                                 Text(
                                     text = "${result.zakatAmount}",
                                     style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = RamadanGold,
+                                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
                                 )
                                 Text(
                                     text = "(2.5% of eligible wealth)",

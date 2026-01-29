@@ -12,13 +12,14 @@ import androidx.compose.ui.text.input.KeyboardType
 fun ZakatMoneyField(
     label: String,
     value: String,
-    onChange: (String) -> Unit
+    onChange: (String) -> Unit,
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
         label = { Text(label) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = Modifier.fillMaxWidth()
     )
 }
