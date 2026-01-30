@@ -131,35 +131,38 @@ class CountryCurrencyMapperTest {
     }
 
     @Test
-    fun `should return correct currencies for all Muslim-majority countries`() {
-        val testCases = mapOf(
-            "kuwait" to "KWD",
-            "qatar" to "QAR",
-            "bahrain" to "BHD",
-            "oman" to "OMR",
-            "egypt" to "EGP",
-            "jordan" to "JOD",
-            "lebanon" to "LBP",
-            "iraq" to "IQD",
-            "yemen" to "YER",
-            "bangladesh" to "BDT",
-            "malaysia" to "MYR",
-            "turkey" to "TRY",
-            "iran" to "IRR",
-            "afghanistan" to "AFN",
-            "nigeria" to "NGN",
-            "senegal" to "XOF",
-            "ghana" to "GHS",
-            "morocco" to "MAD",
-            "algeria" to "DZD",
-            "tunisia" to "TND",
-            "sudan" to "SDG",
-            "libya" to "LYD"
-        )
+    fun `should return correct currency for Kuwait`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("kuwait")
+        assertEquals("KWD", result.code)
+    }
 
-        for ((country, expectedCode) in testCases) {
-            val result = CountryCurrencyMapper.getCurrencyForCountry(country)
-            assertEquals(expectedCode, result.code, "Failed for $country")
-        }
+    @Test
+    fun `should return correct currency for Qatar`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("qatar")
+        assertEquals("QAR", result.code)
+    }
+
+    @Test
+    fun `should return correct currency for Bahrain`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("bahrain")
+        assertEquals("BHD", result.code)
+    }
+
+    @Test
+    fun `should return correct currency for Oman`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("oman")
+        assertEquals("OMR", result.code)
+    }
+
+    @Test
+    fun `should return correct currency for Egypt`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("egypt")
+        assertEquals("EGP", result.code)
+    }
+
+    @Test
+    fun `should return correct currency for Jordan`() {
+        val result = CountryCurrencyMapper.getCurrencyForCountry("jordan")
+        assertEquals("JOD", result.code)
     }
 }

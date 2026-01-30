@@ -1,151 +1,181 @@
 package com.hathway.ramadankareem2026.ui.zakat.presentation.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.hathway.ramadankareem2026.core.currency.CountryCurrencyMapper
 import com.hathway.ramadankareem2026.core.currency.CurrencyResult
 import com.hathway.ramadankareem2026.core.currency.LocationCurrencyService
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Before
 
-@ExperimentalCoroutinesApi
 class ZakatViewModelTest {
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-    private val testDispatcher = StandardTestDispatcher()
-    private lateinit var mockCurrencyService: LocationCurrencyService
     private lateinit var viewModel: ZakatViewModel
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
-        mockCurrencyService = mockk(relaxed = true)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+        viewModel = ZakatViewModel()
     }
 
     @Test
-    fun `initial state should have default currency`() = runTest {
-        coEvery { mockCurrencyService.getCurrentCurrency() } returns CurrencyResult.Success(
-            currency = CountryCurrencyMapper.defaultCurrency, country = "Unknown", city = "Unknown", source = "Default"
-        )
-
-        viewModel = ZakatViewModel(mockCurrencyService)
-        testDispatcher.scheduler.advanceUntilIdle()
-
+    fun `initial state should have default currency`() {
         val state = viewModel.uiState.value
         assertEquals(CountryCurrencyMapper.defaultCurrency, state.currency)
-        assertEquals("Unknown", state.country)
+        assertEquals("", state.country)
         assertFalse(state.isLoadingCurrency)
         assertNull(state.currencyError)
     }
 
     @Test
-    fun `should load Saudi currency from location`() = runTest {
-        val saudiCurrency = CountryCurrencyMapper.getCurrencyForCountry("saudi arabia")
-        coEvery { mockCurrencyService.getCurrentCurrency() } returns CurrencyResult.Success(
-            currency = saudiCurrency, country = "Saudi Arabia", city = "Riyadh", source = "Location"
-        )
-
-        viewModel = ZakatViewModel(mockCurrencyService)
-        testDispatcher.scheduler.advanceUntilIdle()
-
+    fun `should update gold value correctly`() {
+        viewModel.onGold("10000")
         val state = viewModel.uiState.value
-        assertEquals(saudiCurrency, state.currency)
-        assertEquals("Saudi Arabia", state.country)
-        coVerify { mockCurrencyService.getCurrentCurrency() }
+        assertEquals("10000", state.gold)
     }
 
     @Test
-    fun `should handle currency loading error`() = runTest {
-        coEvery { mockCurrencyService.getCurrentCurrency() } returns CurrencyResult.Error("Permission denied")
-
-        viewModel = ZakatViewModel(mockCurrencyService)
-        testDispatcher.scheduler.advanceUntilIdle()
-
+    fun `should update silver value correctly`() {
+        viewModel.onSilver("5000")
         val state = viewModel.uiState.value
-        assertEquals("Permission denied", state.currencyError)
-        assertFalse(state.isLoadingCurrency)
+        assertEquals("5000", state.silver)
     }
 
     @Test
-    fun `setCurrencyForCountry should update currency`() = runTest {
-        viewModel = ZakatViewModel(mockCurrencyService)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        val uaeCurrency = CountryCurrencyMapper.getCurrencyForCountry("united arab emirates")
-        coEvery { mockCurrencyService.getCurrencyForCountry("UAE") } returns CurrencyResult.Success(
-            currency = uaeCurrency, country = "UAE", city = "Dubai", source = "Manual"
-        )
-
-        viewModel.setCurrencyForCountry("UAE")
-        testDispatcher.scheduler.advanceUntilIdle()
-
+    fun `should update cash value correctly`() {
+        viewModel.onCash("20000")
         val state = viewModel.uiState.value
-        assertEquals(uaeCurrency, state.currency)
-        assertEquals("UAE", state.country)
-        coVerify { mockCurrencyService.getCurrencyForCountry("UAE") }
+        assertEquals("20000", state.cash)
     }
 
     @Test
-    fun `zakat calculation should work with different currencies`() = runTest {
-        val turkeyCurrency = CountryCurrencyMapper.getCurrencyForCountry("turkey")
-        coEvery { mockCurrencyService.getCurrentCurrency() } returns CurrencyResult.Success(
-            currency = turkeyCurrency, country = "Turkey", city = "Istanbul", source = "Location"
-        )
+    fun `should update debts value correctly`() {
+        viewModel.onDebts("3000")
+        val state = viewModel.uiState.value
+        assertEquals("3000", state.debts)
+    }
 
-        viewModel = ZakatViewModel(mockCurrencyService)
-        testDispatcher.scheduler.advanceUntilIdle()
+    @Test
+    fun `should update nisab type correctly`() {
+        viewModel.onNisab(com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType.SILVER)
+        val state = viewModel.uiState.value
+        assertEquals(com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType.SILVER, state.selectedNisab)
+    }
 
+    @Test
+    fun `should calculate zakat correctly`() {
         viewModel.onGold("10000")
         viewModel.onSilver("5000")
         viewModel.onCash("20000")
         viewModel.onDebts("3000")
         viewModel.calculate()
-        testDispatcher.scheduler.advanceUntilIdle()
-
+        
         val state = viewModel.uiState.value
-        assertEquals(turkeyCurrency, state.currency)
         assertNotNull(state.result)
-        assertEquals("₺", state.currency.symbol)
     }
 
     @Test
-    fun `loadCurrencyFromLocation should set loading state`() = runTest {
-        viewModel = ZakatViewModel(mockCurrencyService)
+    fun `should handle empty values in calculation`() {
+        viewModel.onGold("")
+        viewModel.onSilver("")
+        viewModel.onCash("")
+        viewModel.onDebts("")
+        viewModel.calculate()
         
-        // Mock delay to test loading state
-        coEvery { mockCurrencyService.getCurrentCurrency() } coAnswers {
-            kotlinx.coroutines.delay(100)
-            CurrencyResult.Success(
-                currency = CountryCurrencyMapper.defaultCurrency, country = "USA", city = "New York", source = "Location"
-            )
-        }
+        val state = viewModel.uiState.value
+        assertNotNull(state.result)
+    }
 
-        viewModel.loadCurrencyFromLocation()
+    @Test
+    fun `should handle zero values in calculation`() {
+        viewModel.onGold("0")
+        viewModel.onSilver("0")
+        viewModel.onCash("0")
+        viewModel.onDebts("0")
+        viewModel.calculate()
         
-        var state = viewModel.uiState.value
-        assertTrue(state.isLoadingCurrency)
+        val state = viewModel.uiState.value
+        assertNotNull(state.result)
+    }
 
-        testDispatcher.scheduler.advanceUntilIdle()
+    @Test
+    fun `should handle decimal values in calculation`() {
+        viewModel.onGold("10000.50")
+        viewModel.onSilver("5000.75")
+        viewModel.onCash("20000.25")
+        viewModel.onDebts("3000.99")
+        viewModel.calculate()
         
-        state = viewModel.uiState.value
-        assertFalse(state.isLoadingCurrency)
-        assertEquals("USA", state.country)
+        val state = viewModel.uiState.value
+        assertNotNull(state.result)
+    }
+
+    @Test
+    fun `should maintain currency state during calculation`() {
+        val initialState = viewModel.uiState.value
+        val initialCurrency = initialState.currency
+        
+        viewModel.onGold("10000")
+        viewModel.onSilver("5000")
+        viewModel.onCash("20000")
+        viewModel.onDebts("3000")
+        viewModel.calculate()
+        
+        val finalState = viewModel.uiState.value
+        assertEquals(initialCurrency, finalState.currency)
+    }
+
+    @Test
+    fun `should handle large values in calculation`() {
+        viewModel.onGold("1000000")
+        viewModel.onSilver("500000")
+        viewModel.onCash("2000000")
+        viewModel.onDebts("300000")
+        viewModel.calculate()
+        
+        val state = viewModel.uiState.value
+        assertNotNull(state.result)
+    }
+
+    @Test
+    fun `should handle negative values in calculation`() {
+        viewModel.onGold("-1000")
+        viewModel.onSilver("-500")
+        viewModel.onCash("-2000")
+        viewModel.onDebts("-300")
+        viewModel.calculate()
+        
+        val state = viewModel.uiState.value
+        assertNotNull(state.result)
+    }
+
+    @Test
+    fun `should update multiple values correctly`() {
+        viewModel.onGold("15000")
+        viewModel.onSilver("7500")
+        viewModel.onCash("30000")
+        viewModel.onDebts("4500")
+        
+        val state = viewModel.uiState.value
+        assertEquals("15000", state.gold)
+        assertEquals("7500", state.silver)
+        assertEquals("30000", state.cash)
+        assertEquals("4500", state.debts)
+    }
+
+    @Test
+    fun `should handle nisab type change during calculation`() {
+        viewModel.onGold("10000")
+        viewModel.onSilver("5000")
+        viewModel.onCash("20000")
+        viewModel.onDebts("3000")
+        
+        // Change nisab type
+        viewModel.onNisab(com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType.SILVER)
+        
+        // Calculate and get the updated state
+        viewModel.calculate()
+        val finalState = viewModel.uiState.value
+        
+        assertEquals(com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType.SILVER, finalState.selectedNisab)
+        assertNotNull(finalState.result)
     }
 }

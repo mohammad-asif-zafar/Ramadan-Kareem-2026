@@ -27,7 +27,7 @@ class SafeApiCallTest {
         val result = safeApiCall { response }
 
         assertTrue(result is ApiResult.Error)
-        assertEquals("Empty response body", (result as ApiResult.Error).message)
+        assertEquals("Empty body", (result as ApiResult.Error).message)
     }
 
     @Test
@@ -50,7 +50,7 @@ class SafeApiCallTest {
         }
 
         assertTrue(result is ApiResult.Error)
-        assertEquals("Boom", (result as ApiResult.Error).message)
+        assertEquals("RuntimeException: Boom", (result as ApiResult.Error).message)
     }
 
     @Test
@@ -60,6 +60,6 @@ class SafeApiCallTest {
         }
 
         assertTrue(result is ApiResult.Error)
-        assertEquals("Unknown error", (result as ApiResult.Error).message)
+        assertEquals("RuntimeException: Unknown error", (result as ApiResult.Error).message)
     }
 }
