@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026.core.currency
 
-import java.util.Locale
 
 /**
  * Maps countries to their respective currencies for Zakat calculations.
@@ -49,9 +48,9 @@ object CountryCurrencyMapper {
     )
     
     val defaultCurrency = CurrencyInfo(
-        code = "USD",
-        symbol = "$",
-        name = "US Dollar",
+        code = "MYR",
+        symbol = "RM",
+        name = "Malaysian Ringgit",
         decimalPlaces = 2
     )
     

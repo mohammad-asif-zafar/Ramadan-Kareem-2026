@@ -13,7 +13,7 @@ import com.hathway.ramadankareem2026.data.local.database.converters.DateConverte
 
 @Database(
     entities = [BookmarkEntity::class, ZakatCalculationEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(DateConverters::class)

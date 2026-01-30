@@ -17,5 +17,10 @@ data class ZakatCalculationEntity(
     val totalLiabilities: Double,
     val zakatPayable: Double,
     val calculationDate: Date,
-    val formattedDate: String // For display purposes
+    val formattedDate: String, // For display purposes
+    // Currency information
+    val currencyCode: String = "USD", // e.g., "USD", "KWD", "EUR"
+    val currencySymbol: String = "$", // e.g., "$", "د.ك", "€"
+    val currencyName: String = "US Dollar", // e.g., "US Dollar", "Kuwaiti Dinar"
+    val country: String = "" // e.g., "United States", "Kuwait"
 )

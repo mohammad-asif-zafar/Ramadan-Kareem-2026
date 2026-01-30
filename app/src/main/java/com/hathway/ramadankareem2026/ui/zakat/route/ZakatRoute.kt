@@ -63,7 +63,11 @@ fun ZakatRoute(navController: NavController) {
                 nisabType = result.nisabType.name.lowercase(),
                 totalAssets = result.assets.gold + result.assets.silver + result.assets.cash,
                 totalLiabilities = result.assets.debts,
-                zakatPayable = result.zakatAmount
+                zakatPayable = result.zakatAmount,
+                currencyCode = state.currency.code,
+                currencySymbol = state.currency.symbol,
+                currencyName = state.currency.name,
+                country = state.country
             )
             println("DEBUG: Auto-save calculation completed")
         }

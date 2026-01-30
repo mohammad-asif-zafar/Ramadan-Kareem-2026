@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.data.local.database.entity.ZakatCalculationEntity
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import java.text.NumberFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,9 +140,12 @@ private fun ZakatCalculationItem(
     calculation: ZakatCalculationEntity,
     onDelete: () -> Unit
 ) {
-    val currencyFormat = remember { NumberFormat.getCurrencyInstance(Locale.US) }
+    // Simple currency formatting function
+    fun formatCurrency(amount: Double): String {
+        return "${calculation.currencySymbol}${String.format("%.2f", amount)}"
+    }
     
-    println("DEBUG: ZakatCalculationItem called for ID: ${calculation.id}, Date: ${calculation.formattedDate}")
+    println("DEBUG: ZakatCalculationItem called for ID: ${calculation.id}, Currency: ${calculation.currencyCode} (${calculation.currencySymbol})")
     
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -155,18 +157,27 @@ private fun ZakatCalculationItem(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Header with date and delete button
+            // Header with date, currency info and delete button
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = calculation.formattedDate,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = RamadanGold
-                )
+                Column {
+                    Text(
+                        text = calculation.formattedDate,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = RamadanGold
+                    )
+                    if (calculation.country.isNotEmpty()) {
+                        Text(
+                            text = "${calculation.currencySymbol} ${calculation.currencyName} • ${calculation.country}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
                 
                 IconButton(
                     onClick = onDelete,
@@ -186,12 +197,12 @@ private fun ZakatCalculationItem(
             // Calculation details
             CalculationDetailRow(
                 label = "Total Assets",
-                value = currencyFormat.format(calculation.totalAssets)
+                value = formatCurrency(calculation.totalAssets)
             )
             
             CalculationDetailRow(
                 label = "Total Liabilities",
-                value = currencyFormat.format(calculation.totalLiabilities)
+                value = formatCurrency(calculation.totalLiabilities)
             )
             
             CalculationDetailRow(
@@ -222,7 +233,7 @@ private fun ZakatCalculationItem(
                     )
                     
                     Text(
-                        text = currencyFormat.format(calculation.zakatPayable),
+                        text = formatCurrency(calculation.zakatPayable),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = RamadanGold

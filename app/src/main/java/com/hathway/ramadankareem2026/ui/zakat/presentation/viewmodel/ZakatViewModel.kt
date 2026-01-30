@@ -65,15 +65,19 @@ class ZakatViewModel(
                             }
                         }
                         is CurrencyResult.Error -> {
+                            // Fallback to a default country if location fails
+                            setCurrencyForCountry("United States")
                             update { 
                                 copy(
                                     isLoadingCurrency = false,
-                                    currencyError = currencyResult.message
+                                    currencyError = "Location unavailable, using default currency"
                                 ) 
                             }
                         }
                     }
                 } catch (e: Exception) {
+                    // Fallback to a default country if exception occurs
+                    setCurrencyForCountry("United States")
                     update { 
                         copy(
                             isLoadingCurrency = false,
@@ -112,6 +116,13 @@ class ZakatViewModel(
                 }
             }
         }
+    }
+
+    /**
+     * Test method to set currency for Kuwait (for testing)
+     */
+    fun setKuwaitCurrencyForTesting() {
+        setCurrencyForCountry("Kuwait")
     }
 
     private fun update(block: ZakatUiState.() -> ZakatUiState) {

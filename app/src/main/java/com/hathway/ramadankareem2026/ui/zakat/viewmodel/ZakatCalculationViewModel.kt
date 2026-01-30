@@ -38,7 +38,11 @@ class ZakatCalculationViewModel(
         nisabType: String,
         totalAssets: Double,
         totalLiabilities: Double,
-        zakatPayable: Double
+        zakatPayable: Double,
+        currencyCode: String = "USD",
+        currencySymbol: String = "$",
+        currencyName: String = "US Dollar",
+        country: String = ""
     ) {
         viewModelScope.launch {
             try {
@@ -52,7 +56,11 @@ class ZakatCalculationViewModel(
                     nisabType = nisabType,
                     totalAssets = totalAssets,
                     totalLiabilities = totalLiabilities,
-                    zakatPayable = zakatPayable
+                    zakatPayable = zakatPayable,
+                    currencyCode = currencyCode,
+                    currencySymbol = currencySymbol,
+                    currencyName = currencyName,
+                    country = country
                 )
                 println("DEBUG: Save calculation result: $result")
                 loadCalculations()

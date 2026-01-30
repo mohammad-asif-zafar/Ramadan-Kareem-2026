@@ -25,6 +25,7 @@ import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
+import com.hathway.ramadankareem2026.ui.zakat.presentation.ZakatMoneyField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -235,15 +236,15 @@ fun ZakatScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "Gold: ${result.assets.gold}",
+                            "Gold: ${state.currency.symbol}${result.assets.gold}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Silver: ${result.assets.silver}",
+                            "Silver: ${state.currency.symbol}${result.assets.silver}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Cash: ${result.assets.cash}",
+                            "Cash: ${state.currency.symbol}${result.assets.cash}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
@@ -255,7 +256,7 @@ fun ZakatScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "Debts: ${result.assets.debts}",
+                            "Debts: ${state.currency.symbol}${result.assets.debts}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
@@ -265,12 +266,12 @@ fun ZakatScreen(
                         val netWorth =
                             result.assets.gold + result.assets.silver + result.assets.cash - result.assets.debts
                         Text(
-                            text = "Net Wealth: $netWorth",
+                            text = "Net Wealth: ${state.currency.symbol}$netWorth",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Nisab Threshold: ${result.nisabValue}",
+                            text = "Nisab Threshold: ${state.currency.symbol}${result.nisabValue}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -328,7 +329,8 @@ fun ZakatScreenPreview() {
         onViewBreakdown = {},
         onBack = {},
         navController = androidx.navigation.compose.rememberNavController(),
-        onCalculatorIconClick = {})
+        onCalculatorIconClick = {}
+    )
 }
 
 

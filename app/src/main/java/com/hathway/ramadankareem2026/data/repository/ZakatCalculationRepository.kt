@@ -18,7 +18,11 @@ class ZakatCalculationRepository(
         nisabType: String,
         totalAssets: Double,
         totalLiabilities: Double,
-        zakatPayable: Double
+        zakatPayable: Double,
+        currencyCode: String = "USD",
+        currencySymbol: String = "$",
+        currencyName: String = "US Dollar",
+        country: String = ""
     ): Long {
         val currentDate = Date()
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
@@ -34,7 +38,11 @@ class ZakatCalculationRepository(
             totalLiabilities = totalLiabilities,
             zakatPayable = zakatPayable,
             calculationDate = currentDate,
-            formattedDate = formattedDate
+            formattedDate = formattedDate,
+            currencyCode = currencyCode,
+            currencySymbol = currencySymbol,
+            currencyName = currencyName,
+            country = country
         )
         
         return zakatCalculationDao.insertCalculation(calculation)
