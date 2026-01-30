@@ -95,7 +95,7 @@ fun NearbyMosquesScreen(
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             topBar = {
                 RamadanToolbar(
-                    title = "المساجد القريبة", showBack = true, onBackClick = onBack
+                    title = "NearBy Mosque", showBack = true, onBackClick = onBack
                 )
             },
             sheetPeekHeight = halfScreenPeekHeight,

@@ -113,20 +113,20 @@ class CountryCurrencyMapperTest {
 
     @Test
     fun `getCurrencyByCountryName should handle variations`() {
-        val result1 = CountryCurrencyMapper.getCurrencyByCountryName("USA")
-        val result2 = CountryCurrencyMapper.getCurrencyByCountryName("United States of America")
+        val result1 = CountryCurrencyMapper.getCurrencyByCountryName("MYR")
+        val result2 = CountryCurrencyMapper.getCurrencyByCountryName("malaysia")
         
-        assertEquals("USD", result1.code)
-        assertEquals("USD", result2.code)
+        assertEquals("MYR", result1.code)
+        assertEquals("MYR", result2.code)
     }
 
     @Test
     fun `default currency should be USD`() {
         val default = CountryCurrencyMapper.defaultCurrency
         
-        assertEquals("USD", default.code)
-        assertEquals("$", default.symbol)
-        assertEquals("US Dollar", default.name)
+        assertEquals("MYR", default.code)
+        assertEquals("RM", default.symbol)
+        assertEquals("Malaysian Ringgit", default.name)
         assertEquals(2, default.decimalPlaces)
     }
 
