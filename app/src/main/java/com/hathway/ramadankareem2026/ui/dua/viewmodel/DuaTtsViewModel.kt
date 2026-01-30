@@ -1,12 +1,13 @@
 package com.hathway.ramadankareem2026.ui.dua.viewmodel
 
 import android.app.Application
+import android.os.Build
 import android.speech.tts.TextToSpeech
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import java.util.Locale
-
 
 class DuaTtsViewModel(application: Application) : AndroidViewModel(application),
     TextToSpeech.OnInitListener {
@@ -20,22 +21,15 @@ class DuaTtsViewModel(application: Application) : AndroidViewModel(application),
         tts = TextToSpeech(application, this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // Arabic voice
-            tts?.language = Locale("ar")
+            tts?.language = Locale.of("ar");
             tts?.setSpeechRate(0.9f)
         }
     }
 
-    fun speak(text: String) {
-        if (text.isBlank()) return
-
-        tts?.speak(
-            text, TextToSpeech.QUEUE_FLUSH, null, "DUA_TTS"
-        )
-        _isSpeaking.value = true
-    }
 
     fun stop() {
         tts?.stop()

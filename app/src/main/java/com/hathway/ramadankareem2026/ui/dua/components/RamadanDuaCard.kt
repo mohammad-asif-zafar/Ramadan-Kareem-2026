@@ -120,7 +120,6 @@ fun RamadanDuaCard(
     }
 }
 
-
 private val previewDua = DuaItem(
     id = "1",
     title = "Ramadan Moon Sighting",
@@ -145,5 +144,3 @@ fun RamadanDuaCardPreview() {
         }
     }
 }
-
-

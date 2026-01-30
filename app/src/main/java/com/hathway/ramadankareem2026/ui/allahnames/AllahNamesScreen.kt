@@ -7,7 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.allahnames.components.AllahNameCard
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
@@ -19,7 +22,7 @@ fun AllahNamesScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Names of Allah", showBack = true, onBackClick = onBack
+                title = stringResource(R.string.allah_name), showBack = true, onBackClick = onBack
             )
         }, containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -34,5 +37,53 @@ fun AllahNamesScreen(
                     name = name, onClick = { onNameClick(name) })
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AllahNamesScreenPreview() {
+    MaterialTheme {
+        AllahNamesScreen(
+            names = listOf(
+            AllahName(
+                id = 1,
+                arabic = "الرَّحْمٰنُ",
+                transliteration = "Ar-Rahman",
+                english = "The Most Merciful",
+                meaning = "The One who has plenty of mercy for the believers."
+            ), AllahName(
+                id = 2,
+                arabic = "الرَّحِيمُ",
+                transliteration = "Ar-Raheem",
+                english = "The Most Compassionate",
+                meaning = "The One who bestows mercy upon the believers."
+            ), AllahName(
+                id = 3,
+                arabic = "الْمَلِكُ",
+                transliteration = "Al-Malik",
+                english = "The King",
+                meaning = "The Absolute Ruler of the universe."
+            )
+        ), onBack = {}, onNameClick = {})
+    }
+}
+
+@Preview(
+    showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun AllahNamesScreenDarkPreview() {
+    MaterialTheme {
+        AllahNamesScreen(
+            names = listOf(
+            AllahName(
+                id = 55,
+                arabic = "الرَّحْمٰنُ",
+                transliteration = "Ar-Rahman",
+                english = "The Most Merciful",
+                meaning = "The One who has plenty of mercy for the believers."
+            )
+        ), onBack = {}, onNameClick = {})
     }
 }

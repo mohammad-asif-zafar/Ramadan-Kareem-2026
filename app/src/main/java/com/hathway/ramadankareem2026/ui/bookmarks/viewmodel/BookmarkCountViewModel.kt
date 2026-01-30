@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BookmarkCountViewModel(application: Application) : AndroidViewModel(application) {
-    
+
     private val bookmarkDao: BookmarkDao = BookmarkManager.getDatabase(application).bookmarkDao()
-    
+
     private val _bookmarkCount = MutableStateFlow(0)
     val bookmarkCount: StateFlow<Int> = _bookmarkCount.asStateFlow()
-    
+
     init {
         loadBookmarkCount()
     }
-    
+
     private fun loadBookmarkCount() {
         viewModelScope.launch {
             bookmarkDao.getBookmarksByType("dua").collect { bookmarks ->

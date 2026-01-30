@@ -11,10 +11,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
@@ -22,7 +24,7 @@ import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 /**
- * 📂 Screen that shows all Duʿās for a selected category
+ *  Screen that shows all Duʿās for a selected category
  *
  * Example:
  *  - Qur’an Duʿās
@@ -35,16 +37,15 @@ fun DuaCategoryScreen(
     navController: NavController // 🧭 For back + detail navigation
 ) {
 
-    // 📦 Repository instance (simple data source for now)
+    //  Repository instance (simple data source for now)
     val repository = remember { DuaRepository() }
 
-    // 📜 Fetch duʿās only for this category
-    // remember(categoryId) → recompute when category changes
+    //  Fetch duʿās only for this category
     val duas = remember(categoryId) {
         repository.getDuasByCategory(categoryId)
     }
 
-    // 🧱 Screen structure
+    //  Screen structure
     Scaffold(
 
         // 🔝 Top toolbar with back button
@@ -55,7 +56,7 @@ fun DuaCategoryScreen(
 
     ) { padding ->
 
-        // 📜 Scrollable list of Duʿās
+        //  Scrollable list of Duʿās
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -67,13 +68,13 @@ fun DuaCategoryScreen(
                 Spacer(modifier = Modifier.height(4.dp))
             }
 
-            // 🔁 Each Duʿā rendered as a modern card
+            //  Each Duʿā rendered as a modern card
             items(duas) { dua ->
 
                 DuaCardItem(
                     title = dua.title, subtitle = dua.source, // e.g. "Qur’an 2:128"
 
-                    // 👉 Navigate to Duʿā detail screen
+                    //  Navigate to Duʿā detail screen
                     onClick = {
                         navController.navigate(
                             "${Routes.DUA_DETAIL}/${dua.id}"
@@ -94,7 +95,7 @@ fun DuaCategoryScreen(
 @Composable
 fun DuaCategoryScreenPreview() {
 
-    // 🧪 Fake duʿā list for preview only
+    //  Fake list for preview only
     val previewDuas = listOf(
         DuaItem(
             id = "1",
@@ -119,7 +120,7 @@ fun DuaCategoryScreenPreview() {
         Scaffold(
             topBar = {
                 RamadanToolbar(
-                    title = "Duʿās", showBack = true, onBackClick = {})
+                    title = stringResource(id = R.string.duʿās), showBack = true, onBackClick = {})
             }) { padding ->
 
             LazyColumn(

@@ -9,10 +9,10 @@ import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 fun AllahNameDetailRoute(
     id: Int, navController: NavController, viewModel: AllahNamesViewModel = viewModel()
 ) {
-    // 🔹 Safe lookup (no crash)
+    //  Safe lookup (no crash)
     val name = viewModel.names.firstOrNull { it.id == id } ?: return
 
-    // 🔹 Route only wires data + navigation
+    //  Route only wires data + navigation
     AllahNameDetailScreen(
         name = name, onBack = { navController.popBackStack() })
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.navigation.Routes
@@ -328,7 +329,7 @@ fun ZakatScreenPreview() {
         onCalculate = {},
         onViewBreakdown = {},
         onBack = {},
-        navController = androidx.navigation.compose.rememberNavController(),
+        navController = rememberNavController(),
         onCalculatorIconClick = {}
     )
 }

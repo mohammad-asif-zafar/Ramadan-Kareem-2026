@@ -8,5 +8,5 @@ data class DuaItem(
     val source: String,
     val categoryId: String,
     val transliteration: String = "",
-    val audioResId: Int? = null //  Audio (raw resource OR URL later)
+    val audioResId: Int? = null
 )

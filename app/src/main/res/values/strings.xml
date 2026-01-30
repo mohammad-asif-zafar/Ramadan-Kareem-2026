@@ -20,4 +20,25 @@
     <string name="allah_name">Allah Names</string>
     <string name="allah">Allah</string>
     <string name="mosque">Mosque</string>
+    <string name="nearby_mosque">NearBy Mosque</string>
+    <string name="back">Back</string>
+    <string name="left_action">Left Action</string>
+    <string name="right_action">Right Action</string>
+    <string name="right_action_second">Right Action 2</string>
+    <string name="dua">Dua</string>
+    <string name="save">Save</string>
+    <string name="duʿās">Duʿās</string>
+    <string name="remove_bookmark">Remove Bookmark</string>
+    <string name="add_bookmark">Add Bookmark</string>
+    <string name="share">Share</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="features">Features</string>
+    <string name="prayer_times">Prayer Times</string>
+    <string name="play">Play</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="bookmarked">Bookmarked</string>
+    <string name="not_bookmarked">Not Bookmarked</string>
+    <string name="no_bookmarks_yet">No bookmarks yet</string>
+    <string name="start_bookmarking_your_favorite_content">Start bookmarking your favorite content</string>
 </resources>

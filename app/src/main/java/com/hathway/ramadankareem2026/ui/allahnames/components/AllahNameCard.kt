@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
@@ -62,7 +63,7 @@ fun AllahNameCard(
             Spacer(modifier = Modifier.width(16.dp))
 
             Column {
-                // 🟡 Arabic Name (GOLD)
+                // Arabic Name (GOLD)
                 Text(
                     text = name.arabic,
                     style = MaterialTheme.typography.headlineSmall,
@@ -81,3 +82,41 @@ fun AllahNameCard(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun AllahNameCardPreview() {
+    MaterialTheme {
+        AllahNameCard(
+            name = AllahName(
+                id = 1,
+                arabic = "الرَّحْمٰنُ",
+                transliteration = "Ar-Rahman",
+                english = "The Most Merciful",
+                meaning = "The One who has plenty of mercy for the believers."
+            ),
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun AllahNameCardDarkPreview() {
+    MaterialTheme {
+        AllahNameCard(
+            name = AllahName(
+                id = 55,
+                arabic = "الرَّحْمٰنُ",
+                transliteration = "Ar-Rahman",
+                english = "The Most Merciful",
+                meaning = "The One who has plenty of mercy for the believers."
+            ),
+            onClick = {}
+        )
+    }
+}
+

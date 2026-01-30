@@ -5,7 +5,7 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 
 object DuaDataSource {
 
-    //  Ramadan Duʿāʾs
+    //  Ramadan
     val ramadanDuas = listOf(
 
         DuaItem(
@@ -291,7 +291,7 @@ object DuaDataSource {
         )
     )
 
-    //  Hisnul Muslim – Essential Daily Duʿāʾs
+    //
     val hisnulMuslimDuas = listOf(
 
         DuaItem(
@@ -395,7 +395,7 @@ object DuaDataSource {
         )
     )
 
-    //  Duʿāʾs of the Prophets (Anbiyāʾ)
+    //  Duʿāʾs of the Prophets
     val prophetDuas = listOf(
 
         DuaItem(
@@ -499,7 +499,7 @@ object DuaDataSource {
         )
     )
 
-    //  Morning & Evening Adhkār (Hisnul Muslim)
+    //  Morning & Evening Adhkār
     val morningEveningAdhkar = listOf(
 
         DuaItem(
@@ -687,7 +687,7 @@ object DuaDataSource {
         )
     )
 
-    // 👨‍👩‍👧‍👦 Family & Children Duʿāʾs
+    //  Family & Children Duʿāʾs
     val familyDuas = listOf(
 
         DuaItem(

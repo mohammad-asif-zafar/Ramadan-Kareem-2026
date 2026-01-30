@@ -516,7 +516,5 @@ object AllahNamesLocalData {
             "The Patient",
             "The One who does not quickly punish the sinners."
         )
-
-        // add all 99 later
     )
 }

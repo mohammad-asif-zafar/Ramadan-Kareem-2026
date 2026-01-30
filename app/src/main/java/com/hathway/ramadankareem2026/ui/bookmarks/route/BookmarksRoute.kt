@@ -8,10 +8,7 @@ import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarksScreen
 fun BookmarksRoute(
     navController: NavController
 ) {
-    BookmarksScreen(
-        onBack = { navController.popBackStack() },
-        onDuaClick = { duaId ->
-            navController.navigate("dua_detail/$duaId")
-        }
-    )
+    BookmarksScreen(onBack = { navController.popBackStack() }, onDuaClick = { duaId ->
+        navController.navigate("dua_detail/$duaId")
+    })
 }

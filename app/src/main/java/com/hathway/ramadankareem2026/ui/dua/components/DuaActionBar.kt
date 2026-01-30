@@ -16,25 +16,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaTtsViewModel
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
-/**
- *  Dua Action Bar
- *
- * Actions:
- * • Text-to-Speech (read dua aloud)
- * • Stop reading
- * • Save to favorites
- * • Share dua
- *
- * Shown at bottom of DuaDetailScreen
- */
 @Composable
 fun DuaActionBar(
     dua: DuaItem, viewModel: DuaTtsViewModel = viewModel()
@@ -51,7 +42,7 @@ fun DuaActionBar(
 
             /*  Save */
             IconButton(onClick = { /* save */ }) {
-                Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Save")
+                Icon(Icons.Outlined.FavoriteBorder, contentDescription = stringResource(R.string.save))
             }
 
             /*  Text to Speech */
@@ -75,7 +66,7 @@ fun DuaActionBar(
 
             /*  Share */
             IconButton(onClick = { /* share */ }) {
-                Icon(Icons.Outlined.Share, contentDescription = "Share")
+                Icon(Icons.Outlined.Share, contentDescription = stringResource(R.string.share))
             }
         }
     }

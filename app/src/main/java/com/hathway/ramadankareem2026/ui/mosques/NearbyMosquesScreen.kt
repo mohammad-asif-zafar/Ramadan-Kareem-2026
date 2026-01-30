@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -22,6 +23,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.state.MosqueUiState
@@ -95,7 +97,8 @@ fun NearbyMosquesScreen(
             sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
             topBar = {
                 RamadanToolbar(
-                    title = "NearBy Mosque", showBack = true, onBackClick = onBack
+                    title = stringResource(R.string.nearby_mosque),
+                    showBack = true, onBackClick = onBack
                 )
             },
             sheetPeekHeight = halfScreenPeekHeight,

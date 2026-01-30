@@ -109,6 +109,7 @@ dependencies {
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
     "baselineProfile"(project(":baselineprofile"))
 
     debugImplementation(libs.androidx.compose.ui.tooling)

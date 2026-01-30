@@ -6,43 +6,39 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoriesGrid
 import com.hathway.ramadankareem2026.ui.dua.components.RamadanDuaHorizontal
 import com.hathway.ramadankareem2026.ui.dua.data.DuaCategoryData
+import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaViewModel
 import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
-import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 /**
- * 🌙 Dua Main Screen
+ *  Dua Main Screen
  *
  * UI Structure:
- * 1️⃣ Toolbar
- * 2️⃣ "Ramadan Collections" title
- * 3️⃣ Ramadan Duas (horizontal list)
- * 4️⃣ "All Duʿāʾs" title
- * 5️⃣ Dua Categories (2×2 grid)
+ * Toolbar
+ * "Ramadan Collections" title
+ * Ramadan Duas (horizontal list)
+ * "All Duʿāʾs" title
+ * Dua Categories (2×2 grid)
  *
  * All content scrolls vertically (single LazyColumn)
  */
@@ -56,19 +52,16 @@ fun DuaScreen(
 ) {
     val bookmarkCount by countViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
 
-
     Scaffold(
 
         /*  Top App Bar */
         topBar = {
             RamadanToolbar(
                 title = stringResource(R.string.feature_dua),     // ✅ string resource ID
-                showBack = true, onBackClick = onBack,
-                onRightIcon1Click = {
+                showBack = true, onBackClick = onBack, onRightIcon1Click = {
                     // Navigate to bookmarks list
                     navController.navigate(Routes.BOOKMARKS)
-                },
-                rightIcon1Badge = bookmarkCount,
+                }, rightIcon1Badge = bookmarkCount,
                 // Bookmarks
                 rightIcon1 = R.drawable.ic_saved,
 

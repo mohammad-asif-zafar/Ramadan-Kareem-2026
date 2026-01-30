@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -78,4 +80,36 @@ private fun formatMinutes(minutes: Int): String {
     val h = minutes / 60
     val m = minutes % 60
     return if (h > 0) "${h}h ${m}m" else "${m}m"
+}
+@Preview(showBackground = true)
+@Composable
+fun CountdownCircularProgressPreview() {
+    MaterialTheme {
+        CountdownCircularProgress(
+            totalMinutes = 120,
+            remainingMinutes = 45
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CountdownCircularProgressAlmostDonePreview() {
+    MaterialTheme {
+        CountdownCircularProgress(
+            totalMinutes = 60,
+            remainingMinutes = 5,
+            progressColor = Color(0xFFE53935) // red warning style
+        )
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun CountdownCircularProgressFullPreview() {
+    MaterialTheme {
+        CountdownCircularProgress(
+            totalMinutes = 30,
+            remainingMinutes = 30
+        )
+    }
 }

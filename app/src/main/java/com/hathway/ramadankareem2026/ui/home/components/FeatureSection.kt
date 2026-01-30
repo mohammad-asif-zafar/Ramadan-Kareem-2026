@@ -81,7 +81,7 @@ fun FeatureSection(navController: NavController) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
-        SectionTitle("Features")
+        SectionTitle(stringResource(R.string.features))
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -114,7 +114,7 @@ fun FeatureItem(
             .aspectRatio(1f)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null, // Material3 handles ripple internally
+                indication = null,
                 onClick = onClick
             ), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(
             containerColor = Color(0xFFEFEAF0)

@@ -2,11 +2,8 @@ package com.hathway.ramadankareem2026.ui.dua.components
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,32 +13,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -58,25 +52,26 @@ import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.service.DuaTtsNotification
 import com.hathway.ramadankareem2026.core.service.DuaTtsService
 import com.hathway.ramadankareem2026.core.tts.TtsActions
+import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 @SuppressLint("MissingPermission")
 @Composable
 fun DuaDetailScreen(
-    dua: DuaItem, 
+    dua: DuaItem,
     onBack: () -> Unit,
     navController: NavController,
     bookmarkViewModel: DuaBookmarkViewModel = viewModel(),
     countViewModel: BookmarkCountViewModel = viewModel()
 ) {
-    val isBookmarked by bookmarkViewModel.isBookmarked(dua.id).collectAsStateWithLifecycle(initialValue = false)
+    val isBookmarked by bookmarkViewModel.isBookmarked(dua.id)
+        .collectAsStateWithLifecycle(initialValue = false)
     val bookmarkCount by countViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
-    
+
     LaunchedEffect(dua.id) {
         bookmarkViewModel.checkBookmarkStatus(dua.id)
     }
@@ -85,8 +80,8 @@ fun DuaDetailScreen(
         /*  Top App Bar */
         topBar = {
             RamadanToolbar(
-                title = dua.categoryId, 
-                showBack = true, 
+                title = dua.categoryId,
+                showBack = true,
                 onBackClick = onBack,
                 rightIcon1 = R.drawable.ic_saved,
                 rightIcon1Badge = bookmarkCount,
@@ -94,15 +89,14 @@ fun DuaDetailScreen(
                     // Navigate to bookmarks list
                     navController.navigate(Routes.BOOKMARKS)
                 },
-                rightIcon2 = R.drawable.bell, 
-                onRightIcon2Click = { }
-            )
+                rightIcon2 = R.drawable.bell,
+                onRightIcon2Click = { })
         },
 
-    ) { padding ->
+        ) { padding ->
 
         val context = LocalContext.current
-    var isPlaying by remember { mutableStateOf(false) }
+        var isPlaying by remember { mutableStateOf(false) }
 
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
@@ -123,7 +117,6 @@ fun DuaDetailScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -132,10 +125,8 @@ fun DuaDetailScreen(
                     ) {
                         Surface(
                             shape = MaterialTheme.shapes.small,
-                            color = if (isBookmarked) 
-                                MaterialTheme.colorScheme.primaryContainer 
-                            else 
-                                MaterialTheme.colorScheme.surfaceVariant
+                            color = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
+                            else MaterialTheme.colorScheme.surfaceVariant
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -145,35 +136,31 @@ fun DuaDetailScreen(
                                     imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                     contentDescription = null,
                                     modifier = Modifier.size(16.dp),
-                                    tint = if (isBookmarked) 
-                                        MaterialTheme.colorScheme.onPrimaryContainer 
-                                    else 
-                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                                    else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = if (isBookmarked) "Bookmarked" else "Not Bookmarked",
+                                    text = if (isBookmarked) stringResource(R.string.bookmarked) else stringResource(
+                                        R.string.not_bookmarked
+                                    ),
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = if (isBookmarked) 
-                                        MaterialTheme.colorScheme.onPrimaryContainer 
-                                    else 
-                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                                    else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
-                        
+
                         TextButton(
                             onClick = {
                                 bookmarkViewModel.toggleBookmark(
-                                    itemId = dua.id,
-                                    title = dua.title,
-                                    content = dua.arabic
+                                    itemId = dua.id, title = dua.title, content = dua.arabic
                                 )
-                            }
-                        ) {
+                            }) {
                             Text(
-                                text = if (isBookmarked) "Remove Bookmark" else "Add Bookmark",
-                                style = MaterialTheme.typography.labelMedium
+                                text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
+                                    R.string.add_bookmark
+                                ), style = MaterialTheme.typography.labelMedium
                             )
                         }
                     }
@@ -230,7 +217,6 @@ fun DuaDetailScreen(
                     Spacer(modifier = Modifier.height(80.dp))
                 }
             }
-            
             // Floating Play Button
             FloatingActionButton(
                 onClick = {
@@ -241,7 +227,7 @@ fun DuaDetailScreen(
                         }
                         context.startService(intent)
                         isPlaying = false
-                        
+
                         // Cancel notification
                         NotificationManagerCompat.from(context)
                             .cancel(DuaTtsNotification.NOTIFICATION_ID)
@@ -253,11 +239,10 @@ fun DuaDetailScreen(
                         }
                         context.startService(intent)
                         isPlaying = true
-                        
+
                         // Show notification
                         val notification = DuaTtsNotification.build(
-                            context = context, 
-                            isPlaying = true
+                            context = context, isPlaying = true
                         )
                         NotificationManagerCompat.from(context)
                             .notify(DuaTtsNotification.NOTIFICATION_ID, notification)
@@ -270,7 +255,9 @@ fun DuaDetailScreen(
             ) {
                 Icon(
                     imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
-                    contentDescription = if (isPlaying) "Pause" else "Play",
+                    contentDescription = if (isPlaying) stringResource(R.string.pause) else stringResource(
+                        R.string.play
+                    ),
                     tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(24.dp)
                 )
@@ -295,9 +282,7 @@ fun DuaDetailScreenPreview() {
                 translation = "O Allah, bring it upon us with blessings and faith.",
                 source = "Tirmidhi",
                 categoryId = "ramadan"
-            ), 
-            onBack = {},
-            navController = rememberNavController()
+            ), onBack = {}, navController = rememberNavController()
         )
     }
 }

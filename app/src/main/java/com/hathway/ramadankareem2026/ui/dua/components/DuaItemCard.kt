@@ -12,51 +12,42 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 
 @Composable
 fun DuaItemCard(
-    dua: DuaItem,
-    onClick: (() -> Unit)? = null
+    dua: DuaItem, onClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .then(
-                if (onClick != null) Modifier.clickable { onClick() }
-                else Modifier
-            ),
+            .then(if (onClick != null) Modifier.clickable { onClick() }
+            else Modifier),
         shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
-    ) {
+        elevation = CardDefaults.cardElevation(2.dp)) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
             //  Arabic
             Text(
-                text = dua.arabic,
-                style = MaterialTheme.typography.headlineSmall
+                text = dua.arabic, style = MaterialTheme.typography.headlineSmall
             )
 
-            // 🔤 Transliteration (SAFE)
-            dua.transliteration
-                ?.takeIf { it.isNotBlank() }
-                ?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
+            // Transliteration (SAFE)
+            dua.transliteration.takeIf { it.isNotBlank() }?.let {
+                Text(
+                    text = it, style = MaterialTheme.typography.bodyMedium,
 
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
 
             //  Translation
             Text(
-                text = dua.translation,
-                style = MaterialTheme.typography.bodyMedium
+                text = dua.translation, style = MaterialTheme.typography.bodyMedium
             )
 
             //  Source
@@ -69,3 +60,37 @@ fun DuaItemCard(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun DuaItemCardPreview_Clickable() {
+    MaterialTheme {
+        DuaItemCard(
+            dua = DuaItem(
+                id = "sehri",
+                categoryId = "ramadan",
+                title = "Intention for Fasting (Sehri)",
+                arabic = "وَبِصَوْمِ غَدٍ نَوَيْتُ مِنْ شَهْرِ رَمَضَانَ",
+                transliteration = "Wa bisawmi ghadin nawaitu min shahri Ramaḍān",
+                translation = "I intend to keep the fast for tomorrow in the month of Ramadan.",
+                source = "Fiqh"
+            ), onClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DuaItemCardPreview_ReadOnly() {
+    MaterialTheme {
+        DuaItemCard(
+            dua = DuaItem(
+                id = "sehri",
+                categoryId = "ramadan",
+                title = "Intention for Fasting (Sehri)",
+                arabic = "وَبِصَوْمِ غَدٍ نَوَيْتُ مِنْ شَهْرِ رَمَضَانَ",
+                transliteration = "Wa bisawmi ghadin nawaitu min shahri Ramaḍān",
+                translation = "I intend to keep the fast for tomorrow in the month of Ramadan.",
+                source = "Fiqh"
+            ), onClick = null
+        )
+    }
+}

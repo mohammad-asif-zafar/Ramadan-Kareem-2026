@@ -18,26 +18,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 /**
- * 📖 A single Duʿā card used in lists (category screen, all duʿās, etc.)
+ * A reusable card UI for showing a single Duʿā item in a list.
  *
- * Shows:
- *  - Left icon (book / Qur’an)
- *  - Title (duʿā name)
- *  - Optional subtitle (source like Qur’an 2:128)
- *  - Right chevron (indicates navigation)
+ * Used in:
+ * - Duʿā categories screen
+ * - All Duʿās list
+ * - Search results
+ *
+ * UI Structure:
  */
 @Composable
 fun DuaCardItem(
-    title: String,                 // 🏷️ Duʿā title
-    subtitle: String? = null,       // 📌 Optional source
-    onClick: () -> Unit             // 👉 Navigate to detail
+    title: String,           // Main duʿā title (required)
+    subtitle: String? = null,// Optional subtitle (e.g., Qur’an reference)
+    onClick: () -> Unit      // Click action (navigate to detail screen)
 ) {
 
-    //  Card container
+    /**
+     * Card acts as the main container.
+     * - fillMaxWidth → full width list item
+     * - clickable → entire card is tappable
+     * - Rounded corners for modern UI
+     */
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick), // Whole card clickable
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp),
         colors = CardDefaults.cardColors(
@@ -45,7 +51,10 @@ fun DuaCardItem(
         )
     ) {
 
-        //  Horizontal layout
+        /**
+         * Row layout to arrange:
+         * [Icon] [Text Content] [Chevron]
+         */
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -53,22 +62,26 @@ fun DuaCardItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            //  Left icon (visual anchor)
+            // Left icon (visual identifier for duʿā/book)
             Icon(
                 imageVector = Icons.Outlined.AutoStories,
-                contentDescription = null,
+                contentDescription = null, // Decorative icon
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(28.dp)
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // 🕌 Main text content
+            /**
+             * Column holds title and optional subtitle.
+             * weight(1f) ensures it takes all available space
+             * and pushes chevron to the right.
+             */
             Column(
-                modifier = Modifier.weight(1f) // Takes remaining space
+                modifier = Modifier.weight(1f)
             ) {
 
-                //  Title
+                // Duʿā title
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -77,7 +90,13 @@ fun DuaCardItem(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                //  Subtitle (optional)
+                /**
+                 * Subtitle shown only if provided.
+                 * Useful for:
+                 * - Qur’an reference
+                 * - Category name
+                 * - Short description
+                 */
                 if (!subtitle.isNullOrBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -90,7 +109,7 @@ fun DuaCardItem(
                 }
             }
 
-            //  Right chevron (navigation hint)
+            // Right chevron → indicates navigation
             Icon(
                 imageVector = Icons.Outlined.ChevronRight,
                 contentDescription = null,
@@ -101,21 +120,30 @@ fun DuaCardItem(
 }
 
 
+/**
+ * Preview to visualize the DuaCardItem in isolation.
+ * Helps designers & developers verify spacing, typography, and layout.
+ */
 @Preview(
     name = "Dua Card Item", device = Devices.PIXEL_6, showBackground = true
 )
 @Composable
 fun DuaCardItemPreview() {
     RamadanKareemTheme {
+
+        /**
+         * Column used to show multiple variations
+         * with spacing between them.
+         */
         Column(
             modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // With subtitle
+            // Example with subtitle
             DuaCardItem(
                 title = "Ramadan Moon Sighting Duʿā", subtitle = "Ramadan Duʿā", onClick = {})
 
-            // Without subtitle
+            // Example without subtitle
             DuaCardItem(
                 title = "Forgiveness Duʿā", subtitle = null, onClick = {})
         }

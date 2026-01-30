@@ -43,7 +43,7 @@ fun AllahNameDetailScreen(
                 .padding(horizontal = 24.dp)
         ) {
 
-            // 🕋 CENTER CONTENT (Arabic + titles)
+            // CENTER CONTENT (Arabic + titles)
             Column(
                 modifier = Modifier.align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -73,7 +73,7 @@ fun AllahNameDetailScreen(
                 )
             }
 
-            // 📖 BOTTOM MEANING
+            // BOTTOM MEANING
             Surface(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,12 +56,12 @@ fun RamadanToolbar(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // 🔙 Back button or Left icon
+            // Back button or Left icon
             if (showBack) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.back),
                         tint = contentColor
                     )
                 }
@@ -69,7 +69,7 @@ fun RamadanToolbar(
                 IconButton(onClick = onLeftIconClick) {
                     Icon(
                         painter = painterResource(leftIcon),
-                        contentDescription = "Left Action",
+                        contentDescription = stringResource(R.string.left_action),
                         tint = contentColor
                     )
                 }
@@ -87,13 +87,13 @@ fun RamadanToolbar(
                 color = contentColor
             )
 
-            // ⭐ Right icon 1 (e.g. Favorite) with badge
+            //  Right icon 1 (e.g. Favorite) with badge
             rightIcon1?.let {
                 Box {
                     IconButton(onClick = onRightIcon1Click) {
                         Icon(
                             painter = painterResource(it),
-                            contentDescription = "Action 1",
+                            contentDescription = stringResource(R.string.right_action),
                             tint = contentColor
                         )
                     }
@@ -104,8 +104,7 @@ fun RamadanToolbar(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clip(CircleShape)
-                                    .align(Alignment.TopEnd),
-                                color = Color.Red
+                                    .align(Alignment.TopEnd), color = Color.Red
                             ) {
                                 Box(
                                     contentAlignment = Alignment.Center
@@ -123,12 +122,12 @@ fun RamadanToolbar(
                 }
             }
 
-            // 🔔 Right icon 2 (e.g. Notification)
+            //  Right icon 2 (e.g. Notification)
             rightIcon2?.let {
                 IconButton(onClick = onRightIcon2Click) {
                     Icon(
                         painter = painterResource(it),
-                        contentDescription = "Action 2",
+                        contentDescription = stringResource(R.string.right_action_second),
                         tint = contentColor
                     )
                 }
@@ -145,7 +144,7 @@ fun RamadanToolbar(
 fun RamadanToolbarPreview() {
     MaterialTheme {
         RamadanToolbar(
-            title = "Dua",
+            title = stringResource(R.string.dua),
             showBack = true,
             rightIcon1 = R.drawable.ic_favorite_outline,
             rightIcon2 = R.drawable.ic_notification,

@@ -9,7 +9,7 @@ object DuaCategoryData {
 
     val list = listOf(
 
-        // 🌙 Ramadan
+        //  Ramadan
         DuaCategory(
             id = "ramadan",
             title = "Ramadan Duʿāʾs",
@@ -17,7 +17,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.NightsStay
         ),
 
-        // 📖 Qur’an
+        //  Qur’an
         DuaCategory(
             id = "quran",
             title = "Duʿāʾs from Qur’an",
@@ -25,7 +25,7 @@ object DuaCategoryData {
             icon = Icons.AutoMirrored.Outlined.MenuBook
         ),
 
-        // 🕌 Prophets
+        //  Prophets
         DuaCategory(
             id = "prophets",
             title = "Duʿāʾs of Prophets",
@@ -33,7 +33,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.AutoStories
         ),
 
-        // 🧠 Faith
+        //  Faith
         DuaCategory(
             id = "faith",
             title = "Faith & Guidance",
@@ -41,7 +41,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.Mosque
         ),
 
-        // 👨‍👩‍👧‍👦 Family
+        //  Family
         DuaCategory(
             id = "family",
             title = "Family & Children",
@@ -49,7 +49,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.People
         ),
 
-        // 💍 Marriage
+        //  Marriage
         DuaCategory(
             id = "marriage",
             title = "Marriage & Spouse",
@@ -57,7 +57,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.FavoriteBorder
         ),
 
-        // ❤️ Forgiveness
+        //  Forgiveness
         DuaCategory(
             id = "forgiveness",
             title = "Forgiveness & Mercy",
@@ -65,7 +65,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.VolunteerActivism
         ),
 
-        // 🛡️ Protection
+        //  Protection
         DuaCategory(
             id = "protection",
             title = "Protection & Safety",
@@ -73,7 +73,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.Security
         ),
 
-        // 🏥 Health
+        // Health
         DuaCategory(
             id = "health",
             title = "Health & Healing",
@@ -81,7 +81,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.MedicalServices
         ),
 
-        // 🌅 Daily
+        // Daily
         DuaCategory(
             id = "daily",
             title = "Daily Duʿāʾs",
@@ -89,7 +89,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.WbSunny
         ),
 
-        // 📿 Adhkār
+        // Adhkār
         DuaCategory(
             id = "adhkar",
             title = "Morning & Evening Adhkār",
@@ -97,7 +97,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.AutoAwesome
         ),
 
-        // 📘 Hisnul Muslim
+        // Hisnul Muslim
         DuaCategory(
             id = "hisnul",
             title = "Hisnul Muslim",
@@ -105,7 +105,7 @@ object DuaCategoryData {
             icon = Icons.Outlined.MenuBook
         ),
 
-        // 👴 Parents (separate from family)
+        //  Parents (separate from family)
         DuaCategory(
             id = "parents",
             title = "Parents",

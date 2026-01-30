@@ -36,6 +36,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.minutesUntil
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 
@@ -57,20 +59,20 @@ fun PrayerTimeSection(
     val viewModel: PrayerViewModel = viewModel(
         factory = PrayerViewModelFactory(app)
     )
-    // 🔹 Collect single source of truth from ViewModel
+    //  Collect single source of truth from ViewModel
     val state by viewModel.state.collectAsState()
 
-    // 🔹 Current time used to determine current/next prayer
+    //  Current time used to determine current/next prayer
     val now = remember { LocalTime.now() }
 
-    // 🔹 Map UI state → prayer list (PURE logic)
+    //  Map UI state → prayer list (PURE logic)
     val prayers = remember(state) {
         PrayerTimeUiMapper.map(
             state = state, now = now
         )
     }
 
-    // 🔹 Safety: if empty, render nothing
+    //  Safety: if empty, render nothing
     if (prayers.isEmpty()) return
 
     Column(
@@ -79,7 +81,7 @@ fun PrayerTimeSection(
             .padding(horizontal = 16.dp)
     ) {
 
-        SectionTitle("Prayer Times")
+        SectionTitle(stringResource(R.string.prayer_times))
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -176,7 +178,7 @@ fun PrayerItem(
                 )
             }
 
-            // ⚪ Future prayer (after next)
+            //  Future prayer (after next)
             !prayer.isPast -> {
                 val mins = minutesUntil(prayer.time).coerceAtLeast(0)
 
@@ -187,7 +189,7 @@ fun PrayerItem(
                 )
             }
 
-            // 🔴 Past prayer
+            //  Past prayer
             else -> {
                 Text(
                     "Passed", color = Color.Gray, style = MaterialTheme.typography.labelSmall

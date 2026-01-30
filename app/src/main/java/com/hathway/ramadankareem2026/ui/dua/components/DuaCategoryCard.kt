@@ -22,7 +22,7 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaCategory
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 /**
- * 🗂️ Dua Category Card
+ *  Dua Category Card
  *
  * Used in:
  *  - Dua main screen (2×2 grid)
@@ -35,9 +35,7 @@ import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
  */
 @Composable
 fun DuaCategoryCard(
-    modifier: Modifier = Modifier,
-    category: DuaCategory,      // 📦 Category data (id, title, subtitle, icon)
-    onClick: () -> Unit         // 👉 Navigate to category list
+    modifier: Modifier = Modifier, category: DuaCategory, onClick: () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -50,7 +48,7 @@ fun DuaCategoryCard(
         )
     ) {
 
-        // 📐 Vertical content layout
+        //  Vertical content layout
         Column(
             modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -62,7 +60,7 @@ fun DuaCategoryCard(
                 tint = MaterialTheme.colorScheme.primary
             )
 
-            // 🏷️ Category title
+            //  Category title
             Text(
                 text = category.title, style = MaterialTheme.typography.titleMedium
             )
