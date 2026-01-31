@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.home.model.FeatureIcon
@@ -104,8 +105,6 @@ fun FeatureSection(navController: NavController) {
             }
         }
     }
-
-    Spacer(modifier = Modifier.height(20.dp))
 }
 
 @Composable
@@ -178,7 +177,7 @@ fun FeatureItem(
                 overflow = TextOverflow.Ellipsis
             )
             
-            Spacer(modifier = Modifier.height(4.dp))
+           // Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }

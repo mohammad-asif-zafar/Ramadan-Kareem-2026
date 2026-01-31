@@ -38,8 +38,9 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
-import com.hathway.ramadankareem2026.ui.ramadan.RamadanCalendarScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
+import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipDetailScreen
+import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipsScreen
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatBreakdownRoute
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatHistoryRoute
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatRoute
@@ -211,6 +212,26 @@ private fun HomeScaffold() {
 
             composable(Routes.QURAN) {
                 QuranRoute(navController)
+            }
+
+            composable(Routes.TIPS) {
+                TipsScreen(
+                    onBack = { navController.popBackStack() },
+                    onTipClick = { tipId ->
+                        navController.navigate("tip_detail/$tipId")
+                    }
+                )
+            }
+
+            composable(
+                route = "tip_detail/{tipId}",
+                arguments = listOf(navArgument("tipId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val tipId = backStackEntry.arguments?.getInt("tipId") ?: return@composable
+                TipDetailScreen(
+                    tipId = tipId,
+                    onBack = { navController.popBackStack() }
+                )
             }
 
             composable(

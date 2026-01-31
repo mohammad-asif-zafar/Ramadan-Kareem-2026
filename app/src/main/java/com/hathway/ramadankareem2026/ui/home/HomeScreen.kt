@@ -110,9 +110,12 @@ fun HomeScreen(
             }
 
             item { HomeHeaderSlider() }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
             item { FeatureSection(navController) }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { TodayTipSection() }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
@@ -136,9 +139,12 @@ private fun HomeScreenPreviewContent(
                     locationState = locationState, onLocationClick = {})
             }
             item { HomeHeaderSlider() }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
             item { FeatureSection(navController) }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { TodayTipSection() }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }

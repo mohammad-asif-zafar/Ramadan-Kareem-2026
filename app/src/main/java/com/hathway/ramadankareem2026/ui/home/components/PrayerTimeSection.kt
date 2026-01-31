@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
@@ -70,22 +71,9 @@ fun PrayerTimeSection() {
         factory = PrayerViewModelFactory(app)
     )
 
-    /**
-     * Collect prayer state from StateFlow
-     * This is the single source of truth
-     */
     val state by viewModel.state.collectAsState()
-
-    /**
-     * Capture current time once per composition.
-     * Used to determine current / next prayer.
-     */
     val now = remember { LocalTime.now() }
 
-    /**
-     * Map raw state → UI-friendly prayer list.
-     * Recomputed only when state changes.
-     */
     val prayers = remember(state) {
         PrayerTimeUiMapper.map(
             state = state, now = now
@@ -98,7 +86,7 @@ fun PrayerTimeSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
     ) {
 
         // Section header
