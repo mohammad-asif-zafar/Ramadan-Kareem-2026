@@ -70,6 +70,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -93,10 +94,14 @@ import java.time.LocalTime
 fun RamadanCalendarScreen(
     navController: NavController,
     days: List<RamadanDayUiModel>,
+    isLoading: Boolean = false,
+    error: String? = null,
     onBack: () -> Unit,
     onViewFullCalendar: () -> Unit,
     onSettings: () -> Unit,
-    onRefresh: () -> Unit = {}
+    onRefresh: () -> Unit = {},
+    onLocationUpdate: (Double, Double) -> Unit = { _, _ -> },
+    onClearError: () -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
@@ -105,6 +110,29 @@ fun RamadanCalendarScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
+    
+    // Location detection for dynamic prayer times
+    val context = LocalContext.current
+    val locationProvider = remember { com.hathway.ramadankareem2026.core.location.LocationProvider(context) }
+    
+    // Auto-detect location on first load
+    LaunchedEffect(Unit) {
+        try {
+            val location = locationProvider.fetchLocation()
+            location?.let {
+                onLocationUpdate(it.latitude, it.longitude)
+            }
+        } catch (e: Exception) {
+            // Silently fail - will use default prayer times
+        }
+    }
+    
+    // Handle error display
+    LaunchedEffect(error) {
+        error?.let {
+            // Could show a snackbar or toast here
+        }
+    }
     
     // Auto-scroll to today's position
     val todayIndex = days.indexOfFirst { it.status == FastingDayStatus.TODAY || it.status == FastingDayStatus.FASTING }
@@ -117,7 +145,7 @@ fun RamadanCalendarScreen(
     Scaffold(
         topBar = {
             EnhancedRamadanCalendarToolbar(
-                title = stringResource(R.string.feature_calendar),
+                title = stringResource(R.string.ramadan_calendar),
                 showBack = true,
                 onBackClick = onBack,
                 onRefreshClick = {
@@ -248,9 +276,7 @@ private fun EnhancedRamadanCalendarToolbar(
         title = title,
         showBack = showBack,
         onBackClick = onBackClick,
-        rightIcon1 = if (isRefreshing) null else R.drawable.ic_notification,
         onRightIcon1Click = { if (!isRefreshing) onRefreshClick() },
-        rightIcon2 = R.drawable.ic_notification,
         onRightIcon2Click = onSettingsClick,
         backgroundColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface

@@ -31,28 +31,60 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.components.AyahAudioPlayer
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Ayah
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 
 @Composable
 fun QuranSurahAyahsScreen(
-    viewModel: QuranViewModel, surahId: Int, onBack: () -> Unit
+    viewModel: QuranViewModel, 
+    surahId: Int, 
+    onBack: () -> Unit,
+    quranBookmarkViewModel: QuranBookmarkViewModel,
+    quranBookmarkCountViewModel: QuranBookmarkCountViewModel,
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
     val bookmarkedAyahs by viewModel.bookmarkedAyahs.collectAsState()
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
     val currentlyPlayingAyah by viewModel.currentlyPlayingAyah.collectAsState()
     val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
+    
+    // Surah-level bookmark state
+    val isBookmarked by quranBookmarkViewModel.isBookmarked(surahId.toString())
+        .collectAsStateWithLifecycle(initialValue = false)
+    val bookmarkCount by quranBookmarkCountViewModel.quranBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
 
     val listState = rememberLazyListState()
+
+    LaunchedEffect(surahId) {
+        quranBookmarkViewModel.checkBookmarkStatus(surahId.toString())
+        // Set up callback for immediate Quran badge updates with delta
+        quranBookmarkViewModel.setBookmarkCountChangedCallback { delta ->
+            quranBookmarkCountViewModel.updateQuranBookmarkCountImmediate(delta)
+        }
+    }
 
     LaunchedEffect(surahId, state.surahList) {
         if (surahId > 0) {
@@ -82,8 +114,24 @@ fun QuranSurahAyahsScreen(
                 title = state.selectedSurah?.englishName ?: "Quran",
                 showBack = true,
                 onBackClick = onBack,
-                        // Bookmarks
-                        rightIcon1 = R.drawable.ic_saved,
+                // Enhanced bookmarks with visual feedback
+                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1Badge = bookmarkCount,
+                onRightIcon1Click = {
+                    // Navigate to Quran bookmarks list
+                    navController.navigate(Routes.QURAN_BOOKMARKS)
+                },
+                onRightIcon2Click = {
+                    // Toggle Surah bookmark with enhanced feedback
+                    val surah = state.selectedSurah
+                    if (surah != null) {
+                        quranBookmarkViewModel.toggleBookmark(
+                            surahId = surah.id.toString(),
+                            title = surah.englishName,
+                            content = surah.name
+                        )
+                    }
+                }
             )
         }) { padding ->
         when {
@@ -126,7 +174,120 @@ fun QuranSurahAyahsScreen(
                         }
                     }
 
-                    // 📖 AYAH LIST
+                    // 🔖 SURAH BOOKMARK BUTTON - Enhanced with animations
+                    val bookmarkScale by animateFloatAsState(
+                        targetValue = if (isBookmarked) 1.2f else 1.0f,
+                        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+                        label = "bookmark_scale"
+                    )
+                    
+                    val bookmarkBackgroundColor by animateColorAsState(
+                        targetValue = if (isBookmarked) 
+                            MaterialTheme.colorScheme.primaryContainer 
+                        else 
+                            MaterialTheme.colorScheme.surface,
+                        animationSpec = tween(durationMillis = 300),
+                        label = "bookmark_background_color"
+                    )
+                    
+                    val bookmarkIconColor by animateColorAsState(
+                        targetValue = if (isBookmarked) 
+                            MaterialTheme.colorScheme.onPrimaryContainer 
+                        else 
+                            MaterialTheme.colorScheme.primary,
+                        animationSpec = tween(durationMillis = 300),
+                        label = "bookmark_icon_color"
+                    )
+                    
+                    val bookmarkBorderColor by animateColorAsState(
+                        targetValue = if (isBookmarked) 
+                            MaterialTheme.colorScheme.primary 
+                        else 
+                            MaterialTheme.colorScheme.outline,
+                        animationSpec = tween(durationMillis = 300),
+                        label = "bookmark_border_color"
+                    )
+
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .clickable {
+                                val surah = state.selectedSurah
+                                if (surah != null) {
+                                    quranBookmarkViewModel.toggleBookmark(
+                                        surahId = surah.id.toString(),
+                                        title = surah.englishName,
+                                        content = surah.name
+                                    )
+                                }
+                            }
+                            .shadow(
+                                elevation = if (isBookmarked) 8.dp else 2.dp,
+                                shape = RoundedCornerShape(12.dp)
+                            ),
+                        shape = RoundedCornerShape(12.dp),
+                        color = bookmarkBackgroundColor,
+                        border = androidx.compose.foundation.BorderStroke(
+                            width = if (isBookmarked) 2.dp else 1.dp,
+                            color = bookmarkBorderColor
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(
+                                    text = "Bookmark this Surah",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = if (isBookmarked) 
+                                        MaterialTheme.colorScheme.onPrimaryContainer 
+                                    else 
+                                        MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = if (isBookmarked) {
+                                        "✅ Bookmarked! Tap to remove"
+                                    } else {
+                                        "Tap to add to your bookmarks"
+                                    },
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = if (isBookmarked) 
+                                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) 
+                                    else 
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            
+                            Box(
+                                modifier = Modifier
+                                    .scale(bookmarkScale)
+                                    .background(
+                                        color = if (isBookmarked) 
+                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) 
+                                        else 
+                                            Color.Transparent,
+                                        shape = CircleShape
+                                    )
+                                    .padding(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                                    contentDescription = if (isBookmarked) "Remove bookmark" else "Add bookmark",
+                                    tint = bookmarkIconColor,
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    // �📖 AYAH LIST
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -197,6 +358,31 @@ private fun AyahCard(
     onAudioClick: () -> Unit,
     onClick: () -> Unit
 ) {
+    // Enhanced bookmark animations for individual ayahs
+    val bookmarkScale by animateFloatAsState(
+        targetValue = if (isBookmarked) 1.3f else 1.0f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "ayah_bookmark_scale"
+    )
+    
+    val bookmarkIconColor by animateColorAsState(
+        targetValue = if (isBookmarked) 
+            MaterialTheme.colorScheme.primary 
+        else 
+            MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = tween(durationMillis = 300),
+        label = "ayah_bookmark_icon_color"
+    )
+    
+    val bookmarkBackgroundColor by animateColorAsState(
+        targetValue = if (isBookmarked) 
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) 
+        else 
+            Color.Transparent,
+        animationSpec = tween(durationMillis = 300),
+        label = "ayah_bookmark_background_color"
+    )
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -239,16 +425,25 @@ private fun AyahCard(
                     modifier = Modifier.weight(1f)
                 )
 
-                // Bookmark button
-              /*  IconButton(onClick = onBookmarkClick) {
+                // Enhanced bookmark button
+                IconButton(
+                    onClick = onBookmarkClick,
+                    modifier = Modifier
+                        .scale(bookmarkScale)
+                        .background(
+                            color = bookmarkBackgroundColor,
+                            shape = CircleShape
+                        )
+                ) {
                     Icon(
                         imageVector = if (isBookmarked)
                             Icons.Default.Bookmark
                         else Icons.Default.BookmarkBorder,
-                        contentDescription = "Bookmark ayah",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        contentDescription = if (isBookmarked) "Remove bookmark" else "Bookmark ayah",
+                        tint = bookmarkIconColor,
+                        modifier = Modifier.size(20.dp)
                     )
-                }*/
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

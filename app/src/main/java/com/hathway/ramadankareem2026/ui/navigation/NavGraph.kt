@@ -47,6 +47,8 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahAyahsScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahListScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
@@ -290,11 +292,16 @@ private fun HomeScaffold() {
                         context = context.applicationContext
                     )
                 )
+                val quranBookmarkCountViewModel: QuranBookmarkCountViewModel = viewModel()
+                val quranBookmarkViewModel: QuranBookmarkViewModel = viewModel()
 
                 QuranSurahAyahsScreen(
                     viewModel = viewModel,
                     surahId = surahId,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    quranBookmarkViewModel = quranBookmarkViewModel,
+                    quranBookmarkCountViewModel = quranBookmarkCountViewModel,
+                    navController = navController
                 )
             }
 
@@ -316,16 +323,22 @@ private fun HomeScaffold() {
                         context = context.applicationContext
                     )
                 )
+                val quranBookmarkCountViewModel: QuranBookmarkCountViewModel = viewModel()
+                val quranBookmarkViewModel: QuranBookmarkViewModel = viewModel()
 
                 if (surahIdArg > 0) {
                     QuranSurahAyahsScreen(
                         viewModel = viewModel,
                         surahId = surahIdArg,
-                        onBack = { navController.popBackStack() }
+                        onBack = { navController.popBackStack() },
+                        quranBookmarkViewModel = quranBookmarkViewModel,
+                        quranBookmarkCountViewModel = quranBookmarkCountViewModel,
+                        navController = navController
                     )
                 } else {
                     QuranSurahListScreen(
                         viewModel = viewModel,
+                        quranBookmarkCountViewModel = quranBookmarkCountViewModel,
                         onBack = { navController.popBackStack() },
                         onSurahClick = { surah ->
                             navController.navigate(
@@ -333,7 +346,8 @@ private fun HomeScaffold() {
                                     surah.id
                                 )
                             )
-                        }
+                        },
+                        navController = navController
                     )
                 }
             }

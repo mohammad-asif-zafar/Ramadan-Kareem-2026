@@ -38,17 +38,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 
 @Composable
 fun QuranSurahListScreen(
     viewModel: QuranViewModel,
+    quranBookmarkCountViewModel: QuranBookmarkCountViewModel,
     onBack: () -> Unit,
-    onSurahClick: (Surah) -> Unit
+    onSurahClick: (Surah) -> Unit,
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -67,6 +74,14 @@ fun QuranSurahListScreen(
         it.englishNameTranslation.contains(searchQuery, ignoreCase = true)
     }
 
+    val bookmarkCount by quranBookmarkCountViewModel.quranBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    
+    // Set up callback for immediate Quran badge updates
+    LaunchedEffect(Unit) {
+        // Note: QuranViewModel doesn't have setBookmarkCountChangedCallback like other ViewModels
+        // We'll refresh the count periodically or when needed
+    }
+
     Scaffold(
         topBar = {
             RamadanToolbar(
@@ -74,7 +89,12 @@ fun QuranSurahListScreen(
                 showBack = true,
                 onBackClick = onBack,
                 // Bookmarks
-                rightIcon1 = R.drawable.ic_saved
+                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1Badge = bookmarkCount,
+                onRightIcon1Click = {
+                    // Navigate to Quran bookmarks list
+                    navController.navigate(Routes.QURAN_BOOKMARKS)
+                }
             )
         }
     ) { padding ->

@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahListScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModelFactory
+import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
 
 
 @Composable
@@ -18,9 +19,11 @@ fun QuranRoute(navController: NavController) {
             context = context.applicationContext
         )
     )
+    val quranBookmarkCountViewModel: QuranBookmarkCountViewModel = viewModel()
 
     QuranSurahListScreen(
         viewModel = viewModel,
+        quranBookmarkCountViewModel = quranBookmarkCountViewModel,
         onBack = { navController.popBackStack() },
         onSurahClick = { surah ->
             navController.navigate(
@@ -28,7 +31,8 @@ fun QuranRoute(navController: NavController) {
                     surah.id
                 )
             )
-        })
+        },
+        navController = navController)
 }
 
 

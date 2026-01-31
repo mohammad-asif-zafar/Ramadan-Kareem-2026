@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.quran.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,9 +62,18 @@ fun QuranBookmarksScreen(
                 BookmarkItem(
                     bookmark = bookmark,
                     onClick = {
-                        // Navigate to Quran content based on bookmark data
-                        // This would depend on how Quran content is structured
-                        navController.navigate("quran_surah/${bookmark.itemId}")
+                        // Navigate to Quran Surah Ayahs screen with correct route
+                        try {
+                            val surahId = bookmark.itemId.toIntOrNull()
+                            if (surahId != null && surahId > 0) {
+                                navController.navigate(
+                                    com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(surahId)
+                                )
+                            }
+                        } catch (e: Exception) {
+                            // Handle navigation error gracefully
+                            Log.e("QuranBookmarks", "Error navigating to Surah ${bookmark.itemId}", e)
+                        }
                     }
                 )
             }
