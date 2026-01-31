@@ -46,7 +46,7 @@ fun RamadanDuaHorizontal(
 @Composable
 fun RamadanDuaHorizontalPreview() {
 
-    // Fake data for preview
+    // Demo data for preview
 
     val previewDuas = listOf(
         DuaItem(

@@ -53,7 +53,7 @@ fun DuaCardItem(
 
         /**
          * Row layout to arrange:
-         * [Icon] [Text Content] [Chevron]
+         * [Text Content]
          */
         Row(
             modifier = Modifier
@@ -109,7 +109,7 @@ fun DuaCardItem(
                 }
             }
 
-            // Right chevron → indicates navigation
+            // Right → indicates navigation
             Icon(
                 imageVector = Icons.Outlined.ChevronRight,
                 contentDescription = null,

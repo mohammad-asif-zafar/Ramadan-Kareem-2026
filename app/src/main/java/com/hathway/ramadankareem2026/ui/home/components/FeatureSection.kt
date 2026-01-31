@@ -23,7 +23,6 @@ import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.Mosque
-import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -90,7 +90,7 @@ fun FeatureSection(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             userScrollEnabled = false,
-            modifier = Modifier.height(200.dp)
+            modifier = Modifier.height(220.dp)
         ) {
             items(featureList) { item ->
                 FeatureItem(
@@ -111,7 +111,7 @@ fun FeatureItem(
 
     Card(
         modifier = Modifier
-            .aspectRatio(1f)
+            .aspectRatio(.8f)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -132,7 +132,7 @@ fun FeatureItem(
                     Icon(
                         imageVector = icon.imageVector,
                         contentDescription = stringResource(item.titleRes),
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(30.dp),
                         tint = Color(0xFFB89A2B)
                     )
                 }
@@ -141,15 +141,14 @@ fun FeatureItem(
                     Image(
                         painter = painterResource(icon.resId),
                         contentDescription = stringResource(item.titleRes),
-                        modifier = Modifier.size(158.dp),
+                        modifier = Modifier.size(148.dp),
 
                         )
                 }
-
                 is FeatureIcon.Text -> {
                     Text(
                         text = icon.value,
-                        fontSize = 24.sp,
+                        fontSize = 26.sp,
                         color = RamadanGold,
                         fontFamily = FontFamily.Serif
                     )
@@ -162,6 +161,29 @@ fun FeatureItem(
             Text(
                 text = stringResource(item.titleRes), style = MaterialTheme.typography.labelMedium
             )
+            Spacer(modifier = Modifier.height(8.dp))
+
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun FeatureSectionPreview() {
+    FeatureSection(
+        navController = androidx.navigation.compose.rememberNavController()
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FeatureItemPreview() {
+    FeatureItem(
+        item = FeatureModel(
+            titleRes = R.string.feature_dua,
+            icon = FeatureIcon.Vector(Icons.Outlined.FavoriteBorder),
+            route = Routes.DUA
+        )
+    )
+}
+

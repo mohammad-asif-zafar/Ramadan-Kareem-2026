@@ -11,13 +11,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.hathway.ramadankareem2026.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.data.local.database.entity.ZakatCalculationEntity
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import java.util.*
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,12 +33,11 @@ fun ZakatHistoryScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Zakat History (${calculations.size})",
+                title = stringResource(R.string.zakat_history) + "(${calculations.size})",
                 showBack = true,
                 onBackClick = onBack
             )
-        }
-    ) { padding ->
+        }) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -43,11 +45,11 @@ fun ZakatHistoryScreen(
                 .padding(16.dp)
         ) {
             // Debug info
-            Text(
-                text = "Debug: Found ${calculations.size} calculations",
-                style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray
-            )
+            /* Text(
+                 text = "Debug: Found ${calculations.size} calculations",
+                 style = MaterialTheme.typography.bodySmall,
+                 color = Color.Gray
+             )*/
             // Header with delete all button
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -56,49 +58,49 @@ fun ZakatHistoryScreen(
             ) {
                 Column {
                     Text(
-                        text = "Previous Calculations",
+                        text = stringResource(R.string.previous_calculations),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = RamadanGold
                     )
                     Text(
-                        text = "Total: ${calculations.size} items",
+                        text = stringResource(R.string.total) + ": ${calculations.size} " + stringResource(
+                            R.string.items
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                
+
                 if (calculations.isNotEmpty()) {
                     TextButton(
-                        onClick = onDeleteAll,
-                        colors = ButtonDefaults.textButtonColors(
+                        onClick = onDeleteAll, colors = ButtonDefaults.textButtonColors(
                             contentColor = Color.Red
                         )
                     ) {
-                        Text("Delete All")
+                        Text(stringResource(R.string.delete_all))
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             if (calculations.isEmpty()) {
                 // Empty state
                 Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "No calculations yet",
+                            text = stringResource(R.string.no_calculations_yet),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Your zakat calculations will appear here",
+                            text = stringResource(R.string.no_zakat_calculator_description),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -106,12 +108,9 @@ fun ZakatHistoryScreen(
                     }
                 }
             } else {
-                // Debug: Print calculation details
-                println("DEBUG: Calculations list size: ${calculations.size}")
                 calculations.forEachIndexed { index, calc ->
-                    println("DEBUG: Calculation $index - ID: ${calc.id}, Date: ${calc.formattedDate}, Amount: ${calc.zakatPayable}")
                 }
-                
+
                 // Calculations list
                 LazyColumn(
                     modifier = Modifier
@@ -123,11 +122,9 @@ fun ZakatHistoryScreen(
                         items = calculations,
                         key = { it.id } // Add key to ensure proper recomposition
                     ) { calculation ->
-                        println("DEBUG: Rendering calculation ID: ${calculation.id}")
                         ZakatCalculationItem(
                             calculation = calculation,
-                            onDelete = { onDeleteCalculation(calculation) }
-                        )
+                            onDelete = { onDeleteCalculation(calculation) })
                     }
                 }
             }
@@ -137,22 +134,18 @@ fun ZakatHistoryScreen(
 
 @Composable
 private fun ZakatCalculationItem(
-    calculation: ZakatCalculationEntity,
-    onDelete: () -> Unit
+    calculation: ZakatCalculationEntity, onDelete: () -> Unit
 ) {
     // Simple currency formatting function
     fun formatCurrency(amount: Double): String {
         return "${calculation.currencySymbol}${String.format("%.2f", amount)}"
     }
-    
-    println("DEBUG: ZakatCalculationItem called for ID: ${calculation.id}, Currency: ${calculation.currencyCode} (${calculation.currencySymbol})")
-    
+
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -178,44 +171,42 @@ private fun ZakatCalculationItem(
                         )
                     }
                 }
-                
+
                 IconButton(
-                    onClick = onDelete,
-                    modifier = Modifier.size(32.dp)
+                    onClick = onDelete, modifier = Modifier.size(32.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(R.string.delete),
                         tint = Color.Red,
                         modifier = Modifier.size(20.dp)
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // Calculation details
             CalculationDetailRow(
-                label = "Total Assets",
+                label = stringResource(R.string.total_assets),
                 value = formatCurrency(calculation.totalAssets)
             )
-            
+
             CalculationDetailRow(
-                label = "Total Liabilities",
+                label = stringResource(R.string.total_liabilities),
                 value = formatCurrency(calculation.totalLiabilities)
             )
-            
+
             CalculationDetailRow(
-                label = "Nisab Type",
-                value = calculation.nisabType.replaceFirstChar { it.uppercase() }
-            )
-            
+                label = stringResource(R.string.nisab_type),
+                value = calculation.nisabType.replaceFirstChar { it.uppercase() })
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Zakat payable - highlight
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = RamadanGold.copy(alpha = 0.1f),
+                color = RamadanGold.copy(alpha = 0.09f),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
@@ -226,12 +217,12 @@ private fun ZakatCalculationItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Zakat Payable",
+                        text = stringResource(R.string.zakat_payable),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = RamadanGold
                     )
-                    
+
                     Text(
                         text = formatCurrency(calculation.zakatPayable),
                         style = MaterialTheme.typography.titleMedium,
@@ -246,8 +237,7 @@ private fun ZakatCalculationItem(
 
 @Composable
 private fun CalculationDetailRow(
-    label: String,
-    value: String
+    label: String, value: String
 ) {
     Row(
         modifier = Modifier
@@ -260,12 +250,45 @@ private fun CalculationDetailRow(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        
+
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurface
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ZakatHistoryScreenPreview() {
+    MaterialTheme {
+        ZakatHistoryScreen(
+            calculations = listOf(
+                ZakatCalculationEntity(
+                    id = 1,
+                    formattedDate = "12 Ramadan 1447 AH",
+                    totalAssets = 15000.0,
+                    totalLiabilities = 2000.0,
+                    zakatPayable = 325.0,
+                    currencySymbol = "₹",
+                    currencyName = "INR",
+                    country = "India",
+                    nisabType = "Gold",
+                    calculationDate = Date()
+                ), ZakatCalculationEntity(
+                    id = 2,
+                    formattedDate = "05 Ramadan 1447 AH",
+                    totalAssets = 5000.0,
+                    totalLiabilities = 500.0,
+                    zakatPayable = 112.5,
+                    currencySymbol = "$",
+                    currencyName = "USD",
+                    country = "USA",
+                    nisabType = "silver",
+                    calculationDate = Date(),
+                )
+            ), onDeleteCalculation = {}, onDeleteAll = {}, onBack = {})
     }
 }

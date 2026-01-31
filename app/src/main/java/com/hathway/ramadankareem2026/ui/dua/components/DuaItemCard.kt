@@ -30,13 +30,12 @@ fun DuaItemCard(
         Column(
             modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             //  Arabic
             Text(
                 text = dua.arabic, style = MaterialTheme.typography.headlineSmall
             )
 
-            // Transliteration (SAFE)
+            // Transliteration
             dua.transliteration.takeIf { it.isNotBlank() }?.let {
                 Text(
                     text = it, style = MaterialTheme.typography.bodyMedium,

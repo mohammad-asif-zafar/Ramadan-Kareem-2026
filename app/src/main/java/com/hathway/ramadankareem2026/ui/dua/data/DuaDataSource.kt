@@ -953,6 +953,19 @@ object DuaDataSource {
 
     //  Combined list
     val duas =
-        ramadanDuas + quranDuas + dailyDuas + quranRabbanaDuas + hisnulMuslimDuas + prophetDuas + morningEveningAdhkar + faithGuidanceDuas + familyDuas + forgivenessDuas + marriageDuas + parentsDuas + protectionDuas + healthDuas
+        ramadanDuas +
+                quranDuas +
+                dailyDuas +
+                quranRabbanaDuas +
+                hisnulMuslimDuas +
+                prophetDuas +
+                morningEveningAdhkar +
+                faithGuidanceDuas +
+                familyDuas +
+                forgivenessDuas +
+                marriageDuas +
+                parentsDuas +
+                protectionDuas +
+                healthDuas
 
 }

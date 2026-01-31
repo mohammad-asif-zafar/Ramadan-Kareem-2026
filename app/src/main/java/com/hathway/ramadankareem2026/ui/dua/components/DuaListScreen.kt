@@ -79,7 +79,7 @@ fun DuaListScreen(
 @Composable
 fun DuaListScreenPreview() {
 
-    // Fake preview data
+    // Demo preview data
     val previewDuas = listOf(
         DuaItem(
             id = "sehri",
