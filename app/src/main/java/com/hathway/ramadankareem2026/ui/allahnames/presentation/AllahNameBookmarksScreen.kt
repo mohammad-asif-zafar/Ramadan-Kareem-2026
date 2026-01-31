@@ -24,12 +24,15 @@ import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarksViewModel
 
+// Unique ViewModel factory key to ensure complete isolation
+private val ALLAH_NAME_BOOKMARKS_VIEWMODEL_KEY = "AllahNameBookmarksViewModel_Unique"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllahNameBookmarksScreen(
     onBack: () -> Unit,
     navController: NavController,
-    viewModel: AllahNameBookmarksViewModel = viewModel()
+    viewModel: AllahNameBookmarksViewModel = viewModel(key = ALLAH_NAME_BOOKMARKS_VIEWMODEL_KEY)
 ) {
     val bookmarks by viewModel.allahNameBookmarks.collectAsStateWithLifecycle()
 

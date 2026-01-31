@@ -24,12 +24,15 @@ import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarksViewModel
 
+// Unique ViewModel factory key to ensure complete isolation
+private val MOSQUE_BOOKMARKS_VIEWMODEL_KEY = "MosqueBookmarksViewModel_Unique"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MosqueBookmarksScreen(
     onBack: () -> Unit,
     navController: NavController,
-    viewModel: MosqueBookmarksViewModel = viewModel()
+    viewModel: MosqueBookmarksViewModel = viewModel(key = MOSQUE_BOOKMARKS_VIEWMODEL_KEY)
 ) {
     val bookmarks by viewModel.mosqueBookmarks.collectAsStateWithLifecycle()
 

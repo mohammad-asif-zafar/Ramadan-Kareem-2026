@@ -30,12 +30,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import android.app.Application
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.allahnames.components.AllahNameCard
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
+import com.hathway.ramadankareem2026.ui.allahnames.components.AllahNameCard
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 
@@ -45,11 +44,11 @@ fun AllahNamesScreen(
     onBack: () -> Unit, 
     onNameClick: (AllahName) -> Unit,
     navController: NavController,
-    sharedBookmarkCountViewModel: BookmarkCountViewModel
+    allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val bookmarkCount by sharedBookmarkCountViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
     
     // Create bookmark ViewModel for immediate updates
     val bookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
@@ -57,7 +56,7 @@ fun AllahNamesScreen(
     // Set up callback for immediate badge updates
     LaunchedEffect(Unit) {
         bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
-            sharedBookmarkCountViewModel.updateBookmarkCountImmediate(delta)
+            allahNameBookmarkCountViewModel.updateAllahNameBookmarkCountImmediate(delta)
         }
     }
     
@@ -78,8 +77,8 @@ fun AllahNamesScreen(
                 rightIcon1 = R.drawable.ic_saved,
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
-                    // Navigate to bookmarks list
-                    navController.navigate(Routes.BOOKMARKS)
+                    // Navigate to allah name bookmarks list
+                    navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
                 }
             )
         }, containerColor = MaterialTheme.colorScheme.background
@@ -123,9 +122,7 @@ fun AllahNamesScreen(
 @Composable
 fun AllahNamesScreenPreview() {
     MaterialTheme {
-        // Create a mock ViewModel for preview
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
-        
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
         AllahNamesScreen(
             names = listOf(
             AllahName(
@@ -147,7 +144,11 @@ fun AllahNamesScreenPreview() {
                 english = "The King",
                 meaning = "The Absolute Ruler of the universe."
             )
-        ), onBack = {}, onNameClick = {}, navController = rememberNavController(), sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
+            ), 
+            onBack = {}, 
+            onNameClick = {},
+            navController = rememberNavController(),
+            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
     }
 }
 
@@ -157,9 +158,7 @@ fun AllahNamesScreenPreview() {
 @Composable
 fun AllahNamesScreenDarkPreview() {
     MaterialTheme {
-        // Create a mock ViewModel for preview
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
-        
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
         AllahNamesScreen(
             names = listOf(
             AllahName(
@@ -169,6 +168,6 @@ fun AllahNamesScreenDarkPreview() {
                 english = "The Most Merciful",
                 meaning = "The One who has plenty of mercy for the believers."
             )
-        ), onBack = {}, onNameClick = {}, navController = rememberNavController(), sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
+        ), onBack = {}, onNameClick = {}, navController = rememberNavController(), allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
     }
 }

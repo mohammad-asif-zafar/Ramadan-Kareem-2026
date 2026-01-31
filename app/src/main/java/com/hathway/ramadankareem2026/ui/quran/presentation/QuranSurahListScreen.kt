@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
@@ -71,7 +72,9 @@ fun QuranSurahListScreen(
             RamadanToolbar(
                 title = "Quran",
                 showBack = true,
-                onBackClick = onBack
+                onBackClick = onBack,
+                // Bookmarks
+                rightIcon1 = R.drawable.ic_saved
             )
         }
     ) { padding ->

@@ -38,4 +38,8 @@ interface BookmarkDao {
     
     @Query("SELECT COUNT(*) FROM bookmarks WHERE itemType = 'quran'")
     suspend fun getQuranBookmarkCount(): Int
+    
+    // Debug function to check all bookmarks
+    @Query("SELECT * FROM bookmarks")
+    suspend fun getAllBookmarks(): List<BookmarkEntity>
 }

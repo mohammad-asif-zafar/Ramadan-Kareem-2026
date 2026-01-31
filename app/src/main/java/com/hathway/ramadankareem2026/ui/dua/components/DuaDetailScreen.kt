@@ -93,9 +93,8 @@ fun DuaDetailScreen(
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
                     // Navigate to dua bookmarks list
-                    navController.navigate("dua_bookmarks")
+                    navController.navigate(Routes.DUA_BOOKMARKS)
                 },
-                rightIcon2 = R.drawable.bell,
                 onRightIcon2Click = { })
         },
 

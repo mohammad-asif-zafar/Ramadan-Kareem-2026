@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,11 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoriesGrid
 import com.hathway.ramadankareem2026.ui.dua.components.RamadanDuaHorizontal
 import com.hathway.ramadankareem2026.ui.dua.data.DuaCategoryData
+import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaViewModel
 import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
@@ -48,9 +49,16 @@ fun DuaScreen(
     onBack: () -> Unit,
     viewModel: DuaViewModel = viewModel(),
     bookmarkViewModel: DuaBookmarkViewModel = viewModel(),
-    countViewModel: BookmarkCountViewModel = viewModel()
+    duaBookmarkCountViewModel: DuaBookmarkCountViewModel = viewModel()
 ) {
-    val bookmarkCount by countViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    val bookmarkCount by duaBookmarkCountViewModel.duaBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    
+    // Set up callback for immediate dua badge updates
+    LaunchedEffect(Unit) {
+        bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
+            duaBookmarkCountViewModel.updateDuaBookmarkCountImmediate(delta)
+        }
+    }
 
     Scaffold(
 
@@ -59,16 +67,16 @@ fun DuaScreen(
             RamadanToolbar(
                 title = stringResource(R.string.feature_dua),     // ✅ string resource ID
                 showBack = true, onBackClick = onBack, onRightIcon1Click = {
-                    // Navigate to bookmarks list
-                    navController.navigate(Routes.BOOKMARKS)
+                    // Navigate to dua bookmarks list
+                    navController.navigate(Routes.DUA_BOOKMARKS)
                 }, rightIcon1Badge = bookmarkCount,
                 // Bookmarks
                 rightIcon1 = R.drawable.ic_saved,
 
                 //  Notification  icon
-                rightIcon2 = R.drawable.bell, onRightIcon2Click = {
+                /*rightIcon2 = R.drawable.bell, onRightIcon2Click = {
                     navController.navigate(Routes.QIBLA_SETTINGS)
-                })
+                }*/)
         }
 
     ) { padding ->
@@ -124,6 +132,9 @@ fun DuaScreen(
 @Composable
 fun DuaScreenPreview() {
     RamadanKareemTheme {
-        DuaScreen(navController = rememberNavController(), onBack = {})
+        DuaScreen(
+            navController = rememberNavController(), 
+            onBack = {}
+        )
     }
 }

@@ -125,8 +125,8 @@ fun NearbyMosquesScreen(
                     rightIcon1 = R.drawable.ic_saved,
                     rightIcon1Badge = bookmarkCount,
                     onRightIcon1Click = {
-                        // Navigate to bookmarks list
-                        navController.navigate(Routes.BOOKMARKS)
+                        // Navigate to mosque bookmarks list
+                        navController.navigate(Routes.MOSQUE_BOOKMARKS)
                     }
                 )
             },

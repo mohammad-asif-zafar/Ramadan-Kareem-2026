@@ -15,23 +15,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
 import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarksViewModel
+
+// Unique ViewModel factory key to ensure complete isolation
+private val DUA_BOOKMARKS_VIEWMODEL_KEY = "DuaBookmarksViewModel_Unique"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DuaBookmarksScreen(
     onBack: () -> Unit,
     navController: NavController,
-    viewModel: DuaBookmarksViewModel = viewModel()
+    viewModel: DuaBookmarksViewModel = viewModel(key = DUA_BOOKMARKS_VIEWMODEL_KEY)
 ) {
     val bookmarks by viewModel.duaBookmarks.collectAsStateWithLifecycle()
 

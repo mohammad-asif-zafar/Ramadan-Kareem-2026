@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.quran.components.AyahAudioPlayer
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Ayah
@@ -80,7 +81,9 @@ fun QuranSurahAyahsScreen(
             RamadanToolbar(
                 title = state.selectedSurah?.englishName ?: "Quran",
                 showBack = true,
-                onBackClick = onBack
+                onBackClick = onBack,
+                        // Bookmarks
+                        rightIcon1 = R.drawable.ic_saved,
             )
         }) { padding ->
         when {
@@ -237,7 +240,7 @@ private fun AyahCard(
                 )
 
                 // Bookmark button
-                IconButton(onClick = onBookmarkClick) {
+              /*  IconButton(onClick = onBookmarkClick) {
                     Icon(
                         imageVector = if (isBookmarked)
                             Icons.Default.Bookmark
@@ -245,7 +248,7 @@ private fun AyahCard(
                         contentDescription = "Bookmark ayah",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
-                }
+                }*/
             }
 
             Spacer(modifier = Modifier.height(12.dp))

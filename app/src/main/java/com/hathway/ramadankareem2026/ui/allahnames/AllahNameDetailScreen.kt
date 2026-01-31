@@ -40,6 +40,7 @@ import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.LightTextPrimary
@@ -52,17 +53,17 @@ fun AllahNameDetailScreen(
     onBack: () -> Unit,
     navController: NavController,
     bookmarkViewModel: AllahNamesBookmarkViewModel,
-    sharedBookmarkCountViewModel: BookmarkCountViewModel
+    allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel
 ) {
     val isBookmarked by bookmarkViewModel.isBookmarked(name.id.toString())
         .collectAsStateWithLifecycle(initialValue = false)
-    val bookmarkCount by sharedBookmarkCountViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
 
     LaunchedEffect(name.id) {
         bookmarkViewModel.checkBookmarkStatus(name.id.toString())
         // Set up callback for immediate badge updates with delta
         bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
-            sharedBookmarkCountViewModel.updateBookmarkCountImmediate(delta)
+            allahNameBookmarkCountViewModel.updateAllahNameBookmarkCountImmediate(delta)
         }
     }
 
@@ -75,8 +76,8 @@ fun AllahNameDetailScreen(
                 rightIcon1 = R.drawable.ic_saved,
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
-                    // Navigate to bookmarks list
-                    navController.navigate(Routes.BOOKMARKS)
+                    // Navigate to allah name bookmarks list
+                    navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
                 }
             )
         }, 
@@ -214,7 +215,7 @@ fun AllahNameDetailScreen(
 fun AllahNameDetailPreviewLight() {
     MaterialTheme {
         // Create mock ViewModels for preview
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
         val mockBookmarkViewModel = AllahNamesBookmarkViewModel(android.app.Application())
         
         AllahNameDetailScreen(
@@ -228,6 +229,6 @@ fun AllahNameDetailPreviewLight() {
             onBack = {},
             navController = rememberNavController(),
             bookmarkViewModel = mockBookmarkViewModel,
-            sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
+            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
     }
 }

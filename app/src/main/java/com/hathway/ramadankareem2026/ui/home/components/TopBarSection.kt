@@ -114,7 +114,7 @@ fun TopBarSection(
 
                     Spacer(modifier = Modifier.height(2.dp))
 
-                    Text(
+                   /* Text(
                         text = when (locationState.source) {
                             LocationSource.DEMO -> stringResource(R.string.using_demo_location)
                             LocationSource.GPS -> stringResource(R.string.using_gps_location)
@@ -123,7 +123,7 @@ fun TopBarSection(
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    )*/
                 }
             }
         }

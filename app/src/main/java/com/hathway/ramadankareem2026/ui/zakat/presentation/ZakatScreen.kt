@@ -73,8 +73,8 @@ fun ZakatScreen(
                 rightIcon1 = R.drawable.ic_calculator,
                 rightIcon1Badge = if (zakatHistoryCount > 0) zakatHistoryCount else null,
                 onRightIcon1Click = onCalculatorIconClick,
-                rightIcon2 = R.drawable.ic_ai_search,
-                onRightIcon2Click = onAiSearch
+                /*rightIcon2 = R.drawable.ic_ai_search,
+                onRightIcon2Click = onAiSearch*/
             )
         }) { padding ->
         Column(

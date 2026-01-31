@@ -6,13 +6,14 @@ import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 
 @Composable
 fun AllahNameDetailRoute(
     id: Int, 
     navController: NavController, 
     viewModel: AllahNamesViewModel = viewModel(), 
-    sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel(),
+    allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel = viewModel(),
     sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 ) {
     //  Safe lookup (no crash)
@@ -24,5 +25,5 @@ fun AllahNameDetailRoute(
         onBack = { navController.popBackStack() }, 
         navController = navController,
         bookmarkViewModel = sharedBookmarkViewModel,
-        sharedBookmarkCountViewModel = sharedBookmarkCountViewModel)
+        allahNameBookmarkCountViewModel = allahNameBookmarkCountViewModel)
 }

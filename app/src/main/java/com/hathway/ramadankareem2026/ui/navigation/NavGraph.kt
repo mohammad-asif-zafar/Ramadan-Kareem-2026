@@ -23,6 +23,7 @@ import com.hathway.ramadankareem2026.ui.allahnames.data.source.AllahNamesLocalDa
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.route.BookmarksRoute
 import com.hathway.ramadankareem2026.ui.quran.presentation.route.QuranBookmarksRoute
@@ -184,7 +185,7 @@ private fun HomeScaffold() {
             composable(Routes.ALLAH_NAMES) {
 
                 val viewModel: AllahNamesViewModel = viewModel()
-                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                val allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel = viewModel()
                 val sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 
                 AllahNamesScreen(
@@ -196,7 +197,7 @@ private fun HomeScaffold() {
                         )
                     },
                     navController = navController,
-                    sharedBookmarkCountViewModel = sharedBookmarkCountViewModel)
+                    allahNameBookmarkCountViewModel = allahNameBookmarkCountViewModel)
             }
 
             composable(
@@ -205,14 +206,16 @@ private fun HomeScaffold() {
             ) { backStackEntry ->
 
                 val id = backStackEntry.arguments?.getInt("id") ?: return@composable
-                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                // Create shared ViewModels for immediate updates
+                val allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel = viewModel()
                 val sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 
                 AllahNameDetailRoute(
                     id = id, 
                     navController = navController, 
-                    sharedBookmarkCountViewModel = sharedBookmarkCountViewModel,
-                    sharedBookmarkViewModel = sharedBookmarkViewModel)
+                    allahNameBookmarkCountViewModel = allahNameBookmarkCountViewModel,
+                    sharedBookmarkViewModel = sharedBookmarkViewModel
+                )
             }
 
             composable(Routes.ZAKAT) {
@@ -371,13 +374,13 @@ fun SimpleScreen(title: String) {
 @Composable
 fun AllahNamesScreenPreview() {
     MaterialTheme {
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
         AllahNamesScreen(
             names = AllahNamesLocalData.getAll(), 
             onBack = {}, 
             onNameClick = {},
             navController = rememberNavController(),
-            sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
+            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
     }
 }
 
@@ -385,8 +388,6 @@ fun AllahNamesScreenPreview() {
 @Composable
 fun AllahNameDetailPreview() {
     MaterialTheme {
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
-        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(android.app.Application())
         AllahNameDetailScreen(
             name = AllahName(
                 id = 1,
@@ -397,8 +398,8 @@ fun AllahNameDetailPreview() {
             ), 
             onBack = {},
             navController = rememberNavController(),
-            bookmarkViewModel = mockBookmarkViewModel,
-            sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
+            bookmarkViewModel = AllahNamesBookmarkViewModel(android.app.Application()),
+            allahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application()))
     }
 }
 
