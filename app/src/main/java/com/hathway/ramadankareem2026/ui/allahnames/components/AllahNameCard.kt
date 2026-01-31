@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.ui.allahnames.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
@@ -33,19 +37,20 @@ fun AllahNameCard(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
+            .height(80.dp) // Fixed height for consistency
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(16.dp),
         tonalElevation = 1.dp,
         shadowElevation = 2.dp,
         color = MaterialTheme.colorScheme.surface,
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // Optional number badge
+            // Number badge
             Box(
                 modifier = Modifier
                     .size(36.dp)
@@ -55,28 +60,37 @@ fun AllahNameCard(
             ) {
                 Text(
                     text = name.id.toString(),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = RamadanGreen
+                    style = MaterialTheme.typography.labelSmall,
+                    color = RamadanGreen,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            Column {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
                 // Arabic Name
                 Text(
                     text = name.arabic,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = RamadanGold
+                    style = MaterialTheme.typography.titleMedium,
+                    color = RamadanGold,
+                    textAlign = TextAlign.Start,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
 
                 // English meaning
                 Text(
                     text = name.meaning,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
