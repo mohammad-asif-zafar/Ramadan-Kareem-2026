@@ -25,10 +25,15 @@ import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.route.BookmarksRoute
+import com.hathway.ramadankareem2026.ui.quran.presentation.route.QuranBookmarksRoute
+import com.hathway.ramadankareem2026.ui.dua.presentation.route.DuaBookmarksRoute
+import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueBookmarksRoute
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.route.AllahNameBookmarksRoute
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
 import com.hathway.ramadankareem2026.ui.dua.components.DuaDetailScreen
 import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
+import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
@@ -151,7 +156,7 @@ private fun HomeScaffold() {
                 val dua = DuaRepository().getDuaById(duaId)
                 
                 // Create shared ViewModels for immediate updates
-                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                val duaBookmarkCountViewModel: DuaBookmarkCountViewModel = viewModel()
                 val sharedBookmarkViewModel: DuaBookmarkViewModel = viewModel()
 
                 DuaDetailScreen(
@@ -159,7 +164,7 @@ private fun HomeScaffold() {
                     onBack = { navController.popBackStack() },
                     navController = navController,
                     bookmarkViewModel = sharedBookmarkViewModel,
-                    countViewModel = sharedBookmarkCountViewModel
+                    duaBookmarkCountViewModel = duaBookmarkCountViewModel
                 )
             }
 
@@ -223,6 +228,23 @@ private fun HomeScaffold() {
 
             composable(Routes.BOOKMARKS) {
                 BookmarksRoute(navController)
+            }
+
+            // Content-specific bookmark routes
+            composable(Routes.QURAN_BOOKMARKS) {
+                QuranBookmarksRoute(navController = navController)
+            }
+
+            composable(Routes.DUA_BOOKMARKS) {
+                DuaBookmarksRoute(navController = navController)
+            }
+
+            composable(Routes.MOSQUE_BOOKMARKS) {
+                MosqueBookmarksRoute(navController = navController)
+            }
+
+            composable(Routes.ALLAH_NAME_BOOKMARKS) {
+                AllahNameBookmarksRoute(navController = navController)
             }
 
             composable(Routes.ZAKAT_HISTORY) {

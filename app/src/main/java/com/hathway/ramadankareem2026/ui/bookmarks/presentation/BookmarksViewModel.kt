@@ -27,11 +27,13 @@ class BookmarksViewModel(application: Application) : AndroidViewModel(applicatio
 
     private fun loadBookmarks() {
         viewModelScope.launch {
-            // Load both dua and allah_name bookmarks
+            // Load both dua, allah_name, and mosque bookmarks
             bookmarkDao.getBookmarksByType("dua").collect { duaBookmarks ->
                 bookmarkDao.getBookmarksByType("allah_name").collect { allahNameBookmarks ->
-                    val allBookmarks = duaBookmarks + allahNameBookmarks
-                    _bookmarks.value = allBookmarks.sortedByDescending { it.createdAt }
+                    bookmarkDao.getBookmarksByType("mosque").collect { mosqueBookmarks ->
+                        val allBookmarks = duaBookmarks + allahNameBookmarks + mosqueBookmarks
+                        _bookmarks.value = allBookmarks.sortedByDescending { it.createdAt }
+                    }
                 }
             }
         }

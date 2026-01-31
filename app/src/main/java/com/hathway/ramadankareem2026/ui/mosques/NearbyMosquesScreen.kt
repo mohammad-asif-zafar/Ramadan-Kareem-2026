@@ -10,12 +10,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -24,19 +29,36 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.state.MosqueUiState
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.navigation.Routes
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NearbyMosquesScreen(
-    state: MosqueUiState, onBack: () -> Unit, onMosqueClick: (Mosque) -> Unit
+    state: MosqueUiState, 
+    onBack: () -> Unit, 
+    onMosqueClick: (Mosque) -> Unit,
+    navController: NavController,
+    mosqueBookmarkCountViewModel: MosqueBookmarkCountViewModel,
+    sharedBookmarkViewModel: MosqueBookmarkViewModel
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val bookmarkCount by mosqueBookmarkCountViewModel.mosqueBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    
+    // Set up callback for immediate badge updates with delta
+    LaunchedEffect(Unit) {
+        sharedBookmarkViewModel.setBookmarkCountChangedCallback { delta ->
+            mosqueBookmarkCountViewModel.updateMosqueBookmarkCountImmediate(delta)
+        }
+    }
 
     val openNavigation: (Mosque) -> Unit = { mosque ->
         val googleMapsIntent = Intent(
@@ -98,23 +120,35 @@ fun NearbyMosquesScreen(
             topBar = {
                 RamadanToolbar(
                     title = stringResource(R.string.nearby_mosque),
-                    showBack = true, onBackClick = onBack
+                    showBack = true, 
+                    onBackClick = onBack,
+                    rightIcon1 = R.drawable.ic_saved,
+                    rightIcon1Badge = bookmarkCount,
+                    onRightIcon1Click = {
+                        // Navigate to bookmarks list
+                        navController.navigate(Routes.BOOKMARKS)
+                    }
                 )
             },
             sheetPeekHeight = halfScreenPeekHeight,
             sheetContent = {
-                MosqueList(mosques = state.mosques, onMosqueClick = { mosque ->
-                    onMosqueClick(mosque)
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
-                }, onDirectionsClick = { mosque ->
-                    openNavigation(mosque)
-                }, onClose = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                    }
-                })
+                MosqueList(
+                    mosques = state.mosques, 
+                    bookmarkViewModel = sharedBookmarkViewModel,
+                    onMosqueClick = { mosque ->
+                        onMosqueClick(mosque)
+                        scope.launch {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    }, 
+                    onDirectionsClick = { mosque ->
+                        openNavigation(mosque)
+                    }, 
+                    onClose = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.hide()
+                        }
+                    })
             }) {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(), cameraPositionState = cameraPositionState

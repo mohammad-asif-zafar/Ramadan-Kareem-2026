@@ -20,4 +20,8 @@ object Routes {
     const val ZAKAT_HISTORY = "zakat_history"
     const val MOSQUES = "mosques"
     const val BOOKMARKS = "bookmarks"
+    const val QURAN_BOOKMARKS = "quran_bookmarks"
+    const val DUA_BOOKMARKS = "dua_bookmarks"
+    const val MOSQUE_BOOKMARKS = "mosque_bookmarks"
+    const val ALLAH_NAME_BOOKMARKS = "allah_name_bookmarks"
 }

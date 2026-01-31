@@ -49,7 +49,7 @@ class DuaBookmarkViewModel(application: Application) : AndroidViewModel(applicat
                 stateFlow.value = false
                 Log.d("DuaBookmark", "Removed bookmark for $itemId")
                 
-                // Trigger immediate badge update with delta
+                // Trigger immediate dua badge update with delta
                 onBookmarkCountChanged?.invoke(-1)
             } else {
                 val bookmark = com.hathway.ramadankareem2026.data.local.database.BookmarkEntity(
@@ -63,7 +63,7 @@ class DuaBookmarkViewModel(application: Application) : AndroidViewModel(applicat
                 stateFlow.value = true
                 Log.d("DuaBookmark", "Added bookmark for $itemId")
                 
-                // Trigger immediate badge update with delta
+                // Trigger immediate dua badge update with delta
                 onBookmarkCountChanged?.invoke(1)
             }
         }

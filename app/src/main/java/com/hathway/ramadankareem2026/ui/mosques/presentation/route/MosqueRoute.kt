@@ -12,6 +12,8 @@ import com.hathway.ramadankareem2026.ui.mosques.domain.usecase.GetNearbyMosquesU
 import com.hathway.ramadankareem2026.ui.mosques.domain.usecase.GetUserLocationForMosquesUseCase
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.NearbyMosquesViewModel
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.NearbyMosquesViewModelFactory
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkCountViewModel
 
 @Composable
 fun MosqueRoute(
@@ -37,6 +39,10 @@ fun MosqueRoute(
             getNearbyMosques = GetNearbyMosquesUseCase(mosqueRepository)
         )
     )
+    
+    // Create shared ViewModels for bookmark functionality
+    val mosqueBookmarkCountViewModel: MosqueBookmarkCountViewModel = viewModel()
+    val sharedBookmarkViewModel: MosqueBookmarkViewModel = viewModel()
 
     val state by viewModel.uiState.collectAsState()
 
@@ -47,7 +53,10 @@ fun MosqueRoute(
     NearbyMosquesScreen(
         state = state,
         onBack = { navController.popBackStack() },
-        onMosqueClick = viewModel::selectMosque
+        onMosqueClick = viewModel::selectMosque,
+        navController = navController,
+        mosqueBookmarkCountViewModel = mosqueBookmarkCountViewModel,
+        sharedBookmarkViewModel = sharedBookmarkViewModel
     )
 }
 

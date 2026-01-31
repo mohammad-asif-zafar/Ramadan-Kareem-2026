@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.MosqueListItem
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
 
 @Composable
 fun MosqueList(
     mosques: List<Mosque>,
+    bookmarkViewModel: MosqueBookmarkViewModel,
     onMosqueClick: (Mosque) -> Unit,
     onDirectionsClick: (Mosque) -> Unit,
     title: String = "Nearest Mosque Near Me",
@@ -81,6 +83,7 @@ fun MosqueList(
             items(mosques, key = { it.id }) { mosque ->
                 MosqueListItem(
                     mosque = mosque,
+                    bookmarkViewModel = bookmarkViewModel,
                     onClick = { onMosqueClick(mosque) },
                     onDirectionsClick = { onDirectionsClick(mosque) })
             }

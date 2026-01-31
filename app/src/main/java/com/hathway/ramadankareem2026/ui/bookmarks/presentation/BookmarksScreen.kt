@@ -26,6 +26,7 @@ fun BookmarksScreen(
     onBack: () -> Unit, 
     onDuaClick: (String) -> Unit,
     onAllahNameClick: (String) -> Unit,
+    onMosqueClick: (String) -> Unit,
     viewModel: BookmarksViewModel = viewModel()
 ) {
     val bookmarks by viewModel.bookmarks.collectAsStateWithLifecycle()
@@ -48,6 +49,8 @@ fun BookmarksScreen(
                             onDuaClick(bookmark.itemId)
                         } else if (bookmark.itemType == "allah_name") {
                             onAllahNameClick(bookmark.itemId)
+                        } else if (bookmark.itemType == "mosque") {
+                            onMosqueClick(bookmark.itemId)
                         }
                     })
             }
@@ -90,7 +93,7 @@ fun BookmarksScreen(
 }
 
 @Composable
-private fun BookmarkItem(
+fun BookmarkItem(
     bookmark: BookmarkEntity, onClick: () -> Unit
 ) {
     Card(

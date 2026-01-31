@@ -57,6 +57,7 @@ import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewMod
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
@@ -67,17 +68,17 @@ fun DuaDetailScreen(
     onBack: () -> Unit,
     navController: NavController,
     bookmarkViewModel: DuaBookmarkViewModel,
-    countViewModel: BookmarkCountViewModel
+    duaBookmarkCountViewModel: DuaBookmarkCountViewModel
 ) {
     val isBookmarked by bookmarkViewModel.isBookmarked(dua.id)
         .collectAsStateWithLifecycle(initialValue = false)
-    val bookmarkCount by countViewModel.bookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    val bookmarkCount by duaBookmarkCountViewModel.duaBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
 
     LaunchedEffect(dua.id) {
         bookmarkViewModel.checkBookmarkStatus(dua.id)
-        // Set up callback for immediate badge updates with delta
+        // Set up callback for immediate dua badge updates with delta
         bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
-            countViewModel.updateBookmarkCountImmediate(delta)
+            duaBookmarkCountViewModel.updateDuaBookmarkCountImmediate(delta)
         }
     }
     Scaffold(
@@ -91,8 +92,8 @@ fun DuaDetailScreen(
                 rightIcon1 = R.drawable.ic_saved,
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
-                    // Navigate to bookmarks list
-                    navController.navigate(Routes.BOOKMARKS)
+                    // Navigate to dua bookmarks list
+                    navController.navigate("dua_bookmarks")
                 },
                 rightIcon2 = R.drawable.bell,
                 onRightIcon2Click = { })
@@ -279,7 +280,7 @@ fun DuaDetailScreen(
 fun DuaDetailScreenPreview() {
     RamadanKareemTheme {
         // Create mock ViewModels for preview
-        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        val mockDuaBookmarkCountViewModel = DuaBookmarkCountViewModel(android.app.Application())
         val mockBookmarkViewModel = DuaBookmarkViewModel(android.app.Application())
         
         DuaDetailScreen(
@@ -295,7 +296,7 @@ fun DuaDetailScreenPreview() {
             onBack = {}, 
             navController = rememberNavController(),
             bookmarkViewModel = mockBookmarkViewModel,
-            countViewModel = mockBookmarkCountViewModel
+            duaBookmarkCountViewModel = mockDuaBookmarkCountViewModel
         )
     }
 }

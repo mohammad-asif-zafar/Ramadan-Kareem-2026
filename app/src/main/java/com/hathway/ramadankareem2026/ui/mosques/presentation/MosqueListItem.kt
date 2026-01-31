@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Directions
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
@@ -18,15 +19,32 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
+import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
 
 @SuppressLint("DefaultLocale")
 @Composable
 fun MosqueListItem(
-    mosque: Mosque, onClick: () -> Unit, onDirectionsClick: () -> Unit
+    mosque: Mosque, 
+    bookmarkViewModel: MosqueBookmarkViewModel,
+    onClick: () -> Unit, 
+    onDirectionsClick: () -> Unit
 ) {
+    val isBookmarked by bookmarkViewModel.isBookmarked(mosque.id)
+        .collectAsStateWithLifecycle(initialValue = false)
+    
+    // Check bookmark status when item is first displayed
+    LaunchedEffect(mosque.id) {
+        bookmarkViewModel.checkBookmarkStatus(mosque.id)
+    }
+    
     val distanceKm = mosque.distanceMeters / 1000f
 
     Card(
@@ -68,6 +86,27 @@ fun MosqueListItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                AssistChip(
+                    onClick = {
+                        bookmarkViewModel.toggleBookmark(
+                            itemId = mosque.id,
+                            title = mosque.name,
+                            content = mosque.address
+                        )
+                    },
+                    label = { 
+                        Text(
+                            text = if (isBookmarked) stringResource(R.string.remove_bookmark) 
+                            else stringResource(R.string.add_bookmark)
+                        ) 
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.BookmarkBorder,
+                            contentDescription = if (isBookmarked) "Remove Bookmark" else "Add Bookmark"
+                        )
+                    })
+                
                 AssistChip(
                     onClick = onDirectionsClick,
                     label = { Text("Directions") },
