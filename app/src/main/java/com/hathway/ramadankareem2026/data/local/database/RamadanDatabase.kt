@@ -32,7 +32,7 @@ abstract class RamadanDatabase : RoomDatabase() {
                     RamadanDatabase::class.java,
                     "ramadan_database"
                 )
-                .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(false)
                 .build()
                 INSTANCE = instance
                 instance

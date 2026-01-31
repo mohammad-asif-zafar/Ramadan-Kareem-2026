@@ -33,8 +33,8 @@ import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
  */
 @Composable
 fun DuaCategoryScreen(
-    categoryId: String,          // 🆔 Category passed from navigation
-    navController: NavController // 🧭 For back + detail navigation
+    categoryId: String,          //  Category passed from navigation
+    navController: NavController // For back + detail navigation
 ) {
 
     //  Repository instance (simple data source for now)
@@ -48,7 +48,7 @@ fun DuaCategoryScreen(
     //  Screen structure
     Scaffold(
 
-        // 🔝 Top toolbar with back button
+        // Top toolbar with back button
         topBar = {
             RamadanToolbar(
                 title = categoryId, showBack = true, onBackClick = { navController.popBackStack() })

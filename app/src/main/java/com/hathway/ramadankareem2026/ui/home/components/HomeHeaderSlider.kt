@@ -26,6 +26,7 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 
 import kotlinx.coroutines.delay
+import java.time.LocalTime
 
 /**
  * Home screen header slider.
@@ -53,7 +54,7 @@ fun HomeHeaderSlider(
      * Current time captured once when composable enters composition.
      * Used for determining next prayer.
      */
-    val now = remember { java.time.LocalTime.now() }
+    val now = remember { LocalTime.now() }
 
     /**
      * Map domain prayer state → UI-friendly model.

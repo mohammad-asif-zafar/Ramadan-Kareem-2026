@@ -39,7 +39,7 @@ fun DuaCategoryCard(
 ) {
     Card(
         modifier = modifier
-            .height(140.dp)         // ✅ Fixed height for grid consistency
+            .height(140.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(3.dp),
@@ -53,7 +53,7 @@ fun DuaCategoryCard(
             modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            // 🧿 Category icon
+            // Category icon
             Icon(
                 imageVector = category.icon,
                 contentDescription = null,
@@ -65,7 +65,7 @@ fun DuaCategoryCard(
                 text = category.title, style = MaterialTheme.typography.titleMedium
             )
 
-            // 📝 Category subtitle
+            // Category subtitle
             Text(
                 text = category.subtitle,
                 style = MaterialTheme.typography.bodySmall,

@@ -14,7 +14,7 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = LocationRepository(app)
 
-    // ✅ Sealed UI state starts in Loading
+    // Sealed UI state starts in Loading
     private val _locationState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
 
     val locationState: StateFlow<LocationUiState> = _locationState

@@ -6,10 +6,10 @@ import java.time.LocalTime
 
 @Immutable
 data class PrayerDomain(
-    val name: String,
+    val name: String = "",
     val time: LocalTime,
-    val isCurrent: Boolean,
-    val isNext: Boolean,
-    val remainingMinutes: Int?,
-    val isPast: Boolean   // ✅ NEW
+    val isCurrent: Boolean = false,
+    val isNext: Boolean = false,
+    val remainingMinutes: Int? = 0,
+    val isPast: Boolean  = false
 )

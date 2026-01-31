@@ -37,42 +37,62 @@ import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.minutesUntil
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 
 /**
- * Displays horizontal list of daily prayer times.
+ * Displays a horizontal list of daily prayer times.
  *
  * DATA FLOW:
  * ViewModel (PrayerTimeUiState)
- * → PrayerTimeUiMapper
- * → List<PrayerDomain>
+ * → PrayerTimeUiMapper (pure mapping logic)
+ * → List<PrayerDomain> (UI-ready model)
+ *
+ * Responsibility:
+ * - Owns ViewModel
+ * - Collects state
+ * - Displays section UI
  */
 @Composable
-fun PrayerTimeSection(
+fun PrayerTimeSection() {
 
-) {
+    // Access application context for ViewModel factory
     val context = LocalContext.current
     val app = context.applicationContext as Application
 
+    /**
+     * ViewModel created using custom factory
+     * (needed for Application / repository injection)
+     */
     val viewModel: PrayerViewModel = viewModel(
         factory = PrayerViewModelFactory(app)
     )
-    //  Collect single source of truth from ViewModel
+
+    /**
+     * Collect prayer state from StateFlow
+     * This is the single source of truth
+     */
     val state by viewModel.state.collectAsState()
 
-    //  Current time used to determine current/next prayer
+    /**
+     * Capture current time once per composition.
+     * Used to determine current / next prayer.
+     */
     val now = remember { LocalTime.now() }
 
-    //  Map UI state → prayer list (PURE logic)
+    /**
+     * Map raw state → UI-friendly prayer list.
+     * Recomputed only when state changes.
+     */
     val prayers = remember(state) {
         PrayerTimeUiMapper.map(
             state = state, now = now
         )
     }
 
-    //  Safety: if empty, render nothing
+    // Safety guard: do not render section if no prayers available
     if (prayers.isEmpty()) return
 
     Column(
@@ -81,13 +101,21 @@ fun PrayerTimeSection(
             .padding(horizontal = 16.dp)
     ) {
 
+        // Section header
         SectionTitle(stringResource(R.string.prayer_times))
 
         Spacer(modifier = Modifier.height(12.dp))
 
+        /**
+         * Card wrapper for horizontal prayer list
+         */
         Card(
             modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp)
         ) {
+
+            /**
+             * Horizontal scrolling list of prayer items
+             */
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,7 +123,9 @@ fun PrayerTimeSection(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(prayers, key = { it.name }) { prayer ->
+
+                items(items = prayers, key = { it.name } // Stable key per prayer
+                ) { prayer ->
                     PrayerItem(
                         prayer = prayer, onClick = {})
                 }
@@ -107,22 +137,29 @@ fun PrayerTimeSection(
 }
 
 /**
- * Single prayer item card
+ * Single prayer item displayed inside horizontal list.
+ *
+ * Visual states:
+ * - Current prayer → highlighted
+ * - Next prayer → soft highlight + countdown
+ * - Future prayer → "Coming in"
+ * - Past prayer → "Passed"
  */
 @Composable
 fun PrayerItem(
     prayer: PrayerDomain, onClick: (PrayerDomain) -> Unit
 ) {
+
     val highlight = Color(0xFF2E7D32)
 
-    // 🔹 Background color logic
+    // Background color based on prayer state
     val background = when {
         prayer.isCurrent -> Color(0xFFE6F4EA)
         prayer.isNext -> Color(0xFFF1F8E9)
         else -> Color.Transparent
     }
 
-    // 🔹 Text & icon color logic
+    // Text & icon color logic
     val contentColor = when {
         prayer.isCurrent -> highlight
         prayer.isNext -> highlight.copy(alpha = 0.8f)
@@ -137,7 +174,7 @@ fun PrayerItem(
             .padding(horizontal = 12.dp, vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        // 🔹 Prayer icon
+        // Prayer icon
         Icon(
             imageVector = iconForPrayer(prayer.name),
             contentDescription = prayer.name,
@@ -147,20 +184,23 @@ fun PrayerItem(
 
         Spacer(Modifier.height(4.dp))
 
-        // 🔹 Prayer name
+        // Prayer name
         Text(
             text = prayer.name, style = MaterialTheme.typography.labelSmall, color = contentColor
         )
 
-        // 🔹 Prayer time (formatted)
+        // Prayer time
         Text(
-            text = prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a")),
-            style = MaterialTheme.typography.bodySmall
+            text = prayer.time.format(
+                DateTimeFormatter.ofPattern("hh:mm a")
+            ), style = MaterialTheme.typography.bodySmall
         )
 
         Spacer(Modifier.height(4.dp))
 
-        // 🔹 Status label
+        /**
+         * Status label logic
+         */
         when {
             // 🟢 Current prayer
             prayer.isCurrent -> {
@@ -169,7 +209,7 @@ fun PrayerItem(
                 )
             }
 
-            // 🔵 Next prayer (exact countdown from mapper)
+            // 🔵 Next prayer with remaining time
             prayer.isNext && prayer.remainingMinutes != null -> {
                 Text(
                     PrayerTimeUiMapper.formatRemaining(
@@ -178,7 +218,7 @@ fun PrayerItem(
                 )
             }
 
-            //  Future prayer (after next)
+            // ⏳ Future prayer
             !prayer.isPast -> {
                 val mins = minutesUntil(prayer.time).coerceAtLeast(0)
 
@@ -189,7 +229,7 @@ fun PrayerItem(
                 )
             }
 
-            //  Past prayer
+            // ⚪ Past prayer
             else -> {
                 Text(
                     "Passed", color = Color.Gray, style = MaterialTheme.typography.labelSmall
@@ -200,7 +240,7 @@ fun PrayerItem(
 }
 
 /**
- * Maps prayer name → icon
+ * Maps prayer name to corresponding icon.
  */
 @Composable
 private fun iconForPrayer(name: String) = when (name) {
@@ -211,3 +251,58 @@ private fun iconForPrayer(name: String) = when (name) {
     "Isha" -> Icons.Outlined.DarkMode
     else -> Icons.Outlined.AccessTime
 }
+
+@Composable
+private fun PrayerTimeSectionContent(
+    prayers: List<PrayerDomain>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+
+        SectionTitle("Prayer Times")
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Card(shape = RoundedCornerShape(20.dp)) {
+            LazyRow(
+                modifier = Modifier.padding(vertical = 16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(prayers) { prayer ->
+                    PrayerItem(prayer = prayer, onClick = {})
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrayerTimeSectionPreview() {
+
+    val now = LocalTime.now()
+
+    val previewPrayers = listOf(
+        PrayerDomain("Fajr", now.minusMinutes(30), isPast = true),
+        PrayerDomain("Dhuhr", now.plusMinutes(10), isNext = true, remainingMinutes = 10),
+        PrayerDomain("Asr", now.plusHours(3)),
+        PrayerDomain("Maghrib", now.plusHours(6)),
+        PrayerDomain("Isha", now.plusHours(8))
+    )
+
+    PrayerTimeSectionContent(prayers = previewPrayers)
+}
+
+/*
+
+Add unit tests for PrayerTimeUiMapper
+
+Refactor to UiState + sealed UI events
+
+Optimize time updates without recomposition storms
+
+        */

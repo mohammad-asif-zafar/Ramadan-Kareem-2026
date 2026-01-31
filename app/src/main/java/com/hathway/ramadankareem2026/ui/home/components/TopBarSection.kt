@@ -33,12 +33,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.core.location.LocationSelectionMode
 import com.hathway.ramadankareem2026.core.location.LocationSource
 import com.hathway.ramadankareem2026.core.location.LocationUiState
+import com.hathway.ramadankareem2026.R
 
 @Composable
 fun TopBarSection(
@@ -51,7 +53,7 @@ fun TopBarSection(
 
         // 🌙 Greeting
         Text(
-            text = "Assalamu Alaikum",
+            text = stringResource(R.string.assalamoalikum),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -79,18 +81,18 @@ fun TopBarSection(
                     TextButton(
                         onClick = onLocationClick, contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text("Retry")
+                        Text(stringResource(R.string.retry))
                     }
                 }
             }
 
-            // ✅ Success state (DEMO / GPS / NETWORK)
+            // Success state (DEMO / GPS / NETWORK)
             is LocationUiState.Success -> {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Location",
+                            contentDescription = stringResource(R.string.location),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(end = 4.dp)
                         )
@@ -104,7 +106,7 @@ fun TopBarSection(
                         Spacer(modifier = Modifier.width(6.dp))
 
                         Text(
-                            text = "›",
+                            text = stringResource(R.string.right_open_icon),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -114,10 +116,10 @@ fun TopBarSection(
 
                     Text(
                         text = when (locationState.source) {
-                            LocationSource.DEMO -> "Using demo location"
-                            LocationSource.GPS -> "Using GPS location"
-                            LocationSource.NETWORK -> "Using network location"
-                            else -> "Location"
+                            LocationSource.DEMO -> stringResource(R.string.using_demo_location)
+                            LocationSource.GPS -> stringResource(R.string.using_gps_location)
+                            LocationSource.NETWORK -> stringResource(R.string.using_network_location)
+                            else -> stringResource(R.string.location)
                         },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -130,12 +132,12 @@ fun TopBarSection(
 
 @Composable
 private fun rememberShimmerBrush(): Brush {
-    val transition = rememberInfiniteTransition(label = "shimmer")
+    val transition = rememberInfiniteTransition(label = stringResource(R.string.shimmer))
 
     val translateAnim by transition.animateFloat(
         initialValue = 0f, targetValue = 1000f, animationSpec = infiniteRepeatable(
             animation = tween(1200, easing = LinearEasing), repeatMode = RepeatMode.Restart
-        ), label = "shimmerTranslate"
+        ), label = stringResource(R.string.shimmerTranslate)
     )
 
     return Brush.linearGradient(

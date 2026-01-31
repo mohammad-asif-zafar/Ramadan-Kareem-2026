@@ -42,7 +42,10 @@ fun DuaActionBar(
 
             /*  Save */
             IconButton(onClick = { /* save */ }) {
-                Icon(Icons.Outlined.FavoriteBorder, contentDescription = stringResource(R.string.save))
+                Icon(
+                    Icons.Outlined.FavoriteBorder,
+                    contentDescription = stringResource(R.string.save)
+                )
             }
 
             /*  Text to Speech */
@@ -59,7 +62,7 @@ fun DuaActionBar(
                 Icon(
                     imageVector = if (isSpeaking) Icons.Outlined.StopCircle
                     else Icons.AutoMirrored.Outlined.VolumeUp,
-                    contentDescription = "Read Dua",
+                    contentDescription = stringResource(R.string.read_dua),
                     modifier = Modifier.size(36.dp)
                 )
             }

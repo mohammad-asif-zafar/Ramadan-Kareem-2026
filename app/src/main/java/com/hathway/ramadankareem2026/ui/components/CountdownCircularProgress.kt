@@ -16,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.ramadankareem2026.R
 
 @Composable
 fun CountdownCircularProgress(
@@ -34,7 +36,7 @@ fun CountdownCircularProgress(
     val animatedProgress by animateFloatAsState(
         targetValue = targetProgress.coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 600),
-        label = "CountdownProgress"
+        label = stringResource(R.string.counter_progress)
     )
 
 
@@ -70,7 +72,7 @@ fun CountdownCircularProgress(
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "left", fontSize = 9.sp, color = Color.Gray
+                text = stringResource(R.string.left), fontSize = 9.sp, color = Color.Gray
             )
         }
     }
@@ -81,13 +83,13 @@ private fun formatMinutes(minutes: Int): String {
     val m = minutes % 60
     return if (h > 0) "${h}h ${m}m" else "${m}m"
 }
+
 @Preview(showBackground = true)
 @Composable
 fun CountdownCircularProgressPreview() {
     MaterialTheme {
         CountdownCircularProgress(
-            totalMinutes = 120,
-            remainingMinutes = 45
+            totalMinutes = 120, remainingMinutes = 45
         )
     }
 }
@@ -103,13 +105,13 @@ fun CountdownCircularProgressAlmostDonePreview() {
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun CountdownCircularProgressFullPreview() {
     MaterialTheme {
         CountdownCircularProgress(
-            totalMinutes = 30,
-            remainingMinutes = 30
+            totalMinutes = 30, remainingMinutes = 30
         )
     }
 }

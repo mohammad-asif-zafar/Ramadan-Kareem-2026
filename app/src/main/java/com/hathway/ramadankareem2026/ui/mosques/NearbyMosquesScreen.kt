@@ -106,13 +106,13 @@ fun NearbyMosquesScreen(
                 MosqueList(mosques = state.mosques, onMosqueClick = { mosque ->
                     onMosqueClick(mosque)
                     scope.launch {
-                        scaffoldState.bottomSheetState.partialExpand()
+                        scaffoldState.bottomSheetState.expand()
                     }
                 }, onDirectionsClick = { mosque ->
                     openNavigation(mosque)
                 }, onClose = {
                     scope.launch {
-                        scaffoldState.bottomSheetState.partialExpand()
+                        scaffoldState.bottomSheetState.hide()
                     }
                 })
             }) {

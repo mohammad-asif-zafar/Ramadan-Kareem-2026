@@ -82,7 +82,7 @@ class LocationDataStore(
         val selectionMode = prefs[SELECTION_MODE]
 
         return if (city != null && country != null && lat != null && lng != null && source != null && selectionMode != null) {
-            // ✅ Cached success state
+            //  Cached success state
             LocationUiState.Success(
                 city = city,
                 country = country,
@@ -92,7 +92,7 @@ class LocationDataStore(
                 selectionMode = LocationSelectionMode.valueOf(selectionMode)
             )
         } else {
-            // ⚠️ No saved data → create DEMO success
+            //  No saved data → create DEMO success
             val demo = LocationUiState.Success(
                 city = DEMO_CITY,
                 country = DEMO_COUNTRY,

@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hathway.ramadankareem2026.core.util.rememberLiveRemainingMinutes
 import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.components.CountdownCircularProgress
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus

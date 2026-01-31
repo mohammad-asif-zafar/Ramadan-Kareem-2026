@@ -77,7 +77,7 @@ fun RamadanToolbar(
                 Spacer(modifier = Modifier.width(48.dp))
             }
 
-            // 📝 Title
+            // Title
             Text(
                 text = title.capitalizeFirst(),
                 modifier = Modifier

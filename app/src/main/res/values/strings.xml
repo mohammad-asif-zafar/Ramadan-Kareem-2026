@@ -22,6 +22,8 @@
     <string name="mosque">Mosque</string>
     <string name="nearby_mosque">NearBy Mosque</string>
     <string name="back">Back</string>
+    <string name="read_dua">Read Dua</string>
+    <string name="left">Left</string>
     <string name="left_action">Left Action</string>
     <string name="right_action">Right Action</string>
     <string name="right_action_second">Right Action 2</string>
@@ -35,10 +37,38 @@
     <string name="stop">Stop</string>
     <string name="features">Features</string>
     <string name="prayer_times">Prayer Times</string>
+    <string name="todays_tip">Today’s Tip</string>
+    <string name="assalamoalikum">Assalamu Alaikum</string>
     <string name="play">Play</string>
+    <string name="counter_progress">CountdownProgress</string>
+    <string name="calculating_prayer_time">Calculating prayer time…</string>
+    <string name="ramadan_kareen">Ramadan Kareem</string>
+    <string name="shimmer">Shimmer</string>
+    <string name="shimmerTranslate">ShimmerTranslate</string>
+    <string name="using_network_location">Using network location</string>
+    <string name="using_gps_location">Using GPS location</string>
+    <string name="right_open_icon">›</string>
+    <string name="using_demo_location">Using demo location</string>
+    <string name="retry">Retry</string>
+    <string name="location">Location</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="bookmarked">Bookmarked</string>
     <string name="not_bookmarked">Not Bookmarked</string>
     <string name="no_bookmarks_yet">No bookmarks yet</string>
     <string name="start_bookmarking_your_favorite_content">Start bookmarking your favorite content</string>
+
+    <string name="month_1">Muharram</string>
+    <string name="month_2">Safar</string>
+    <string name="month_3">Rabiʿ al-Awwal</string>
+    <string name="month_4">Rabiʿ al-Thani</string>
+    <string name="month_5">Jumada al-Awwal</string>
+    <string name="month_6">Jumada al-Thani</string>
+    <string name="month_7">Rajab</string>
+    <string name="month_8">Shaʿban</string>
+    <string name="month_9">Ramadan</string>
+    <string name="month_10">Shawwal</string>
+    <string name="month_11">Dhu al-Qiʿdah</string>
+    <string name="month_12">Dhu al-Hijjah</string>
+    <string name="month_13">Shaʿban</string>
+
 </resources>

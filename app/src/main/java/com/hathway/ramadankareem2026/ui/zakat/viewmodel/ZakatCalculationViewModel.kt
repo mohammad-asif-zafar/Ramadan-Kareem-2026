@@ -12,24 +12,24 @@ import kotlinx.coroutines.launch
 class ZakatCalculationViewModel(
     private val repository: ZakatCalculationRepository
 ) : ViewModel() {
-    
+
     private val _calculations = MutableStateFlow<List<ZakatCalculationEntity>>(emptyList())
     val calculations: StateFlow<List<ZakatCalculationEntity>> = _calculations.asStateFlow()
-    
+
     private val _calculationsCount = MutableStateFlow(0)
     val calculationsCount: StateFlow<Int> = _calculationsCount.asStateFlow()
-    
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
+
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-    
+
     init {
         loadCalculations()
         loadCalculationsCount()
     }
-    
+
     fun saveCalculation(
         goldValue: Double,
         silverValue: Double,
@@ -46,7 +46,6 @@ class ZakatCalculationViewModel(
     ) {
         viewModelScope.launch {
             try {
-                println("DEBUG: Starting save calculation")
                 _isLoading.value = true
                 val result = repository.saveCalculation(
                     goldValue = goldValue,
@@ -62,50 +61,41 @@ class ZakatCalculationViewModel(
                     currencyName = currencyName,
                     country = country
                 )
-                println("DEBUG: Save calculation result: $result")
                 loadCalculations()
                 loadCalculationsCount()
                 _errorMessage.value = null
-                println("DEBUG: Save calculation completed successfully")
             } catch (e: Exception) {
-                println("DEBUG: Error saving calculation: ${e.message}")
                 _errorMessage.value = "Failed to save calculation: ${e.message}"
             } finally {
                 _isLoading.value = false
             }
         }
     }
-    
+
     private fun loadCalculations() {
         viewModelScope.launch {
             try {
-                println("DEBUG: Loading calculations from repository")
                 repository.getAllCalculations().collect { calculations ->
-                    println("DEBUG: Received ${calculations.size} calculations from database")
                     _calculations.value = calculations
                 }
             } catch (e: Exception) {
-                println("DEBUG: Error loading calculations: ${e.message}")
                 _errorMessage.value = "Failed to load calculations: ${e.message}"
             }
         }
     }
-    
+
     private fun loadCalculationsCount() {
         viewModelScope.launch {
             try {
-                println("DEBUG: Loading calculations count from repository")
                 repository.getCalculationsCount().collect { count ->
-                    println("DEBUG: Received calculations count: $count")
                     _calculationsCount.value = count
                 }
             } catch (e: Exception) {
-                println("DEBUG: Error loading calculations count: ${e.message}")
                 _errorMessage.value = "Failed to load calculations count: ${e.message}"
             }
         }
     }
-    
+
     fun deleteCalculation(calculation: ZakatCalculationEntity) {
         viewModelScope.launch {
             try {
@@ -117,7 +107,7 @@ class ZakatCalculationViewModel(
             }
         }
     }
-    
+
     fun deleteAllCalculations() {
         viewModelScope.launch {
             try {
@@ -129,7 +119,7 @@ class ZakatCalculationViewModel(
             }
         }
     }
-    
+
     fun clearError() {
         _errorMessage.value = null
     }

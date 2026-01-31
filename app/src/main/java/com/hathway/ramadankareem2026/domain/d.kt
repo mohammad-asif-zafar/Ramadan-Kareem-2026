@@ -1,4 +1,0 @@
-package com.hathway.ramadankareem2026.domain
-
-class d {
-}

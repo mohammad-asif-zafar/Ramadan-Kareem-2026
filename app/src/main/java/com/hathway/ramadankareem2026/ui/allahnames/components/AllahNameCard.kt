@@ -63,7 +63,7 @@ fun AllahNameCard(
             Spacer(modifier = Modifier.width(16.dp))
 
             Column {
-                // Arabic Name (GOLD)
+                // Arabic Name
                 Text(
                     text = name.arabic,
                     style = MaterialTheme.typography.headlineSmall,
