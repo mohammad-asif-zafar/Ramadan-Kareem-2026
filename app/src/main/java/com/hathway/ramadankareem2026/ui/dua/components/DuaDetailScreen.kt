@@ -48,6 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import android.app.Application
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.service.DuaTtsNotification
 import com.hathway.ramadankareem2026.core.service.DuaTtsService
@@ -65,8 +66,8 @@ fun DuaDetailScreen(
     dua: DuaItem,
     onBack: () -> Unit,
     navController: NavController,
-    bookmarkViewModel: DuaBookmarkViewModel = viewModel(),
-    countViewModel: BookmarkCountViewModel = viewModel()
+    bookmarkViewModel: DuaBookmarkViewModel,
+    countViewModel: BookmarkCountViewModel
 ) {
     val isBookmarked by bookmarkViewModel.isBookmarked(dua.id)
         .collectAsStateWithLifecycle(initialValue = false)
@@ -74,6 +75,10 @@ fun DuaDetailScreen(
 
     LaunchedEffect(dua.id) {
         bookmarkViewModel.checkBookmarkStatus(dua.id)
+        // Set up callback for immediate badge updates with delta
+        bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
+            countViewModel.updateBookmarkCountImmediate(delta)
+        }
     }
     Scaffold(
 
@@ -273,6 +278,10 @@ fun DuaDetailScreen(
 @Composable
 fun DuaDetailScreenPreview() {
     RamadanKareemTheme {
+        // Create mock ViewModels for preview
+        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        val mockBookmarkViewModel = DuaBookmarkViewModel(android.app.Application())
+        
         DuaDetailScreen(
             dua = DuaItem(
                 id = "1",
@@ -282,7 +291,11 @@ fun DuaDetailScreenPreview() {
                 translation = "O Allah, bring it upon us with blessings and faith.",
                 source = "Tirmidhi",
                 categoryId = "ramadan"
-            ), onBack = {}, navController = rememberNavController()
+            ), 
+            onBack = {}, 
+            navController = rememberNavController(),
+            bookmarkViewModel = mockBookmarkViewModel,
+            countViewModel = mockBookmarkCountViewModel
         )
     }
 }

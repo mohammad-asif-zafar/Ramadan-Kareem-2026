@@ -23,7 +23,10 @@ import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookmarksScreen(
-    onBack: () -> Unit, onDuaClick: (String) -> Unit, viewModel: BookmarksViewModel = viewModel()
+    onBack: () -> Unit, 
+    onDuaClick: (String) -> Unit,
+    onAllahNameClick: (String) -> Unit,
+    viewModel: BookmarksViewModel = viewModel()
 ) {
     val bookmarks by viewModel.bookmarks.collectAsStateWithLifecycle()
 
@@ -43,6 +46,8 @@ fun BookmarksScreen(
                     bookmark = bookmark, onClick = {
                         if (bookmark.itemType == "dua") {
                             onDuaClick(bookmark.itemId)
+                        } else if (bookmark.itemType == "allah_name") {
+                            onAllahNameClick(bookmark.itemId)
                         }
                     })
             }

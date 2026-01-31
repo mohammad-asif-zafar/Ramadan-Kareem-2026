@@ -23,4 +23,7 @@ interface BookmarkDao {
     
     @Query("SELECT COUNT(*) > 0 FROM bookmarks WHERE itemId = :itemId AND itemType = :itemType")
     suspend fun isBookmarked(itemId: String, itemType: String): Boolean
+    
+    @Query("SELECT COUNT(*) FROM bookmarks WHERE itemType IN ('dua', 'allah_name')")
+    suspend fun getTotalBookmarkCount(): Int
 }

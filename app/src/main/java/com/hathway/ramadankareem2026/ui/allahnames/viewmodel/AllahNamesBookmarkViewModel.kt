@@ -1,4 +1,4 @@
-package com.hathway.ramadankareem2026.ui.dua.viewmodel
+package com.hathway.ramadankareem2026.ui.allahnames.viewmodel
 
 import android.app.Application
 import android.util.Log
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class DuaBookmarkViewModel(application: Application) : AndroidViewModel(application) {
+class AllahNamesBookmarkViewModel(application: Application) : AndroidViewModel(application) {
 
     private val bookmarkDao: BookmarkDao = BookmarkManager.getDatabase(application).bookmarkDao()
 
@@ -30,8 +30,8 @@ class DuaBookmarkViewModel(application: Application) : AndroidViewModel(applicat
 
     fun checkBookmarkStatus(itemId: String) {
         viewModelScope.launch {
-            val isCurrentlyBookmarked = bookmarkDao.isBookmarked(itemId, "dua")
-            Log.d("DuaBookmark", "Checking bookmark status for $itemId: $isCurrentlyBookmarked")
+            val isCurrentlyBookmarked = bookmarkDao.isBookmarked(itemId, "allah_name")
+            Log.d("AllahNamesBookmark", "Checking bookmark status for $itemId: $isCurrentlyBookmarked")
             _isBookmarkedMap.getOrPut(itemId) { MutableStateFlow(false) }.value =
                 isCurrentlyBookmarked
         }
@@ -39,29 +39,29 @@ class DuaBookmarkViewModel(application: Application) : AndroidViewModel(applicat
 
     fun toggleBookmark(itemId: String, title: String, content: String?) {
         viewModelScope.launch {
-            val isCurrentlyBookmarked = bookmarkDao.isBookmarked(itemId, "dua")
+            val isCurrentlyBookmarked = bookmarkDao.isBookmarked(itemId, "allah_name")
             val stateFlow = _isBookmarkedMap.getOrPut(itemId) { MutableStateFlow(false) }
 
-            Log.d("DuaBookmark", "Toggling bookmark for $itemId: currently $isCurrentlyBookmarked")
+            Log.d("AllahNamesBookmark", "Toggling bookmark for $itemId: currently $isCurrentlyBookmarked")
 
             if (isCurrentlyBookmarked) {
-                bookmarkDao.deleteBookmarkById(itemId, "dua")
+                bookmarkDao.deleteBookmarkById(itemId, "allah_name")
                 stateFlow.value = false
-                Log.d("DuaBookmark", "Removed bookmark for $itemId")
+                Log.d("AllahNamesBookmark", "Removed bookmark for $itemId")
                 
                 // Trigger immediate badge update with delta
                 onBookmarkCountChanged?.invoke(-1)
             } else {
                 val bookmark = com.hathway.ramadankareem2026.data.local.database.BookmarkEntity(
-                    id = "dua_${itemId}",
+                    id = "allah_name_${itemId}",
                     itemId = itemId,
-                    itemType = "dua",
+                    itemType = "allah_name",
                     title = title,
                     content = content
                 )
                 bookmarkDao.insertBookmark(bookmark)
                 stateFlow.value = true
-                Log.d("DuaBookmark", "Added bookmark for $itemId")
+                Log.d("AllahNamesBookmark", "Added bookmark for $itemId")
                 
                 // Trigger immediate badge update with delta
                 onBookmarkCountChanged?.invoke(1)

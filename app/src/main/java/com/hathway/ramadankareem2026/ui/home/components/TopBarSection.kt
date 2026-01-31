@@ -49,9 +49,9 @@ fun TopBarSection(
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 16.dp)
-            .clickable { onLocationClick() }) {
+            .clickable {/* onLocationClick()*/ }) {
 
-        // 🌙 Greeting
+        //  Greeting
         Text(
             text = stringResource(R.string.assalamoalikum),
             style = MaterialTheme.typography.bodyMedium,
@@ -62,12 +62,12 @@ fun TopBarSection(
 
         when (locationState) {
 
-            // ⏳ Loading state
+            // Loading state
             is LocationUiState.Loading -> {
                 LocationShimmer()
             }
 
-            // 🔴 Error state
+            //  Error state
             is LocationUiState.Error -> {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(

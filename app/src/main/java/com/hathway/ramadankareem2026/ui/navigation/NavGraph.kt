@@ -10,7 +10,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import android.app.Application
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
@@ -20,12 +22,15 @@ import com.hathway.ramadankareem2026.ui.allahnames.AllahNamesScreen
 import com.hathway.ramadankareem2026.ui.allahnames.data.source.AllahNamesLocalData
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesViewModel
+import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.route.BookmarksRoute
 import com.hathway.ramadankareem2026.ui.components.RamadanBottomBar
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoryScreen
 import com.hathway.ramadankareem2026.ui.dua.components.DuaDetailScreen
 import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
 import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
+import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
 import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
 import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
@@ -144,11 +149,17 @@ private fun HomeScaffold() {
 
                 val duaId = backStackEntry.arguments!!.getString("duaId")!!
                 val dua = DuaRepository().getDuaById(duaId)
+                
+                // Create shared ViewModels for immediate updates
+                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                val sharedBookmarkViewModel: DuaBookmarkViewModel = viewModel()
 
                 DuaDetailScreen(
                     dua = dua, 
                     onBack = { navController.popBackStack() },
-                    navController = navController
+                    navController = navController,
+                    bookmarkViewModel = sharedBookmarkViewModel,
+                    countViewModel = sharedBookmarkCountViewModel
                 )
             }
 
@@ -168,6 +179,8 @@ private fun HomeScaffold() {
             composable(Routes.ALLAH_NAMES) {
 
                 val viewModel: AllahNamesViewModel = viewModel()
+                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                val sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 
                 AllahNamesScreen(
                     names = viewModel.names,
@@ -176,7 +189,9 @@ private fun HomeScaffold() {
                         navController.navigate(
                             Routes.allahNameDetail(name.id)
                         )
-                    })
+                    },
+                    navController = navController,
+                    sharedBookmarkCountViewModel = sharedBookmarkCountViewModel)
             }
 
             composable(
@@ -185,10 +200,14 @@ private fun HomeScaffold() {
             ) { backStackEntry ->
 
                 val id = backStackEntry.arguments?.getInt("id") ?: return@composable
+                val sharedBookmarkCountViewModel: BookmarkCountViewModel = viewModel()
+                val sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 
                 AllahNameDetailRoute(
-                    id = id, navController = navController
-                )
+                    id = id, 
+                    navController = navController, 
+                    sharedBookmarkCountViewModel = sharedBookmarkCountViewModel,
+                    sharedBookmarkViewModel = sharedBookmarkViewModel)
             }
 
             composable(Routes.ZAKAT) {
@@ -330,7 +349,13 @@ fun SimpleScreen(title: String) {
 @Composable
 fun AllahNamesScreenPreview() {
     MaterialTheme {
-        AllahNamesScreen(names = AllahNamesLocalData.getAll(), onBack = {}, onNameClick = {})
+        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        AllahNamesScreen(
+            names = AllahNamesLocalData.getAll(), 
+            onBack = {}, 
+            onNameClick = {},
+            navController = rememberNavController(),
+            sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
     }
 }
 
@@ -338,6 +363,8 @@ fun AllahNamesScreenPreview() {
 @Composable
 fun AllahNameDetailPreview() {
     MaterialTheme {
+        val mockBookmarkCountViewModel = BookmarkCountViewModel(android.app.Application())
+        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(android.app.Application())
         AllahNameDetailScreen(
             name = AllahName(
                 id = 1,
@@ -345,7 +372,11 @@ fun AllahNameDetailPreview() {
                 transliteration = "Ar-Rahman",
                 english = "The Most Merciful",
                 meaning = "The One who has plenty of mercy for the believers."
-            ), onBack = {})
+            ), 
+            onBack = {},
+            navController = rememberNavController(),
+            bookmarkViewModel = mockBookmarkViewModel,
+            sharedBookmarkCountViewModel = mockBookmarkCountViewModel)
     }
 }
 

@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.ui.bookmarks.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.data.local.BookmarkManager
@@ -23,9 +24,32 @@ class BookmarkCountViewModel(application: Application) : AndroidViewModel(applic
 
     private fun loadBookmarkCount() {
         viewModelScope.launch {
-            bookmarkDao.getBookmarksByType("dua").collect { bookmarks ->
-                _bookmarkCount.value = bookmarks.size
+            try {
+                // Use the efficient total count method
+                val totalCount = bookmarkDao.getTotalBookmarkCount()
+                _bookmarkCount.value = totalCount
+                Log.d("BookmarkCount", "Total bookmark count: $totalCount")
+            } catch (e: Exception) {
+                Log.e("BookmarkCount", "Error loading bookmark count", e)
+                _bookmarkCount.value = 0
             }
+        }
+    }
+    
+    fun refreshBookmarkCount() {
+        Log.d("BookmarkCount", "Refreshing bookmark count")
+        loadBookmarkCount()
+    }
+    
+    // Add immediate update method for better UX
+    fun updateBookmarkCountImmediate(delta: Int) {
+        val newCount = (_bookmarkCount.value + delta).coerceAtLeast(0)
+        _bookmarkCount.value = newCount
+        Log.d("BookmarkCount", "Immediate update: $delta, new count: $newCount")
+        
+        // Still refresh from database to ensure accuracy
+        viewModelScope.launch {
+            loadBookmarkCount()
         }
     }
 }
