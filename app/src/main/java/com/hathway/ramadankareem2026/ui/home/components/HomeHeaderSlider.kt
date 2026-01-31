@@ -133,7 +133,7 @@ fun HomeHeaderSlider(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp)
     ) {
 
         /**
@@ -145,7 +145,7 @@ fun HomeHeaderSlider(
                 .fillMaxWidth()
                 .height(150.dp),
             pageSpacing = 12.dp,
-            contentPadding = PaddingValues(horizontal = 12.dp)
+            contentPadding = PaddingValues(horizontal = 0.dp)
         ) { page ->
 
             // Render each header card

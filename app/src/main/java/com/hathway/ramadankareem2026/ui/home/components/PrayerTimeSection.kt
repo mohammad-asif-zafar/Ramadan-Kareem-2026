@@ -86,7 +86,7 @@ fun PrayerTimeSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
         // Section header
