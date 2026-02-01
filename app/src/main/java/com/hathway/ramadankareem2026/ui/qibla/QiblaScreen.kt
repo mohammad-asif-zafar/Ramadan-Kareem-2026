@@ -1,19 +1,20 @@
 package com.hathway.ramadankareem2026.ui.qibla
 
 import android.hardware.SensorManager
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,10 +23,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.qibla.components.AlignmentStatus
-import com.hathway.ramadankareem2026.ui.qibla.components.QiblaCompassCircle
-import com.hathway.ramadankareem2026.ui.qibla.components.QiblaHeader
+import com.hathway.ramadankareem2026.ui.qibla.components.*
 import com.hathway.ramadankareem2026.ui.qibla.components.snappedQiblaRotation
+import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 
 @Composable
 fun QiblaScreen(
@@ -36,39 +37,80 @@ fun QiblaScreen(
     onSettings: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
+    val scrollState = rememberScrollState()
 
     DisposableEffect(Unit) {
         viewModel.startCompass()
         onDispose { viewModel.stopCompass() }
     }
 
+    // Calculate alignment status
+    val (snappedRotation, isAligned) = snappedQiblaRotation(
+        deviceAzimuth = state.deviceAzimuth, 
+        qiblaBearing = state.qiblaBearing
+    )
 
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = stringResource(R.string.qibla_direction),
+                title = if (isAligned) "✅ Qibla Aligned - Makkah, Saudi Arabia" else stringResource(R.string.qibla_direction),
                 showBack = true,
                 onBackClick = onBack
             )
-        }) { padding ->
-
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 24.dp),
+                .padding(padding)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    )
+                )
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+           // Spacer(modifier = Modifier.height(16.dp))
 
-            QiblaHeader(
-                degree = 81, location = "Makkah, Saudi Arabia"
+            // Enhanced Header with more information
+           /* EnhancedQiblaHeader(
+                degree = 81,
+                location = "Makkah, Saudi Arabia",
+                currentCity = "Your Location", // This should come from location services
+                distanceToMakkah = "1,234 km", // This should be calculated
+                isAligned = isAligned
+            )
+*/
+          //  Spacer(modifier = Modifier.height(4.dp))
+
+            // Decorative elements
+           // QiblaCompassDecorations()
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Enhanced Compass
+            EnhancedQiblaCompassCircle(
+                deviceRotation = -state.deviceAzimuth,
+                qiblaRotation = snappedRotation,
+                isAligned = isAligned,
+                accuracy = SensorManager.SENSOR_STATUS_ACCURACY_HIGH
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            QiblaCompassCircle(
-                deviceRotation = -state.deviceAzimuth,
-                qiblaRotation = state.qiblaBearing - state.deviceAzimuth
-            )
+            // Prayer Direction Guide
+            PrayerDirectionGuide()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Information Cards
+            QiblaInformationCards()
+
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }

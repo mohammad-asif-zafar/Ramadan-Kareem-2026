@@ -31,20 +31,13 @@ sealed class BottomNavItem(
     object Qibla : BottomNavItem(
         route = Routes.QIBLA, title = Routes.QIBLA, Icons.Outlined.Explore, badgeCount = 4
     )
-
-    object Setting : BottomNavItem(
-        route = Routes.QIBLA_SETTINGS,
-        title = Routes.QIBLA_SETTINGS,
-        Icons.Outlined.Timer,
-        badgeCount = 9
-    )
 }
 
 @Composable
 fun RamadanBottomBar(navController: NavController) {
 
     val items = listOf(
-        BottomNavItem.Home, BottomNavItem.Quran, BottomNavItem.Qibla, BottomNavItem.Setting
+        BottomNavItem.Home, BottomNavItem.Quran, BottomNavItem.Qibla
     )
 
     NavigationBar(
