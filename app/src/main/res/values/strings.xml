@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Ramadan Kareem 2026</string>
+    <string name="widget_description">Prayer Times &amp; Ramadan Countdown Widget</string>
     <string name="home">Home</string>
     <string name="prayer">Prayer</string>
     <string name="quran">Quran</string>
