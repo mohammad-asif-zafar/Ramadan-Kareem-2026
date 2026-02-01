@@ -39,198 +39,140 @@ class PrayerCountdownWidget : GlanceAppWidget() {
         val context = LocalContext.current
         val state = PrayerWidgetDataProvider.load(context)
 
-        // Professional UI/UX design with glassmorphism effect
-        Box(
+        // Simple and clean UI design with icons
+        Column(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(ColorProvider(Color(0xFF0A0A0A))) // Dark professional background
+                .background(ColorProvider(Color.White))
+                .padding(12.dp)
                 .clickable(actionStartActivity())
         ) {
-            // Subtle mosque background with professional blur
-            Image(
-                provider = ImageProvider(R.drawable.mosque_online),
-                contentDescription = "Mosque Background",
-                modifier = GlanceModifier
-                    .fillMaxSize()
-                    .padding(12.dp)
-            )
             
-            // Professional glassmorphism overlay
-            Box(
-                modifier = GlanceModifier
-                    .fillMaxSize()
-                    .background(ColorProvider(Color(0x1A1A1A1A))) // Professional glass effect
-            ) {}
-            
-            // Professional content with modern spacing
-            Column(
-                modifier = GlanceModifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+            // Clean location header with icon
+            Row(
+                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
             ) {
-                
-                // Professional header with elegant styling
-                Row(
-                    modifier = GlanceModifier.fillMaxWidth(),
-                    horizontalAlignment = androidx.glance.layout.Alignment.Start
-                ) {
-                    // Location with professional styling
-                    Text(
-                        text = "${state.city}",
-                        style = TextStyle(
-                            color = ColorProvider(Color(0xFFFFFFFF)), // Professional white
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                Image(
+                    provider = ImageProvider(R.drawable.ic_kaaba),
+                    contentDescription = "Location",
+                    modifier = GlanceModifier.size(16.dp)
+                )
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                Text(
+                    text = "${state.city}",
+                    style = TextStyle(
+                        color = ColorProvider(Color(0xFF0F9D58)), // Ramadan Green
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                }
+                )
+            }
 
-                Spacer(modifier = GlanceModifier.height(16.dp))
+            Spacer(modifier = GlanceModifier.height(8.dp))
 
-                // Professional prayer section with card-like design
-                Column(
-                    modifier = GlanceModifier
-                        .fillMaxWidth()
-                        .background(ColorProvider(Color(0x1AFFFFFF)))
-                        .padding(12.dp)
-                ) {
-                    Text(
-                        text = "Current Prayer",
-                        style = TextStyle(
-                            color = ColorProvider(Color(0xFFB0B0B0)), // Professional gray
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
+            // Current prayer with icon
+            Row(
+                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+            ) {
+                Image(
+                    provider = ImageProvider(R.drawable.ic_kaaba),
+                    contentDescription = "Current Prayer",
+                    modifier = GlanceModifier.size(18.dp)
+                )
+                Spacer(modifier = GlanceModifier.width(6.dp))
+                Column {
                     Text(
                         text = "${state.currentPrayer.name}",
                         style = TextStyle(
-                            color = ColorProvider(Color(0xFF0F9D58)), // Ramadan Green
-                            fontSize = 18.sp,
+                            color = ColorProvider(Color.Black),
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
                     )
                     Text(
                         text = formatTimeRemaining(state.currentPrayer.minutesRemaining),
                         style = TextStyle(
+                            color = ColorProvider(Color(0xFF666666)), // Clean gray
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    )
+                }
+            }
+
+            Spacer(modifier = GlanceModifier.height(6.dp))
+
+            // Iftar/Next prayer with icon
+            Row(
+                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+            ) {
+                if (state.isRamadan) {
+                    Image(
+                        provider = ImageProvider(R.drawable.ic_kaaba),
+                        contentDescription = "Iftar",
+                        modifier = GlanceModifier.size(14.dp)
+                    )
+                    Spacer(modifier = GlanceModifier.width(4.dp))
+                    Text(
+                        text = "Iftar: ${formatTimeRemaining(state.timeUntilSunset ?: 0)}",
+                        style = TextStyle(
                             color = ColorProvider(Color(0xFFD4AF37)), // Ramadan Gold
-                            fontSize = 13.sp,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                } else {
+                    Image(
+                        provider = ImageProvider(R.drawable.ic_kaaba),
+                        contentDescription = "Next Prayer",
+                        modifier = GlanceModifier.size(14.dp)
+                    )
+                    Spacer(modifier = GlanceModifier.width(4.dp))
+                    Text(
+                        text = "Next: ${state.nextPrayer.name} in ${formatTimeRemaining(state.nextPrayer.minutesRemaining)}",
+                        style = TextStyle(
+                            color = ColorProvider(Color(0xFF666666)),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    )
+                }
+            }
+
+            Spacer(modifier = GlanceModifier.height(4.dp))
+
+            // Suhoor with icon - only during Ramadan
+            if (state.isRamadan) {
+                Row(
+                    verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+                ) {
+                    Image(
+                        provider = ImageProvider(R.drawable.ic_kaaba),
+                        contentDescription = "Suhoor",
+                        modifier = GlanceModifier.size(14.dp)
+                    )
+                    Spacer(modifier = GlanceModifier.width(4.dp))
+                    Text(
+                        text = "Suhoor: ${formatTimeRemaining(calculateMinutesUntilTomorrow(state.fajr))}",
+                        style = TextStyle(
+                            color = ColorProvider(Color(0xFFD4AF37)), // Ramadan Gold
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Medium
                         )
                     )
                 }
-
-                Spacer(modifier = GlanceModifier.height(12.dp))
-
-                // Professional iftar/next prayer section
-                Column(
-                    modifier = GlanceModifier
-                        .fillMaxWidth()
-                        .background(ColorProvider(Color(0x1AFFFFFF)))
-                        .padding(12.dp)
-                ) {
-                    if (state.isRamadan) {
-                        Text(
-                            text = "Iftar Time",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFB0B0B0)),
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                        Text(
-                            text = "Maghrib",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFF0F9D58)),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Text(
-                            text = formatTimeRemaining(state.timeUntilSunset ?: 0),
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFD4AF37)),
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    } else {
-                        Text(
-                            text = "Next Prayer",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFB0B0B0)),
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                        Text(
-                            text = "${state.nextPrayer.name}",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFF0F9D58)),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Text(
-                            text = formatTimeRemaining(state.nextPrayer.minutesRemaining),
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFD4AF37)),
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                }
-
-                Spacer(modifier = GlanceModifier.height(12.dp))
-
-                // Professional suhoor section (Ramadan only)
-                if (state.isRamadan) {
-                    Column(
-                        modifier = GlanceModifier
-                            .fillMaxWidth()
-                            .background(ColorProvider(Color(0x1AFFFFFF)))
-                            .padding(12.dp)
-                    ) {
-                        Text(
-                            text = "Suhoor Time",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFB0B0B0)),
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                        Text(
-                            text = "Fajr",
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFF0F9D58)),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Text(
-                            text = formatTimeRemaining(calculateMinutesUntilTomorrow(state.fajr)),
-                            style = TextStyle(
-                                color = ColorProvider(Color(0xFFD4AF37)),
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                }
-
-                Spacer(modifier = GlanceModifier.height(8.dp))
-
-                // Professional footer with elegant styling
-                Text(
-                    text = state.hijriDate,
-                    style = TextStyle(
-                        color = ColorProvider(Color(0xFF808080)), // Professional footer gray
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                )
             }
+
+            // Simple footer
+            Spacer(modifier = GlanceModifier.height(8.dp))
+            Text(
+                text = state.hijriDate,
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFF999999)), // Light gray
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            )
         }
     }
 
