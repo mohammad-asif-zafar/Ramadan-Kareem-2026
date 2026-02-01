@@ -9,7 +9,6 @@ import com.hathway.ramadankareem2026.core.time.SystemAppClock
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
 import com.hathway.ramadankareem2026.core.util.minuteTicker
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerRepository
-import com.hathway.ramadankareem2026.ui.prayer.mapper.PrayerAdhanMapper
 import com.hathway.ramadankareem2026.ui.ramadan.logic.RamadanMonthlyOverviewCalculator
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
 import kotlinx.coroutines.delay
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 class RamadanCalendarViewModel(

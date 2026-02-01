@@ -31,9 +31,9 @@ import com.hathway.ramadankareem2026.core.location.LocationSelectionMode
 // 🔹 UI components
 import com.hathway.ramadankareem2026.ui.home.components.FeatureSection
 import com.hathway.ramadankareem2026.ui.home.components.HomeHeaderSlider
+import com.hathway.ramadankareem2026.ui.home.components.HomeTopBarSection
 import com.hathway.ramadankareem2026.ui.home.components.PrayerTimeSection
 import com.hathway.ramadankareem2026.ui.home.components.TodayTipSection
-import com.hathway.ramadankareem2026.ui.home.components.TopBarSection
 
 // 🔹 ViewModels
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
@@ -103,10 +103,15 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item(key = "top_bar") {
-                TopBarSection(
-                    locationState = locationState, onLocationClick = {
+                HomeTopBarSection(
+                    locationState = locationState,
+                    onLocationClick = {
                         navController.navigate("location_picker")
-                    })
+                    },
+                    onProfileClick = {
+                        navController.navigate("settings")
+                    }
+                )
             }
 
             item { HomeHeaderSlider() }
@@ -135,8 +140,11 @@ private fun HomeScreenPreviewContent(
             modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item {
-                TopBarSection(
-                    locationState = locationState, onLocationClick = {})
+                HomeTopBarSection(
+                    locationState = locationState,
+                    onLocationClick = {},
+                    onProfileClick = {}
+                )
             }
             item { HomeHeaderSlider() }
             item { Spacer(modifier = Modifier.height(16.dp)) }

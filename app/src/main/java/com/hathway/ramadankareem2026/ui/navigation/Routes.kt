@@ -11,6 +11,7 @@ object Routes {
     const val CALENDAR = "calendar"
     const val QIBLA_SETTINGS = "qibla_settings"
     const val RAMADAN_CALENDAR = "ramadan_calendar"
+    const val SETTINGS = "settings"
     const val DUA_CATEGORY = "dua_category"
     const val DUA_DETAIL = "dua_detail"
     const val ALLAH_NAMES = "allah_names"

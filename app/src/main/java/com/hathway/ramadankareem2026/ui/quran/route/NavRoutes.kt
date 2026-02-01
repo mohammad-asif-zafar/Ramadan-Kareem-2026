@@ -27,7 +27,7 @@ fun QuranRoute(navController: NavController) {
         onBack = { navController.popBackStack() },
         onSurahClick = { surah ->
             navController.navigate(
-                com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(
+                NavRoutes.QuranSurahAyahs.createRoute(
                     surah.id
                 )
             )
