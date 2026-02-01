@@ -51,6 +51,7 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookma
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
+import com.hathway.ramadankareem2026.ui.settings.SettingsScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipDetailScreen
 import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipsScreen
@@ -115,7 +116,6 @@ private fun HomeScaffold() {
 
             composable(Routes.QIBLA) {
                 QiblaScreen(
-
                     navController = navController,
                     onBack = {},
                     onSettings = {},
@@ -148,6 +148,10 @@ private fun HomeScaffold() {
 
             composable(Routes.RAMADAN_CALENDAR) {
                 RamadanCalendarRoute(navController)
+            }
+
+            composable(Routes.SETTINGS) {
+                SettingsScreen(navController = navController)
             }
 
             composable(

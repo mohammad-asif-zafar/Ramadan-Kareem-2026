@@ -47,12 +47,8 @@ fun QiblaScreen(
         topBar = {
             RamadanToolbar(
                 title = stringResource(R.string.qibla_direction),
-                showBack = false,
-                onBackClick = onBack,
-                rightIcon1 = R.drawable.bell,
-                onRightIcon1Click = onViewFullCalendar,
-                rightIcon2 = R.drawable.bell,
-                onRightIcon2Click = onSettings
+                showBack = true,
+                onBackClick = onBack
             )
         }) { padding ->
 
