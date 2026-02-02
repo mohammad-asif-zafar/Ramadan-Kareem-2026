@@ -8,7 +8,6 @@ A comprehensive Islamic app for Ramadan 2026 featuring prayer times, Quran readi
 - **📖 Quran Reader** - Read Quran with translations and audio recitations
 - **🤲 Duas** - Collection of Islamic supplications with bookmarks
 - **💰 Zakat Calculator** - Calculate your Zakat obligations
-- **🧮 Tasbih Counter** - Digital tasbih for dhikr
 - **🧭 Qibla Compass** - Find the direction of Kaaba
 - **📅 Ramadan Calendar** - Complete Ramadan schedule and important dates
 - **🗺️ Nearby Mosques** - Find mosques near your location
@@ -48,7 +47,7 @@ A comprehensive Islamic app for Ramadan 2026 featuring prayer times, Quran readi
 
 Our privacy policy is hosted on GitHub Pages:
 
-**🔗 Privacy Policy:** https://mohammad-asif-zafar.github.io/Ramadan-Kareem-2026/
+**🔗 Privacy Policy:** https://mohammad-asif-zafar.github.io/Ramadan-Kareem-2026/privacy-policy.html
 
 ### 📧 Contact
 - **Email:** mohammadasifzafar000@gmail.com
@@ -93,7 +92,16 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## 📱 Screenshots
 
-*Coming soon...*
+View complete app screenshots in our privacy policy page:
+
+**🔗 Screenshots:** https://mohammad-asif-zafar.github.io/Ramadan-Kareem-2026/privacy-policy.html#screenshots
+
+Features include:
+- Home Screen & Prayer Times
+- Quran Reader & Duas
+- Zakat Calculator & Settings
+- Qibla Compass & Ramadan Calendar
+- Nearby Mosques & Multi-Language Support
 
 ## 🤝 Contributing
 
