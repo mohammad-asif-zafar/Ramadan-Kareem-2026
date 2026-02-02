@@ -11,10 +11,4 @@ class DuaViewModel(
     // Ramadan section (horizontal)
     val ramadanDuas = repository.getRamadanDuas()
 
-    // Categories (2x2 grid)
-    val categories = repository.getCategories()
-
-    fun getDuasByCategory(categoryId: String): List<DuaItem> {
-        return repository.getDuasByCategory(categoryId)
-    }
 }

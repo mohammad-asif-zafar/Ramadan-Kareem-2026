@@ -36,10 +36,6 @@ class QuranBookmarkCountViewModel(application: Application) : AndroidViewModel(a
         }
     }
 
-    fun refreshQuranBookmarkCount() {
-        loadQuranBookmarkCount()
-    }
-
     // Update count with delta for immediate UI updates
     fun updateQuranBookmarkCountImmediate(delta: Int) {
         val newCount = (_quranBookmarkCount.value + delta).coerceAtLeast(0)

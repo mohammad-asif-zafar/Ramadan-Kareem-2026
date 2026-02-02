@@ -1,25 +1,33 @@
 package com.hathway.ramadankareem2026.ui.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
-import androidx.glance.layout.*
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Column
+import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
+import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.height
+import androidx.glance.layout.padding
+import androidx.glance.layout.size
+import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
-import androidx.glance.unit.ColorProvider
 import androidx.glance.text.TextStyle
-import androidx.glance.Image
-import androidx.glance.ImageProvider
+import androidx.glance.unit.ColorProvider
 import com.hathway.ramadankareem2026.R
 
 class PrayerCountdownWidget : GlanceAppWidget() {
@@ -33,6 +41,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Composable
     private fun HighQualityWidgetContent() {
 
@@ -50,7 +59,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
             
             // Clean location header with icon
             Row(
-                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     provider = ImageProvider(R.drawable.ic_kaaba),
@@ -59,7 +68,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
                 )
                 Spacer(modifier = GlanceModifier.width(4.dp))
                 Text(
-                    text = "${state.city}",
+                    text = state.city,
                     style = TextStyle(
                         color = ColorProvider(Color(0xFF0F9D58)), // Ramadan Green
                         fontSize = 12.sp,
@@ -72,7 +81,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
 
             // Current prayer with icon
             Row(
-                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     provider = ImageProvider(R.drawable.ic_kaaba),
@@ -82,7 +91,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
                 Spacer(modifier = GlanceModifier.width(6.dp))
                 Column {
                     Text(
-                        text = "${state.currentPrayer.name}",
+                        text = state.currentPrayer.name,
                         style = TextStyle(
                             color = ColorProvider(Color.Black),
                             fontSize = 16.sp,
@@ -104,7 +113,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
 
             // Iftar/Next prayer with icon
             Row(
-                verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 if (state.isRamadan) {
                     Image(
@@ -144,7 +153,7 @@ class PrayerCountdownWidget : GlanceAppWidget() {
             // Suhoor with icon - only during Ramadan
             if (state.isRamadan) {
                 Row(
-                    verticalAlignment = androidx.glance.layout.Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
                         provider = ImageProvider(R.drawable.ic_kaaba),
@@ -178,15 +187,11 @@ class PrayerCountdownWidget : GlanceAppWidget() {
 
     private fun formatTimeRemaining(minutes: Int): String {
         return when {
-            minutes < 60 -> "${minutes} min remaining"
+            minutes < 60 -> "$minutes min remaining"
             minutes == 60 -> "1 hour remaining"
             minutes < 120 -> "1 hour ${minutes % 60} min remaining"
             else -> "${minutes / 60} hours ${minutes % 60} min remaining"
         }
-    }
-
-    private fun formatPrayerTime(time: java.time.LocalTime): String {
-        return time.toString().substring(0, 5) // HH:MM format
     }
 
     private fun calculateMinutesUntilTomorrow(time: java.time.LocalTime): Int {

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
 import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarksViewModel

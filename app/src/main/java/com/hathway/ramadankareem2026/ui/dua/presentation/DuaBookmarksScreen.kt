@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.R
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
@@ -38,7 +40,7 @@ fun DuaBookmarksScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Dua Bookmarks",
+                title = stringResource(R.string.dua_bookmarks),
                 showBack = true,
                 onBackClick = onBack
             )
@@ -70,7 +72,7 @@ fun DuaBookmarksScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "No Dua bookmarks yet",
+                            text = stringResource(R.string.no_dua_bookmarks_yet),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

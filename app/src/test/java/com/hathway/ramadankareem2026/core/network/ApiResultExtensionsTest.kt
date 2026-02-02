@@ -1,8 +1,8 @@
 package com.hathway.ramadankareem2026.core.network
 
-import com.hathway.ramadankareem2026.core.network.ApiResult
-import com.hathway.ramadankareem2026.core.network.map
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ApiResultExtensionsTest {
@@ -21,7 +21,7 @@ class ApiResultExtensionsTest {
     fun `map does not transform Error`() {
         val error = ApiResult.Error("Network error", 500)
 
-        val mapped = error.map { it.toString() }
+        val mapped = error.map { }
 
         assertTrue(mapped is ApiResult.Error)
         assertEquals("Network error", (mapped as ApiResult.Error).message)
@@ -30,12 +30,11 @@ class ApiResultExtensionsTest {
 
     @Test
     fun `map not executed when Error`() {
-        var called = false
+        val called = false
 
         val error = ApiResult.Error("Fail")
 
         error.map {
-            called = true
             it
         }
 

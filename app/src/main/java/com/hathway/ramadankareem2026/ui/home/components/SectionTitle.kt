@@ -1,10 +1,8 @@
 package com.hathway.ramadankareem2026.ui.home.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 /**
@@ -36,33 +34,7 @@ fun SectionTitlePreview() {
     }
 }
 
-@Composable
-fun SectionTitle(
-    title: String, modifier: Modifier = Modifier
-) {
-    Text(
-        text = title, modifier = modifier, style = MaterialTheme.typography.titleMedium
-    )
-}
-
-@Composable
-fun SectionTitle(
-    title: String, subtitle: String? = null, modifier: Modifier = Modifier
-) {
-    Column(modifier) {
-        Text(
-            text = title, style = MaterialTheme.typography.titleMedium
-        )
-
-        if (!subtitle.isNullOrBlank()) {
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}/*
+/*
  Design system setup
 
  Snapshot testing typography

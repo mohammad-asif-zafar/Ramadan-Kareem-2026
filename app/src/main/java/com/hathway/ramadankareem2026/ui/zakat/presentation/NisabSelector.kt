@@ -15,7 +15,7 @@ fun NisabSelector(
     onSelect: (NisabType) -> Unit
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        NisabType.values().forEach {
+        NisabType.entries.forEach {
             FilterChip(
                 selected = selected == it,
                 onClick = { onSelect(it) },

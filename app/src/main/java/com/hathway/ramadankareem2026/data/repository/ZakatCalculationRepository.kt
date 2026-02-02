@@ -52,10 +52,6 @@ class ZakatCalculationRepository(
         return zakatCalculationDao.getAllCalculations()
     }
 
-    fun getRecentCalculations(limit: Int = 10): Flow<List<ZakatCalculationEntity>> {
-        return zakatCalculationDao.getRecentCalculations(limit)
-    }
-
     fun getCalculationsCount(): Flow<Int> {
         return zakatCalculationDao.getCalculationsCount()
     }
@@ -68,7 +64,4 @@ class ZakatCalculationRepository(
         zakatCalculationDao.deleteAllCalculations()
     }
 
-    suspend fun getCalculationById(id: Long): ZakatCalculationEntity? {
-        return zakatCalculationDao.getCalculationById(id)
-    }
 }

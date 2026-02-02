@@ -23,7 +23,7 @@ import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookmarksScreen(
-    onBack: () -> Unit, 
+    onBack: () -> Unit,
     onDuaClick: (String) -> Unit,
     onAllahNameClick: (String) -> Unit,
     onMosqueClick: (String) -> Unit,
@@ -45,12 +45,18 @@ fun BookmarksScreen(
             items(bookmarks) { bookmark ->
                 BookmarkItem(
                     bookmark = bookmark, onClick = {
-                        if (bookmark.itemType == "dua") {
-                            onDuaClick(bookmark.itemId)
-                        } else if (bookmark.itemType == "allah_name") {
-                            onAllahNameClick(bookmark.itemId)
-                        } else if (bookmark.itemType == "mosque") {
-                            onMosqueClick(bookmark.itemId)
+                        when (bookmark.itemType) {
+                            "dua" -> {
+                                onDuaClick(bookmark.itemId)
+                            }
+
+                            "allah_name" -> {
+                                onAllahNameClick(bookmark.itemId)
+                            }
+
+                            "mosque" -> {
+                                onMosqueClick(bookmark.itemId)
+                            }
                         }
                     })
             }
@@ -150,12 +156,8 @@ fun BookmarksScreenPreview_WithData() {
         Scaffold(
             topBar = {
                 RamadanToolbar(
-                    title = stringResource(R.string.bookmarks),
-                    showBack = true,
-                    onBackClick = {}
-                )
-            }
-        ) { padding ->
+                    title = stringResource(R.string.bookmarks), showBack = true, onBackClick = {})
+            }) { padding ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -171,8 +173,7 @@ fun BookmarksScreenPreview_WithData() {
                             content = "O Allah, by You we enter the morning...",
                             itemType = "dua",
                             itemId = "dua_1"
-                        ),
-                        BookmarkEntity(
+                        ), BookmarkEntity(
                             id = "2",
                             title = "Ayah 2:153",
                             content = "Indeed, Allah is with the patient.",
@@ -182,9 +183,7 @@ fun BookmarksScreenPreview_WithData() {
                     )
                 ) { bookmark ->
                     BookmarkItem(
-                        bookmark = bookmark,
-                        onClick = {}
-                    )
+                        bookmark = bookmark, onClick = {})
                 }
             }
         }
@@ -198,12 +197,8 @@ fun BookmarksScreenPreview_Empty() {
         Scaffold(
             topBar = {
                 RamadanToolbar(
-                    title = "Bookmarks",
-                    showBack = true,
-                    onBackClick = {}
-                )
-            }
-        ) { padding ->
+                    title = "Bookmarks", showBack = true, onBackClick = {})
+            }) { padding ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -219,8 +214,7 @@ fun BookmarksScreenPreview_Empty() {
                     )
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        text = "No bookmarks yet",
-                        style = MaterialTheme.typography.titleMedium
+                        text = "No bookmarks yet", style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(

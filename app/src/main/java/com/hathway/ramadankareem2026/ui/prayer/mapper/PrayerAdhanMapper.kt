@@ -18,7 +18,7 @@ object PrayerAdhanMapper {
         val zoneId = ZoneId.systemDefault()
 
         // Build ordered list of prayers with times
-        val prayers = Prayer.values().filter { it != Prayer.NONE }.mapNotNull { prayer ->
+        val prayers = Prayer.entries.filter { it != Prayer.NONE }.mapNotNull { prayer ->
             val date = prayerTimes.timeForPrayer(prayer) ?: return@mapNotNull null
             val localTime = date.toInstant().atZone(zoneId).toLocalTime()
             prayer to localTime

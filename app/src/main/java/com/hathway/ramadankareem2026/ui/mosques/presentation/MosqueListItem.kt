@@ -23,9 +23,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.hathway.ramadankareem2026.R
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
 
@@ -103,17 +103,17 @@ fun MosqueListItem(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.BookmarkBorder,
-                            contentDescription = if (isBookmarked) "Remove Bookmark" else "Add Bookmark"
+                            contentDescription = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(R.string.add_bookmark)
                         )
                     })
                 
                 AssistChip(
                     onClick = onDirectionsClick,
-                    label = { Text("Directions") },
+                    label = { Text(stringResource(R.string.directions)) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Directions,
-                            contentDescription = "Directions"
+                            contentDescription = stringResource(R.string.directions)
                         )
                     })
             }

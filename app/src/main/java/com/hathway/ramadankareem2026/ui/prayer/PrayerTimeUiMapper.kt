@@ -9,8 +9,6 @@ import java.time.format.DateTimeFormatter
 
 object PrayerTimeUiMapper {
 
-    private val formatter = DateTimeFormatter.ofPattern("hh:mm a")
-
     fun map(
         state: PrayerTimeUiState, now: LocalTime = LocalTime.now()
     ): List<PrayerDomain> {
@@ -61,16 +59,6 @@ object PrayerTimeUiMapper {
                 isPast = isPast
             )
         }
-    }
-
-
-    private fun iconFor(name: String) = when (name) {
-        "Fajr" -> Icons.Outlined.WbTwilight
-        "Dhuhr" -> Icons.Outlined.LightMode
-        "Asr" -> Icons.Outlined.WbSunny
-        "Maghrib" -> Icons.Outlined.NightsStay
-        "Isha" -> Icons.Outlined.DarkMode
-        else -> Icons.Outlined.AccessTime
     }
 
     // 🔹 UI helper (FINAL & CORRECT)

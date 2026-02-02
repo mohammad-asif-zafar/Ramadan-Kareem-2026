@@ -36,9 +36,6 @@ class AllahNameBookmarkCountViewModel(application: Application) : AndroidViewMod
         }
     }
 
-    fun refreshAllahNameBookmarkCount() {
-        loadAllahNameBookmarkCount()
-    }
 
     // Update count with delta for immediate UI updates
     fun updateAllahNameBookmarkCountImmediate(delta: Int) {

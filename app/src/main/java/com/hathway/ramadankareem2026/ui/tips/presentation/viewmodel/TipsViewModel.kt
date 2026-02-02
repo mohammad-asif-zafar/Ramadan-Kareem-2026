@@ -76,48 +76,11 @@ class TipsViewModel(
         }
         _uiState.value = _uiState.value.copy(filteredTips = filtered)
     }
-    
-    fun searchTips(query: String) {
-        viewModelScope.launch {
-            try {
-                val searchResults = if (query.isBlank()) {
-                    if (_selectedCategory.value == null) {
-                        _uiState.value.allTips
-                    } else {
-                        _uiState.value.allTips.filter { it.category == _selectedCategory.value }
-                    }
-                } else {
-                    repository.searchTips(query)
-                }
-                _uiState.value = _uiState.value.copy(filteredTips = searchResults)
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Search failed: ${e.message}"
-                )
-            }
-        }
-    }
-    
-    fun refreshDailyTip() {
-        viewModelScope.launch {
-            try {
-                repository.refreshDailyTips()
-                _dailyTip.value = repository.getDailyTip()
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to refresh daily tip: ${e.message}"
-                )
-            }
-        }
-    }
-    
+
     fun getTipById(id: Int): Tip? {
         return repository.getTipById(id)
     }
-    
-    fun clearError() {
-        _uiState.value = _uiState.value.copy(error = null)
-    }
+
 }
 
 data class TipsUiState(

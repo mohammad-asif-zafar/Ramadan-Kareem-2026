@@ -164,12 +164,12 @@ private fun PrayerTimeCard(label: String, time: String) {
     }
 }
 
-/* 🔴 LIVE COUNTDOWN */
+/*  LIVE COUNTDOWN */
 @Composable
 fun rememberLiveRemainingMinutes(
     initialMinutes: Int, isActive: Boolean
 ): Int {
-    var minutes by remember { mutableStateOf(initialMinutes) }
+    var minutes by remember { mutableIntStateOf(initialMinutes) }
 
     LaunchedEffect(isActive) {
         if (!isActive) return@LaunchedEffect

@@ -1,10 +1,9 @@
 package com.hathway.ramadankareem2026.core.network
-import com.hathway.ramadankareem2026.core.network.ApiResult
-import com.hathway.ramadankareem2026.core.network.safeApiCall
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Response
 

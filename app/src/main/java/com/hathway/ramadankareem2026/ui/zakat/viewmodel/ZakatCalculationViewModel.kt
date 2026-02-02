@@ -47,7 +47,7 @@ class ZakatCalculationViewModel(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val result = repository.saveCalculation(
+                 repository.saveCalculation(
                     goldValue = goldValue,
                     silverValue = silverValue,
                     cash = cash,
@@ -118,9 +118,5 @@ class ZakatCalculationViewModel(
                 _errorMessage.value = "Failed to delete all calculations: ${e.message}"
             }
         }
-    }
-
-    fun clearError() {
-        _errorMessage.value = null
     }
 }

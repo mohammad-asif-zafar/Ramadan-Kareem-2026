@@ -2,17 +2,37 @@ package com.hathway.ramadankareem2026.ui.zakat.presentation
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,11 +42,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
-import com.hathway.ramadankareem2026.ui.zakat.presentation.ZakatMoneyField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +85,7 @@ fun ZakatScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Zakat",
+                title = stringResource(R.string.zakat),
                 showBack = true,
                 onBackClick = onBack,
                 rightIcon1 = R.drawable.ic_calculator,
@@ -92,7 +110,7 @@ fun ZakatScreen(
             ) {
                 Column {
                     Text(
-                        text = "Zakat Calculator",
+                        text = stringResource(R.string.zakat_calculator_title),
                         style = MaterialTheme.typography.headlineSmall,
                         color = RamadanGold,
                         fontWeight = FontWeight.Bold
@@ -115,7 +133,7 @@ fun ZakatScreen(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_zakat_history),
-                        contentDescription = "Zakat History",
+                        contentDescription = stringResource(R.string.zakat_history_description),
                         tint = RamadanGold,
                         modifier = Modifier.size(20.dp)
                     )
@@ -123,7 +141,7 @@ fun ZakatScreen(
             }
 
             Text(
-                text = "Calculate your Zakat (2.5% of wealth)",
+                text = stringResource(R.string.calculate_your_zakat),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -135,7 +153,7 @@ fun ZakatScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Assets",
+                    text = stringResource(R.string.assets),
                     style = MaterialTheme.typography.titleMedium,
                     color = RamadanGold
                 )
@@ -159,9 +177,9 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField("Gold Value", state.gold, onGold, KeyboardType.Number, state.currency.symbol)
-                    ZakatMoneyField("Silver Value", state.silver, onSilver, KeyboardType.Number, state.currency.symbol)
-                    ZakatMoneyField("Cash & Savings", state.cash, onCash, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(stringResource(R.string.gold_value), state.gold, onGold, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(stringResource(R.string.silver_value), state.silver, onSilver, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(stringResource(R.string.cash_savings), state.cash, onCash, KeyboardType.Number, state.currency.symbol)
                 }
             }
 
@@ -172,7 +190,7 @@ fun ZakatScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Liabilities",
+                    text = stringResource(R.string.liabilities),
                     style = MaterialTheme.typography.titleMedium,
                     color = RamadanGold
                 )
@@ -196,7 +214,7 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField("Debts / Loans", state.debts, onDebts, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(stringResource(R.string.debts_loans), state.debts, onDebts, KeyboardType.Number, state.currency.symbol)
                 }
             }
 
@@ -208,7 +226,7 @@ fun ZakatScreen(
                     containerColor = RamadanGreen, contentColor = Color.White
                 )
             ) {
-                Text("Calculate Zakat", fontWeight = FontWeight.Medium)
+                Text(stringResource(R.string.calculate_zakat), fontWeight = FontWeight.Medium)
             }
 
             // Breakdown Section (shown after calculation)
@@ -223,7 +241,7 @@ fun ZakatScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
-                            text = "Zakat Breakdown",
+                            text = stringResource(R.string.zakat_breakdown),
                             style = MaterialTheme.typography.titleMedium,
                             color = RamadanGold
                         )
@@ -232,32 +250,32 @@ fun ZakatScreen(
 
                         // Assets Summary
                         Text(
-                            text = "Assets:",
+                            text = stringResource(R.string.assets_colon),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "Gold: ${state.currency.symbol}${result.assets.gold}",
+                            "${stringResource(R.string.gold_colon)} ${state.currency.symbol}${result.assets.gold}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Silver: ${state.currency.symbol}${result.assets.silver}",
+                            "${stringResource(R.string.silver_colon)} ${state.currency.symbol}${result.assets.silver}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            "Cash: ${state.currency.symbol}${result.assets.cash}",
+                            "${stringResource(R.string.cash_colon)} ${state.currency.symbol}${result.assets.cash}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "Liabilities:",
+                            text = stringResource(R.string.liabilities_colon),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "Debts: ${state.currency.symbol}${result.assets.debts}",
+                            "${stringResource(R.string.debts_colon)} ${state.currency.symbol}${result.assets.debts}",
                             color = MaterialTheme.colorScheme.onSurface
                         )
 
@@ -267,12 +285,12 @@ fun ZakatScreen(
                         val netWorth =
                             result.assets.gold + result.assets.silver + result.assets.cash - result.assets.debts
                         Text(
-                            text = "Net Wealth: ${state.currency.symbol}$netWorth",
+                            text = "${stringResource(R.string.net_wealth)} ${state.currency.symbol}$netWorth",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Nisab Threshold: ${state.currency.symbol}${result.nisabValue}",
+                            text = "${stringResource(R.string.nisab_threshold)} ${state.currency.symbol}${result.nisabValue}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -290,7 +308,7 @@ fun ZakatScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "Total Zakat Payable",
+                                    text = stringResource(R.string.total_zakat_payable),
                                     style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -301,7 +319,7 @@ fun ZakatScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = "(2.5% of eligible wealth)",
+                                    text = stringResource(R.string.zakat_percentage),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

@@ -1,7 +1,6 @@
 package com.hathway.ramadankareem2026.ui.ramadan.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.core.time.AppClock
@@ -26,7 +25,6 @@ class RamadanCalendarViewModel(
     private val prayerRepository: PrayerRepository? = null
 ) : AndroidViewModel(application) {
 
-    private val TAG = "RamadanCalendarViewModel"
 
     private val _days = MutableStateFlow<List<RamadanDayUiModel>>(emptyList())
     val days: StateFlow<List<RamadanDayUiModel>> = _days.asStateFlow()
@@ -38,7 +36,6 @@ class RamadanCalendarViewModel(
     val error: StateFlow<String?> = _error.asStateFlow()
 
     private val _currentLocation = MutableStateFlow<Pair<Double, Double>?>(null)
-    val currentLocation: StateFlow<Pair<Double, Double>?> = _currentLocation.asStateFlow()
 
     init {
         loadCalendarData()
@@ -69,10 +66,8 @@ class RamadanCalendarViewModel(
                 _currentLocation.value?.let { (lat, lng) ->
                     if (NetworkUtil.isConnected(getApplication())) {
                         try {
-                            Log.d(TAG, "Loading prayer times for location: $lat, $lng")
-                            
+
                             // Get prayer times for today to establish pattern
-                            val today = LocalDate.now()
                             val prayerTimes = prayerRepository?.load(lat, lng)
                             
                             prayerTimes?.firstOrNull { it.name.contains("Fajr", ignoreCase = true) }?.let { fajrPrayer ->
@@ -83,9 +78,7 @@ class RamadanCalendarViewModel(
                                 maghribTime = maghribPrayer.time
                             }
                             
-                            Log.d(TAG, "Dynamic prayer times - Fajr: $fajrTime, Maghrib: $maghribTime")
                         } catch (e: Exception) {
-                            Log.w(TAG, "Failed to load dynamic prayer times, using defaults", e)
                         }
                     }
                 }
@@ -99,11 +92,9 @@ class RamadanCalendarViewModel(
                 )
                 
                 _isLoading.value = false
-                Log.d(TAG, "Calendar data loaded with ${_days.value.size} days")
             } catch (e: Exception) {
                 _error.value = "Failed to load calendar data: ${e.message}"
                 _isLoading.value = false
-                Log.e(TAG, "Error loading calendar data", e)
             }
         }
     }

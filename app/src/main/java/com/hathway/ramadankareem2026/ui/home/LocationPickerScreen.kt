@@ -3,11 +3,16 @@ package com.hathway.ramadankareem2026.ui.home
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,7 +52,7 @@ fun LocationPickerScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Select Location") }
+                title = { Text(stringResource(R.string.select_location)) }
             )
             RamadanToolbar(
                 title = stringResource(R.string.feature_dua),
@@ -76,7 +81,7 @@ fun LocationPickerScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Search city manually")
+                Text(stringResource(R.string.search_city_manually))
             }
 
             Button(
@@ -87,7 +92,7 @@ fun LocationPickerScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Use my current location")
+                Text(stringResource(R.string.use_my_current_location))
             }
         }
     }

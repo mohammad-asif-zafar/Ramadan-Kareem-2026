@@ -1,34 +1,51 @@
 package com.hathway.ramadankareem2026.ui.qibla.components
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import kotlin.math.*
+import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun EnhancedQiblaCompassCircle(
@@ -104,7 +121,7 @@ fun EnhancedQiblaCompassCircle(
         // Device direction needle (blue/teal) with enhanced design
         androidx.compose.foundation.Image(
             painter = painterResource(R.drawable.ic_device_needle),
-            contentDescription = "Current Direction",
+            contentDescription = stringResource(R.string.current_direction),
             modifier = Modifier
                 .size(200.dp)
                 .graphicsLayer {
@@ -116,7 +133,7 @@ fun EnhancedQiblaCompassCircle(
         // Qibla needle (green/gold) with enhanced design
         androidx.compose.foundation.Image(
             painter = painterResource(R.drawable.ic_qibla_needle),
-            contentDescription = "Qibla Direction",
+            contentDescription = stringResource(R.string.qibla_direction),
             modifier = Modifier
                 .size(200.dp)
                 .graphicsLayer {
@@ -240,62 +257,4 @@ private fun AccuracyIndicator(accuracy: Int) {
     )
 }
 
-@Composable
-fun QiblaCompassDecorations() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .padding(horizontal = 16.dp)
-    ) {
-        // Left decoration - Islamic pattern
-        Canvas(
-            modifier = Modifier
-                .size(80.dp)
-                .align(Alignment.CenterStart)
-        ) {
-            drawIslamicPattern(center = Offset(40f, 40f), radius = 35f)
-        }
 
-        // Right decoration - Islamic pattern
-        Canvas(
-            modifier = Modifier
-                .size(80.dp)
-                .align(Alignment.CenterEnd)
-        ) {
-            drawIslamicPattern(center = Offset(40f, 40f), radius = 35f)
-        }
-    }
-}
-
-private fun DrawScope.drawIslamicPattern(center: Offset, radius: Float) {
-    // Draw octagonal Islamic pattern
-    val sides = 8
-    val angleStep = (2 * PI) / sides
-
-    for (i in 0 until sides) {
-        val angle = i * angleStep
-        val nextAngle = (i + 1) * angleStep
-        
-        val x1 = center.x + radius * cos(angle).toFloat()
-        val y1 = center.y + radius * sin(angle).toFloat()
-        val x2 = center.x + radius * cos(nextAngle).toFloat()
-        val y2 = center.y + radius * sin(nextAngle).toFloat()
-        
-        drawLine(
-            color = RamadanGreen.copy(alpha = 0.3f),
-            start = Offset(x1, y1),
-            end = Offset(x2, y2),
-            strokeWidth = 2.dp.toPx(),
-            cap = StrokeCap.Round
-        )
-    }
-
-    // Inner circle
-    drawCircle(
-        color = RamadanGold.copy(alpha = 0.5f),
-        radius = radius * 0.3f,
-        center = center,
-        style = Stroke(width = 1.dp.toPx())
-    )
-}

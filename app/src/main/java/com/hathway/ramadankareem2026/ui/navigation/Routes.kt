@@ -6,7 +6,6 @@ object Routes {
     const val DUA = "dua"
     const val ZAKAT = "zakat"
     const val TIPS = "tips"
-    const val TASBIH = "tasbih"
     const val QIBLA = "qibla"
     const val CALENDAR = "calendar"
     const val QIBLA_SETTINGS = "qibla_settings"

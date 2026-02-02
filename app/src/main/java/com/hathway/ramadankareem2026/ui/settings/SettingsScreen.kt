@@ -40,10 +40,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.settings.components.LanguageSettingsSection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,11 +56,13 @@ fun SettingsScreen(
     onBack: () -> Unit = { navController.popBackStack() }
 ) {
     val context = LocalContext.current
+    val localizationManager = remember { LocalizationManager(context) }
+    var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
     
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Settings",
+                title = stringResource(R.string.settings),
                 showBack = true,
                 onBackClick = onBack
             )
@@ -71,40 +77,44 @@ fun SettingsScreen(
         ) {
             // Preferences Section
             item {
-                SettingsSection(title = "🔔 Preferences") {
+                SettingsSection(title = "🔔 ${stringResource(R.string.preferences)}") {
                     SettingsItem(
                         icon = Icons.Default.Notifications,
-                        title = "Notification Settings",
-                        subtitle = "Manage prayer reminders and notifications",
+                        title = stringResource(R.string.notification_settings),
+                        subtitle = stringResource(R.string.manage_prayer_reminders),
                         onClick = { /* Navigate to notification settings */ }
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.VolumeUp,
-                        title = "Prayer Reminders",
-                        subtitle = "Configure Azan and prayer time alerts",
+                        title = stringResource(R.string.prayer_reminders),
+                        subtitle = stringResource(R.string.configure_azan_prayer_alerts),
                         onClick = { /* Navigate to prayer reminders */ }
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.VolumeUp,
-                        title = "Azan Sound",
-                        subtitle = "Choose Azan audio for each prayer",
+                        title = stringResource(R.string.azan_sound),
+                        subtitle = stringResource(R.string.choose_azan_audio_prayer),
                         onClick = { /* Navigate to Azan sound settings */ }
                     )
                 }
             }
             
-            // Appearance & Language Section
+            // Language & Region Section
             item {
-                SettingsSection(title = "🌍 Appearance & Language") {
-                    SettingsItem(
-                        icon = Icons.Default.Person,
-                        title = "Language",
-                        subtitle = "English",
-                        onClick = { /* Navigate to language settings */ }
-                    )
-                    
+                LanguageSettingsSection(
+                    currentLanguage = selectedLanguage,
+                    onLanguageChanged = { language ->
+                        selectedLanguage = language
+                        localizationManager.setLanguage(language)
+                    }
+                )
+            }
+            
+            // Appearance Section
+            item {
+                SettingsSection(title = "🎨 ${stringResource(R.string.appearance)}") {
                     var selectedTheme by remember { mutableStateOf("System") }
                     ThemeSelector(
                         currentTheme = selectedTheme,

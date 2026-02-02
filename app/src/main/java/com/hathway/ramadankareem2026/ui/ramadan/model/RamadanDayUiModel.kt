@@ -7,13 +7,6 @@ enum class FastingDayStatus {
     UPCOMING, FASTING, TODAY, COMPLETED
 }
 
-/**
- * Represents current fasting status during Ramadan
- */
-data class FastingState(
-    val isFastingNow: Boolean, val nextEvent: String,      // Imsak / Fajr / Iftar
-    val minutesRemaining: Int
-)
 
 data class RamadanDayUiModel(
     val ramadanDay: Int,

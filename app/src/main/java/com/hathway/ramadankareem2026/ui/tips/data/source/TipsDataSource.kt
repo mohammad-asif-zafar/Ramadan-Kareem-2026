@@ -1,10 +1,8 @@
 package com.hathway.ramadankareem2026.ui.tips.data.source
 
-import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 import com.hathway.ramadankareem2026.ui.tips.data.model.TipCategory
 import java.util.Calendar
-import java.util.Date
 
 object TipsDataSource {
     

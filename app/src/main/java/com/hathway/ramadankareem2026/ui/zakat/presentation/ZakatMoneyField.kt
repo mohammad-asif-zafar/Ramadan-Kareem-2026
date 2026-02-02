@@ -7,16 +7,18 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 
 @Composable
 fun ZakatMoneyField(
     label: String,
     value: String,
     onChange: (String) -> Unit,
-    keyboardType: KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Number,
     currencySymbol: String = ""
 ) {
     OutlinedTextField(
@@ -28,7 +30,7 @@ fun ZakatMoneyField(
             ) 
         },
         placeholder = if (currencySymbol.isNotEmpty()) {
-            { Text("0.00 $currencySymbol") }
+            { Text(stringResource(R.string.zero_amount_with_currency, currencySymbol)) }
         } else null,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = Modifier.fillMaxWidth().padding(10.dp)
@@ -39,7 +41,7 @@ fun ZakatMoneyField(
 @Composable
 fun ZakatMoneyFieldPreview() {
     ZakatMoneyField(
-        label = "Gold Value",
+        label = stringResource(R.string.gold_value),
         value = "10000",
         onChange = {},
         keyboardType = KeyboardType.Number

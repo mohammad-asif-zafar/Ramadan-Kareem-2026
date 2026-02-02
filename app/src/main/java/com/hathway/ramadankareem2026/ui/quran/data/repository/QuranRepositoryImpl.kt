@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026.ui.quran.data.repository
 
-import android.util.Log
 import com.hathway.ramadankareem2026.core.network.ApiResult
 import com.hathway.ramadankareem2026.core.network.NetworkMonitor
 import com.hathway.ramadankareem2026.ui.quran.data.local.QuranLocalDataSource
@@ -16,7 +15,6 @@ class QuranRepositoryImpl(
     private val networkMonitor: NetworkMonitor
 ) : QuranRepository {
 
-    private val TAG = "QuranRepositoryImpl"
 
     override suspend fun getSurahList(): List<Surah> {
 
@@ -28,7 +26,6 @@ class QuranRepositoryImpl(
 
             is ApiResult.Success -> {
 
-                Log.e(TAG, "SurahList: "+result )
                 val surahs = result.data.map { dto ->
                     Surah(
                         id = dto.number,
@@ -40,12 +37,10 @@ class QuranRepositoryImpl(
                     )
                 }
 
-                local.saveSurahs(surahs)
                 surahs
             }
 
             is ApiResult.Error -> {
-                Log.e(TAG, "Remote error: ${result.message}")
                 local.getSurahList()
             }
         }
@@ -69,7 +64,6 @@ class QuranRepositoryImpl(
             }
 
             is ApiResult.Error -> {
-                Log.e(TAG, "Remote error (ayahs): ${result.message}")
                 local.getAyahs(surahId)
             }
         }

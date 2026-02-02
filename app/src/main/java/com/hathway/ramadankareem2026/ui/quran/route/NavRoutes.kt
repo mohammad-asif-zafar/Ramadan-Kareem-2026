@@ -37,7 +37,6 @@ fun QuranRoute(navController: NavController) {
 
 
 sealed class NavRoutes(val route: String) {
-    data object QuranSurahList : NavRoutes("quran")
 
     data object QuranSurahAyahs : NavRoutes("quran/surah/{surahId}") {
         fun createRoute(surahId: Int) = "quran/surah/$surahId"

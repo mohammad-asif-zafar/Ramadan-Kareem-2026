@@ -16,7 +16,7 @@ import com.hathway.ramadankareem2026.ui.zakat.viewmodel.ZakatCalculationViewMode
 @Composable
 fun ZakatHistoryRoute(navController: NavController) {
     // Create repository and ViewModel
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
     val database = RamadanDatabase.getDatabase(context)
     val repository = ZakatCalculationRepository(database.zakatCalculationDao())
     val viewModel: ZakatCalculationViewModel = viewModel(
@@ -32,10 +32,7 @@ fun ZakatHistoryRoute(navController: NavController) {
     val isLoading by viewModel.isLoading.collectAsState(initial = false)
     val errorMessage by viewModel.errorMessage.collectAsState(initial = null)
 
-    // Debug logging
-    println("DEBUG: ZakatHistoryRoute - calculations size: ${calculations.size}")
-    println("DEBUG: ZakatHistoryRoute - isLoading: $isLoading")
-    println("DEBUG: ZakatHistoryRoute - errorMessage: $errorMessage")
+
 
     // Show toast if calculations are empty
     LaunchedEffect(calculations) {
@@ -51,11 +48,9 @@ fun ZakatHistoryRoute(navController: NavController) {
     ZakatHistoryScreen(
         calculations = calculations,
         onDeleteCalculation = { calculation ->
-            println("DEBUG: Deleting calculation: ${calculation.id}")
             viewModel.deleteCalculation(calculation)
         },
         onDeleteAll = {
-            println("DEBUG: Deleting all calculations")
             viewModel.deleteAllCalculations()
         },
         onBack = {

@@ -146,15 +146,6 @@ class QiblaViewModel(
         accuracyJob?.cancel()
     }
 
-    /**
-     * Updates Qibla bearing when user changes location manually
-     */
-    fun setUserLocation(lat: Double, lng: Double) {
-        val bearing = calculateQiblaBearing(lat, lng)
-        _uiState.value = _uiState.value.copy(
-            qiblaBearing = bearing
-        )
-    }
 
     /**
      * Vibrates device once (safe & short)

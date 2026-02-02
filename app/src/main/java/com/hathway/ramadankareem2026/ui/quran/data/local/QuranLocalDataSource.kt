@@ -9,10 +9,6 @@ class QuranLocalDataSource {
         return QuranFakeData.surahList   // static list / Room later
     }
 
-    fun saveSurahs(surahs: List<Surah>) {
-        // no-op for now (Room later)
-    }
-
     fun getAyahs(surahId: Int): List<Ayah> {
         val ayahs = QuranFakeData.ayahs(surahId)
         return ayahs

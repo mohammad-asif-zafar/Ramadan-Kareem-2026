@@ -19,10 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
+import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarksViewModel
 import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarksViewModel
 
 // Unique ViewModel factory key to ensure complete isolation
 private val ALLAH_NAME_BOOKMARKS_VIEWMODEL_KEY = "AllahNameBookmarksViewModel_Unique"

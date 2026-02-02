@@ -11,13 +11,11 @@ val RamadanGold = Color(0xFFD4AF37)
 val LightBackground = Color(0xFFFAFAFA)
 val LightSurface = Color(0xFFFFFFFF)
 val LightTextPrimary = Color(0xFF212121)
-val LightTextSecondary = Color(0xFF616161)
 
 // 🌙 Dark Mode
 val DarkBackground = Color(0xFF121212)
 val DarkSurface = Color(0xFF1E1E1E)
 val DarkTextPrimary = Color(0xFFFFFFFF)
-val DarkTextSecondary = Color(0xFFBDBDBD)
 
 // ❌ Error
 val ErrorRed = Color(0xFFB00020)

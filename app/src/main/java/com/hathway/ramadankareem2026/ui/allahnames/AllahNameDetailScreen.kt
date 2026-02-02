@@ -1,8 +1,8 @@
 package com.hathway.ramadankareem2026.ui.allahnames
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,15 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import android.app.Application
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
-import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.LightTextPrimary
@@ -215,8 +212,8 @@ fun AllahNameDetailScreen(
 fun AllahNameDetailPreviewLight() {
     MaterialTheme {
         // Create mock ViewModels for preview
-        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
-        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(android.app.Application())
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(Application())
+        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(Application())
         
         AllahNameDetailScreen(
             name = AllahName(

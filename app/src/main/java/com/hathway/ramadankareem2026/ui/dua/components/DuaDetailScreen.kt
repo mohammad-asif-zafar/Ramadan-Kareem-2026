@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.ui.dua.components
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,19 +46,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import android.app.Application
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.service.DuaTtsNotification
 import com.hathway.ramadankareem2026.core.service.DuaTtsService
 import com.hathway.ramadankareem2026.core.tts.TtsActions
-import com.hathway.ramadankareem2026.ui.bookmarks.viewmodel.BookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
-import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
+import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
@@ -279,8 +277,8 @@ fun DuaDetailScreen(
 fun DuaDetailScreenPreview() {
     RamadanKareemTheme {
         // Create mock ViewModels for preview
-        val mockDuaBookmarkCountViewModel = DuaBookmarkCountViewModel(android.app.Application())
-        val mockBookmarkViewModel = DuaBookmarkViewModel(android.app.Application())
+        val mockDuaBookmarkCountViewModel = DuaBookmarkCountViewModel(Application())
+        val mockBookmarkViewModel = DuaBookmarkViewModel(Application())
         
         DuaDetailScreen(
             dua = DuaItem(

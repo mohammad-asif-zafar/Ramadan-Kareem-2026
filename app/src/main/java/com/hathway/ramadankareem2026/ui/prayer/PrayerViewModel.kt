@@ -1,7 +1,6 @@
 package com.hathway.ramadankareem2026.ui.prayer
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
@@ -30,7 +29,6 @@ class PrayerViewModel(
     app: Application, private val repository: PrayerRepository
 ) : AndroidViewModel(app) {
 
-    private val TAG = "PrayerViewModel"
 
     /** 🔹 Single UI state (demo-safe) */
     private val _state = MutableStateFlow(PrayerDemoData.demo())
@@ -63,9 +61,7 @@ class PrayerViewModel(
                     repository.loadFromApi(today, lat, lng)
                 }.onSuccess {
                     _state.value = it
-                    Log.d(TAG, "Loaded prayer times from API")
                 }.onFailure {
-                    Log.e(TAG, "API failed, using demo", it)
                 }
             }
 

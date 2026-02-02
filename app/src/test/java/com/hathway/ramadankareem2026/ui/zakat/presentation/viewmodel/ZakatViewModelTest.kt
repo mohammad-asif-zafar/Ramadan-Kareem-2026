@@ -1,11 +1,12 @@
 package com.hathway.ramadankareem2026.ui.zakat.presentation.viewmodel
 
 import com.hathway.ramadankareem2026.core.currency.CountryCurrencyMapper
-import com.hathway.ramadankareem2026.core.currency.CurrencyResult
-import com.hathway.ramadankareem2026.core.currency.LocationCurrencyService
-import org.junit.Test
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Test
 
 class ZakatViewModelTest {
 

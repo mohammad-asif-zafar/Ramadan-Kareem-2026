@@ -36,10 +36,6 @@ class MosqueBookmarkCountViewModel(application: Application) : AndroidViewModel(
         }
     }
 
-    fun refreshMosqueBookmarkCount() {
-        loadMosqueBookmarkCount()
-    }
-
     // Update count with delta for immediate UI updates
     fun updateMosqueBookmarkCountImmediate(delta: Int) {
         val newCount = (_mosqueBookmarkCount.value + delta).coerceAtLeast(0)

@@ -28,7 +28,7 @@ object DuaTtsNotification {
 
         val actionIntent = if (isPlaying) stopIntent else playIntent
         val actionIcon = if (isPlaying) R.drawable.ic_stop else R.drawable.ic_play
-        val actionTitle = if (isPlaying) "Stop" else "Play"
+        val actionTitle = if (isPlaying) context.getString(R.string.stop) else context.getString(R.string.play)
 
         val pendingIntent = PendingIntent.getService(
             context,
@@ -39,8 +39,8 @@ object DuaTtsNotification {
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.bell)
-            .setContentTitle("Dua Reader")
-            .setContentText("Arabic dua audio")
+            .setContentTitle(context.getString(R.string.dua_reader))
+            .setContentText(context.getString(R.string.arabic_dua_audio))
             .addAction(actionIcon, actionTitle, pendingIntent)
             .setOngoing(isPlaying)
             .build()

@@ -14,27 +14,19 @@ class TipsRepository(
 ) {
     
     private val _dailyTip = MutableStateFlow(dataSource.getDailyTip())
-    val dailyTip: Flow<Tip> = _dailyTip.asStateFlow()
-    
+
     private val _hadithAyahOfTheDay = MutableStateFlow(dataSource.getHadithOrAyahOfTheDay())
     val hadithAyahOfTheDay: Flow<Tip> = _hadithAyahOfTheDay.asStateFlow()
     
     fun getAllTips(): List<Tip> {
         return dataSource.getAllTips()
     }
-    
-    fun getTipsByCategory(category: TipCategory): List<Tip> {
-        return dataSource.getTipsByCategory(category)
-    }
+
     
     fun getDailyTip(): Tip {
         return dataSource.getDailyTip()
     }
-    
-    fun getHadithOrAyahOfTheDay(): Tip {
-        return dataSource.getHadithOrAyahOfTheDay()
-    }
-    
+
     fun refreshDailyTips() {
         _dailyTip.value = dataSource.getDailyTip()
         _hadithAyahOfTheDay.value = dataSource.getHadithOrAyahOfTheDay()

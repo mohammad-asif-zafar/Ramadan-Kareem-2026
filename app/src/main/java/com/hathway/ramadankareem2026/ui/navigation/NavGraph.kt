@@ -193,7 +193,6 @@ private fun HomeScaffold() {
 
                 val viewModel: AllahNamesViewModel = viewModel()
                 val allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel = viewModel()
-                val sharedBookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 
                 AllahNamesScreen(
                     names = viewModel.names,
@@ -321,7 +320,6 @@ private fun HomeScaffold() {
                 val context = LocalContext.current
 
                 val surahIdArg = backStackEntry.arguments?.getInt("surahId") ?: -1
-                val ayahArg = backStackEntry.arguments?.getInt("ayah") ?: -1
 
                 val viewModel: QuranViewModel = viewModel(
                     factory = QuranViewModelFactory(
@@ -347,7 +345,7 @@ private fun HomeScaffold() {
                         onBack = { navController.popBackStack() },
                         onSurahClick = { surah ->
                             navController.navigate(
-                                com.hathway.ramadankareem2026.ui.quran.route.NavRoutes.QuranSurahAyahs.createRoute(
+                                NavRoutes.QuranSurahAyahs.createRoute(
                                     surah.id
                                 )
                             )

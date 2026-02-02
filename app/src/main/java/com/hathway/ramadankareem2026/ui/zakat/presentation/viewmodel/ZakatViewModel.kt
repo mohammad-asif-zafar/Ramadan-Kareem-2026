@@ -2,10 +2,10 @@ package com.hathway.ramadankareem2026.ui.zakat.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hathway.ramadankareem2026.core.currency.CountryCurrencyMapper
 import com.hathway.ramadankareem2026.core.currency.CurrencyResult
 import com.hathway.ramadankareem2026.core.currency.LocationCurrencyService
-import com.hathway.ramadankareem2026.ui.zakat.domain.model.*
+import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
+import com.hathway.ramadankareem2026.ui.zakat.domain.model.ZakatAssets
 import com.hathway.ramadankareem2026.ui.zakat.domain.usecase.CalculateZakatUseCase
 import com.hathway.ramadankareem2026.ui.zakat.presentation.ZakatUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -117,14 +117,6 @@ class ZakatViewModel(
             }
         }
     }
-
-    /**
-     * Test method to set currency for Kuwait (for testing)
-     */
-    fun setKuwaitCurrencyForTesting() {
-        setCurrencyForCountry("Kuwait")
-    }
-
     private fun update(block: ZakatUiState.() -> ZakatUiState) {
         _uiState.value = _uiState.value.block()
     }

@@ -5,7 +5,7 @@ import com.hathway.ramadankareem2026.ui.allahnames.data.repository.AllahNamesRep
 import com.hathway.ramadankareem2026.ui.allahnames.domain.usecase.GetAllahNamesUseCase
 
 class AllahNamesViewModel(
-    private val repository: AllahNamesRepository = AllahNamesRepository()
+    repository: AllahNamesRepository = AllahNamesRepository()
 ) : ViewModel() {
 
     private val getAllahNamesUseCase = GetAllahNamesUseCase(repository)

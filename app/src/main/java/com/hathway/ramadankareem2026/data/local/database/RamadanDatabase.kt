@@ -1,15 +1,13 @@
 package com.hathway.ramadankareem2026.data.local.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import android.content.Context
-import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
-import com.hathway.ramadankareem2026.data.local.database.entity.ZakatCalculationEntity
-import com.hathway.ramadankareem2026.data.local.database.BookmarkDao
-import com.hathway.ramadankareem2026.data.local.database.dao.ZakatCalculationDao
 import com.hathway.ramadankareem2026.data.local.database.converters.DateConverters
+import com.hathway.ramadankareem2026.data.local.database.dao.ZakatCalculationDao
+import com.hathway.ramadankareem2026.data.local.database.entity.ZakatCalculationEntity
 
 @Database(
     entities = [BookmarkEntity::class, ZakatCalculationEntity::class],

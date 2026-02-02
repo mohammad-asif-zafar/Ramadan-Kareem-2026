@@ -1,25 +1,32 @@
 package com.hathway.ramadankareem2026.ui.tips.presentation.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.TipDetailCard
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModel
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModelFactory
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 
 @Composable
 fun TipDetailScreen(
@@ -28,8 +35,6 @@ fun TipDetailScreen(
     viewModel: TipsViewModel = viewModel(factory = TipsViewModelFactory())
 ) {
     val tip = remember(tipId) { viewModel.getTipById(tipId) }
-    val context = LocalContext.current
-    
     if (tip == null) {
         // Show error state
         Scaffold(

@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026.ui.mosques.data.repository
 
-import android.util.Log
 import com.hathway.ramadankareem2026.BuildConfig
 import com.hathway.ramadankareem2026.ui.mosques.data.remote.PlacesApi
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
@@ -10,7 +9,6 @@ import com.hathway.ramadankareem2026.ui.mosques.util.DistanceUtil
 class MosqueRepositoryImpl(
     private val api: PlacesApi
 ) : MosqueRepository {
-    private val TAG = "MosqueRepositoryImpl"
     override suspend fun getNearbyMosques(
         userLat: Double, userLng: Double
     ): List<Mosque> {
@@ -37,7 +35,6 @@ class MosqueRepositoryImpl(
                 )
             }.sortedBy { it.distanceMeters }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to load nearby mosques", e)
             emptyList()
         }
     }

@@ -1,7 +1,6 @@
 package com.hathway.ramadankareem2026.core.location
 
 import android.content.Context
-import androidx.datastore.dataStore
 
 /**
  * Decides which location should be used:

@@ -1,17 +1,20 @@
 package com.hathway.ramadankareem2026.ui.widget
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import java.util.Calendar
 
 object PrayerWidgetScheduler {
 
     private const val TAG = "PrayerWidgetScheduler"
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     fun schedule(context: Context) {
         try {
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

@@ -36,10 +36,6 @@ class DuaBookmarkCountViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
-    fun refreshDuaBookmarkCount() {
-        loadDuaBookmarkCount()
-    }
-
     // Update count with delta for immediate UI updates
     fun updateDuaBookmarkCountImmediate(delta: Int) {
         val newCount = (_duaBookmarkCount.value + delta).coerceAtLeast(0)

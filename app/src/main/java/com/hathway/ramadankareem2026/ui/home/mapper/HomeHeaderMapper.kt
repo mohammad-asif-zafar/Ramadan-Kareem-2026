@@ -1,8 +1,5 @@
 package com.hathway.ramadankareem2026.ui.home.mapper
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.util.gregorianFormatter
 import com.hathway.ramadankareem2026.core.util.timeFormatter
 import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
@@ -12,8 +9,6 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatRemainin
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-private const val TAG = "HomeHeaderMapper"
-private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
 
 fun buildDynamicPrayerHeader(
     prayer: PrayerDomain?, gregorianDate: LocalDate, hijriDate: String

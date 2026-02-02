@@ -25,7 +25,7 @@ class DuaTtsViewModel(application: Application) : AndroidViewModel(application),
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // Arabic voice
-            tts?.language = Locale.of("ar");
+            tts?.language = Locale.of("ar")
             tts?.setSpeechRate(0.9f)
         }
     }

@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.ui.prayer.data
 
 
 import android.content.Context
-import android.util.Log
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
 import com.hathway.ramadankareem2026.data.datastore.PrayerCacheStore
@@ -17,7 +16,6 @@ import java.time.LocalDateTime
 class PrayerRepository(context: Context, private val api: PrayerApiService) {
 
     private val cache = PrayerCacheStore(context)
-    private val TAG = "PrayerRepository"
     suspend fun load(
         latitude: Double?, longitude: Double?
     ): List<PrayerDomain> {
@@ -57,7 +55,6 @@ class PrayerRepository(context: Context, private val api: PrayerApiService) {
                 api.getTimings(date, lat, lng)
             )
         } catch (e: Exception) {
-            Log.d(TAG, "Prayer API failed, using demo fallback", e)
             PrayerDemoData.demo()
         }
     }

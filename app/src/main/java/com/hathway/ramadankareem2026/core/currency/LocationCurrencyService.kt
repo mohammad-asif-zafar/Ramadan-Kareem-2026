@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.core.currency
 
 import android.content.Context
 import com.hathway.ramadankareem2026.core.location.LocationProvider
-import com.hathway.ramadankareem2026.core.location.LocationUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -10,7 +9,7 @@ import kotlinx.coroutines.flow.flow
  * Service that fetches location and determines the appropriate currency for Zakat calculations.
  */
 class LocationCurrencyService(
-    private val context: Context
+    context: Context
 ) {
     private val locationProvider = LocationProvider(context)
     
@@ -43,13 +42,7 @@ class LocationCurrencyService(
         }
     }
     
-    /**
-     * Flow that emits currency updates when location changes.
-     */
-    fun getCurrencyFlow(): Flow<CurrencyResult> = flow {
-        emit(getCurrentCurrency())
-    }
-    
+
     /**
      * Get currency for a specific country name.
      */

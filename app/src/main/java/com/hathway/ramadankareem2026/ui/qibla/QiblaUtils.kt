@@ -25,12 +25,6 @@ fun calculateQiblaBearing(
     val bearing = atan2(y, x)
     return ((Math.toDegrees(bearing) + 360) % 360).toFloat()
 }
-data class Quadruple<A, B, C, D>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D
-)
 
 fun accuracyLabel(accuracy: Int): String = when (accuracy) {
     SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> "High accuracy"

@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
