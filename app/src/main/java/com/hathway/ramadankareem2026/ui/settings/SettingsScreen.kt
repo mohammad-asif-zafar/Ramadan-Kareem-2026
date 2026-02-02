@@ -15,12 +15,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ContactSupport
+import androidx.compose.material.icons.filled.ContactSupport
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsSystemDaydream
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -100,7 +106,6 @@ fun SettingsScreen(
                     )
                 }
             }
-            
             // Language & Region Section
             item {
                 LanguageSettingsSection(
@@ -125,32 +130,33 @@ fun SettingsScreen(
             
             //  About Section
             item {
-                SettingsSection(title = "ℹ️ About") {
+                SettingsSection(title = "ℹ️ ${stringResource(R.string.about)}") {
                     SettingsItem(
                         icon = Icons.Default.Settings,
-                        title = "App Version",
+                        title = stringResource(R.string.version),
                         subtitle = "Version 1.0.0",
-                        onClick = { /* Show version info */ }
+                        onClick = { /* Show version info */ },
+                        showArrow = false
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.Person,
-                        title = "About App",
+                        title = stringResource(R.string.about_app),
                         subtitle = "Learn more about Ramadan Kareem 2026",
                         onClick = { /* Navigate to about */ }
                     )
                     
                     SettingsItem(
-                        icon = Icons.Default.Settings,
-                        title = "Privacy Policy",
-                        subtitle = "Read our privacy policy",
+                        icon = Icons.Default.PrivacyTip,
+                        title = stringResource(R.string.privacy_policy),
+                        subtitle = stringResource(R.string.read_privacy_policy),
                         onClick = { /* Navigate to privacy policy */ }
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.Settings,
-                        title = "Terms of Use",
-                        subtitle = "Read our terms and conditions",
+                        title = stringResource(R.string.terms_use),
+                        subtitle = stringResource(R.string.read_terms_conditions),
                         onClick = { /* Navigate to terms */ }
                     )
                 }
@@ -158,25 +164,25 @@ fun SettingsScreen(
             
             // Support Section
             item {
-                SettingsSection(title = "💬 Support") {
+                SettingsSection(title = "💬 ${stringResource(R.string.support)}") {
                     SettingsItem(
-                        icon = Icons.Default.Person,
-                        title = "Feedback",
-                        subtitle = "Share your feedback with us",
+                        icon = Icons.Default.Help,
+                        title = stringResource(R.string.feedback),
+                        subtitle = stringResource(R.string.share_feedback_us),
                         onClick = { /* Navigate to feedback */ }
                     )
                     
                     SettingsItem(
-                        icon = Icons.Default.Settings,
-                        title = "Rate App",
-                        subtitle = "Rate us on Google Play Store",
+                        icon = Icons.Default.Star,
+                        title = stringResource(R.string.rate_app),
+                        subtitle = stringResource(R.string.rate_us_google_play),
                         onClick = { /* Navigate to rate app */ }
                     )
                     
                     SettingsItem(
-                        icon = Icons.Default.Person,
-                        title = "Contact Support",
-                        subtitle = "Get help from our support team",
+                        icon = Icons.AutoMirrored.Filled.ContactSupport,
+                        title = stringResource(R.string.get_help_support_team),
+                        subtitle = stringResource(R.string.support),
                         onClick = { /* Navigate to support */ }
                     )
                 }
@@ -184,33 +190,63 @@ fun SettingsScreen(
             
             // Credits Section
             item {
-                SettingsSection(title = "🙏 Credits") {
+                SettingsSection(title = "🙏 ${stringResource(R.string.special_thanks)}") {
                     SettingsItem(
                         icon = Icons.Default.Person,
-                        title = "Developer",
-                        subtitle = "Mohammad Asif Zafar",
+                        title = stringResource(R.string.developer),
+                        subtitle = stringResource(R.string.mohammad_asif_zafar),
                         onClick = { /* Navigate to developer info */ }
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.Settings,
-                        title = "Design & UI/UX",
-                        subtitle = "Ramadan Kareem Team",
+                        title = stringResource(R.string.design_ui_ux),
+                        subtitle = stringResource(R.string.ramadan_kareem_team),
                         onClick = { /* Navigate to design credits */ }
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.Person,
-                        title = "Special Thanks",
-                        subtitle = "Islamic scholars and community contributors",
+                        title = stringResource(R.string.islamic_scholars_community_contributors),
+                        subtitle = stringResource(R.string.data_sources),
                         onClick = { /* Navigate to special thanks */ }
+                    )
+                }
+            }
+            
+            // API Credits Section
+            item {
+                SettingsSection(title = "📡 ${stringResource(R.string.data_api_credits)}") {
+                    SettingsItem(
+                        icon = Icons.Default.Settings,
+                        title = "Quran API",
+                        subtitle = "AlQuran Cloud API - Quran text and audio",
+                        onClick = { /* Navigate to API info */ },
+                        showArrow = false
                     )
                     
                     SettingsItem(
                         icon = Icons.Default.Settings,
-                        title = "Data Sources",
-                        subtitle = "Prayer times from Aladhan.com API",
-                        onClick = { /* Navigate to data sources */ }
+                        title = "Prayer Calculations",
+                        subtitle = "Adhan library by Batoul Apps",
+                        onClick = { /* Navigate to library info */ },
+                        showArrow = false
+                    )
+                    
+                    SettingsItem(
+                        icon = Icons.Default.Settings,
+                        title = "Location Services",
+                        subtitle = "Google Play Services",
+                        onClick = { /* Navigate to location info */ },
+                        showArrow = false
+                    )
+                    
+                    SettingsItem(
+                        icon = Icons.Default.Settings,
+                        title = "Maps & Places",
+                        subtitle = "Google Maps and Google Places APIs",
+                        onClick = { /* Navigate to maps info */ },
+                        showArrow = false
                     )
                 }
             }
@@ -255,6 +291,7 @@ private fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
             .clickable { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -295,7 +332,8 @@ private fun SettingsItem(
     
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp),
-        thickness = 0.5.dp
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
     )
 }
 
@@ -304,7 +342,11 @@ private fun ThemeSelector(
     currentTheme: String,
     onThemeChanged: (String) -> Unit
 ) {
-    val themes = listOf("Light", "Dark", "System")
+    val themes = listOf(
+        ThemeOption("Light", Icons.Default.LightMode, stringResource(R.string.light)),
+        ThemeOption("Dark", Icons.Default.DarkMode, stringResource(R.string.dark)),
+        ThemeOption("System", Icons.Default.SettingsSystemDaydream, stringResource(R.string.system))
+    )
     
     Column(
         modifier = Modifier
@@ -329,12 +371,12 @@ private fun ThemeSelector(
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Theme",
+                    text = stringResource(R.string.theme),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "Choose your preferred theme",
+                    text = stringResource(R.string.choose_your_preferred_theme),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -347,19 +389,29 @@ private fun ThemeSelector(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onThemeChanged(theme) }
-                    .padding(vertical = 4.dp),
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onThemeChanged(theme.value) }
+                    .padding(vertical = 8.dp, horizontal = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = currentTheme == theme,
-                    onClick = { onThemeChanged(theme) }
+                    selected = currentTheme == theme.value,
+                    onClick = { onThemeChanged(theme.value) }
+                )
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
+                Icon(
+                    imageVector = theme.icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
                 )
                 
                 Spacer(modifier = Modifier.width(12.dp))
                 
                 Text(
-                    text = theme,
+                    text = theme.label,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -368,6 +420,13 @@ private fun ThemeSelector(
     
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp),
-        thickness = 0.5.dp
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
     )
 }
+
+private data class ThemeOption(
+    val value: String,
+    val icon: ImageVector,
+    val label: String
+)

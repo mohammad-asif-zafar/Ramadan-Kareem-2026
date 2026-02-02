@@ -70,7 +70,7 @@ fun LanguageSelector(
         
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = context.getString(com.hathway.ramadankareem2026.R.string.language),
+                text = context.getString(R.string.language),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
@@ -161,7 +161,7 @@ private fun LanguageDialog(
                 
                 // Footer
                 Text(
-                    text = "📿 Choose your preferred language for the Ramadan Kareem app. This will change the interface language and prayer time displays.",
+                    text = stringResource(R.string.select_language_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.fillMaxWidth()
@@ -234,7 +234,7 @@ private fun LanguageItem(
                 
                 if (language.isRTL) {
                     Text(
-                        text = "🔄 RTL Support",
+                        text = stringResource(R.string.rtl_support),
                         style = MaterialTheme.typography.labelSmall,
                         color = RamadanGold,
                         fontWeight = FontWeight.Medium
@@ -246,7 +246,7 @@ private fun LanguageItem(
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Selected",
+                    contentDescription = stringResource(R.string.selected),
                     tint = RamadanGreen,
                     modifier = Modifier.size(24.dp)
                 )
@@ -268,15 +268,15 @@ fun LanguageSettingsSection(
         
         SettingsItem(
             icon = Icons.Default.Settings,
-            title = "Regional Settings",
-            subtitle = "Date format, time format, and number format",
+            title = stringResource(R.string.regional_settings),
+            subtitle = stringResource(R.string.date_format_time_format),
             onClick = { /* Navigate to regional settings */ }
         )
         
         SettingsItem(
             icon = Icons.Default.Language,
-            title = "Prayer Names Language",
-            subtitle = "Display prayer names in selected language",
+            title = stringResource(R.string.prayer_names_language),
+            subtitle = stringResource(R.string.display_prayer_names_selected_language),
             onClick = { /* Navigate to prayer names language */ }
         )
     }

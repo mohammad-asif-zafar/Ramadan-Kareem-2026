@@ -131,8 +131,8 @@
     <string name="search_surah_name_or_number">سورہ کا نام یا نمبر تلاش کریں</string>
     <string name="recent">حال ہی میں</string>
     <string name="pinned">پن کیا گیا</string>
-    <string name="surah_format">%d. %s</string>
-    <string name="pinned_surah_format">📌 %d. %s</string>
+    <string name="surah_format" formatted="false">%d. %s</string>
+    <string name="pinned_surah_format" formatted="false">📌 %d. %s</string>
     <string name="search_allah_names">اللہ کے نام تلاش کریں...</string>
     <string name="search_city">شہر تلاش کریں</string>
     <string name="select_location">مقام منتخب کریں</string>

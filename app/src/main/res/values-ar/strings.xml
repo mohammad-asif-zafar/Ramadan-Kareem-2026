@@ -201,8 +201,8 @@
     <string name="search_surah_name_or_number">البحث عن اسم أو رقم السورة</string>
     <string name="recent">الحديث</string>
     <string name="pinned">مثبت</string>
-    <string name="surah_format">%d. %s</string>
-    <string name="pinned_surah_format">📌 %d. %s</string>
+    <string name="surah_format" formatted="false">%d. %s</string>
+    <string name="pinned_surah_format" formatted="false">📌 %d. %s</string>
     <string name="search_allah_names">البحث عن أسماء الله...</string>
     <string name="search_city">البحث عن مدينة</string>
     <string name="select_location">اختر الموقع</string>

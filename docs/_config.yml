@@ -1,0 +1,38 @@
+# GitHub Pages Configuration
+title: "Ramadan Kareem 2026 - Privacy Policy"
+description: "Privacy Policy and Legal Information for Ramadan Kareem 2026 Mobile App"
+baseurl: "/Ramadan-Kareem-2026"
+url: "https://mohammad-asif-zafar.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# SEO
+author: "Mohammad Asif Zafar"
+lang: en
+locale: en_US
+
+# Social
+twitter_username: ramadankareem2026
+github_username: mohammad-asif-zafar
+
+# Google Analytics (optional)
+google_analytics: # Add your tracking ID if needed
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

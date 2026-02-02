@@ -47,7 +47,7 @@ fun TodayTipSection(
             .padding(horizontal = 16.dp)
     ) {
         // Section header
-        SectionTitle(stringResource(R.string.todays_tip))
+        SectionTitle("Today's Tip")
 
         Spacer(modifier = Modifier.height(8.dp))
 

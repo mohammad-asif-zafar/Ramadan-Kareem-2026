@@ -131,8 +131,8 @@
     <string name="search_surah_name_or_number">Cari nama atau nombor surah</string>
     <string name="recent">Terkini</string>
     <string name="pinned">Dipin</string>
-    <string name="surah_format">%d. %s</string>
-    <string name="pinned_surah_format">📌 %d. %s</string>
+    <string name="surah_format" formatted="false">%d. %s</string>
+    <string name="pinned_surah_format" formatted="false">📌 %d. %s</string>
     <string name="search_allah_names">Cari Nama Allah...</string>
     <string name="search_city">Cari bandar</string>
     <string name="select_location">Pilih Lokasi</string>

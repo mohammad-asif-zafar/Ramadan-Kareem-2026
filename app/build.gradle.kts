@@ -154,8 +154,6 @@ dependencies {
     implementation(libs.maps.compose.utils)
     implementation(libs.maps.compose.widgets)
 
-    // Location
-   // implementation(libs.play.services.location)
 
     // Google Places (Nearby mosques)
     implementation(libs.google.places)
