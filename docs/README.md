@@ -30,7 +30,7 @@ This privacy policy URL is used in:
 
 For any questions regarding privacy or legal matters:
 
-📧 **Email:** support@ramadankareem2026.com  
+📧 **Email:** mohammadasifzafar000@gmail.com  
 🌐 **Website:** https://ramadankareem2026.com
 
 ---

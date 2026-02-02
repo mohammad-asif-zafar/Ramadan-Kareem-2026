@@ -101,7 +101,7 @@ Any changes will be reflected on this page.
 
 If you have questions or concerns about this Privacy Policy, contact us:
 
-📧 **Email:** support@ramadankareem2026.com  
+📧 **Email:** mohammadasifzafar000@gmail.com  
 🌐 **Website:** https://ramadankareem2026.com
 
 ---

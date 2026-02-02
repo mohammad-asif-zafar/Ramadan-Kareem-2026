@@ -50,6 +50,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import android.net.Uri
+import android.content.Intent
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
@@ -150,7 +152,9 @@ fun SettingsScreen(
                         icon = Icons.Default.PrivacyTip,
                         title = stringResource(R.string.privacy_policy),
                         subtitle = stringResource(R.string.read_privacy_policy),
-                        onClick = { /* Navigate to privacy policy */ }
+                        onClick = { 
+                            openPrivacyPolicy(context)
+                        }
                     )
                     
                     SettingsItem(
@@ -430,3 +434,16 @@ private data class ThemeOption(
     val icon: ImageVector,
     val label: String
 )
+
+private fun openPrivacyPolicy(context: android.content.Context) {
+    val privacyPolicyUrl = "https://mohammad-asif-zafar.github.io/Ramadan-Kareem-2026/privacy-policy.html"
+    
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        // Handle error - could show a toast or dialog
+        e.printStackTrace()
+    }
+}
