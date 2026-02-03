@@ -1,5 +1,7 @@
 package com.hathway.ramadankareem2026.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.ContactSupport
-import androidx.compose.material.icons.filled.ContactSupport
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.LightMode
@@ -50,8 +51,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import android.net.Uri
-import android.content.Intent
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar

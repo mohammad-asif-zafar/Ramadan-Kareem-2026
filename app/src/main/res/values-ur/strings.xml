@@ -5,50 +5,29 @@
     <string name="widget_description">نماز کے اوقات اور رمضان کاؤنٹ ڈاؤن ویجیٹ</string>
 
     <!-- Navigation -->
-    <string name="home">ہوم</string>
-    <string name="prayer">نماز</string>
-    <string name="quran">قرآن</string>
-    <string name="quran_reader">قرآن ریڈر</string>
-    <string name="more">مزید</string>
 
     <!-- Features -->
     <string name="features">خصوصیات</string>
     <string name="feature_dua">دعا</string>
     <string name="feature_zakat">زکوٰۃ</string>
-    <string name="feature_reminder">یاد دہانی</string>
     <string name="feature_tips">نصیحت</string>
-    <string name="feature_tasbih">تسبیح</string>
     <string name="feature_qibla">قبلہ</string>
     <string name="feature_quran">قرآن</string>
     <string name="feature_calendar">کیلنڈر</string>
 
     <!-- Ramadan -->
-    <string name="ramadan_kareem">رمضان کریم</string>
     <string name="ramadan_calendar">رمضان کیلنڈر</string>
-    <string name="todays_tip">آج کی نصیحت</string>
 
     <!-- Qibla -->
     <string name="qibla_settings">قبلہ سیٹنگز</string>
     <string name="qibla_direction">قبلہ سمت</string>
 
     <!-- Location -->
-    <string name="select_the_city">شہر منتخب کریں</string>
     <string name="select_the_location">مقام منتخب کریں</string>
     <string name="location">مقام</string>
-    <string name="your_location">آپ کا مقام</string>
-    <string name="using_network_location">نیٹ ورک مقام استعمال ہو رہا ہے</string>
-    <string name="using_gps_location">GPS مقام استعمال ہو رہا ہے</string>
-    <string name="using_demo_location">ڈیمو مقام استعمال ہو رہا ہے</string>
-    <string name="no_location_found">کوئی مقام نہیں ملا</string>
-    <string name="no_location_permission">مقام کی اجازت نہیں</string>
-    <string name="no_location_permission_description">
-        براہ کرم سیٹنگز میں مقام کی اجازت فعال کریں
-    </string>
-    <string name="no_location_permission_settings">سیٹنگز</string>
 
     <!-- Islamic Content -->
     <string name="dua">دعا</string>
-    <string name="duas">دعائیں</string>
     <string name="read_dua">دعا پڑھیں</string>
     <string name="allah">اللہ</string>
     <string name="allah_name">اللہ کے نام</string>
@@ -72,13 +51,10 @@
     <!-- Prayer Times -->
     <string name="prayer_times">نماز کے اوقات</string>
     <string name="assalamoalikum">السلام علیکم</string>
-    <string name="calculating_prayer_time">نماز کا وقت معلوم کیا جا رہا ہے…</string>
     <string name="counter_progress">کاؤنٹ ڈاؤن پیش رفت</string>
 
     <!-- Zakat -->
-    <string name="zakat_calculator">زکوٰۃ کیلکولیٹر</string>
     <string name="zakat_history">زکوٰۃ کی تاریخ</string>
-    <string name="no_zakat_calculator">کوئی زکوٰۃ کیلکولیٹر نہیں</string>
     <string name="no_zakat_calculator_description">
         آپ کی زکوٰۃ کی حسابات یہاں ظاہر ہوں گی
     </string>
@@ -101,31 +77,16 @@
 
     <!-- Common -->
     <string name="items">آئٹمز</string>
-    <string name="time">وقت</string>
     <string name="total">کل</string>
     <string name="delete">حذف کریں</string>
     <string name="delete_all">سب حذف کریں</string>
     <string name="no_calculations_yet">ابھی کوئی حساب نہیں</string>
-    <string name="no_internet">انٹرنیٹ موجود نہیں</string>
 
     <!-- UI Helpers -->
     <string name="shimmer">شِمر</string>
-    <string name="shimmer_translate">شِمر ترجمہ</string>
 
     <!-- Hijri Months -->
-    <string name="month_1">محرم</string>
-    <string name="month_2">صفر</string>
-    <string name="month_3">ربیع الاول</string>
-    <string name="month_4">ربیع الثانی</string>
-    <string name="month_5">جمادی الاول</string>
-    <string name="month_6">جمادی الثانی</string>
-    <string name="month_7">رجب</string>
-    <string name="month_8">شعبان</string>
-    <string name="month_9">رمضان</string>
-    <string name="month_10">شوال</string>
-    <string name="month_11">ذوالقعدہ</string>
-    <string name="month_12">ذوالحجہ</string>
-    
+
     <!-- Search and Navigation -->
     <string name="search_surahs">سورتیں تلاش کریں...</string>
     <string name="search_surah_name_or_number">سورہ کا نام یا نمبر تلاش کریں</string>
@@ -152,15 +113,7 @@
     <string name="nisab">نصاب</string>
     
     <!-- Prayer Times -->
-    <string name="fajr">فجر</string>
-    <string name="dhuhr">ظهر</string>
-    <string name="asr">عصر</string>
-    <string name="maghrib">مغرب</string>
-    <string name="isha">عشاء</string>
-    <string name="sunrise">طلوع آفتاب</string>
-    <string name="suhoor">سحری</string>
-    <string name="iftar">افطار</string>
-    
+
     <!-- Zakat Calculator -->
     <string name="zakat">زکوۃ</string>
     <string name="zakat_calculator_title">زکوۃ کیلکولیٹر</string>
@@ -187,14 +140,7 @@
     
     <!-- Common Actions -->
     <string name="cancel">منسوخ کریں</string>
-    <string name="ok">ٹھیک ہے</string>
-    <string name="edit">ترمیم کریں</string>
-    <string name="loading">لوڈ ہو رہا ہے</string>
-    <string name="error">خرابی</string>
-    <string name="success">کامیابی</string>
-    <string name="warning">انتباہ</string>
-    <string name="info">مععلومات</string>
-    
+
     <!-- Settings -->
     <string name="settings">ترتیبات</string>
     <string name="theme">تھیم</string>
@@ -207,59 +153,212 @@
     <string name="notification_settings">اطلاعاتی ترتیبات</string>
     <string name="prayer_reminders">نماز کی یاد دہانیاں</string>
     <string name="manage_prayer_reminders">نماز کی یاد دہانیاں منظم کریں</string>
-    <string name="prayer_widget">نماز ویجٹ</string>
     <string name="azan_sound">ازان کی آواز</string>
     <string name="choose_azan_audio_prayer">ازان آڈیو منتخب کریں</string>
     <string name="configure_azan_prayer_alerts">ازان نماز الرٹس تشکیل دیں</string>
     
     <!-- Time -->
-    <string name="hour">گھنٹہ</string>
-    <string name="hours">گھنٹے</string>
-    <string name="minute">منٹ</string>
-    <string name="minutes">منٹ</string>
-    <string name="remaining">بقیہ</string>
-    <string name="time_remaining">وقت بقیہ</string>
-    <string name="hour_remaining">گھنٹہ بقیہ</string>
-    <string name="hours_remaining">گھنٹے بقیہ</string>
-    <string name="minutes_remaining">منٹ بقیہ</string>
-    <string name="until">تک</string>
-    <string name="current_prayer">موجودہ نماز</string>
-    <string name="next_prayer">اگلی نماز</string>
-    
+
     <!-- Qibla -->
     <string name="current_direction">موجودہ سمت</string>
-    <string name="near_qibla">قبلہ کے قریب</string>
-    <string name="very_close">بہت قریب</string>
-    <string name="perfectly_aligned">مکمل طور پر سیدھا</string>
-    <string name="qibla_aligned">قبلہ سیدھا</string>
-    <string name="turn_left">بائیں مڑیں</string>
-    <string name="turn_right">دائیں مڑیں</string>
-    
+
     <!-- Directions -->
-    <string name="north">شمال</string>
-    <string name="south">جنوب</string>
-    <string name="east">مشرق</string>
-    <string name="west">مغرب</string>
-    <string name="northeast">شمال مشرق</string>
-    <string name="northwest">شمال مغرب</string>
-    <string name="southeast">جنوب مشرق</string>
-    <string name="southwest">جنوب مغرب</string>
-    
+
     <!-- Islamic Terms -->
-    <string name="alhamdulillah">الحمدللہ</string>
-    <string name="allahu_akbar">اللہ اکبر</string>
-    <string name="subhanallah">سبحان اللہ</string>
-    <string name="bismillah">بسم اللہ</string>
-    <string name="assalamu_alaykum">السلام علیکم</string>
     <string name="duʿās">دعائیں</string>
     
     <!-- Location -->
-    <string name="city_country">شہر، ملک</string>
-    
+
     <!-- Additional -->
-    <string name="TAG">ٹیگ</string>
-    <string name="month_13">مہینہ 13</string>
-    <string name="ramadan_kareen">رمضان کریم</string>
     <string name="shimmerTranslate">شیمر ترجمہ</string>
+    
+    <!-- Missing Strings Added -->
+    <string name="about">کے بارے میں</string>
+    <string name="about_app">ایپ کے بارے میں</string>
+    <string name="add">شامل کریں</string>
+    <string name="ago">پہلے</string>
+    <string name="all">سب</string>
+    <string name="allah_name_bookmarks">اللہ کے نام بک مارکس</string>
+    <string name="allah_name_detail">اللہ کے نام تفصیل</string>
+    <string name="allah_names">اللہ کے نام</string>
+    <string name="always">ہمیشہ</string>
+    <string name="app_version">ایپ ورژن</string>
+    <string name="asr">عصر</string>
+    <string name="assalamu_alaykum">السلام علیکم</string>
+    <string name="auto">آٹو</string>
+    <string name="beginning">شروعات</string>
+    <string name="bottom">نیچے</string>
+    <string name="calendar">کیلنڈر</string>
+    <string name="center">مرکز</string>
+    <string name="check_connection">برائے مہربان اپنا انٹرنیٹ کنکشن چیک کریں</string>
+    <string name="choose_preferred_theme">اپنی پسندیدہ تھیم چنیں</string>
+    <string name="choose_your_preferred_theme">اپنی پسندیدہ تھیم چنیں</string>
+    <string name="clear">صاف کریں</string>
+    <string name="close">بند کریں</string>
+    <string name="confirm">تصدیق کریں</string>
+    <string name="contact">رابطہ</string>
+    <string name="contact_support">مدد سے رابطہ کریں</string>
+    <string name="copy">کاپی</string>
+    <string name="credits">کریڈٹ</string>
+    <string name="current_prayer_time">موجودہ نماز وقت</string>
+    <string name="custom">کسٹم</string>
+    <string name="daily">روزانہ</string>
+    <string name="days">دن</string>
+    <string name="dhuhr">ظہر</string>
+    <string name="done">ہو گیا</string>
+    <string name="down">نیچے</string>
+    <string name="eid_mubarak">عید مبارک</string>
+    <string name="empty_state">دکھانے کے لیے کوئی آئٹم نہیں</string>
+    <string name="enable">فعال کریں</string>
+    <string name="end">اختتام</string>
+    <string name="error">خرابی</string>
+    <string name="expand">پھیلائیں</string>
+    <string name="fajr">فجر</string>
+    <string name="feedback">فیڈ بیک</string>
+    <string name="first">پہلا</string>
+    <string name="finish">ختم</string>
+    <string name="from">سے</string>
+    <string name="help">مدد</string>
+    <string name="hijri_date">ہجری تاریخ</string>
+    <string name="home">ہوم</string>
+    <string name="hours">گھنٹے</string>
+    <string name="isha">عشاء</string>
+    <string name="islamic_phrases">اسلامی جملے</string>
+    <string name="language_region">زبان اور علاقہ</string>
+    <string name="last">آخری</string>
+    <string name="loading">لوڈ ہو رہا ہے...</string>
+    <string name="maghrib">مغرب</string>
+    <string name="manual">مینوئل</string>
+    <string name="menu">مینیو</string>
+    <string name="middle">درمیان</string>
+    <string name="minutes">منٹ</string>
+    <string name="month">مہینا</string>
+    <string name="months">مہینے</string>
+    <string name="more">زیادہ</string>
+    <string name="mosque_bookmarks">مسجد بک مارکس</string>
+    <string name="mosques">مساجد</string>
+    <string name="near_qibla">قبلہ کے قریب</string>
+    <string name="never">کبھی نہیں</string>
+    <string name="next">اگلا</string>
+    <string name="no">نہیں</string>
+    <string name="no_data_available">کوئی ڈیٹا دستیاب نہیں</string>
+    <string name="no_internet">کوئی انٹرنیٹ کنکشن نہیں</string>
+    <string name="none">کوئی نہیں</string>
+    <string name="off">بند</string>
+    <string name="ok">ٹھیک ہے</string>
+    <string name="on">چالو</string>
+    <string name="once">ایک بار</string>
+    <string name="optional">اختیاری</string>
+    <string name="perfectly_aligned">مکمل طور پر سیدھ</string>
+    <string name="prayer_countdown_widget">نماز کاؤنٹ ڈاؤن ویجیٹ</string>
+    <string name="prayer_times_aladhan_api">نماز وقت (الادھان API)</string>
+    <string name="previous">پچھلا</string>
+    <string name="proceed">آگے بڑھیں</string>
+    <string name="qibla">قبلہ</string>
+    <string name="qibla_aligned">قبلہ سیدھ</string>
+    <string name="quran_bookmarks">قرآن بک مارکس</string>
+    <string name="ramadan_kareem">رمضان کریم</string>
+    <string name="rate">ریٹنگ</string>
+    <string name="recommended">تجویز کردہ</string>
+    <string name="refresh">ریفریش</string>
+    <string name="remaining">باقی</string>
+    <string name="remove">ہٹائیں</string>
+    <string name="required">ضروری</string>
+    <string name="reset">ری سیٹ</string>
+    <string name="right">دائیں</string>
+    <string name="search">تلاش کریں</string>
+    <string name="seconds">سیکنڈ</string>
+    <string name="select">چنیں</string>
+    <string name="selected">منتخب کیا گیا</string>
+    <string name="show_less">کم دکھائیں</string>
+    <string name="show_more">زیادہ دکھائیں</string>
+    <string name="skip">چھوڑیں</string>
+    <string name="sort">سورٹ</string>
+    <string name="start">شروع</string>
+    <string name="success">کامیابی</string>
+    <string name="sunrise">طلوع آفتاب</string>
+    <string name="support">مدد</string>
+    <string name="system_default">سسٹم ڈیفالٹ</string>
+    <string name="tasbih">تسبیح</string>
+    <string name="time">وقت</string>
+    <string name="times">بار</string>
+    <string name="todays_tip">آج کا مشورہ</string>
+    <string name="top">اوپر</string>
+    <string name="try_again">دوبارہ کوشش کریں</string>
+    <string name="turn_left">بائیں موڑیں</string>
+    <string name="turn_right">دائیں موڑیں</string>
+    <string name="twice">دو بار</string>
+    <string name="up">اوپر</string>
+    <string name="update">اپ ڈیٹ</string>
+    <string name="very_close">بہت قریب</string>
+    <string name="view_all">سب دیکھیں</string>
+    <string name="warning">انتباہ</string>
+    <string name="weekly">ہفتہ وار</string>
+    <string name="year">سال</string>
+    <string name="years">سال</string>
+    <string name="yes">جی ہاں</string>
+    <string name="yesterday">کل</string>
+    <string name="tomorrow">کل</string>
+    <string name="now">ابھی</string>
+    <string name="later">بعد میں</string>
+    <string name="sometimes">کبھی کبھی</string>
+    <string name="rarely">شاید ہی کبھی</string>
+    <string name="often">اکثر</string>
+    <string name="monthly">ماہانہ</string>
+    <string name="yearly">سالانہ</string>
+    <string name="week">ہفتہ</string>
+    <string name="hour">گھنٹا</string>
+    <string name="minute">منٹ</string>
+    <string name="second">سیکنڈ</string>
+    <string name="data_api_credits">ڈیٹا اور API کریڈٹ</string>
+    <string name="api_credits">API کریڈٹ</string>
+    <string name="quran_credit">قرآن متن اور آڈیو AlQuran Cloud API (https://alquran.cloud) کے ذریعہ فراہم کیے گئے ہیں</string>
+    <string name="prayer_calculation_credit">نماز وقت کی حساب Batoul Apps کے ذریعہ Adhan لائبریری کے ذریعے چلائی جاتی ہے</string>
+    <string name="location_services_credit">لوکیشن سروسز Google Play Services کے ذریعے فراہم کی جاتی ہیں</string>
+    <string name="maps_credit">مپ اور قریبی مسجد کی معلومات Google Maps اور Google Places API کے ذریعے چلائی جاتی ہے</string>
+    <string name="privacy_policy_required">اس ایپ کے لیے رازداری پالیسی ضروری ہے</string>
+    <string name="compliance_info">یہ ایپ تمام ڈیٹا سیکیورتی ضروریات کا پابند ہے اور ذاتی ڈیٹا اکٹھا یا شیئر نہیں کرتا</string>
+    <string name="privacy_policy">رازداری پالیسی</string>
+    <string name="read_privacy_policy">ہماری رازداری پالیسی پڑھیں</string>
+    <string name="terms_use">استعمال کی شرائط</string>
+    <string name="read_terms_conditions">ہماری قواعد اور شرائط پڑھیں</string>
+    <string name="share_feedback_us">ہمارے ساتھ اپنا فیڈ بیک شیئر کریں</string>
+    <string name="rate_app">ایپ ریٹ کریں</string>
+    <string name="rate_us_google_play">ہمیں Google Play Store پر ریٹ کریں</string>
+    <string name="get_help_support_team">ہماری مدد ٹیم سے مدد لیں</string>
+    <string name="special_thanks">خاص شکریہ</string>
+    <string name="developer">ڈویلپر</string>
+    <string name="mohammad_asif_zafar">محمد آصف ظفر</string>
+    <string name="design_ui_ux">ڈیزائن اور UI/UX</string>
+    <string name="ramadan_kareem_team">رمضان کریم ٹیم</string>
+    <string name="islamic_scholars_community_contributors">اسلامی علما اور برادری حصہ دار</string>
+    <string name="data_sources">ڈیٹا ذرائع</string>
+    <string name="zakat_percentage">(اہل اثاثہ کا 2.5%)</string>
+    <string name="zakat_history_description">زکات تاریخ</string>
+    <string name="next_prayer_time">اگلی نماز وقت</string>
+    <string name="something_went_wrong">کچھ غلط ہو گیا</string>
+    <string name="please_try_again">برائے مہربان دوبارہ کوشش کریں</string>
+    <string name="filter">فلٹر</string>
+    <string name="sort">سورٹ</string>
+    <string name="less">کم</string>
+    <string name="expand">پھیلائیں</string>
+    <string name="collapse">خلاصہ کریں</string>
+    <string name="deselect">انتخاب منسوخ کریں</string>
+    <string name="disable">غیر فعال کریں</string>
+    <string name="create">بنائیں</string>
+    <string name="complete">مکمل</string>
+    <string name="resume">دوبارہ شروع کریں</string>
+    <string name="paste">پیسٹ</string>
+    <string name="cut">کاٹیں</string>
+    <string name="undo">واپس کریں</string>
+    <string name="redo">دوبارہ کریں</string>
+    <string name="today">آج</string>
+    <string name="date">تاریخ</string>
+    <string name="day">دن</string>
+    <string name="weeks">ہفتے</string>
+    <string name="left_action">بائیں کاروائی</string>
+    <string name="right_action">دائیں کاروائی</string>
+    <string name="right_action_second">دائیں کاروائی 2</string>
+    <string name="right_open_icon">›</string>
 
 </resources>

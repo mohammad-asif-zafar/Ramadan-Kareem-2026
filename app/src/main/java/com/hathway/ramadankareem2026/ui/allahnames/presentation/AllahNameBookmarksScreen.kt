@@ -24,7 +24,7 @@ import com.hathway.ramadankareem2026.ui.bookmarks.presentation.BookmarkItem
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 
 // Unique ViewModel factory key to ensure complete isolation
-private val ALLAH_NAME_BOOKMARKS_VIEWMODEL_KEY = "AllahNameBookmarksViewModel_Unique"
+private const val ALLAH_NAME_BOOKMARKS_VIEWMODEL_KEY = "AllahNameBookmarksViewModel_Unique"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

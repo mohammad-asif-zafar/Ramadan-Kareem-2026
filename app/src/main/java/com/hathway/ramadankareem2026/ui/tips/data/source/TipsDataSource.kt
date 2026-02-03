@@ -167,11 +167,7 @@ object TipsDataSource {
         return dailyRamadanTips + fastingTips + prayerTips + duaDhikrTips + 
                lifestyleTips + hadithAyahTips + goodDeedsTips
     }
-    
-    fun getTipsByCategory(category: TipCategory): List<Tip> {
-        return getAllTips().filter { it.category == category }
-    }
-    
+
     fun getDailyTip(): Tip {
         val calendar = Calendar.getInstance()
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)

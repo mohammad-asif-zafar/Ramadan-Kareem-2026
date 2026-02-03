@@ -42,14 +42,5 @@ sealed class NavRoutes(val route: String) {
         fun createRoute(surahId: Int) = "quran/surah/$surahId"
     }
 
-    // Backward-compatible route used by older navigation/bookmarks.
-    data object QuranLegacy : NavRoutes("quran?surahId={surahId}&ayah={ayah}") {
-        fun createRoute(surahId: Int, ayah: Int) = "quran?surahId=$surahId&ayah=$ayah"
-    }
-
-    data object AyahDetail : NavRoutes("ayah_detail/{ayahId}") {
-        fun createRoute(ayahId: Int) = "ayah_detail/$ayahId"
-    }
-
 
 }

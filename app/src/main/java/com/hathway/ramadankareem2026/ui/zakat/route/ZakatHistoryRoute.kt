@@ -29,10 +29,6 @@ fun ZakatHistoryRoute(navController: NavController) {
     )
 
     val calculations by viewModel.calculations.collectAsState(initial = emptyList())
-    val isLoading by viewModel.isLoading.collectAsState(initial = false)
-    val errorMessage by viewModel.errorMessage.collectAsState(initial = null)
-
-
 
     // Show toast if calculations are empty
     LaunchedEffect(calculations) {

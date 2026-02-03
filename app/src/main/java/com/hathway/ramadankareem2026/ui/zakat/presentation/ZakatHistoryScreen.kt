@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.zakat.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -137,6 +138,7 @@ private fun ZakatCalculationItem(
     calculation: ZakatCalculationEntity, onDelete: () -> Unit
 ) {
     // Simple currency formatting function
+    @SuppressLint("DefaultLocale")
     fun formatCurrency(amount: Double): String {
         return "${calculation.currencySymbol}${String.format("%.2f", amount)}"
     }

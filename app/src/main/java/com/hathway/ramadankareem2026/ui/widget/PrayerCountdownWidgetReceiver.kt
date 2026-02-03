@@ -1,7 +1,9 @@
 package com.hathway.ramadankareem2026.ui.widget
 
+import android.Manifest
 import android.content.Context
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
@@ -13,6 +15,7 @@ class PrayerCountdownWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override val glanceAppWidget: GlanceAppWidget = PrayerCountdownWidget()
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
         Log.d(TAG, "Prayer widget ENABLED")
@@ -51,6 +54,7 @@ class PrayerCountdownWidgetReceiver : GlanceAppWidgetReceiver() {
         }
     }
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     override fun onRestored(context: Context, oldWidgetIds: IntArray, newWidgetIds: IntArray) {
         super.onRestored(context, oldWidgetIds, newWidgetIds)
         Log.d(TAG, "Prayer widget RESTORED from ${oldWidgetIds.contentToString()} to ${newWidgetIds.contentToString()}")

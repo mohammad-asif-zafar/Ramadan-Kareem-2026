@@ -52,6 +52,7 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookma
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
+import com.hathway.ramadankareem2026.ui.navigation.RamadanCalendarRoute
 import com.hathway.ramadankareem2026.ui.settings.SettingsScreen
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipDetailScreen
@@ -309,7 +310,7 @@ private fun HomeScaffold() {
                 )
             }
 
-            composable(route = NavRoutes.QuranLegacy.route, arguments = listOf(navArgument("surahId") {
+            composable(route = NavRoutes.QuranSurahAyahs.route, arguments = listOf(navArgument("surahId") {
                 type = NavType.IntType
                 defaultValue = -1
             }, navArgument("ayah") {
@@ -355,31 +356,9 @@ private fun HomeScaffold() {
                 }
             }
 
-            composable(
-                route = NavRoutes.AyahDetail.route,
-                arguments = listOf(
-                    navArgument("ayahId") { type = NavType.IntType }
-                )
-            ) { backStackEntry ->
-
-                val ayahId = backStackEntry.arguments?.getInt("ayahId")
-                    ?: return@composable
-
-                AyahDetailScreen(
-                    ayahId = ayahId,
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
         }
     }
 }
-
-@Composable
-fun AyahDetailScreen(ayahId: Int, onBack: () -> Boolean) {
-    TODO("Not yet implemented")
-}
-
 
 @Composable
 fun SimpleScreen(title: String) {

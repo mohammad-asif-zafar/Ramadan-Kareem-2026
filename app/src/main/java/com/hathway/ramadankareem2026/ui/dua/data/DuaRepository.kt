@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.ui.dua.data
 
 class DuaRepository {
 
-    fun getCategories() = DuaCategoryData.list
 
     fun getRamadanDuas() = DuaDataSource.duas.filter { it.categoryId == "ramadan" }
 

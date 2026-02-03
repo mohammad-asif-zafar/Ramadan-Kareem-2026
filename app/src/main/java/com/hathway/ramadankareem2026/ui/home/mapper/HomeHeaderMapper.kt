@@ -7,7 +7,6 @@ import com.hathway.ramadankareem2026.ui.home.model.HeaderType
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatRemaining
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 fun buildDynamicPrayerHeader(

@@ -28,7 +28,7 @@ class PrayerWidgetUpdateReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Received widget update request")
 
-        widgetScope.launch {
+        widgetScope.launch @androidx.annotation.RequiresPermission(android.Manifest.permission.SCHEDULE_EXACT_ALARM) {
             try {
                 // Check if widget is still enabled before updating
                 val manager = GlanceAppWidgetManager(context)

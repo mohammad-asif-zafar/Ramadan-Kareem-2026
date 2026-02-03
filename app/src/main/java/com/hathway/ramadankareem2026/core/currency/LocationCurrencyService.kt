@@ -2,8 +2,6 @@ package com.hathway.ramadankareem2026.core.currency
 
 import android.content.Context
 import com.hathway.ramadankareem2026.core.location.LocationProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 /**
  * Service that fetches location and determines the appropriate currency for Zakat calculations.

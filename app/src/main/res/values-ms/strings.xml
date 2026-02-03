@@ -5,50 +5,29 @@
     <string name="widget_description">Waktu Solat &amp; Widget Kiraan Detik Ramadan</string>
 
     <!-- Navigation -->
-    <string name="home">Laman Utama</string>
-    <string name="prayer">Solat</string>
-    <string name="quran">Al-Quran</string>
-    <string name="quran_reader">Pembaca Al-Quran</string>
-    <string name="more">Lagi</string>
 
     <!-- Features -->
     <string name="features">Ciri-ciri</string>
     <string name="feature_dua">Doa</string>
     <string name="feature_zakat">Zakat</string>
-    <string name="feature_reminder">Peringatan</string>
     <string name="feature_tips">Tip</string>
-    <string name="feature_tasbih">Tasbih</string>
     <string name="feature_qibla">Kiblat</string>
     <string name="feature_quran">Al-Quran</string>
     <string name="feature_calendar">Kalendar</string>
 
     <!-- Ramadan -->
-    <string name="ramadan_kareem">Ramadan Kareem</string>
     <string name="ramadan_calendar">Kalendar Ramadan</string>
-    <string name="todays_tip">Tip Hari Ini</string>
 
     <!-- Qibla -->
     <string name="qibla_settings">Tetapan Kiblat</string>
     <string name="qibla_direction">Arah Kiblat</string>
 
     <!-- Location -->
-    <string name="select_the_city">Pilih Bandar</string>
     <string name="select_the_location">Pilih Lokasi</string>
     <string name="location">Lokasi</string>
-    <string name="your_location">Lokasi Anda</string>
-    <string name="using_network_location">Menggunakan lokasi rangkaian</string>
-    <string name="using_gps_location">Menggunakan lokasi GPS</string>
-    <string name="using_demo_location">Menggunakan lokasi demo</string>
-    <string name="no_location_found">Lokasi tidak ditemui</string>
-    <string name="no_location_permission">Tiada kebenaran lokasi</string>
-    <string name="no_location_permission_description">
-        Sila benarkan kebenaran lokasi dalam tetapan
-    </string>
-    <string name="no_location_permission_settings">Tetapan</string>
 
     <!-- Islamic Content -->
     <string name="dua">Doa</string>
-    <string name="duas">Doa-doa</string>
     <string name="read_dua">Baca Doa</string>
     <string name="allah">Allah</string>
     <string name="allah_name">Nama-nama Allah</string>
@@ -72,13 +51,10 @@
     <!-- Prayer Times -->
     <string name="prayer_times">Waktu Solat</string>
     <string name="assalamoalikum">Assalamu Alaikum</string>
-    <string name="calculating_prayer_time">Mengira waktu solat…</string>
     <string name="counter_progress">Kemajuan Kiraan Detik</string>
 
     <!-- Zakat -->
-    <string name="zakat_calculator">Kalkulator Zakat</string>
     <string name="zakat_history">Sejarah Zakat</string>
-    <string name="no_zakat_calculator">Tiada kalkulator zakat</string>
     <string name="no_zakat_calculator_description">
         Pengiraan zakat anda akan dipaparkan di sini
     </string>
@@ -101,31 +77,16 @@
 
     <!-- Common -->
     <string name="items">Item</string>
-    <string name="time">Masa</string>
     <string name="total">Jumlah</string>
     <string name="delete">Padam</string>
     <string name="delete_all">Padam Semua</string>
     <string name="no_calculations_yet">Belum ada pengiraan</string>
-    <string name="no_internet">Tiada Internet</string>
 
     <!-- UI Helpers -->
     <string name="shimmer">Shimmer</string>
-    <string name="shimmer_translate">Terjemahan Shimmer</string>
 
     <!-- Hijri Months -->
-    <string name="month_1">Muharram</string>
-    <string name="month_2">Safar</string>
-    <string name="month_3">Rabiul Awal</string>
-    <string name="month_4">Rabiul Akhir</string>
-    <string name="month_5">Jamadil Awal</string>
-    <string name="month_6">Jamadil Akhir</string>
-    <string name="month_7">Rejab</string>
-    <string name="month_8">Syaaban</string>
-    <string name="month_9">Ramadan</string>
-    <string name="month_10">Syawal</string>
-    <string name="month_11">Zulkaedah</string>
-    <string name="month_12">Zulhijjah</string>
-    
+
     <!-- Search and Navigation -->
     <string name="search_surahs">Cari Surah...</string>
     <string name="search_surah_name_or_number">Cari nama atau nombor surah</string>
@@ -152,15 +113,7 @@
     <string name="nisab">Nisab</string>
     
     <!-- Prayer Times -->
-    <string name="fajr">Fajr</string>
-    <string name="dhuhr">Dhuhr</string>
-    <string name="asr">Asr</string>
-    <string name="maghrib">Maghrib</string>
-    <string name="isha">Isha</string>
-    <string name="sunrise">Suria</string>
-    <string name="suhoor">Sahur</string>
-    <string name="iftar">Iftar</string>
-    
+
     <!-- Zakat Calculator -->
     <string name="zakat">Zakat</string>
     <string name="zakat_calculator_title">Kalkulator Zakat</string>
@@ -187,14 +140,7 @@
     
     <!-- Common Actions -->
     <string name="cancel">Batal</string>
-    <string name="ok">OK</string>
-    <string name="edit">Edit</string>
-    <string name="loading">Memuatkan</string>
-    <string name="error">Ralat</string>
-    <string name="success">Berjaya</string>
-    <string name="warning">Amaran</string>
-    <string name="info">Maklumat</string>
-    
+
     <!-- Settings -->
     <string name="settings">Tetapan</string>
     <string name="theme">Tema</string>
@@ -207,59 +153,214 @@
     <string name="notification_settings">Tetapan Pemberitahuan</string>
     <string name="prayer_reminders">Peringatan Solat</string>
     <string name="manage_prayer_reminders">Urus peringatan solat</string>
-    <string name="prayer_widget">Widget Solat</string>
     <string name="azan_sound">Bunyi Azan</string>
     <string name="choose_azan_audio_prayer">Pilih audio Azan</string>
     <string name="configure_azan_prayer_alerts">Konfigurasi amaran Azan solat</string>
     
     <!-- Time -->
-    <string name="hour">Jam</string>
-    <string name="hours">Jam</string>
-    <string name="minute">Minit</string>
-    <string name="minutes">Minit</string>
-    <string name="remaining">Berbaki</string>
-    <string name="time_remaining">Masa Berbaki</string>
-    <string name="hour_remaining">Jam Berbaki</string>
-    <string name="hours_remaining">Jam Berbaki</string>
-    <string name="minutes_remaining">Minit Berbaki</string>
-    <string name="until">Sehingga</string>
-    <string name="current_prayer">Solat Semasa</string>
-    <string name="next_prayer">Solat Seterusnya</string>
-    
+
     <!-- Qibla -->
     <string name="current_direction">Arah Semasa</string>
-    <string name="near_qibla">Hampir Kiblat</string>
-    <string name="very_close">Sangat Dekat</string>
-    <string name="perfectly_aligned">Sejajar Sempurna</string>
-    <string name="qibla_aligned">Kiblat Sejajar</string>
-    <string name="turn_left">Pusing Kiri</string>
-    <string name="turn_right">Pusing Kanan</string>
-    
+
     <!-- Directions -->
-    <string name="north">Utara</string>
-    <string name="south">Selatan</string>
-    <string name="east">Timur</string>
-    <string name="west">Barat</string>
-    <string name="northeast">Timur Laut</string>
-    <string name="northwest">Barat Laut</string>
-    <string name="southeast">Tenggara</string>
-    <string name="southwest">Barat Daya</string>
-    
+
     <!-- Islamic Terms -->
-    <string name="alhamdulillah">Alhamdulillah</string>
-    <string name="allahu_akbar">Allahu Akbar</string>
-    <string name="subhanallah">Subhanallah</string>
-    <string name="bismillah">Bismillah</string>
-    <string name="assalamu_alaykum">Assalamu Alaikum</string>
     <string name="duʿās">Doa</string>
     
     <!-- Location -->
-    <string name="city_country">Bandar, Negara</string>
-    
+
     <!-- Additional -->
-    <string name="TAG">TAG</string>
-    <string name="month_13">Bulan 13</string>
-    <string name="ramadan_kareen">Ramadan Kareem</string>
     <string name="shimmerTranslate">Terjemahan Shimmer</string>
+    
+    <!-- Missing Strings Added -->
+    <string name="about">Tentang</string>
+    <string name="about_app">Tentang Aplikasi</string>
+    <string name="add">Tambah</string>
+    <string name="ago">Lalu</string>
+    <string name="all">Semua</string>
+    <string name="allah_name_bookmarks">Penanda Buku Nama Allah</string>
+    <string name="allah_name_detail">Butiran Nama Allah</string>
+    <string name="allah_names">Nama-nama Allah</string>
+    <string name="always">Sentiasa</string>
+    <string name="app_version">Versi Aplikasi</string>
+    <string name="asr">Asar</string>
+    <string name="assalamu_alaykum">Assalamualaikum</string>
+    <string name="auto">Auto</string>
+    <string name="beginning">Permulaan</string>
+    <string name="bottom">Bawah</string>
+    <string name="calendar">Kalendar</string>
+    <string name="center">Pusat</string>
+    <string name="check_connection">Sila periksa sambungan internet anda</string>
+    <string name="choose_preferred_theme">Pilih tema pilihan anda</string>
+    <string name="choose_your_preferred_theme">Pilih tema pilihan anda</string>
+    <string name="clear">Bersihkan</string>
+    <string name="close">Tutup</string>
+    <string name="confirm">Sahkan</string>
+    <string name="contact">Hubungi</string>
+    <string name="contact_support">Hubungi Sokongan</string>
+    <string name="copy">Salin</string>
+    <string name="credits">Kredit</string>
+    <string name="current_prayer_time">Waktu Solat Semasa</string>
+    <string name="custom">Tersuai</string>
+    <string name="daily">Harian</string>
+    <string name="days">Hari</string>
+    <string name="dhuhr">Zuhur</string>
+    <string name="done">Selesai</string>
+    <string name="down">Bawah</string>
+    <string name="eid_mubarak">Eid Mubarak</string>
+    <string name="empty_state">Tiada item untuk dipaparkan</string>
+    <string name="enable">Dayakan</string>
+    <string name="end">Akhir</string>
+    <string name="error">Ralat</string>
+    <string name="expand">Kembangkan</string>
+    <string name="fajr">Subuh</string>
+    <string name="feedback">Maklum Balas</string>
+    <string name="first">Pertama</string>
+    <string name="finish">Selesai</string>
+    <string name="from">Dari</string>
+    <string name="help">Bantuan</string>
+    <string name="hijri_date">Tarikh Hijri</string>
+    <string name="home">Utama</string>
+    <string name="hours">Jam</string>
+    <string name="isha">Isyak</string>
+    <string name="islamic_phrases">Frasa Islam</string>
+    <string name="language_region">Bahasa dan Kawasan</string>
+    <string name="last">Terakhir</string>
+    <string name="loading">Memuatkan...</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="manual">Manual</string>
+    <string name="menu">Menu</string>
+    <string name="middle">Tengah</string>
+    <string name="minutes">Minit</string>
+    <string name="month">Bulan</string>
+    <string name="months">Bulan</string>
+    <string name="more">Lebih</string>
+    <string name="mosque_bookmarks">Penanda Buku Masjid</string>
+    <string name="mosques">Masjid</string>
+    <string name="near_qibla">Berhampiran Kiblat</string>
+    <string name="never">Tidak Pernah</string>
+    <string name="next">Seterusnya</string>
+    <string name="no">Tidak</string>
+    <string name="no_data_available">Tiada data tersedia</string>
+    <string name="no_internet">Tiada sambungan internet</string>
+    <string name="none">Tiada</string>
+    <string name="off">Mati</string>
+    <string name="ok">OK</string>
+    <string name="on">Hidup</string>
+    <string name="once">Sekali</string>
+    <string name="optional">Pilihan</string>
+    <string name="perfectly_aligned">Sejajar Sempurna</string>
+    <string name="prayer_countdown_widget">Widget Kiraan Waktu Solat</string>
+    <string name="prayer_times_aladhan_api">Waktu Solat (API AlAdhan)</string>
+    <string name="previous">Sebelumnya</string>
+    <string name="proceed">Teruskan</string>
+    <string name="qibla">Kiblat</string>
+    <string name="qibla_aligned">Kiblat Sejajar</string>
+    <string name="quran_bookmarks">Penanda Buku Quran</string>
+    <string name="ramadan_kareem">Ramadan Kareem</string>
+    <string name="rate">Penilaian</string>
+    <string name="recommended">Disyorkan</string>
+    <string name="refresh">Muat Semula</string>
+    <string name="remaining">Tinggal</string>
+    <string name="remove">Buang</string>
+    <string name="required">Diperlukan</string>
+    <string name="reset">Tetap Semula</string>
+    <string name="right">Kanan</string>
+    <string name="search">Cari</string>
+    <string name="seconds">Saat</string>
+    <string name="select">Pilih</string>
+    <string name="selected">Dipilih</string>
+    <string name="show_less">Kurangkan Paparan</string>
+    <string name="show_more">Paparkan Lebih</string>
+    <string name="skip">Langkau</string>
+    <string name="sort">Isih</string>
+    <string name="start">Mula</string>
+    <string name="success">Berjaya</string>
+    <string name="sunrise">Matahari Terbit</string>
+    <string name="support">Sokongan</string>
+    <string name="system_default">Lalai Sistem</string>
+    <string name="tasbih">Tasbih</string>
+    <string name="time">Masa</string>
+    <string name="times">Kali</string>
+    <string name="todays_tip">Petua Hari Ini</string>
+    <string name="top">Atas</string>
+    <string name="try_again">Cuba Lagi</string>
+    <string name="turn_left">Pusing Kiri</string>
+    <string name="turn_right">Pusing Kanan</string>
+    <string name="twice">Dua Kali</string>
+    <string name="up">Atas</string>
+    <string name="update">Kemas Kini</string>
+    <string name="very_close">Sangat Dekat</string>
+    <string name="view_all">Lihat Semua</string>
+    <string name="warning">Amaran</string>
+    <string name="weekly">Mingguan</string>
+    <string name="year">Tahun</string>
+    <string name="years">Tahun</string>
+    <string name="yes">Ya</string>
+    <string name="yesterday">Semalam</string>
+    <string name="tomorrow">Esok</string>
+    <string name="now">Sekarang</string>
+    <string name="later">Kemudian</string>
+    <string name="sometimes">Kadang-kadang</string>
+    <string name="rarely">Jarang</string>
+    <string name="often">Kerap</string>
+    <string name="monthly">Bulanan</string>
+    <string name="yearly">Tahunan</string>
+    <string name="week">Minggu</string>
+    <string name="hour">Jam</string>
+    <string name="minute">Minit</string>
+    <string name="second">Saat</string>
+    <string name="data_api_credits">Kredit Data &amp; API</string>
+    <string name="api_credits">Kredit API</string>
+    <string name="quran_credit">Teks dan audio Quran disediakan oleh AlQuran Cloud API (https://alquran.cloud)</string>
+    <string name="prayer_calculation_credit">Pengiraan waktu solat dikuasakan oleh perpustakaan Adhan oleh Batoul Apps</string>
+    <string name="location_services_credit">Perkhidmatan lokasi disediakan oleh Google Play Services</string>
+    <string name="maps_credit">Peta dan maklumat masjid berdekana dikuasakan oleh Google Maps dan Google Places API</string>
+    <string name="privacy_policy_required">Dasar privasi diperlukan untuk aplikasi ini</string>
+    <string name="compliance_info">Aplikasi ini mematuhi semua keperluan keselamatan data dan tidak mengumpul atau berkongsi data peribadi</string>
+    <string name="privacy_policy">Dasar Privasi</string>
+    <string name="read_privacy_policy">Baca dasar privasi kami</string>
+    <string name="terms_use">Terma Penggunaan</string>
+    <string name="read_terms_conditions">Baca syarat dan terma kami</string>
+    <string name="share_feedback_us">Kongsi maklum balas anda dengan kami</string>
+    <string name="rate_app">Nilai Aplikasi</string>
+    <string name="rate_us_google_play">Nilai kami di Google Play Store</string>
+    <string name="get_help_support_team">Dapatkan bantuan dari pasukan sokongan kami</string>
+    <string name="special_thanks">Terima Kasih Khas</string>
+    <string name="developer">Pembangun</string>
+    <string name="mohammad_asif_zafar">Mohammad Asif Zafar</string>
+    <string name="design_ui_ux">Reka Bentuk &amp; UI/UX</string>
+    <string name="ramadan_kareem_team">Pasukan Ramadan Kareem</string>
+    <string name="islamic_scholars_community_contributors">Ulama Islam dan penyumbang komuniti</string>
+    <string name="data_sources">Sumber Data</string>
+    <string name="nisab_threshold">Ambang Nisab:</string>
+    <string name="total_zakat_payable">Jumlah Zakat Dibayar</string>
+    <string name="zakat_percentage">(2.5% dari harta layak)</string>
+    <string name="zakat_history_description">Sejarah Zakat</string>
+    <string name="next_prayer_time">Waktu Solat Seterusnya</string>
+    <string name="something_went_wrong">Sesuatu telah berlaku salah</string>
+    <string name="please_try_again">Sila cuba lagi</string>
+    <string name="filter">Penapis</string>
+    <string name="sort">Isih</string>
+    <string name="less">Kurang</string>
+    <string name="expand">Kembangkan</string>
+    <string name="collapse">Runtuhkan</string>
+    <string name="deselect">Nyahpilih</string>
+    <string name="disable">Lumpuhkan</string>
+    <string name="create">Cipta</string>
+    <string name="complete">Selesai</string>
+    <string name="resume">Sambung Semula</string>
+    <string name="paste">Tampal</string>
+    <string name="cut">Potong</string>
+    <string name="undo">Buat Asal</string>
+    <string name="redo">Buat Semula</string>
+    <string name="today">Hari Ini</string>
+    <string name="date">Tarikh</string>
+    <string name="day">Hari</string>
+    <string name="weeks">Minggu</string>
+    <string name="left_action">Tindakan Kiri</string>
+    <string name="right_action">Tindakan Kanan</string>
+    <string name="right_action_second">Tindakan Kanan 2</string>
+    <string name="right_open_icon">›</string>
 
 </resources>

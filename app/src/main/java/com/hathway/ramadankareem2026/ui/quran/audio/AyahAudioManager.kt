@@ -1,16 +1,11 @@
 package com.hathway.ramadankareem2026.ui.quran.audio
 
 import android.media.MediaPlayer
-import android.util.Log
-import androidx.compose.ui.res.stringResource
-import com.hathway.ramadankareem2026.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class AyahAudioManager {
-    companion object {
-        private val TAG = "AyahAudioManager"
-    }
+
     private var mediaPlayer: MediaPlayer? = null
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying = _isPlaying.asStateFlow()
@@ -38,7 +33,6 @@ class AyahAudioManager {
                 }
                 
                 setOnErrorListener { _, what, extra ->
-                    Log.e(TAG, "Audio error: $what, $extra")
                     _isPlaying.value = false
                     _currentUrl.value = null
                     true

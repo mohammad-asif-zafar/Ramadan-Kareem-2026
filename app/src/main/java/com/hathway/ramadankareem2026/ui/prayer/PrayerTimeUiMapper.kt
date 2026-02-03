@@ -1,11 +1,8 @@
 package com.hathway.ramadankareem2026.ui.prayer
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import java.time.Duration
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 object PrayerTimeUiMapper {
 
