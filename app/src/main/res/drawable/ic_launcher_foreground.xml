@@ -1,32 +1,29 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="500"
-    android:viewportHeight="500">
-  <group android:scaleX="0.67"
-      android:scaleY="0.67"
-      android:translateX="82.5"
-      android:translateY="82.5">
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Moon and Star Design -->
     <path
-        android:pathData="M459.15,356.11c34,-80.54 38.32,-194.37 -20.31,-265.07 -32.34,-39 -83.22,-52 -131.79,-54.86 -43.53,-2.6 -90.13,-1.56 -129.67,19 -67,34.92 -68.69,117.94 -118.91,166.93C18,261.64 1.2,317.92 35.76,392s98.75,90.85 161.94,67.15 91.83,-28.64 167.87,-16.79c34.94,5.45 60.3,-20.78 75.63,-49C447.77,381.2 453.8,368.78 459.15,356.11Z"
-        android:fillColor="#DDD359"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20c-18.8,0 -34,15.2 -34,34s15.2,34 34,34s34,-15.2 34,-34S72.8,20 54,20zM54,80c-14.4,0 -26,-11.6 -26,-26s11.6,-26 26,-26s26,11.6 26,26S68.4,80 54,80z"/>
+    
+    <!-- Crescent Moon -->
     <path
-        android:pathData="M459.15,356.11c34,-80.54 38.32,-194.37 -20.31,-265.07 -32.34,-39 -83.22,-52 -131.79,-54.86 -43.53,-2.6 -90.13,-1.56 -129.67,19 -67,34.92 -68.69,117.94 -118.91,166.93C18,261.64 1.2,317.92 35.76,392s98.75,90.85 161.94,67.15 91.83,-28.64 167.87,-16.79c34.94,5.45 60.3,-20.78 75.63,-49C447.77,381.2 453.8,368.78 459.15,356.11Z"
-        android:strokeAlpha="0.7"
-        android:fillColor="#fff"
-        android:fillAlpha="0.7"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="M45,35c-4.4,0 -8,3.6 -8,8s3.6,8 8,8s8,-3.6 8,-8S49.4,35 45,35z"/>
+    
+    <!-- Star -->
     <path
-        android:strokeWidth="1"
-        android:pathData="M204.74,253.7A132.74,132.74 0,0 1,96.49 44.06,132.77 132.77,0 1,0 264.06,239.71 132.25,132.25 0,0 1,204.74 253.7Z"
-        android:fillColor="#00000000"
-        android:strokeColor="#000"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="M65,40l2,6l6,0l-5,4l2,6l-5,-4l-5,4l2,-6l-5,-4l6,0z"/>
+    
+    <!-- Ramadan Text -->
     <path
-        android:strokeWidth="1"
-        android:pathData="M193.09,51.03l12.79,39.36l41.38,0l-33.48,24.33l12.79,39.35l-33.48,-24.32l-33.48,24.32l12.79,-39.35l-33.48,-24.33l41.38,0l12.79,-39.36z"
-        android:fillColor="#00000000"
-        android:strokeColor="#000"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,65h48v4h-48z"/>
     <path
-        android:pathData="M4"
-        android:fillColor="#263238"/>
-  </group>
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,71h38v3h-38z"/>
 </vector>

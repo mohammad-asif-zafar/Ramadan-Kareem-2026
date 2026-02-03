@@ -11,7 +11,7 @@ A comprehensive Islamic app for Ramadan 2026 featuring prayer times, Quran readi
 - **🧭 Qibla Compass** - Find the direction of Kaaba
 - **📅 Ramadan Calendar** - Complete Ramadan schedule and important dates
 - **🗺️ Nearby Mosques** - Find mosques near your location
-- **🌍 Multi-Language Support** - English, Hindi, Urdu, Malay, Arabic
+- **🌍 Multi-Language Support** - English, Hindi, Urdu, Malay
 
 ## 🛠️ Technical Stack
 
@@ -55,7 +55,7 @@ Our privacy policy is hosted on GitHub Pages:
 
 ## 🌍 Localization
 
-The app supports 5 languages:
+The app supports 4 languages:
 
 | Language | Code | RTL Support |
 |----------|------|------------|
