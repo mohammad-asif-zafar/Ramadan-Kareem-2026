@@ -20,6 +20,15 @@ android {
     namespace = "com.hathway.ramadankareem2026"
     compileSdk = 36
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("upload-keystore.jks")
+            storePassword = "storePassword"
+            keyAlias = "upload"
+            keyPassword = "keyPassword"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.hathway.ramadankareem2026"
         minSdk = 29
@@ -30,9 +39,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val mapsApiKey: String =
-            (project.findProperty("MAPS_API_KEY") as String?)
+            (project.findProperty("MAPS_API_KEY") as? String)
                 ?.takeIf { it.isNotBlank() }
-                ?: (System.getenv("MAPS_API_KEY") as String?)
+                ?: System.getenv("MAPS_API_KEY")
                     ?.takeIf { it.isNotBlank() }
                 ?: localProperties.getProperty("MAPS_API_KEY")?.takeIf { it.isNotBlank() }
                 ?: ""
@@ -55,6 +64,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // signingConfig = signingConfigs.getByName("release") // Commented out until keystore is created
         }
     }
     compileOptions {

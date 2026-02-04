@@ -309,5 +309,23 @@
     <string name="end">End</string>
     <string name="middle">Middle</string>
     <string name="center">Center</string>
+    
+    <!-- Missing strings for lint errors -->
+    <string name="from">From</string>
+    <string name="today">Today</string>
+    <string name="date">Date</string>
+    <string name="day">Day</string>
+    <string name="location_services_credit">Location services provided by Google Play Services</string>
+    <string name="maps_credit">Maps and nearby mosque information powered by Google Maps and Google Places API</string>
+    <string name="privacy_policy_required">Privacy policy is required for this app</string>
+    <string name="compliance_info">This app complies with all data security requirements and does not collect or share personal data</string>
+    <string name="api_credits">API Credits</string>
+    <string name="prayer_calculation_credit">Prayer calculation methods</string>
+    <string name="quran_credit">Quran data sources</string>
+    <string name="right">Right</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="time">Time</string>
+    <string name="islamic_phrases">Islamic Phrases</string>
 
 </resources>
