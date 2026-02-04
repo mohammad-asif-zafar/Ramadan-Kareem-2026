@@ -333,17 +333,11 @@
     <string name="ramadan_kareem_team">रमज़ान करीम टीम</string>
     <string name="islamic_scholars_community_contributors">इस्लामिक विद्वान और समुदाय योगदानकर्ता</string>
     <string name="data_sources">डेटा स्रोत</string>
-    <string name="nisab_threshold">निसाब सीमा:</string>
-    <string name="total_zakat_payable">कुल देय ज़कात</string>
-    <string name="zakat_percentage">(पात्र संपत्ति का 2.5%)</string>
-    <string name="zakat_history_description">ज़कात इतिहास</string>
     <string name="next_prayer_time">अगली नमाज़ समय</string>
     <string name="something_went_wrong">कुछ गलत हो गया</string>
     <string name="please_try_again">कृपया फिर से प्रयास करें</string>
     <string name="filter">फ़िल्टर</string>
-    <string name="sort">सॉर्ट</string>
     <string name="less">कम</string>
-    <string name="expand">विस्तार करें</string>
     <string name="collapse">संक्षिप्त करें</string>
     <string name="deselect">चयन रद्द करें</string>
     <string name="disable">अक्षम करें</string>
@@ -358,9 +352,5 @@
     <string name="date">तारीख</string>
     <string name="day">दिन</string>
     <string name="weeks">सप्ताह</string>
-    <string name="left_action">बायां कार्रवाई</string>
-    <string name="right_action">दायां कार्रवाई</string>
-    <string name="right_action_second">दायां कार्रवाई 2</string>
-    <string name="right_open_icon">›</string>
 
 </resources>

@@ -333,15 +333,11 @@
     <string name="ramadan_kareem_team">رمضان کریم ٹیم</string>
     <string name="islamic_scholars_community_contributors">اسلامی علما اور برادری حصہ دار</string>
     <string name="data_sources">ڈیٹا ذرائع</string>
-    <string name="zakat_percentage">(اہل اثاثہ کا 2.5%)</string>
-    <string name="zakat_history_description">زکات تاریخ</string>
     <string name="next_prayer_time">اگلی نماز وقت</string>
     <string name="something_went_wrong">کچھ غلط ہو گیا</string>
     <string name="please_try_again">برائے مہربان دوبارہ کوشش کریں</string>
     <string name="filter">فلٹر</string>
-    <string name="sort">سورٹ</string>
     <string name="less">کم</string>
-    <string name="expand">پھیلائیں</string>
     <string name="collapse">خلاصہ کریں</string>
     <string name="deselect">انتخاب منسوخ کریں</string>
     <string name="disable">غیر فعال کریں</string>
@@ -356,9 +352,5 @@
     <string name="date">تاریخ</string>
     <string name="day">دن</string>
     <string name="weeks">ہفتے</string>
-    <string name="left_action">بائیں کاروائی</string>
-    <string name="right_action">دائیں کاروائی</string>
-    <string name="right_action_second">دائیں کاروائی 2</string>
-    <string name="right_open_icon">›</string>
 
 </resources>

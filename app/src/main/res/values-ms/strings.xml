@@ -333,17 +333,11 @@
     <string name="ramadan_kareem_team">Pasukan Ramadan Kareem</string>
     <string name="islamic_scholars_community_contributors">Ulama Islam dan penyumbang komuniti</string>
     <string name="data_sources">Sumber Data</string>
-    <string name="nisab_threshold">Ambang Nisab:</string>
-    <string name="total_zakat_payable">Jumlah Zakat Dibayar</string>
-    <string name="zakat_percentage">(2.5% dari harta layak)</string>
-    <string name="zakat_history_description">Sejarah Zakat</string>
     <string name="next_prayer_time">Waktu Solat Seterusnya</string>
     <string name="something_went_wrong">Sesuatu telah berlaku salah</string>
     <string name="please_try_again">Sila cuba lagi</string>
     <string name="filter">Penapis</string>
-    <string name="sort">Isih</string>
     <string name="less">Kurang</string>
-    <string name="expand">Kembangkan</string>
     <string name="collapse">Runtuhkan</string>
     <string name="deselect">Nyahpilih</string>
     <string name="disable">Lumpuhkan</string>
@@ -358,9 +352,5 @@
     <string name="date">Tarikh</string>
     <string name="day">Hari</string>
     <string name="weeks">Minggu</string>
-    <string name="left_action">Tindakan Kiri</string>
-    <string name="right_action">Tindakan Kanan</string>
-    <string name="right_action_second">Tindakan Kanan 2</string>
-    <string name="right_open_icon">›</string>
 
 </resources>

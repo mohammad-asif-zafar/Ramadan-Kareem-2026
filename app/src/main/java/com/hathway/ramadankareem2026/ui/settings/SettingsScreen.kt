@@ -2,6 +2,7 @@ package com.hathway.ramadankareem2026.ui.settings
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.ContactSupport
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.LightMode
@@ -38,10 +40,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,6 +64,11 @@ fun SettingsScreen(
     val context = LocalContext.current
     val localizationManager = remember { LocalizationManager(context) }
     var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
+    
+    // Update selectedLanguage when it changes in preferences
+    LaunchedEffect(Unit) {
+        selectedLanguage = localizationManager.getCurrentLanguage()
+    }
     
     Scaffold(
         topBar = {
@@ -93,14 +97,14 @@ fun SettingsScreen(
                     )
                     
                     SettingsItem(
-                        icon = Icons.Default.VolumeUp,
+                        icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.prayer_reminders),
                         subtitle = stringResource(R.string.configure_azan_prayer_alerts),
                         onClick = { /* Navigate to prayer reminders */ }
                     )
                     
                     SettingsItem(
-                        icon = Icons.Default.VolumeUp,
+                        icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.azan_sound),
                         subtitle = stringResource(R.string.choose_azan_audio_prayer),
                         onClick = { /* Navigate to Azan sound settings */ }
@@ -114,6 +118,8 @@ fun SettingsScreen(
                     onLanguageChanged = { language ->
                         selectedLanguage = language
                         localizationManager.setLanguage(language)
+                        // Force activity recreation to apply language changes
+                        (context as? ComponentActivity)?.recreate()
                     }
                 )
             }

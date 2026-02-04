@@ -44,8 +44,8 @@ fun LanguageSelector(
     val localizationManager = remember { LocalizationManager(context) }
     
     val languages = listOf(
-        Language("hi", "Hindi", "हिन्दी", "🇮🇳", false),
         Language("en", "English", "English", "🇺🇸", false),
+        Language("hi", "Hindi", "हिन्दी", "🇮🇳", false),
         Language("ur", "Urdu", "اردو", "🇵🇰", true),
         Language("ms", "Malay", "Bahasa Melayu", "🇲🇾", false),
     )

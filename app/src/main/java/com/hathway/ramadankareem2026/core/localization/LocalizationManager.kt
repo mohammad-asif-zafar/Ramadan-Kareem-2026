@@ -17,8 +17,7 @@ class LocalizationManager(private val context: Context) {
             "en" to Locale.ENGLISH,
             "hi" to Locale("hi", "IN"),
             "ur" to Locale("ur", "PK"),
-            "ms" to Locale("ms", "MY"),
-            "ar" to Locale("ar", "SA")
+            "ms" to Locale("ms", "MY")
         )
     }
 
@@ -27,6 +26,22 @@ class LocalizationManager(private val context: Context) {
 
     fun getCurrentLanguage(): String {
         return sharedPreferences.getString(KEY_LANGUAGE, "hi") ?: "hi"
+    }
+
+    fun applySavedLanguage() {
+        val savedLanguage = getCurrentLanguage()
+        val locale = SUPPORTED_LANGUAGES[savedLanguage] ?: Locale.ENGLISH
+        
+        // Apply locale
+        setLocale(locale)
+        
+        // Handle RTL for Urdu only
+        if (savedLanguage == "ur") {
+            // Force RTL layout direction
+            val config = Configuration(context.resources.configuration)
+            config.setLayoutDirection(locale)
+            context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        }
     }
 
     fun setLanguage(languageCode: String) {

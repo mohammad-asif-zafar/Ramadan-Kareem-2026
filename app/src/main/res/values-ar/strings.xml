@@ -346,36 +346,11 @@
     <string name="maps_credit">الخرائط ومعلومات المساجد القريبة مدعومة بواسطة Google Maps و Google Places API</string>
     <string name="privacy_policy_required">سياسة الخصوصية مطلوبة لهذا التطبيق</string>
     <string name="compliance_info">هذا التطبيق يلتزم بجميع متطلبات أمان البيانات ولا يجمع أو يشارك البيانات الشخصية</string>
-    <string name="right_action_second">الإجراء الأيمن 2</string>
-    <string name="right_open_icon">أيقونة الفتح الأيمن</string>
-    <string name="zakat_calculator_title">حاسبة الزكاة</string>
-    <string name="calculate_your_zakat">احسب زكاتك (2.5% من الأصول)</string>
-    <string name="assets">الأصول</string>
-    <string name="liabilities">الالتزامات</string>
-    <string name="gold_value">قيمة الذهب</string>
-    <string name="silver_value">قيمة الفضة</string>
-    <string name="cash_savings">النقد والمدخرجات</string>
-    <string name="debts_loans">الديون / القروض</string>
-    <string name="calculate_zakat">احسب الزكاة</string>
-    <string name="zakat_breakdown">تفصيل الزكاة</string>
-    <string name="assets_colon">الأصول:</string>
-    <string name="gold_colon">الذهب:</string>
-    <string name="silver_colon">الفضة:</string>
-    <string name="cash_colon">النقد:</string>
-    <string name="liabilities_colon">الالتزامات:</string>
-    <string name="debts_colon">الديون:</string>
-    <string name="net_wealth">صافي الثروة:</string>
-    <string name="nisab_threshold">حد النصاب:</string>
-    <string name="total_zakat_payable">إجمالي الزكاة المستحقة</string>
-    <string name="zakat_percentage">(2.5% من الأصول المؤهلة)</string>
-    <string name="zakat_history_description">تاريخ الزكاة</string>
     <string name="next_prayer_time">وقت الصلاة التالي</string>
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="please_try_again">يرجى المحاولة مرة أخرى</string>
     <string name="filter">فلتر</string>
-    <string name="sort">فرز</string>
     <string name="less">أقل</string>
-    <string name="expand">توسيع</string>
     <string name="collapse">طي</string>
     <string name="deselect">إلغاء التحديد</string>
     <string name="disable">تعطيل</string>
@@ -390,9 +365,5 @@
     <string name="date">التاريخ</string>
     <string name="day">اليوم</string>
     <string name="weeks">أسابيع</string>
-    <string name="left_action">الإجراء الأيسر</string>
-    <string name="right_action">الإجراء الأيمن</string>
-    <string name="right_action_second">الإجراء الأيمن 2</string>
-    <string name="right_open_icon">أيقونة الفتح الأيمن</string>
 
 </resources>

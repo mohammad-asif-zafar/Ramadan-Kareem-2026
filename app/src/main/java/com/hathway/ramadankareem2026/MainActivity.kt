@@ -11,17 +11,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var localizationManager: LocalizationManager
+    
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         // ✅ REQUIRED for Android 12+ splash screen support
-
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // Initialize localization and apply saved language
+        localizationManager = LocalizationManager(this)
+        localizationManager.applySavedLanguage()
+        
         setContent {
             RamadanKareemTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
