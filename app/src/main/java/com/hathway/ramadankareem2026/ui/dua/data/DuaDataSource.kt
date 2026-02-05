@@ -21,7 +21,17 @@ object DuaDataSource {
         DuaItem(
             id = "sehri",
             categoryId = "ramadan",
-            title = "Intention for Fasting (Sehri)",
+            title = "Intention for Fasting (Sehri - 1)",
+            arabic = "بِسْمِ اللَّهِ",
+            transliteration = "Bismillah",
+            translation = "In the name of Allah",
+            source = "Fiqh"
+        ),
+
+        DuaItem(
+            id = "sehri",
+            categoryId = "ramadan",
+            title = "Intention for Fasting (Sehri - 2)",
             arabic = "وَبِصَوْمِ غَدٍ نَوَيْتُ مِنْ شَهْرِ رَمَضَانَ",
             transliteration = "Wa bisawmi ghadin nawaitu min shahri Ramaḍān",
             translation = "I intend to keep the fast for tomorrow in the month of Ramadan.",
@@ -31,10 +41,20 @@ object DuaDataSource {
         DuaItem(
             id = "iftar",
             categoryId = "ramadan",
-            title = "Duʿāʾ at Iftar",
+            title = "Duʿāʾ at Iftar - 1",
             arabic = "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ",
             transliteration = "Dhahabaẓ-ẓama’u wabtallatil-‘urūq wa thabatal-ajru",
             translation = "The thirst has gone, the veins are moistened, and the reward is assured.",
+            source = "Abu Dawood"
+        ),
+
+        DuaItem(
+            id = "iftar",
+            categoryId = "ramadan",
+            title = "Duʿāʾ at Iftar - 2",
+            arabic = "اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ",
+            transliteration = "Allahumma inni laka sumtu wa ala rizq-ika-aftartu\n",
+            translation = "O Allah! For You I have fasted and upon your provision, I have broken my fast.",
             source = "Abu Dawood"
         ),
 
@@ -52,9 +72,9 @@ object DuaDataSource {
             id = "first_ashra",
             categoryId = "ramadan",
             title = "First Ashra (Mercy)",
-            arabic = "رَبِّ اغْفِرْ وَارْحَمْ",
-            transliteration = "Rabbighfir warḥam",
-            translation = "My Lord, forgive and have mercy.",
+            arabic = "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغيثَُْ",
+            transliteration = "Ya Hayyu Ya Qayyum bi rehmatika astaghees",
+            translation = "Oh Everliving, The Everlasting, I seek Your help through Your mercy.",
             source = "Traditional"
         ),
 
@@ -953,19 +973,6 @@ object DuaDataSource {
 
     //  Combined list
     val duas =
-        ramadanDuas +
-                quranDuas +
-                dailyDuas +
-                quranRabbanaDuas +
-                hisnulMuslimDuas +
-                prophetDuas +
-                morningEveningAdhkar +
-                faithGuidanceDuas +
-                familyDuas +
-                forgivenessDuas +
-                marriageDuas +
-                parentsDuas +
-                protectionDuas +
-                healthDuas
+        ramadanDuas + quranDuas + dailyDuas + quranRabbanaDuas + hisnulMuslimDuas + prophetDuas + morningEveningAdhkar + faithGuidanceDuas + familyDuas + forgivenessDuas + marriageDuas + parentsDuas + protectionDuas + healthDuas
 
 }

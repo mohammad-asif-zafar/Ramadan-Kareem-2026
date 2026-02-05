@@ -143,7 +143,9 @@ fun NearbyMosquesScreen(
                     }, 
                     onClose = {
                         scope.launch {
-                            scaffoldState.bottomSheetState.hide()
+                            if (scaffoldState.bottomSheetState.currentValue == androidx.compose.material3.SheetValue.Expanded) {
+                                scaffoldState.bottomSheetState.hide()
+                            }
                         }
                     })
             }) {

@@ -309,5 +309,14 @@
     <string name="end">End</string>
     <string name="middle">Middle</string>
     <string name="center">Center</string>
+    
+    <!-- Random Ramadan Tips -->
+    <string name="ramadan_tip">Ramadan Tip</string>
+    <string name="loading_tip">Loading tip...</string>
+    <string name="error_loading_tip">Error loading tip</string>
+    <string name="no_tip_available">No tip available</string>
+    <string name="new_tip">New Tip</string>
+    <string name="daily_wisdom">Daily wisdom for your spiritual journey</string>
+    <string name="tap_for_more_tips">Tap for more inspirational tips</string>
 
 </resources>

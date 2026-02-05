@@ -352,5 +352,14 @@
     <string name="date">تاریخ</string>
     <string name="day">دن</string>
     <string name="weeks">ہفتے</string>
+    
+    <!-- Random Ramadan Tips -->
+    <string name="ramadan_tip">رمضان کی نصیحت</string>
+    <string name="loading_tip">نصیحت لوڈ ہو رہی ہے...</string>
+    <string name="error_loading_tip">نصیحت لوڈ کرنے میں خرابی</string>
+    <string name="no_tip_available">کوئی نصیحت دستیاب نہیں</string>
+    <string name="new_tip">نئی نصیحت</string>
+    <string name="daily_wisdom">آپ کی روحانی سفر کے لیے روزانہ حکمت</string>
+    <string name="tap_for_more_tips">مزید تحریک دہ نصائحوں کے لیے ٹیپ کریں</string>
 
 </resources>

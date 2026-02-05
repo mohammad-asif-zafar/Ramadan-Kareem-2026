@@ -25,7 +25,7 @@ class LocalizationManager(private val context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun getCurrentLanguage(): String {
-        return sharedPreferences.getString(KEY_LANGUAGE, "hi") ?: "hi"
+        return sharedPreferences.getString(KEY_LANGUAGE, "en") ?: "en"
     }
 
     fun applySavedLanguage() {

@@ -365,5 +365,14 @@
     <string name="date">التاريخ</string>
     <string name="day">اليوم</string>
     <string name="weeks">أسابيع</string>
+    
+    <!-- Random Ramadan Tips -->
+    <string name="ramadan_tip">نصيحة رمضانية</string>
+    <string name="loading_tip">جاري تحميل النصيحة...</string>
+    <string name="error_loading_tip">خطأ في تحميل النصيحة</string>
+    <string name="no_tip_available">لا توجد نصيحة متاحة</string>
+    <string name="new_tip">نصيحة جديدة</string>
+    <string name="daily_wisdom">الحكمة اليومية لرحلتك الروحية</string>
+    <string name="tap_for_more_tips">اضغط للمزيد من النصائح الملهمة</string>
 
 </resources>

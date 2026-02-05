@@ -352,5 +352,14 @@
     <string name="date">Tarikh</string>
     <string name="day">Hari</string>
     <string name="weeks">Minggu</string>
+    
+    <!-- Random Ramadan Tips -->
+    <string name="ramadan_tip">Tip Ramadan</string>
+    <string name="loading_tip">Memuatkan tip...</string>
+    <string name="error_loading_tip">Ralat memuatkan tip</string>
+    <string name="no_tip_available">Tiada tip tersedia</string>
+    <string name="new_tip">Tip Baru</string>
+    <string name="daily_wisdom">Kebijaksanaan harian untuk perjalanan spiritual anda</string>
+    <string name="tap_for_more_tips">Ketik untuk lebih banyak tips inspiratif</string>
 
 </resources>

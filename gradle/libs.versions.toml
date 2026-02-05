@@ -3,6 +3,7 @@
 # Kotlin & Android
 kotlin = "2.0.21"
 agp = "8.3.2"
+ksp = "1.0.25"
 
 # AndroidX Core
 coreKtx = "1.13.1"
@@ -154,4 +155,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

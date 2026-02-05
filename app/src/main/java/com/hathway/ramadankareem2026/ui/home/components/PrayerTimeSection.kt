@@ -4,30 +4,44 @@ import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
@@ -79,6 +93,24 @@ fun PrayerTimeSection() {
         )
     }
 
+    // Find the current prayer to auto-scroll to it
+    val currentPrayerIndex = remember(prayers) {
+        prayers.indexOfFirst { it.isCurrent }
+    }
+    
+    // Lazy list state for controlling scroll position
+    val listState = rememberLazyListState()
+
+    // State for prayer details dialog
+    var selectedPrayer by remember { mutableStateOf<PrayerDomain?>(null) }
+
+    // Auto-scroll to current prayer when prayer time starts
+    LaunchedEffect(currentPrayerIndex) {
+        if (currentPrayerIndex >= 0) {
+            listState.animateScrollToItem(currentPrayerIndex)
+        }
+    }
+
     // Safety guard: do not render section if no prayers available
     if (prayers.isEmpty()) return
 
@@ -104,6 +136,7 @@ fun PrayerTimeSection() {
              * Horizontal scrolling list of prayer items
              */
             LazyRow(
+                state = listState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
@@ -114,12 +147,22 @@ fun PrayerTimeSection() {
                 items(items = prayers, key = { it.name } // Stable key per prayer
                 ) { prayer ->
                     PrayerItem(
-                        prayer = prayer, onClick = {})
+                        prayer = prayer, 
+                        onClick = { selectedPrayer = prayer }
+                    )
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
+    }
+
+    // Show prayer details dialog when a prayer is selected
+    selectedPrayer?.let { prayer ->
+        PrayerDetailsDialog(
+            prayer = prayer,
+            onDismiss = { selectedPrayer = null }
+        )
     }
 }
 
@@ -284,8 +327,233 @@ fun PrayerTimeSectionPreview() {
     PrayerTimeSectionContent(prayers = previewPrayers)
 }
 
-/*
+/**
+ * Prayer details dialog that shows comprehensive information about a prayer
+ */
+@Composable
+fun PrayerDetailsDialog(
+    prayer: PrayerDomain,
+    onDismiss: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Header with prayer name and icon
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = iconForPrayer(prayer.name),
+                            contentDescription = prayer.name,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        
+                        Spacer(modifier = Modifier.width(12.dp))
+                        
+                        Text(
+                            text = prayer.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    
+                    // Close button
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .clickable { onDismiss() }
+                            .size(24.dp)
+                    )
+                }
+                
+                // Prayer time section
+                Column {
+                    Text(
+                        text = "Prayer Time",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    Text(
+                        text = prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a")),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                
+                // Prayer description section
+                Column {
+                    Text(
+                        text = "About ${prayer.name}",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    Text(
+                        text = getPrayerDescription(prayer.name),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        lineHeight = 20.sp,
+                        maxLines = 3,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
+                }
+                
+                // Prayer status section
+                Column {
+                    Text(
+                        text = "Prayer Status",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    val statusText = when {
+                        prayer.isCurrent -> "Currently praying"
+                        prayer.isNext -> "Next prayer"
+                        prayer.isPast -> "Prayer passed"
+                        else -> "Upcoming"
+                    }
+                    
+                    val statusColor = when {
+                        prayer.isCurrent -> Color(0xFF2E7D32)
+                        prayer.isNext -> Color(0xFF1976D2)
+                        prayer.isPast -> Color(0xFF757575)
+                        else -> MaterialTheme.colorScheme.onSurface
+                    }
+                    
+                    Text(
+                        text = statusText,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = statusColor
+                    )
+                    
+                    // Show remaining time for next prayer
+                    if (prayer.isNext && prayer.remainingMinutes != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Text(
+                            text = "Time remaining: ${PrayerTimeUiMapper.formatRemaining(prayer.remainingMinutes, isCurrent = false)}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                
+                // Prayer details (simplified)
+                Column {
+                    Text(
+                        text = "Prayer Details",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    when (prayer.name) {
+                        "Fajr" -> {
+                            Text(
+                                text = "• 2 Rak'ahs (Fard) + 2 Rak'ahs (Sunnah)\n• Before sunrise\n• First prayer of the day",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp,
+                                maxLines = 3,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
+                        "Dhuhr" -> {
+                            Text(
+                                text = "• 4 Rak'ahs (Fard) + 4 Rak'ahs (Sunnah)\n• After sun passes zenith\n• Midday prayer",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp,
+                                maxLines = 3,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
+                        "Asr" -> {
+                            Text(
+                                text = "• 4 Rak'ahs (Fard)\n• Late afternoon\n• Third prayer of the day",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp,
+                                maxLines = 3,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
+                        "Maghrib" -> {
+                            Text(
+                                text = "• 3 Rak'ahs (Fard) + 2 Rak'ahs (Sunnah)\n• Immediately after sunset\n• Time for breaking fast",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp,
+                                maxLines = 3,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
+                        "Isha" -> {
+                            Text(
+                                text = "• 4 Rak'ahs (Fard) + 2 Rak'ahs (Sunnah)\n• After twilight disappears\n• Last prayer of the day",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp,
+                                maxLines = 3,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+                
+                // Action button
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Text(
+                        text = "Tap outside to close",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clickable { onDismiss() }
+                    )
+                }
+            }
+        }
+    }
+}
 
+/**
+ * Get description for each prayer (basic implementation)
+ */
+private fun getPrayerDescription(prayerName: String): String {
+    return when (prayerName) {
+        "Fajr" -> "Fajr is the first prayer of the day, performed before sunrise. It consists of 2 rak'ahs and is a time of great blessings."
+        "Dhuhr" -> "Dhuhr is the midday prayer, performed after the sun passes its zenith. It consists of 4 rak'ahs and is observed during noon break."
+        "Asr" -> "Asr is the afternoon prayer, performed in the late afternoon. It consists of 4 rak'ahs and marks the middle of the day."
+        "Maghrib" -> "Maghrib is the sunset prayer, performed just after the sun sets. It consists of 3 rak'ahs and is the time for breaking fast during Ramadan."
+        "Isha" -> "Isha is the night prayer, performed after twilight has disappeared. It consists of 4 rak'ahs and is the last prayer of the day."
+        else -> "One of the five daily prayers in Islam, each with its own significance and prescribed time."
+    }
+}
+
+/*
 Add unit tests for PrayerTimeUiMapper
 
 Refactor to UiState + sealed UI events
