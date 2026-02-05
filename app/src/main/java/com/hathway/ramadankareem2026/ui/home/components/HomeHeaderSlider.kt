@@ -178,12 +178,13 @@ fun HomeHeaderSlider(
      * Next pages = current prayer card (if prayer time), Ramadan timing cards (Iftar, Suhoor) - ALWAYS SHOWN with dynamic content
      * Other pages = static inspirational cards
      */
+    val context = LocalContext.current
     val pages = remember(nextPrayer, currentPrayer, iftarTime, suhoorTime, ramadanStatus) {
         val pageList = mutableListOf<HeaderPage>()
-
-        // Use mock alarm states for now to avoid composable context issues
-        val isIftarAlarmEnabled = false
-        val isSuhoorAlarmEnabled = false
+        
+        // Get real alarm states from SharedPreferences
+        val isIftarAlarmEnabled = isIftarAlarmEnabled(context)
+        val isSuhoorAlarmEnabled = isSuhoorAlarmEnabled(context)
 
         // Dynamic prayer header
         pageList.add(
@@ -217,7 +218,7 @@ fun HomeHeaderSlider(
                         subtitle = iftarTime.format(DateTimeFormatter.ofPattern("hh:mm a")),
                         hint = "Time to break your fast",
                         isAlarmEnabled = isIftarAlarmEnabled,
-                        onAlarmToggle = { /* TODO: Implement SharedPreferences toggle */ })
+                        onAlarmToggle = { toggleIftarAlarm(context) })
                 )
 
                 pageList.add(
@@ -227,7 +228,7 @@ fun HomeHeaderSlider(
                         subtitle = suhoorTime.format(DateTimeFormatter.ofPattern("hh:mm a")),
                         hint = "Time for pre-dawn meal",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { /* TODO: Implement SharedPreferences toggle */ })
+                        onAlarmToggle = { toggleSuhoorAlarm(context) })
                 )
             }
 
@@ -239,7 +240,7 @@ fun HomeHeaderSlider(
                         subtitle = "Set your alarm routine",
                         hint = "${ramadanStatus.daysRemaining} days until Ramadan",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { /* TODO: Implement SharedPreferences toggle */ })
+                        onAlarmToggle = { toggleSuhoorAlarm(context) })
                 )
             }
 
@@ -251,7 +252,7 @@ fun HomeHeaderSlider(
                         subtitle = "See you next year",
                         hint = "Insha Allah",
                         isAlarmEnabled = isIftarAlarmEnabled,
-                        onAlarmToggle = { /* TODO: Implement SharedPreferences toggle */ })
+                        onAlarmToggle = { toggleIftarAlarm(context) })
                 )
 
                 pageList.add(
@@ -261,7 +262,7 @@ fun HomeHeaderSlider(
                         subtitle = "May Allah accept our fasting",
                         hint = "Eid Mubarak!",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { /* TODO: Implement SharedPreferences toggle */ })
+                        onAlarmToggle = { toggleSuhoorAlarm(context) })
                 )
             }
         }
