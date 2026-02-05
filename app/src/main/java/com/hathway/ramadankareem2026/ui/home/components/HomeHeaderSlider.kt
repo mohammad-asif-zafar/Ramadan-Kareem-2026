@@ -1,7 +1,5 @@
 package com.hathway.ramadankareem2026.ui.home.components
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,18 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.edit
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.ui.home.HeaderCard
 import com.hathway.ramadankareem2026.ui.home.mapper.buildDynamicPrayerHeader
 import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
 import com.hathway.ramadankareem2026.ui.home.model.HeaderType
+import com.hathway.ramadankareem2026.ui.home.viewmodel.AlarmViewModel
+import com.hathway.ramadankareem2026.ui.home.viewmodel.AlarmViewModelFactory
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.ramadan.viewmodel.RamadanCalendarViewModel
@@ -56,6 +57,8 @@ sealed class RamdanStatus {
  * Displayed at:
  * - Home screen top section
  */
+
+
 @Composable
 fun HomeHeaderSlider(
     prayerViewModel: PrayerViewModel = viewModel(),
@@ -65,6 +68,13 @@ fun HomeHeaderSlider(
         )
     )
 ) {
+    var pendingAlarmAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+
+    NotificationPermissionHandler(
+        pendingAction = pendingAlarmAction,
+        onActionConsumed = { pendingAlarmAction = null }
+    )
+
 
     /**
      * Collect prayer state from ViewModel.
@@ -115,6 +125,18 @@ fun HomeHeaderSlider(
     }
 
     /**
+     * Get Iftar and Suhoor times from today's Ramadan day
+     */
+    val iftarTime = remember(todayRamadanDay) {
+        todayRamadanDay?.maghrib ?: LocalTime.of(18, 30) // Default 6:30 PM
+    }
+
+    val suhoorTime = remember(todayRamadanDay) {
+        todayRamadanDay?.fajr ?: LocalTime.of(5, 30) // Default 5:30 AM
+    }
+
+
+    /**
      * Check if today is Ramadan and calculate days remaining if not
      */
     val ramadanStatus = remember {
@@ -139,39 +161,6 @@ fun HomeHeaderSlider(
         }
     }
 
-    fun getAlarmPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences("alarm_prefs", Context.MODE_PRIVATE)
-    }
-
-    fun isIftarAlarmEnabled(context: Context): Boolean {
-        return getAlarmPreferences(context).getBoolean("iftar_alarm_enabled", false)
-    }
-
-    fun isSuhoorAlarmEnabled(context: Context): Boolean {
-        return getAlarmPreferences(context).getBoolean("suhoor_alarm_enabled", false)
-    }
-
-    fun toggleIftarAlarm(context: Context) {
-        val currentState = isIftarAlarmEnabled(context)
-        getAlarmPreferences(context).edit { putBoolean("iftar_alarm_enabled", !currentState) }
-    }
-
-    fun toggleSuhoorAlarm(context: Context) {
-        val currentState = isSuhoorAlarmEnabled(context)
-        getAlarmPreferences(context).edit { putBoolean("suhoor_alarm_enabled", !currentState) }
-    }
-
-    /**
-     * Get Iftar and Suhoor times - use Ramadan data if available, otherwise use default times
-     */
-    val iftarTime = remember(todayRamadanDay) {
-        todayRamadanDay?.maghrib ?: LocalTime.of(18, 30) // Default 6:30 PM
-    }
-
-    val suhoorTime = remember(todayRamadanDay) {
-        todayRamadanDay?.imsak ?: LocalTime.of(4, 30) // Default 4:30 AM
-    }
-
     /**
      * Build pager pages dynamically.
      * First page = dynamic prayer card
@@ -179,12 +168,22 @@ fun HomeHeaderSlider(
      * Other pages = static inspirational cards
      */
     val context = LocalContext.current
-    val pages = remember(nextPrayer, currentPrayer, iftarTime, suhoorTime, ramadanStatus) {
+
+    // Get AlarmViewModel
+    val alarmViewModel: AlarmViewModel = viewModel(factory = AlarmViewModelFactory())
+
+    // Initialize alarm states
+    LaunchedEffect(Unit) {
+        alarmViewModel.initializeAlarmStates(context)
+    }
+
+    // Get alarm states from ViewModel
+    val isIftarAlarmEnabled by alarmViewModel.isIftarAlarmEnabled
+    val isSuhoorAlarmEnabled by alarmViewModel.isSuhoorAlarmEnabled
+    val alarmTrigger by alarmViewModel.alarmTrigger
+
+    val pages = remember(alarmTrigger, nextPrayer, currentPrayer, todayRamadanDay, ramadanStatus) {
         val pageList = mutableListOf<HeaderPage>()
-        
-        // Get real alarm states from SharedPreferences
-        val isIftarAlarmEnabled = isIftarAlarmEnabled(context)
-        val isSuhoorAlarmEnabled = isSuhoorAlarmEnabled(context)
 
         // Dynamic prayer header
         pageList.add(
@@ -218,7 +217,12 @@ fun HomeHeaderSlider(
                         subtitle = iftarTime.format(DateTimeFormatter.ofPattern("hh:mm a")),
                         hint = "Time to break your fast",
                         isAlarmEnabled = isIftarAlarmEnabled,
-                        onAlarmToggle = { toggleIftarAlarm(context) })
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleIftarAlarm(context)
+
+                            }
+                        })
                 )
 
                 pageList.add(
@@ -228,11 +232,31 @@ fun HomeHeaderSlider(
                         subtitle = suhoorTime.format(DateTimeFormatter.ofPattern("hh:mm a")),
                         hint = "Time for pre-dawn meal",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { toggleSuhoorAlarm(context) })
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleSuhoorAlarm(context)
+
+                            }
+                        })
                 )
             }
 
             is RamdanStatus.BEFORE_RAMADAN -> {
+                pageList.add(
+                    HeaderPage(
+                        type = HeaderType.IFTAR_TIME,
+                        title = "Prepare for Iftar",
+                        subtitle = "Plan your iftar routine",
+                        hint = "${ramadanStatus.daysRemaining} days until Ramadan",
+                        isAlarmEnabled = isIftarAlarmEnabled,
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleIftarAlarm(context)
+
+                            }
+                        })
+                )
+
                 pageList.add(
                     HeaderPage(
                         type = HeaderType.SUHOOR_TIME,
@@ -240,7 +264,12 @@ fun HomeHeaderSlider(
                         subtitle = "Set your alarm routine",
                         hint = "${ramadanStatus.daysRemaining} days until Ramadan",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { toggleSuhoorAlarm(context) })
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleSuhoorAlarm(context)
+
+                            }
+                        })
                 )
             }
 
@@ -252,7 +281,12 @@ fun HomeHeaderSlider(
                         subtitle = "See you next year",
                         hint = "Insha Allah",
                         isAlarmEnabled = isIftarAlarmEnabled,
-                        onAlarmToggle = { toggleIftarAlarm(context) })
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleIftarAlarm(context)
+
+                            }
+                        })
                 )
 
                 pageList.add(
@@ -262,7 +296,13 @@ fun HomeHeaderSlider(
                         subtitle = "May Allah accept our fasting",
                         hint = "Eid Mubarak!",
                         isAlarmEnabled = isSuhoorAlarmEnabled,
-                        onAlarmToggle = { toggleSuhoorAlarm(context) })
+                        onAlarmToggle = {
+                            pendingAlarmAction = {
+                                alarmViewModel.toggleSuhoorAlarm(context)
+
+                            }
+
+                        })
                 )
             }
         }
@@ -335,13 +375,16 @@ fun HomeHeaderSlider(
         ) { page ->
 
             // Render each header card
+
             HeaderCard(
                 type = pages[page].type,
                 title = pages[page].title,
                 subtitle = pages[page].subtitle,
                 hint = pages[page].hint,
-                isAlarmEnabled = pages[page].isAlarmEnabled
+                isAlarmEnabled = pages[page].isAlarmEnabled,
+                onAlarmToggle = pages[page].onAlarmToggle
             )
+
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -551,7 +594,7 @@ private fun HomeHeaderSliderAllPagesPreviewContent(
                 subtitle = page.subtitle,
                 hint = page.hint,
                 isAlarmEnabled = page.isAlarmEnabled,
-                onAlarmToggle = page.onAlarmToggle
+                onAlarmToggle = page.onAlarmToggle as (() -> Unit)?
             )
 
             if (index != pages.lastIndex) {
@@ -571,11 +614,3 @@ fun HomeHeaderSliderPreview_AllPages() {
         pages = previewAllHeaderPages()
     )
 }
-
-
-/*
- Live countdown to next prayer
- Hijri date formatter
- Animated card transitions
- UI test strategy
-*/

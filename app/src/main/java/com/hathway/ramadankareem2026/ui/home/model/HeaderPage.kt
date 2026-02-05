@@ -1,5 +1,7 @@
 package com.hathway.ramadankareem2026.ui.home.model
 
+import androidx.compose.runtime.Composable
+
 enum class HeaderType {
     DYNAMIC_PRAYER,
     NEXT_PRAYER,

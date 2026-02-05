@@ -23,9 +23,9 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
-        
-        // Initialize localization and apply saved language
+
         localizationManager = LocalizationManager(this)
         localizationManager.applySavedLanguage()
         

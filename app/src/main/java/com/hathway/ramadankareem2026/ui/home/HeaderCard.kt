@@ -44,21 +44,25 @@ import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreenDark
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModelFactory
 
+private const val TAG = "HeaderCard"
+
 @Composable
 fun HeaderCard(
-    type: HeaderType, title: String, subtitle: String, hint: String, isAlarmEnabled: Boolean = false,
-    onAlarmToggle: (() -> Unit)? = null
+    type: HeaderType,
+    title: String,
+    subtitle: String,
+    hint: String,
+    isAlarmEnabled: Boolean = false,
+    onAlarmToggle: (() -> Unit)? = null // ✅ NORMAL lambda
 ) {
-    // For REMINDER type, use dynamic tips data but keep original design
+    // Reminder card stays unchanged
     if (type == HeaderType.REMINDER) {
         DynamicReminderCard(
-            title = title,
-            subtitle = subtitle,
-            hint = hint
+            title = title, subtitle = subtitle, hint = hint
         )
         return
     }
-    
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,23 +76,19 @@ fun HeaderCard(
             modifier = Modifier
                 .background(headerGradient(type))
                 .padding(horizontal = 20.dp, vertical = 18.dp)
-                .height(150.dp)
-                .fillMaxWidth()
-
+                .fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                // 🔝 Icon + Title + Alarm Status (secondary)
+                // 🔝 Icon + Title + Alarm
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = headerIcon(type),
                             contentDescription = null,
@@ -105,25 +105,24 @@ fun HeaderCard(
                             fontWeight = FontWeight.Medium
                         )
                     }
-                    
-                    // Show alarm status for Iftar and Suhoor
+
+                    // 🔔 Alarm icon
                     if (type == HeaderType.IFTAR_TIME || type == HeaderType.SUHOOR_TIME) {
                         Icon(
-                            imageVector = if (isAlarmEnabled) Icons.Outlined.Alarm else Icons.Outlined.AlarmOff,
-                            contentDescription = if (isAlarmEnabled) "Alarm On" else "Alarm Off",
-                            tint = if (isAlarmEnabled) Color.White else Color.White.copy(alpha = 0.5f),
+                            imageVector = if (isAlarmEnabled) Icons.Outlined.Alarm
+                            else Icons.Outlined.AlarmOff,
+                            contentDescription = null,
+                            tint = if (isAlarmEnabled) Color.White
+                            else Color.White.copy(alpha = 0.5f),
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable { 
+                                .clickable(enabled = onAlarmToggle != null) {
                                     onAlarmToggle?.invoke()
-                                }
-                        )
+                                })
                     }
                 }
 
-                Spacer(Modifier.height(6.dp))
-
-                // 🔹 MAIN MESSAGE (primary focus)
+                // 🔹 Main content
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.headlineMedium,
@@ -132,9 +131,6 @@ fun HeaderCard(
                     maxLines = 2
                 )
 
-                Spacer(Modifier.height(4.dp))
-
-                // 🔻 Supporting info (date / countdown)
                 Text(
                     text = hint,
                     style = MaterialTheme.typography.labelSmall,
@@ -175,13 +171,13 @@ private fun headerGradient(type: HeaderType): Brush = when (type) {
             RamadanGold, RamadanGreen
         )
     )
-    
+
     HeaderType.IFTAR_TIME -> Brush.linearGradient(
         colors = listOf(
             Color(0xFFFF6B35), Color(0xFFF7931E) // Orange gradient for Iftar
         )
     )
-    
+
     HeaderType.SUHOOR_TIME -> Brush.linearGradient(
         colors = listOf(
             Color(0xFF4A5568), Color(0xFF718096) // Gray-blue gradient for Suhoor
@@ -194,14 +190,12 @@ private fun headerGradient(type: HeaderType): Brush = when (type) {
  */
 @Composable
 private fun DynamicReminderCard(
-    title: String,
-    subtitle: String,
-    hint: String
+    title: String, subtitle: String, hint: String
 ) {
-    val viewModel: com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel = 
+    val viewModel: com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel =
         viewModel(factory = RandomRamadanTipsViewModelFactory())
     val currentTip by viewModel.currentTip.collectAsStateWithLifecycle()
-    
+
     // Auto-refresh tip periodically
     LaunchedEffect(Unit) {
         while (true) {
@@ -209,7 +203,7 @@ private fun DynamicReminderCard(
             viewModel.loadNewRandomTip()
         }
     }
-    
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -225,8 +219,7 @@ private fun DynamicReminderCard(
                 .fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(), 
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
             ) {
                 // Icon + Title
                 Row(
@@ -254,7 +247,7 @@ private fun DynamicReminderCard(
                         )
                     }
                 }
-                
+
                 // Dynamic content from tips
                 Column {
                     val tip = currentTip
@@ -266,9 +259,9 @@ private fun DynamicReminderCard(
                         maxLines = 1,
                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                     )
-                    
+
                     Spacer(modifier = Modifier.height(4.dp))
-                    
+
                     Text(
                         text = tip?.content ?: hint,
                         style = MaterialTheme.typography.bodySmall,
