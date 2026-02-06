@@ -58,18 +58,19 @@ import com.hathway.ramadankareem2026.ui.settings.components.LanguageSettingsSect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    themeViewModel: ThemeViewModel,
     navController: NavController,
     onBack: () -> Unit = { navController.popBackStack() }
 ) {
     val context = LocalContext.current
     val localizationManager = remember { LocalizationManager(context) }
     var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
-    
+
     // Update selectedLanguage when it changes in preferences
     LaunchedEffect(Unit) {
         selectedLanguage = localizationManager.getCurrentLanguage()
     }
-    
+
     Scaffold(
         topBar = {
             RamadanToolbar(
@@ -95,14 +96,14 @@ fun SettingsScreen(
                         subtitle = stringResource(R.string.manage_prayer_reminders),
                         onClick = { /* Navigate to notification settings */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.prayer_reminders),
                         subtitle = stringResource(R.string.configure_azan_prayer_alerts),
                         onClick = { /* Navigate to prayer reminders */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.azan_sound),
@@ -123,18 +124,20 @@ fun SettingsScreen(
                     }
                 )
             }
-            
+
             // Appearance Section
             item {
                 SettingsSection(title = "🎨 ${stringResource(R.string.appearance)}") {
-                    var selectedTheme by remember { mutableStateOf("System") }
+                   // var selectedTheme by remember { mutableStateOf("System") }
+                    val selectedTheme by themeViewModel.theme
+
                     ThemeSelector(
                         currentTheme = selectedTheme,
-                        onThemeChanged = { selectedTheme = it }
+                        onThemeChanged = { themeViewModel.setTheme(it) }
                     )
                 }
             }
-            
+
             //  About Section
             item {
                 SettingsSection(title = "ℹ️ ${stringResource(R.string.about)}") {
@@ -145,23 +148,23 @@ fun SettingsScreen(
                         onClick = { /* Show version info */ },
                         showArrow = false
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = stringResource(R.string.about_app),
                         subtitle = "Learn more about Ramadan Kareem 2026",
                         onClick = { /* Navigate to about */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.PrivacyTip,
                         title = stringResource(R.string.privacy_policy),
                         subtitle = stringResource(R.string.read_privacy_policy),
-                        onClick = { 
+                        onClick = {
                             openPrivacyPolicy(context)
                         }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = stringResource(R.string.terms_use),
@@ -170,7 +173,7 @@ fun SettingsScreen(
                     )
                 }
             }
-            
+
             // Support Section
             item {
                 SettingsSection(title = "💬 ${stringResource(R.string.support)}") {
@@ -180,14 +183,14 @@ fun SettingsScreen(
                         subtitle = stringResource(R.string.share_feedback_us),
                         onClick = { /* Navigate to feedback */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Star,
                         title = stringResource(R.string.rate_app),
                         subtitle = stringResource(R.string.rate_us_google_play),
                         onClick = { /* Navigate to rate app */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.AutoMirrored.Filled.ContactSupport,
                         title = stringResource(R.string.get_help_support_team),
@@ -196,7 +199,7 @@ fun SettingsScreen(
                     )
                 }
             }
-            
+
             // Credits Section
             item {
                 SettingsSection(title = "🙏 ${stringResource(R.string.special_thanks)}") {
@@ -206,14 +209,14 @@ fun SettingsScreen(
                         subtitle = stringResource(R.string.mohammad_asif_zafar),
                         onClick = { /* Navigate to developer info */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = stringResource(R.string.design_ui_ux),
                         subtitle = stringResource(R.string.ramadan_kareem_team),
                         onClick = { /* Navigate to design credits */ }
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = stringResource(R.string.islamic_scholars_community_contributors),
@@ -222,7 +225,7 @@ fun SettingsScreen(
                     )
                 }
             }
-            
+
             // API Credits Section
             item {
                 SettingsSection(title = "📡 ${stringResource(R.string.data_api_credits)}") {
@@ -233,7 +236,7 @@ fun SettingsScreen(
                         onClick = { /* Navigate to API info */ },
                         showArrow = false
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = "Prayer Calculations",
@@ -241,7 +244,7 @@ fun SettingsScreen(
                         onClick = { /* Navigate to library info */ },
                         showArrow = false
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = "Location Services",
@@ -249,7 +252,7 @@ fun SettingsScreen(
                         onClick = { /* Navigate to location info */ },
                         showArrow = false
                     )
-                    
+
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = "Maps & Places",
@@ -276,7 +279,7 @@ private fun SettingsSection(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
@@ -311,9 +314,9 @@ private fun SettingsItem(
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(24.dp)
         )
-        
+
         Spacer(modifier = Modifier.width(16.dp))
-        
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -328,7 +331,7 @@ private fun SettingsItem(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        
+
         if (showArrow) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
@@ -338,7 +341,7 @@ private fun SettingsItem(
             )
         }
     }
-    
+
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp),
         thickness = 0.5.dp,
@@ -348,15 +351,17 @@ private fun SettingsItem(
 
 @Composable
 private fun ThemeSelector(
-    currentTheme: String,
-    onThemeChanged: (String) -> Unit
+    currentTheme: AppTheme,
+    onThemeChanged: (AppTheme) -> Unit
+
 ) {
     val themes = listOf(
-        ThemeOption("Light", Icons.Default.LightMode, stringResource(R.string.light)),
-        ThemeOption("Dark", Icons.Default.DarkMode, stringResource(R.string.dark)),
-        ThemeOption("System", Icons.Default.SettingsSystemDaydream, stringResource(R.string.system))
+        ThemeOption(AppTheme.LIGHT, Icons.Default.LightMode, stringResource(R.string.light)),
+        ThemeOption(AppTheme.DARK, Icons.Default.DarkMode, stringResource(R.string.dark)),
+        ThemeOption(AppTheme.SYSTEM, Icons.Default.SettingsSystemDaydream, stringResource(R.string.system))
     )
-    
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -367,17 +372,17 @@ private fun ThemeSelector(
         ) {
             Icon(
                 imageVector = when (currentTheme) {
-                    "Light" -> Icons.Default.LightMode
-                    "Dark" -> Icons.Default.DarkMode
-                    else -> Icons.Default.SettingsSystemDaydream
+                    AppTheme.LIGHT -> Icons.Default.LightMode
+                    AppTheme.DARK  -> Icons.Default.DarkMode
+                    AppTheme.SYSTEM -> Icons.Default.SettingsSystemDaydream
                 },
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
-            
+
             Spacer(modifier = Modifier.width(16.dp))
-            
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.theme),
@@ -391,9 +396,9 @@ private fun ThemeSelector(
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(12.dp))
-        
+
         themes.forEach { theme ->
             Row(
                 modifier = Modifier
@@ -407,18 +412,18 @@ private fun ThemeSelector(
                     selected = currentTheme == theme.value,
                     onClick = { onThemeChanged(theme.value) }
                 )
-                
+
                 Spacer(modifier = Modifier.width(12.dp))
-                
+
                 Icon(
                     imageVector = theme.icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
-                
+
                 Spacer(modifier = Modifier.width(12.dp))
-                
+
                 Text(
                     text = theme.label,
                     style = MaterialTheme.typography.bodyMedium
@@ -426,7 +431,7 @@ private fun ThemeSelector(
             }
         }
     }
-    
+
     HorizontalDivider(
         modifier = Modifier.padding(horizontal = 16.dp),
         thickness = 0.5.dp,
@@ -435,14 +440,14 @@ private fun ThemeSelector(
 }
 
 private data class ThemeOption(
-    val value: String,
+    val value: AppTheme,
     val icon: ImageVector,
     val label: String
 )
 
 private fun openPrivacyPolicy(context: android.content.Context) {
     val privacyPolicyUrl = "https://mohammad-asif-zafar.github.io/Ramadan-Kareem-2026/privacy-policy.html"
-    
+
     try {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
