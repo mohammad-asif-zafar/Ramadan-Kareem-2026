@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -100,6 +102,7 @@ fun ZakatScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(scrollState)
+                .imePadding()
                 .padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // Header with History Button
@@ -115,7 +118,7 @@ fun ZakatScreen(
                         color = RamadanGold,
                         fontWeight = FontWeight.Bold
                     )
-                    
+
                     // Currency and Country Info
                     if (state.country.isNotEmpty()) {
                         Text(
@@ -177,9 +180,24 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField(stringResource(R.string.gold_value), state.gold, onGold, KeyboardType.Number, state.currency.symbol)
-                    ZakatMoneyField(stringResource(R.string.silver_value), state.silver, onSilver, KeyboardType.Number, state.currency.symbol)
-                    ZakatMoneyField(stringResource(R.string.cash_savings), state.cash, onCash, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(
+                        stringResource(R.string.gold_value),
+                        state.gold,
+                        onGold,
+                        state.currency.symbol
+                    )
+                    ZakatMoneyField(
+                        stringResource(R.string.silver_value),
+                        state.silver,
+                        onSilver,
+                        state.currency.symbol
+                    )
+                    ZakatMoneyField(
+                        stringResource(R.string.cash_savings),
+                        state.cash,
+                        onCash,
+                        state.currency.symbol
+                    )
                 }
             }
 
@@ -214,7 +232,13 @@ fun ZakatScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    ZakatMoneyField(stringResource(R.string.debts_loans), state.debts, onDebts, KeyboardType.Number, state.currency.symbol)
+                    ZakatMoneyField(
+                        label = stringResource(R.string.debts_loans),
+                        value = state.debts,
+                        onChange = onDebts,
+                        imeAction = ImeAction.Done,
+                        currencySymbol = state.currency.symbol
+                    )
                 }
             }
 
@@ -348,8 +372,7 @@ fun ZakatScreenPreview() {
         onViewBreakdown = {},
         onBack = {},
         navController = rememberNavController(),
-        onCalculatorIconClick = {}
-    )
+        onCalculatorIconClick = {})
 }
 
 

@@ -38,12 +38,12 @@ fun NotificationPermissionHandler(
     }
 
     LaunchedEffect(pendingAction) {
-        val granted = ContextCompat.checkSelfPermission(
+        val hasPermission = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
 
-        if (granted) {
+        if (hasPermission) {
             pendingAction()
             onActionConsumed()
         } else {

@@ -1,8 +1,11 @@
 package com.hathway.ramadankareem2026.ui.home.viewmodel
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.RingtoneManager
@@ -15,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hathway.ramadankareem2026.ui.home.receiver.AlarmReceiver
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,6 +32,11 @@ class AlarmViewModel : ViewModel() {
         private const val ALARM_NOTIFICATION_ID = 1001
         private const val CHANNEL_NAME = "Alarm Notifications"
         private const val CHANNEL_DESCRIPTION = "Notifications for alarm sounds"
+        
+        // AlarmManager constants
+        private const val IFTAR_ALARM_REQUEST_CODE = 1001
+        private const val SUHOOR_ALARM_REQUEST_CODE = 1002
+        private const val ALARM_DELAY_SECONDS = 20L // 20 seconds for testing
     }
     
     // Alarm states
@@ -41,6 +50,10 @@ class AlarmViewModel : ViewModel() {
     var alarmTrigger = mutableStateOf(0)
         private set
     
+    // State to track when alarm is currently playing
+    var isAlarmPlaying = mutableStateOf(false)
+        private set
+    
     // Ringtone reference to persist across slider movements
     private var currentRingtone: android.media.Ringtone? = null
     
@@ -51,6 +64,85 @@ class AlarmViewModel : ViewModel() {
     init {
         // Initialize with default values
         resetAlarmStates()
+    }
+    
+    /**
+     * Schedule alarm using AlarmManager
+     */
+    private fun scheduleAlarm(context: Context, alarmType: String, requestCode: Int) {
+        try {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            
+            // Create intent for alarm receiver
+            val intent = Intent(context, AlarmReceiver::class.java).apply {
+                putExtra("alarm_type", alarmType)
+            }
+            
+            // Create PendingIntent
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Calculate trigger time (20 seconds from now for testing)
+            val triggerTime = System.currentTimeMillis() + (ALARM_DELAY_SECONDS * 1000)
+            
+            // Schedule alarm
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // For Android 12+, check if exact alarm permission is granted
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingIntent
+                    )
+                } else {
+                    // Fallback to inexact alarm
+                    alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingIntent
+                    )
+                }
+            } else {
+                // For older Android versions
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    triggerTime,
+                    pendingIntent
+                )
+            }
+            
+            println("DEBUG: $alarmType alarm scheduled for $ALARM_DELAY_SECONDS seconds from now")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("DEBUG: Error scheduling $alarmType alarm: ${e.message}")
+        }
+    }
+    
+    /**
+     * Cancel alarm using AlarmManager
+     */
+    private fun cancelAlarm(context: Context, requestCode: Int) {
+        try {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            
+            val intent = Intent(context, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            alarmManager.cancel(pendingIntent)
+            println("DEBUG: Alarm with request code $requestCode cancelled")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("DEBUG: Error cancelling alarm: ${e.message}")
+        }
     }
     
     /**
@@ -154,24 +246,22 @@ class AlarmViewModel : ViewModel() {
         // Debug log
         println("DEBUG: Iftar alarm toggled from $currentState to $newState")
         
-        // Cancel any pending alarm if turning OFF
+        // Cancel any existing alarm if turning OFF
         if (!newState) {
+            cancelAlarm(context, IFTAR_ALARM_REQUEST_CODE)
             iftarAlarmJob?.cancel()
             iftarAlarmJob = null
         }
         
-        // Play sounds if enabling alarm
+        // Play sounds and schedule alarm if enabling
         if (newState) {
             // Show notification when alarm starts
             showAlarmNotification(context, "Iftar")
             
             playTestSound(context)
             
-            // Schedule default alarm after 20 seconds with job tracking
-            iftarAlarmJob = viewModelScope.launch {
-                delay(20000)
-                playDefaultAlarm(context)
-            }
+            // Schedule alarm using AlarmManager
+            scheduleAlarm(context, "Iftar", IFTAR_ALARM_REQUEST_CODE)
         }
     }
     
@@ -196,24 +286,22 @@ class AlarmViewModel : ViewModel() {
         // Debug log
         println("DEBUG: Suhoor alarm toggled from $currentState to $newState")
         
-        // Cancel any pending alarm if turning OFF
+        // Cancel any existing alarm if turning OFF
         if (!newState) {
+            cancelAlarm(context, SUHOOR_ALARM_REQUEST_CODE)
             suhoorAlarmJob?.cancel()
             suhoorAlarmJob = null
         }
         
-        // Play sounds if enabling alarm
+        // Play sounds and schedule alarm if enabling
         if (newState) {
             // Show notification when alarm starts
             showAlarmNotification(context, "Suhoor")
             
             playTestSound(context)
             
-            // Schedule default alarm after 20 seconds with job tracking
-            suhoorAlarmJob = viewModelScope.launch {
-                delay(20000)
-                playDefaultAlarm(context)
-            }
+            // Schedule alarm using AlarmManager
+            scheduleAlarm(context, "Suhoor", SUHOOR_ALARM_REQUEST_CODE)
         }
     }
     
@@ -264,6 +352,17 @@ class AlarmViewModel : ViewModel() {
     }
     
     /**
+     * Start alarm (called by AlarmReceiver)
+     */
+    fun startAlarm(context: Context) {
+        // Update alarm playing state
+        isAlarmPlaying.value = true
+        
+        // Play alarm sound
+        playDefaultAlarm(context)
+    }
+    
+    /**
      * Stop alarm manually (user action)
      */
     fun stopAlarm(context: Context) {
@@ -274,6 +373,9 @@ class AlarmViewModel : ViewModel() {
             it.stop()
             currentRingtone = null
         }
+        
+        // Update alarm playing state
+        isAlarmPlaying.value = false
     }
     
     /**
