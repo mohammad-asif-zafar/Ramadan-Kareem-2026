@@ -368,5 +368,21 @@
     <string name="prayer_maghrib">مغرب</string>
     <string name="prayer_isha">عشاء</string>
 
+    <string name="prayer_desc_fajr">
+    فجر دن کی پہلی نماز ہے جو طلوعِ آفتاب سے پہلے ادا کی جاتی ہے۔
+</string>
+    <string name="prayer_desc_dhuhr">
+    ظہر دوپہر کی نماز ہے جو سورج ڈھلنے کے بعد ادا کی جاتی ہے۔
+</string>
+    <string name="prayer_desc_asr">
+    عصر سہ پہر کی نماز ہے جو دن کے آخر میں ادا کی جاتی ہے۔
+</string>
+    <string name="prayer_desc_maghrib">
+    مغرب سورج غروب ہونے کے فوراً بعد ادا کی جاتی ہے۔
+</string>
+    <string name="prayer_desc_isha">
+    عشاء رات کی نماز ہے جو اندھیرا ہونے کے بعد ادا کی جاتی ہے۔
+</string>
+
 
 </resources>

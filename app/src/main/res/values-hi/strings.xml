@@ -368,5 +368,21 @@
     <string name="prayer_maghrib">मगरिब</string>
     <string name="prayer_isha">इशा</string>
 
+    <string name="prayer_desc_fajr">
+    फ़ज्र दिन की पहली नमाज़ है, जो सूर्योदय से पहले अदा की जाती है।
+</string>
+    <string name="prayer_desc_dhuhr">
+    ज़ुहर दोपहर की नमाज़ है, जो सूरज ढलने के बाद अदा की जाती है।
+</string>
+    <string name="prayer_desc_asr">
+    अस्र शाम से पहले की नमाज़ है, जो दिन के अंत की ओर होती है।
+</string>
+    <string name="prayer_desc_maghrib">
+    मगरिब सूर्यास्त के तुरंत बाद अदा की जाती है।
+</string>
+    <string name="prayer_desc_isha">
+    इशा रात की नमाज़ है, जो अंधेरा होने के बाद अदा की जाती है।
+</string>
+
 
 </resources>

@@ -101,17 +101,17 @@
     <string name="use_my_current_location">Gunakan lokasi semasa saya</string>
     <string name="directions">Arah</string>
     <string name="select_language">🌍 Pilih Bahasa</string>
-    
+
     <!-- Service and Notifications -->
     <string name="dua_reader">Pembaca Dua</string>
     <string name="arabic_dua_audio">Audio Dua Arab</string>
     <string name="dua_bookmarks">Tanda Dua</string>
     <string name="no_dua_bookmarks_yet">Belum ada tanda dua lagi</string>
-    
+
     <!-- Zakat Calculator -->
     <string name="zero_amount_with_currency">0.00 %s</string>
     <string name="nisab">Nisab</string>
-    
+
     <!-- Prayer Times -->
 
     <!-- Zakat Calculator -->
@@ -137,7 +137,7 @@
     <string name="total_zakat_payable">Jumlah Zakat Dibayar</string>
     <string name="zakat_percentage">(2.5% kekayaan layak)</string>
     <string name="zakat_history_description">Lihat sejarah pengiraan zakat anda</string>
-    
+
     <!-- Common Actions -->
     <string name="cancel">Batal</string>
 
@@ -156,7 +156,7 @@
     <string name="azan_sound">Bunyi Azan</string>
     <string name="choose_azan_audio_prayer">Pilih audio Azan</string>
     <string name="configure_azan_prayer_alerts">Konfigurasi amaran Azan solat</string>
-    
+
     <!-- Time -->
 
     <!-- Qibla -->
@@ -166,12 +166,12 @@
 
     <!-- Islamic Terms -->
     <string name="duʿās">Doa</string>
-    
+
     <!-- Location -->
 
     <!-- Additional -->
     <string name="shimmerTranslate">Terjemahan Shimmer</string>
-    
+
     <!-- Missing Strings Added -->
     <string name="about">Tentang</string>
     <string name="about_app">Tentang Aplikasi</string>
@@ -352,7 +352,7 @@
     <string name="date">Tarikh</string>
     <string name="day">Hari</string>
     <string name="weeks">Minggu</string>
-    
+
     <!-- Random Ramadan Tips -->
     <string name="ramadan_tip">Tip Ramadan</string>
     <string name="loading_tip">Memuatkan tip...</string>
@@ -368,5 +368,10 @@
     <string name="prayer_maghrib">Maghrib</string>
     <string name="prayer_isha">Isyak</string>
 
+    <string name="prayer_desc_fajr">Subuh ialah solat pertama hari yang dilakukan sebelum matahari terbit.</string>
+    <string name="prayer_desc_dhuhr">Zohor ialah solat tengah hari selepas matahari tergelincir.</string>
+    <string name="prayer_desc_asr">Asar ialah solat petang yang dilakukan sebelum matahari terbenam.</string>
+    <string name="prayer_desc_maghrib">Maghrib dilakukan sejurus selepas matahari terbenam.</string>
+    <string name="prayer_desc_isha">Isyak ialah solat malam yang dilakukan selepas gelap.</string>
 
 </resources>
