@@ -319,26 +319,32 @@
     <string name="daily_wisdom">Daily wisdom for your spiritual journey</string>
     <string name="tap_for_more_tips">Tap for more inspirational tips</string>
 
+    <!-- Prayer names -->
     <string name="prayer_fajr">Fajr</string>
     <string name="prayer_dhuhr">Dhuhr</string>
     <string name="prayer_asr">Asr</string>
     <string name="prayer_maghrib">Maghrib</string>
     <string name="prayer_isha">Isha</string>
 
+    <!-- Prayer descriptions -->
     <string name="prayer_desc_fajr">
-    Fajr is the first prayer of the day, performed before sunrise. It consists of 2 rak'ahs.
+Fajr is the first prayer of the day, performed before sunrise.
 </string>
+
     <string name="prayer_desc_dhuhr">
-    Dhuhr is the midday prayer, performed after the sun passes its zenith. It consists of 4 rak'ahs.
+Dhuhr is the midday prayer, performed after the sun passes its zenith.
 </string>
+
     <string name="prayer_desc_asr">
-    Asr is the afternoon prayer, performed in the late afternoon. It consists of 4 rak'ahs.
+Asr is the afternoon prayer, performed in the late afternoon.
 </string>
+
     <string name="prayer_desc_maghrib">
-    Maghrib is the sunset prayer, performed just after sunset. It consists of 3 rak'ahs.
+Maghrib is the sunset prayer, performed just after sunset.
 </string>
+
     <string name="prayer_desc_isha">
-    Isha is the night prayer, performed after twilight disappears. It consists of 4 rak'ahs.
+Isha is the night prayer, performed after twilight disappears.
 </string>
 
 

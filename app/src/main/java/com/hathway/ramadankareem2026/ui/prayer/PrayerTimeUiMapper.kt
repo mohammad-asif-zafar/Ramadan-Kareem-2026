@@ -18,9 +18,7 @@ object PrayerTimeUiMapper {
             PrayerType.ISHA to state.isha
         )
 
-        val nextIndex = prayers.indexOfFirst { (_, time) ->
-            time.isAfter(now)
-        }
+        val nextIndex = prayers.indexOfFirst { (_, time) -> time.isAfter(now) }
 
         val currentIndex = when {
             nextIndex > 0 -> nextIndex - 1
@@ -51,7 +49,24 @@ object PrayerTimeUiMapper {
             )
         }
     }
+
+    fun formatRemaining(minutes: Int?, isCurrent: Boolean): String = when {
+        minutes == null -> "—"
+        isCurrent -> "Now"
+        minutes < 0 -> "Passed"
+        else -> "Starts in ${formatDuration(minutes)}"
+    }
+
+    fun formatDuration(minutes: Int): String {
+        val h = minutes / 60
+        val m = minutes % 60
+        return if (h > 0) "${h}h ${m}m" else "${m}m"
+    }
+
+    fun minutesUntil(time: LocalTime): Int =
+        Duration.between(LocalTime.now(), time).toMinutes().toInt()
 }
+
 
 enum class PrayerType {
     FAJR, DHUHR, ASR, MAGHRIB, ISHA

@@ -31,6 +31,7 @@ import com.hathway.ramadankareem2026.ui.home.viewmodel.AlarmViewModel
 import com.hathway.ramadankareem2026.ui.home.viewmodel.AlarmViewModelFactory
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.minutesUntil
+import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel
@@ -72,8 +73,13 @@ fun HomeHeaderSlider() {
         PrayerTimeUiMapper.map(prayerState, now)
     }
 
-    val iftarPrayer = prayers.firstOrNull { it.name.equals("Maghrib", true) }
-    val suhoorPrayer = prayers.firstOrNull { it.name.equals("Fajr", true) }
+//    val iftarPrayer = prayers.firstOrNull { it.name.equals("Maghrib", true) }
+//    val suhoorPrayer = prayers.firstOrNull { it.name.equals("Fajr", true) }
+
+
+    val iftarPrayer = prayers.firstOrNull { it.type == PrayerType.MAGHRIB }
+    val suhoorPrayer = prayers.firstOrNull { it.type == PrayerType.FAJR }
+
 
     val formatter = remember { DateTimeFormatter.ofPattern("hh:mm a") }
 

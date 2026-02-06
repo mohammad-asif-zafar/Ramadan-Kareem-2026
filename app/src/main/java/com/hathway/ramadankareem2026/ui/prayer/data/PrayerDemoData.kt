@@ -2,6 +2,7 @@ package com.hathway.ramadankareem2026.ui.prayer.data
 
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
+import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -27,35 +28,35 @@ object PrayerDemoData {
      */
     fun get(): List<PrayerDomain> = listOf(
         PrayerDomain(
-            name = "Fajr",
+            type = PrayerType.FAJR,
             time = LocalTime.of(5, 50),
             isCurrent = false,
             isNext = false,
             remainingMinutes = null,
             isPast = true
         ), PrayerDomain(
-            name = "Dhuhr",
+            type = PrayerType.DHUHR,
             time = LocalTime.of(13, 20),
             isCurrent = true,
             isNext = false,
             remainingMinutes = null,
             isPast = false
         ), PrayerDomain(
-            name = "Asr",
+            type = PrayerType.ASR,
             time = LocalTime.of(16, 45),
             isCurrent = false,
             isNext = true,
             remainingMinutes = 28,
             isPast = false
         ), PrayerDomain(
-            name = "Maghrib",
+            type = PrayerType.MAGHRIB,
             time = LocalTime.of(19, 22),
             isCurrent = false,
             isNext = false,
             remainingMinutes = null,
             isPast = false
         ), PrayerDomain(
-            name = "Isha",
+            type = PrayerType.ISHA,
             time = LocalTime.of(20, 40),
             isCurrent = false,
             isNext = false,

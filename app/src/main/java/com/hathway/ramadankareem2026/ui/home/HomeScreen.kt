@@ -103,15 +103,11 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item(key = "top_bar") {
-                HomeTopBarSection(
-                    locationState = locationState,
-                    onLocationClick = {
-                        navController.navigate("location_picker")
-                    },
-                    onProfileClick = {
-                        navController.navigate("settings")
-                    }
-                )
+                HomeTopBarSection(locationState = locationState, onLocationClick = {
+                    navController.navigate("location_picker")
+                }, onProfileClick = {
+                    navController.navigate("settings")
+                })
             }
 
             item { HomeHeaderSlider() }
@@ -143,8 +139,7 @@ private fun HomeScreenPreviewContent(
                 HomeTopBarSection(
                     locationState = locationState,
                     onLocationClick = {},
-                    onProfileClick = {}
-                )
+                    onProfileClick = {})
             }
             item { HomeHeaderSlider() }
             item { Spacer(modifier = Modifier.height(16.dp)) }

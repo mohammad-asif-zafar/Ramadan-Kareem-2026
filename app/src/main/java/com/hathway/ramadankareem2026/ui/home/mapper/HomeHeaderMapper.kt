@@ -33,7 +33,7 @@ fun buildDynamicPrayerHeader(
         type = HeaderType.DYNAMIC_PRAYER,
         title = "Ramadan Kareem 🌙",
         subtitle = dateLine,
-        hint = "${prayer.name} • $prayerTime • ${formatRemaining(prayer.remainingMinutes, false)}"
+        hint = "${prayer.type} • $prayerTime • ${formatRemaining(prayer.remainingMinutes, false)}"
 
     )
 }

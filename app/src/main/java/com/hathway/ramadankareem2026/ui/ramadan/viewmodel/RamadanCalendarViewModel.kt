@@ -7,6 +7,7 @@ import com.hathway.ramadankareem2026.core.time.AppClock
 import com.hathway.ramadankareem2026.core.time.SystemAppClock
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
 import com.hathway.ramadankareem2026.core.util.minuteTicker
+import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerRepository
 import com.hathway.ramadankareem2026.ui.ramadan.logic.RamadanMonthlyOverviewCalculator
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
@@ -69,14 +70,16 @@ class RamadanCalendarViewModel(
 
                             // Get prayer times for today to establish pattern
                             val prayerTimes = prayerRepository?.load(lat, lng)
-                            
-                            prayerTimes?.firstOrNull { it.name.contains("Fajr", ignoreCase = true) }?.let { fajrPrayer ->
-                                fajrTime = fajrPrayer.time
-                            }
-                            
-                            prayerTimes?.firstOrNull { it.name.contains("Maghrib", ignoreCase = true) }?.let { maghribPrayer ->
-                                maghribTime = maghribPrayer.time
-                            }
+
+                            prayerTimes?.firstOrNull { it.type == PrayerType.FAJR }
+                                ?.let { fajrPrayer ->
+                                    fajrTime = fajrPrayer.time
+                                }
+
+                            prayerTimes?.firstOrNull { it.type == PrayerType.MAGHRIB }
+                                ?.let { maghribPrayer ->
+                                    maghribTime = maghribPrayer.time
+                                }
                             
                         } catch (e: Exception) {
                         }
@@ -134,14 +137,17 @@ class RamadanCalendarViewModel(
                         if (NetworkUtil.isConnected(getApplication())) {
                             try {
                                 val prayerTimes = prayerRepository?.load(lat, lng)
-                                
-                                prayerTimes?.firstOrNull { it.name.contains("Fajr", ignoreCase = true) }?.let { fajrPrayer ->
-                                    fajrTime = fajrPrayer.time
-                                }
-                                
-                                prayerTimes?.firstOrNull { it.name.contains("Maghrib", ignoreCase = true) }?.let { maghribPrayer ->
-                                    maghribTime = maghribPrayer.time
-                                }
+
+                                prayerTimes?.firstOrNull { it.type == PrayerType.FAJR }
+                                    ?.let { fajrPrayer ->
+                                        fajrTime = fajrPrayer.time
+                                    }
+
+                                prayerTimes?.firstOrNull { it.type == PrayerType.MAGHRIB }
+                                    ?.let { maghribPrayer ->
+                                        maghribTime = maghribPrayer.time
+                                    }
+
                             } catch (e: Exception) {
                                 // Silently fail for real-time updates
                             }
