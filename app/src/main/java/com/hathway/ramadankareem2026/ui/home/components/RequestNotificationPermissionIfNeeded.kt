@@ -19,7 +19,7 @@ fun NotificationPermissionHandler(
 
     val context = LocalContext.current
 
-    // Android < 13 → permission not required
+    // Android < 13 → no permission needed
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
         LaunchedEffect(pendingAction) {
             pendingAction()
@@ -38,12 +38,12 @@ fun NotificationPermissionHandler(
     }
 
     LaunchedEffect(pendingAction) {
-        val hasPermission = ContextCompat.checkSelfPermission(
+        val granted = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
 
-        if (hasPermission) {
+        if (granted) {
             pendingAction()
             onActionConsumed()
         } else {

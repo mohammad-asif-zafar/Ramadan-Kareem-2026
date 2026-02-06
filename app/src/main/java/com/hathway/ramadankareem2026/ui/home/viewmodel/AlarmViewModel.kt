@@ -177,19 +177,17 @@ class AlarmViewModel : ViewModel() {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             
             // Create notification channel for Android 8.0 and above
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    ALARM_CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                ).apply {
-                    description = CHANNEL_DESCRIPTION
-                    enableLights(true)
-                    enableVibration(true)
-                }
-                notificationManager.createNotificationChannel(channel)
+            val channel = NotificationChannel(
+                ALARM_CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = CHANNEL_DESCRIPTION
+                enableLights(true)
+                enableVibration(true)
             }
-            
+            notificationManager.createNotificationChannel(channel)
+
             // Create notification
             val notification = NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)

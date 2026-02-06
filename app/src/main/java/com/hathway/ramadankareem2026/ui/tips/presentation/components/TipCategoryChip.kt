@@ -29,10 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 
 @Composable
 fun DailyTipCard(
-    tip: com.hathway.ramadankareem2026.ui.tips.data.model.Tip,
+    tip: Tip,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
