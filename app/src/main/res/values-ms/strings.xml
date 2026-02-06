@@ -362,4 +362,11 @@
     <string name="daily_wisdom">Kebijaksanaan harian untuk perjalanan spiritual anda</string>
     <string name="tap_for_more_tips">Ketik untuk lebih banyak tips inspiratif</string>
 
+    <string name="prayer_fajr">Subuh</string>
+    <string name="prayer_dhuhr">Zohor</string>
+    <string name="prayer_asr">Asar</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isyak</string>
+
+
 </resources>

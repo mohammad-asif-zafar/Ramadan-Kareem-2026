@@ -11,11 +11,11 @@ object PrayerTimeUiMapper {
     ): List<PrayerDomain> {
 
         val prayers = listOf(
-            "Fajr" to state.fajr,
-            "Dhuhr" to state.dhuhr,
-            "Asr" to state.asr,
-            "Maghrib" to state.maghrib,
-            "Isha" to state.isha
+            PrayerType.FAJR to state.fajr,
+            PrayerType.DHUHR to state.dhuhr,
+            PrayerType.ASR to state.asr,
+            PrayerType.MAGHRIB to state.maghrib,
+            PrayerType.ISHA to state.isha
         )
 
         val nextIndex = prayers.indexOfFirst { (_, time) ->
@@ -24,19 +24,16 @@ object PrayerTimeUiMapper {
 
         val currentIndex = when {
             nextIndex > 0 -> nextIndex - 1
-            nextIndex == -1 -> prayers.lastIndex // after Isha
+            nextIndex == -1 -> prayers.lastIndex
             else -> 0
         }
 
-        val nextPrayerTime = if (nextIndex == -1) {
-            state.fajr.plusHours(24) // tomorrow fajr
-        } else {
-            prayers[nextIndex].second
-        }
+        val nextPrayerTime = if (nextIndex == -1) state.fajr.plusHours(24)
+        else prayers[nextIndex].second
 
         val remainingMinutes = Duration.between(now, nextPrayerTime).toMinutes().toInt()
 
-        return prayers.mapIndexed { index, (name, time) ->
+        return prayers.mapIndexed { index, (type, time) ->
 
             val isPast = when {
                 index < currentIndex -> true
@@ -45,43 +42,17 @@ object PrayerTimeUiMapper {
             }
 
             PrayerDomain(
-                name = name, time = time,
-
-                isCurrent = index == currentIndex, isNext = index == nextIndex,
-
-                // ✅ Only NEXT prayer gets countdown
+                type = type,
+                time = time,
+                isCurrent = index == currentIndex,
+                isNext = index == nextIndex,
                 remainingMinutes = if (index == nextIndex) remainingMinutes else null,
-
-                // ✅ ADD THIS
                 isPast = isPast
             )
         }
     }
+}
 
-    // 🔹 UI helper (FINAL & CORRECT)
-    fun formatRemaining(
-        minutes: Int?, isCurrent: Boolean
-    ): String = when {
-        minutes == null -> "Calculating…"
-
-        // ✅ CURRENT prayer always wins
-        isCurrent -> "Now"
-
-        // ✅ Only non-current prayers can be passed
-        minutes < 0 -> "Passed"
-
-        else -> "Starts in ${formatDuration(minutes)}"
-    }
-
-
-     fun formatDuration(minutes: Int): String {
-        val h = minutes / 60
-        val m = minutes % 60
-        return if (h > 0) "${h}h ${m}m" else "${m}m"
-    }
-
-    fun minutesUntil(prayerTime: LocalTime): Int {
-        val now = LocalTime.now()
-        return Duration.between(now, prayerTime).toMinutes().toInt()
-    }
+enum class PrayerType {
+    FAJR, DHUHR, ASR, MAGHRIB, ISHA
 }

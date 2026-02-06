@@ -50,7 +50,7 @@ class PrayerViewModel(
         viewModelScope.launch {
 
             // 1️⃣ Always show demo immediately
-            _state.value = PrayerDemoData.demo()
+           // _state.value = PrayerDemoData.demo()
 
             // 2️⃣ Load from API if internet exists
             if (NetworkUtil.isConnected(getApplication())) {

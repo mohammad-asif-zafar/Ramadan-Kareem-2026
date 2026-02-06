@@ -128,7 +128,7 @@ fun FeatureItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             when (val icon = item.icon) {
                 is FeatureIcon.Vector -> {
                     Icon(
@@ -147,10 +147,10 @@ fun FeatureItem(
                         alignment = Alignment.Center
                     )
                 }
+
                 is FeatureIcon.Text -> {
                     Box(
-                        modifier = Modifier.size(26.dp),
-                        contentAlignment = Alignment.Center
+                        modifier = Modifier.size(26.dp), contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = icon.value,
@@ -167,15 +167,13 @@ fun FeatureItem(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = stringResource(item.titleRes), 
+                text = stringResource(item.titleRes),
                 style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 minLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            
-           // Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }

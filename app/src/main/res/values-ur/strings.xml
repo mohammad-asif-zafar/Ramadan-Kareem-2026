@@ -362,4 +362,11 @@
     <string name="daily_wisdom">آپ کی روحانی سفر کے لیے روزانہ حکمت</string>
     <string name="tap_for_more_tips">مزید تحریک دہ نصائحوں کے لیے ٹیپ کریں</string>
 
+    <string name="prayer_fajr">فجر</string>
+    <string name="prayer_dhuhr">ظہر</string>
+    <string name="prayer_asr">عصر</string>
+    <string name="prayer_maghrib">مغرب</string>
+    <string name="prayer_isha">عشاء</string>
+
+
 </resources>

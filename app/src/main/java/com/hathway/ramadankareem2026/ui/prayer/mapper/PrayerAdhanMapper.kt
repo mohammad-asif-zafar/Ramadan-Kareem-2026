@@ -52,6 +52,8 @@ object PrayerAdhanMapper {
                 remainingMinutes = remainingMinutes,
                 isPast = isPast          // ✅ CRITICAL FIX
             )
+
+
         }
     }
 }

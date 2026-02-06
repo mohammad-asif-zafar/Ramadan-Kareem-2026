@@ -362,4 +362,11 @@
     <string name="daily_wisdom">आपकी आध्यात्मिक यात्रा के लिए दैनिक ज्ञान</string>
     <string name="tap_for_more_tips">और प्रेरणादायक टिप्स के लिए टैप करें</string>
 
+    <string name="prayer_fajr">फ़ज्र</string>
+    <string name="prayer_dhuhr">ज़ुहर</string>
+    <string name="prayer_asr">अस्र</string>
+    <string name="prayer_maghrib">मगरिब</string>
+    <string name="prayer_isha">इशा</string>
+
+
 </resources>

@@ -33,75 +33,72 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.minutesUntil
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
+import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModelFactory
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private const val TAG = "HomeHeaderSlider"
+
 @Composable
 fun HomeHeaderSlider() {
+
     val context = LocalContext.current
     val app = context.applicationContext as Application
 
-    val alarmViewModel: AlarmViewModel = viewModel(factory = AlarmViewModelFactory())
+    // Alarm ViewModel
+    val alarmViewModel: AlarmViewModel = viewModel(
+        factory = AlarmViewModelFactory()
+    )
 
-
-    /**
-     * ViewModel created using custom factory
-     * (needed for Application / repository injection)
-     */
-    val viewModel: PrayerViewModel = viewModel(
+    // Prayer ViewModel
+    val prayerViewModel: PrayerViewModel = viewModel(
         factory = PrayerViewModelFactory(app)
     )
 
-    val state by viewModel.state.collectAsState()
-    val now = remember { LocalTime.now() }
-
-    val prayers = remember(state) {
-        PrayerTimeUiMapper.map(
-            state = state, now = now
-        )
+    //  Keep time fresh (important!)
+    var now by remember { mutableStateOf(LocalTime.now()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(60_000)
+            now = LocalTime.now()
+        }
     }
 
-    val iftarPrayer = remember(prayers) {
-        prayers.firstOrNull { it.name.equals("Maghrib", ignoreCase = true) }
+    // Prayer state
+    val prayerState by prayerViewModel.state.collectAsState()
+    val prayers = remember(prayerState, now) {
+        PrayerTimeUiMapper.map(prayerState, now)
     }
 
-    val suhoorPrayer = remember(prayers) {
-        prayers.firstOrNull { it.name.equals("Fajr", ignoreCase = true) }
-    }
+    val iftarPrayer = prayers.firstOrNull { it.name.equals("Maghrib", true) }
+    val suhoorPrayer = prayers.firstOrNull { it.name.equals("Fajr", true) }
 
-    val timeFormatter = remember {
-        DateTimeFormatter.ofPattern("hh:mm a")
-    }
+    val formatter = remember { DateTimeFormatter.ofPattern("hh:mm a") }
 
-    val iftarTimeText = iftarPrayer?.time?.format(timeFormatter) ?: "--:--"
-    val suhoorTimeText = suhoorPrayer?.time?.format(timeFormatter) ?: "--:--"
+    val iftarTimeText = iftarPrayer?.time?.format(formatter) ?: "--:--"
+    val suhoorTimeText = suhoorPrayer?.time?.format(formatter) ?: "--:--"
 
+    // 🔔 Alarm states
     LaunchedEffect(Unit) {
         alarmViewModel.initializeAlarmStates(context)
     }
 
     val isIftarAlarmEnabled by alarmViewModel.isIftarAlarmEnabled
     val isSuhoorAlarmEnabled by alarmViewModel.isSuhoorAlarmEnabled
-    val alarmTrigger by alarmViewModel.alarmTrigger
     val isAlarmPlaying by alarmViewModel.isAlarmPlaying
+    val alarmTrigger by alarmViewModel.alarmTrigger
 
-    // 🔑 pending user action
+    //  Pending action for permission
     var pendingAlarmAction by remember { mutableStateOf<(() -> Unit)?>(null) }
 
-    // 🔔 Permission handler (ONLY runs when pendingAlarmAction != null)
     NotificationPermissionHandler(
-        pendingAction = pendingAlarmAction,
-        onActionConsumed = { pendingAlarmAction = null }
-    )
+        pendingAction = pendingAlarmAction, onActionConsumed = { pendingAlarmAction = null })
 
+    // Pages
     val pages = remember(
-        alarmTrigger,
-        isAlarmPlaying,
-        iftarTimeText,
-        suhoorTimeText
+        alarmTrigger, isAlarmPlaying, iftarTimeText, suhoorTimeText
     ) {
         val basePages = listOf(
             HeaderPage(
@@ -114,9 +111,7 @@ fun HomeHeaderSlider() {
                     pendingAlarmAction = {
                         alarmViewModel.toggleIftarAlarm(context)
                     }
-                }
-            ),
-            HeaderPage(
+                }), HeaderPage(
                 type = HeaderType.SUHOOR_TIME,
                 title = "Suhoor Time",
                 subtitle = suhoorTimeText,
@@ -126,13 +121,12 @@ fun HomeHeaderSlider() {
                     pendingAlarmAction = {
                         alarmViewModel.toggleSuhoorAlarm(context)
                     }
-                }
-            ),
+                }),
             HeaderPage(
                 type = HeaderType.REMINDER,
                 title = "Daily Reminder",
-                subtitle = "Increase your dhikr today",
-                hint = "Small deeds, big rewards"
+                subtitle = "",
+                hint = ""
             )
         )
 
@@ -145,16 +139,16 @@ fun HomeHeaderSlider() {
                     hint = "Alarm is currently playing",
                     onAlarmToggle = {
                         alarmViewModel.stopAlarm(context)
-                    }
-                )
+                    })
             ) + basePages
         } else {
             basePages
         }
     }
 
-
-    val pagerState = rememberPagerState(pageCount = { pages.size })
+    // 📜 Pager
+    val pagerState = rememberPagerState(
+        pageCount = { pages.size })
 
     LaunchedEffect(pagerState) {
         while (true) {
@@ -165,14 +159,15 @@ fun HomeHeaderSlider() {
         }
     }
 
+    // 🧱 UI
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.height(150.dp)
+            state = pagerState, modifier = Modifier.height(150.dp)
         ) { page ->
             HeaderCard(
                 type = pages[page].type,
