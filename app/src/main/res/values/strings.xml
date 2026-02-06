@@ -348,4 +348,18 @@ Isha is the night prayer, performed after twilight disappears.
 </string>
 
 
+        <string name="iftar_time">Iftar Time</string>
+        <string name="iftar_hint">Time to break your fast</string>
+
+        <string name="suhoor_time">Suhoor Time</string>
+        <string name="suhoor_hint">Time for pre-dawn meal</string>
+
+        <string name="daily_reminder">Daily Reminder</string>
+
+        <string name="alarm_playing">Alarm Playing</string>
+        <string name="alarm_playing_subtitle">Tap to stop alarm</string>
+        <string name="alarm_playing_hint">Alarm is currently playing</string>
+
+
+
 </resources>

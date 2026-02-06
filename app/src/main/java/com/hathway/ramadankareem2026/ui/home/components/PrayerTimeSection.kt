@@ -58,8 +58,7 @@ import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import androidx.compose.runtime.State
-import androidx.compose.runtime.produceState
-import kotlinx.coroutines.delay
+
 
 /**
  * Displays a horizontal list of daily prayer times.
@@ -267,7 +266,8 @@ fun PrayerDetailsDialog(
                     Icon(
                         Icons.Outlined.Close,
                         contentDescription = "Close",
-                        modifier = Modifier.clickable { (onDismiss) })
+                        modifier = Modifier.clickable { onDismiss() })
+
                 }
 
                 Text(

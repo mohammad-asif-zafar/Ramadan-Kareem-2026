@@ -385,4 +385,15 @@
 </string>
 
 
+    <string name="iftar_time">افطار کا وقت</string>
+    <string name="iftar_hint">روزہ افطار کرنے کا وقت</string>
+
+    <string name="suhoor_time">سحری کا وقت</string>
+    <string name="suhoor_hint">فجر سے پہلے کھانے کا وقت</string>
+
+    <string name="daily_reminder">روزانہ یاددہانی</string>
+
+    <string name="alarm_playing">الارم چل رہا ہے</string>
+    <string name="alarm_playing_subtitle">الارم بند کرنے کے لیے ٹیپ کریں</string>
+    <string name="alarm_playing_hint">الارم اس وقت چل رہا ہے</string>
 </resources>

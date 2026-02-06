@@ -374,4 +374,15 @@
     <string name="prayer_desc_maghrib">Maghrib dilakukan sejurus selepas matahari terbenam.</string>
     <string name="prayer_desc_isha">Isyak ialah solat malam yang dilakukan selepas gelap.</string>
 
+    <string name="iftar_time">Waktu Berbuka</string>
+    <string name="iftar_hint">Masa untuk berbuka puasa</string>
+
+    <string name="suhoor_time">Waktu Sahur</string>
+    <string name="suhoor_hint">Masa makan sebelum subuh</string>
+
+    <string name="daily_reminder">Peringatan Harian</string>
+
+    <string name="alarm_playing">Penggera Berbunyi</string>
+    <string name="alarm_playing_subtitle">Ketik untuk hentikan penggera</string>
+    <string name="alarm_playing_hint">Penggera sedang berbunyi</string>
 </resources>

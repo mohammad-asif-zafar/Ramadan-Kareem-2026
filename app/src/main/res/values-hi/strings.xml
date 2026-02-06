@@ -384,5 +384,16 @@
     इशा रात की नमाज़ है, जो अंधेरा होने के बाद अदा की जाती है।
 </string>
 
+    <string name="iftar_time">इफ्तार का समय</string>
+    <string name="iftar_hint">रोज़ा खोलने का समय</string>
+
+    <string name="suhoor_time">सहरी का समय</string>
+    <string name="suhoor_hint">फ़ज्र से पहले भोजन का समय</string>
+
+    <string name="daily_reminder">दैनिक रिमाइंडर</string>
+
+    <string name="alarm_playing">अलार्म बज रहा है</string>
+    <string name="alarm_playing_subtitle">अलार्म बंद करने के लिए टैप करें</string>
+    <string name="alarm_playing_hint">अलार्म इस समय सक्रिय है</string>
 
 </resources>
