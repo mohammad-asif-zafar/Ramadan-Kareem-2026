@@ -68,10 +68,7 @@ fun QuranSurahAyahsScreen(
     navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
-    val bookmarkedAyahs by viewModel.bookmarkedAyahs.collectAsState()
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
-   // val currentlyPlayingAyah by viewModel.currentlyPlayingAyah.collectAsState()
-    val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
 
     // Surah-level bookmark state
     val isBookmarked by quranBookmarkViewModel.isBookmarked(surahId.toString())
@@ -169,9 +166,9 @@ fun QuranSurahAyahsScreen(
             isPlaying = isPlaying,
             onPlay = {
                 if (hasStarted) {
-                    viewModel.resumeAudio()   // ✅ resume
+                    viewModel.resumeAudio()
                 } else {
-                    viewModel.playSurah(state.ayahs) // ✅ first play
+                    viewModel.playSurah(state.ayahs)
                 }
             },
             onPause = {
@@ -356,7 +353,7 @@ private fun AyahCard(
                 .padding(vertical = 18.dp, horizontal = 12.dp)
         ) {
 
-            // 🔹 AYAH NUMBER (SUBTLE, QURAN STYLE)
+            // AYAH NUMBER (SUBTLE, QURAN STYLE)
             Row(
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 3.dp)
@@ -378,7 +375,7 @@ private fun AyahCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🔹 ARABIC TEXT (PRIMARY FOCUS)
+            // ARABIC TEXT (PRIMARY FOCUS)
             Text(
                 text = ayah.arabicText,
                 style = MaterialTheme.typography.headlineSmall.copy(
@@ -389,7 +386,7 @@ private fun AyahCard(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // 🔹 OPTIONAL TRANSLATION (SOFTER)
+            // OPTIONAL TRANSLATION (SOFTER)
             if (ayah.translation.isNotBlank()) {
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -401,7 +398,7 @@ private fun AyahCard(
                 )
             }
 
-            // 🔹 SOFT DIVIDER
+            // SOFT DIVIDER
             Spacer(modifier = Modifier.height(18.dp))
 
             Box(

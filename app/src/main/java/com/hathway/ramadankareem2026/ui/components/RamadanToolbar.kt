@@ -38,8 +38,8 @@ import com.hathway.ramadankareem2026.core.util.capitalizeFirst
 @Composable
 fun RamadanToolbar(
     title: String,
-    subtitle: String? = null,          // ✅ NEW (optional)
-    meta: String? = null,              // ✅ NEW (optional)
+    subtitle: String? = null,
+    meta: String? = null,
     metaAlpha: Float = 1f,
     metaOffsetY: Dp = 0.dp,
     toolbarHeight: Dp = 56.dp,
@@ -91,7 +91,7 @@ fun RamadanToolbar(
                     Spacer(modifier = Modifier.width(48.dp))
                 }
 
-                // 🔹 TITLE + OPTIONAL SUBTITLE
+                // TITLE + OPTIONAL SUBTITLE
                 Column(
                     modifier = Modifier
                         .weight(1f)
@@ -103,7 +103,7 @@ fun RamadanToolbar(
                         color = contentColor
                     )
 
-                    // ✅ OPTIONAL subtitle (English name)
+                    // OPTIONAL subtitle (English name)
                     subtitle?.let {
                         Text(
                             text = it,
@@ -159,7 +159,7 @@ fun RamadanToolbar(
                 }
             }
 
-            // ✅ OPTIONAL META ROW (Ayahs • Meccan)
+            // OPTIONAL META ROW (Ayahs • Meccan)
             meta?.let {
                 Box(
                     modifier = Modifier.graphicsLayer { alpha = metaAlpha }
