@@ -70,7 +70,7 @@ fun QuranSurahAyahsScreen(
     val state by viewModel.state.collectAsState()
     val bookmarkedAyahs by viewModel.bookmarkedAyahs.collectAsState()
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
-    val currentlyPlayingAyah by viewModel.currentlyPlayingAyah.collectAsState()
+   // val currentlyPlayingAyah by viewModel.currentlyPlayingAyah.collectAsState()
     val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
 
     // Surah-level bookmark state
@@ -98,9 +98,7 @@ fun QuranSurahAyahsScreen(
     )
 
     val subtitleAlpha by animateFloatAsState(
-        targetValue = 1f - collapseProgress,
-        animationSpec = tween(150),
-        label = "subtitleAlpha"
+        targetValue = 1f - collapseProgress, animationSpec = tween(150), label = "subtitleAlpha"
     )
 
 
@@ -133,20 +131,14 @@ fun QuranSurahAyahsScreen(
         val index = state.ayahs.indexOfFirst { it.number == ayahNumber }
         if (index >= 0) listState.scrollToItem(index)
     }
-    val showMeta by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex == 0 &&
-                    listState.firstVisibleItemScrollOffset < 40
-        }
-    }
+
 
     Scaffold(topBar = {
         val surah = state.selectedSurah
 
         RamadanToolbar(
             title = surah?.name ?: stringResource(R.string.feature_quran),
-            subtitle = surah?.englishName,
-            /*meta = surah?.let {
+            subtitle = surah?.englishName,/*meta = surah?.let {
                 "${it.numberOfAyahs} verses • ${it.revelationType}"
             },*/
             toolbarHeight = toolbarHeight,
@@ -163,23 +155,32 @@ fun QuranSurahAyahsScreen(
             onRightIcon2Click = {
                 surah?.let {
                     quranBookmarkViewModel.toggleBookmark(
-                        surahId = it.id.toString(),
-                        title = it.englishName,
-                        content = it.name
+                        surahId = it.id.toString(), title = it.englishName, content = it.name
                     )
                 }
-            }
-        )
+            })
 
 
     }, bottomBar = {
-        SurahAudioPlayerBar(isPlaying = isAudioPlaying, onPlay = {
-            viewModel.playSurah(state.ayahs)
-        }, onPause = {
-            viewModel.pauseAudio()
-        }, onStop = {
-            viewModel.stopAudio()
-        })
+        val isPlaying by viewModel.isAudioPlaying.collectAsState()
+        val hasStarted by viewModel.hasStartedPlayback.collectAsState()
+
+        SurahAudioPlayerBar(
+            isPlaying = isPlaying,
+            onPlay = {
+                if (hasStarted) {
+                    viewModel.resumeAudio()   // ✅ resume
+                } else {
+                    viewModel.playSurah(state.ayahs) // ✅ first play
+                }
+            },
+            onPause = {
+                viewModel.pauseAudio()
+            },
+            onStop = {
+                viewModel.stopAudio()
+            }
+        )
     }
 
     ) { padding ->
@@ -325,7 +326,7 @@ fun QuranSurahAyahsScreen(
 
                             AyahCard(
                                 ayah = ayah,
-                                isPlaying = currentlyPlayingAyah == ayah.audio && isAudioPlaying,
+                                isPlaying = true,
                                 onClick = {
                                     viewModel.saveLastRead(currentSurahId, ayah.number)
                                 })
@@ -340,18 +341,14 @@ fun QuranSurahAyahsScreen(
 
 @Composable
 private fun AyahCard(
-    ayah: Ayah,
-    isPlaying: Boolean,
-    onClick: () -> Unit
+    ayah: Ayah, isPlaying: Boolean, onClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = if (isPlaying)
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-        else
-            MaterialTheme.colorScheme.background
+        color = if (isPlaying) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        else MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
@@ -361,7 +358,9 @@ private fun AyahCard(
 
             // 🔹 AYAH NUMBER (SUBTLE, QURAN STYLE)
             Row(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 3.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
                 Surface(
