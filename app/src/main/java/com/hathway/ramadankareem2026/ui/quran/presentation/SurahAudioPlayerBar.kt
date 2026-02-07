@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +27,7 @@ fun SurahAudioPlayerBar(
     onStop: () -> Unit
 ) {
     Surface(
-        tonalElevation = 6.dp,
+        tonalElevation = if (isPlaying) 8.dp else 4.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -33,16 +35,32 @@ fun SurahAudioPlayerBar(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onStop) {
-                Icon(Icons.Default.Stop, contentDescription = "Stop")
-            }
-
+            // Stop button - always visible
             IconButton(
-                onClick = if (isPlaying) onPause else onPlay
+                onClick = onStop,
+                modifier = Modifier
+                    .size(48.dp)
             ) {
                 Icon(
-                    if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = "Play/Pause"
+                    Icons.Default.Stop, 
+                    contentDescription = "Stop",
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
+
+            // Play/Pause button
+            IconButton(
+                onClick = if (isPlaying) onPause else onPlay,
+                modifier = Modifier
+                    .size(48.dp)
+            ) {
+                Icon(
+                    imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    contentDescription = "Play/Pause",
+                    tint = if (isPlaying) 
+                        MaterialTheme.colorScheme.primary 
+                    else 
+                        MaterialTheme.colorScheme.onSurface
                 )
             }
         }

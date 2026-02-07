@@ -26,7 +26,7 @@ fun ZakatBreakdownScreen(
 ) {
     Scaffold(
         topBar = {
-            RamadanToolbar(stringResource(R.string.zakat_breakdown), true, onBack)
+            RamadanToolbar(stringResource(R.string.zakat_breakdown), showBack=true, onBackClick=onBack)
         }
     ) { padding ->
 

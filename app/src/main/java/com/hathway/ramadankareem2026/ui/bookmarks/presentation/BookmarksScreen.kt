@@ -33,7 +33,7 @@ fun BookmarksScreen(
 
     Scaffold(
         topBar = {
-            RamadanToolbar(stringResource(R.string.bookmarks), true, onBack)
+            RamadanToolbar(stringResource(R.string.bookmarks), showBack=true,onBackClick= onBack)
         }) { padding ->
         LazyColumn(
             modifier = Modifier

@@ -94,24 +94,36 @@ fun AyahAudioPlayer(
                 Text(
                     text = "Ayah Audio",
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (isPlaying) 
+                        MaterialTheme.colorScheme.primary 
+                    else 
+                        MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
-                    text = if (isPlaying) "Playing..." else "Tap to play",
+                    text = if (isPlaying) "Now Playing" else "Tap to play",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                )
+                
+                if (!isPlaying) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Audio Ready",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    )
+                }
+                
+                // Duration/Progress placeholder
+                Text(
+                    text = if (isPlaying) "▶ Playing" else "⏸ Ready",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
-            // Duration/Progress placeholder
-            Text(
-                text = "0:00",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
         }
     }
 }
