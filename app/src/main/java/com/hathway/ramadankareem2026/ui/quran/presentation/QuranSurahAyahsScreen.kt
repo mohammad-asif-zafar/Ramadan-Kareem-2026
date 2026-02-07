@@ -57,8 +57,8 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookma
 
 @Composable
 fun QuranSurahAyahsScreen(
-    viewModel: QuranViewModel, 
-    surahId: Int, 
+    viewModel: QuranViewModel,
+    surahId: Int,
     onBack: () -> Unit,
     quranBookmarkViewModel: QuranBookmarkViewModel,
     quranBookmarkCountViewModel: QuranBookmarkCountViewModel,
@@ -69,11 +69,14 @@ fun QuranSurahAyahsScreen(
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
     val currentlyPlayingAyah by viewModel.currentlyPlayingAyah.collectAsState()
     val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
-    
+
     // Surah-level bookmark state
     val isBookmarked by quranBookmarkViewModel.isBookmarked(surahId.toString())
         .collectAsStateWithLifecycle(initialValue = false)
-    val bookmarkCount by quranBookmarkCountViewModel.quranBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+
+    val bookmarkCount by quranBookmarkCountViewModel.quranBookmarkCount.collectAsStateWithLifecycle(
+        initialValue = 0
+    )
 
     val listState = rememberLazyListState()
 
@@ -107,32 +110,40 @@ fun QuranSurahAyahsScreen(
         if (index >= 0) listState.scrollToItem(index)
     }
 
-    Scaffold(
-        topBar = {
-            RamadanToolbar(
-                title = state.selectedSurah?.englishName ?: "Quran",
-                showBack = true,
-                onBackClick = onBack,
-                // Enhanced bookmarks with visual feedback
-                rightIcon1 = R.drawable.ic_saved,
-                rightIcon1Badge = bookmarkCount,
-                onRightIcon1Click = {
-                    // Navigate to Quran bookmarks list
-                    navController.navigate(Routes.QURAN_BOOKMARKS)
-                },
-                onRightIcon2Click = {
-                    // Toggle Surah bookmark with enhanced feedback
-                    val surah = state.selectedSurah
-                    if (surah != null) {
-                        quranBookmarkViewModel.toggleBookmark(
-                            surahId = surah.id.toString(),
-                            title = surah.englishName,
-                            content = surah.name
-                        )
-                    }
+    Scaffold(topBar = {
+        RamadanToolbar(
+            title = state.selectedSurah?.englishName ?: "Quran",
+            showBack = true,
+            onBackClick = onBack,
+            // Enhanced bookmarks with visual feedback
+            rightIcon1 = R.drawable.ic_saved,
+            rightIcon1Badge = bookmarkCount,
+            onRightIcon1Click = {
+                // Navigate to Quran bookmarks list
+                navController.navigate(Routes.QURAN_BOOKMARKS)
+            },
+            onRightIcon2Click = {
+                // Toggle Surah bookmark with enhanced feedback
+                val surah = state.selectedSurah
+                if (surah != null) {
+                    quranBookmarkViewModel.toggleBookmark(
+                        surahId = surah.id.toString(),
+                        title = surah.englishName,
+                        content = surah.name
+                    )
                 }
-            )
-        }) { padding ->
+            })
+    }, bottomBar = {
+        SurahAudioPlayerBar(isPlaying = isAudioPlaying, onPlay = {
+            viewModel.playSurah(state.ayahs)
+        }, onPause = {
+            viewModel.pauseAudio()
+        }, onStop = {
+            viewModel.stopAudio()
+        })
+    }
+
+    ) { padding ->
         when {
             state.isLoading && state.ayahs.isEmpty() -> {
                 QuranAyahsSkeleton(modifier = Modifier.padding(padding))
@@ -179,30 +190,24 @@ fun QuranSurahAyahsScreen(
                         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
                         label = "bookmark_scale"
                     )
-                    
+
                     val bookmarkBackgroundColor by animateColorAsState(
-                        targetValue = if (isBookmarked) 
-                            MaterialTheme.colorScheme.primaryContainer 
-                        else 
-                            MaterialTheme.colorScheme.surface,
+                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
+                        else MaterialTheme.colorScheme.surface,
                         animationSpec = tween(durationMillis = 300),
                         label = "bookmark_background_color"
                     )
-                    
+
                     val bookmarkIconColor by animateColorAsState(
-                        targetValue = if (isBookmarked) 
-                            MaterialTheme.colorScheme.onPrimaryContainer 
-                        else 
-                            MaterialTheme.colorScheme.primary,
+                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                        else MaterialTheme.colorScheme.primary,
                         animationSpec = tween(durationMillis = 300),
                         label = "bookmark_icon_color"
                     )
-                    
+
                     val bookmarkBorderColor by animateColorAsState(
-                        targetValue = if (isBookmarked) 
-                            MaterialTheme.colorScheme.primary 
-                        else 
-                            MaterialTheme.colorScheme.outline,
+                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.outline,
                         animationSpec = tween(durationMillis = 300),
                         label = "bookmark_border_color"
                     )
@@ -228,10 +233,8 @@ fun QuranSurahAyahsScreen(
                         shape = RoundedCornerShape(12.dp),
                         color = bookmarkBackgroundColor,
                         border = androidx.compose.foundation.BorderStroke(
-                            width = if (isBookmarked) 2.dp else 1.dp,
-                            color = bookmarkBorderColor
-                        )
-                    ) {
+                            width = if (isBookmarked) 2.dp else 1.dp, color = bookmarkBorderColor
+                        )) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -245,10 +248,8 @@ fun QuranSurahAyahsScreen(
                                 Text(
                                     text = "Bookmark this Surah",
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = if (isBookmarked) 
-                                        MaterialTheme.colorScheme.onPrimaryContainer 
-                                    else 
-                                        MaterialTheme.colorScheme.onSurface
+                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                                    else MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = if (isBookmarked) {
@@ -257,22 +258,21 @@ fun QuranSurahAyahsScreen(
                                         "Tap to add to your bookmarks"
                                     },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = if (isBookmarked) 
-                                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) 
-                                    else 
-                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                        alpha = 0.8f
+                                    )
+                                    else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            
+
                             Box(
                                 modifier = Modifier
                                     .scale(bookmarkScale)
                                     .background(
-                                        color = if (isBookmarked) 
-                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) 
-                                        else 
-                                            Color.Transparent,
-                                        shape = CircleShape
+                                        color = if (isBookmarked) MaterialTheme.colorScheme.primary.copy(
+                                            alpha = 0.1f
+                                        )
+                                        else Color.Transparent, shape = CircleShape
                                     )
                                     .padding(8.dp)
                             ) {
@@ -286,7 +286,7 @@ fun QuranSurahAyahsScreen(
                         }
                     }
 
-                    // �📖 AYAH LIST
+                    //  AYAH LIST
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -307,9 +307,11 @@ fun QuranSurahAyahsScreen(
                                 onAudioClick = {
                                     viewModel.toggleAudioPlayback(ayah.audio)
                                 },
+
                                 onClick = {
                                     viewModel.saveLastRead(currentSurahId, ayah.number)
                                 })
+
                         }
                     }
                 }
@@ -363,21 +365,17 @@ private fun AyahCard(
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
         label = "ayah_bookmark_scale"
     )
-    
+
     val bookmarkIconColor by animateColorAsState(
-        targetValue = if (isBookmarked) 
-            MaterialTheme.colorScheme.primary 
-        else 
-            MaterialTheme.colorScheme.onSurfaceVariant,
+        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.onSurfaceVariant,
         animationSpec = tween(durationMillis = 300),
         label = "ayah_bookmark_icon_color"
     )
-    
+
     val bookmarkBackgroundColor by animateColorAsState(
-        targetValue = if (isBookmarked) 
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) 
-        else 
-            Color.Transparent,
+        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+        else Color.Transparent,
         animationSpec = tween(durationMillis = 300),
         label = "ayah_bookmark_background_color"
     )
@@ -389,24 +387,24 @@ private fun AyahCard(
         shape = RoundedCornerShape(20.dp),
         tonalElevation = 1.dp,
         shadowElevation = 2.dp,
-        color = MaterialTheme.colorScheme.surface,
+        color = if (isPlaying)
+            MaterialTheme.colorScheme.primaryContainer
+        else
+            MaterialTheme.colorScheme.surface,
         onClick = onClick
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Top row with ayah number and bookmark
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
                 // Ayah number badge
                 Box(
                     modifier = Modifier
                         .size(32.dp)
                         .background(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
+                            color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape
+                        ), contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = ayah.number.toString(),
@@ -426,17 +424,14 @@ private fun AyahCard(
 
                 // Enhanced bookmark button
                 IconButton(
-                    onClick = onBookmarkClick,
-                    modifier = Modifier
+                    onClick = onBookmarkClick, modifier = Modifier
                         .scale(bookmarkScale)
                         .background(
-                            color = bookmarkBackgroundColor,
-                            shape = CircleShape
+                            color = bookmarkBackgroundColor, shape = CircleShape
                         )
                 ) {
                     Icon(
-                        imageVector = if (isBookmarked)
-                            Icons.Default.Bookmark
+                        imageVector = if (isBookmarked) Icons.Default.Bookmark
                         else Icons.Default.BookmarkBorder,
                         contentDescription = if (isBookmarked) "Remove bookmark" else "Bookmark ayah",
                         tint = bookmarkIconColor,
@@ -470,9 +465,7 @@ private fun AyahCard(
             if (ayah.audio != null) {
                 Spacer(modifier = Modifier.height(12.dp))
                 AyahAudioPlayer(
-                    audioUrl = ayah.audio,
-                    isPlaying = isPlaying,
-                    onPlayPause = onAudioClick
+                    audioUrl = ayah.audio, isPlaying = isPlaying, onPlayPause = onAudioClick
                 )
             }
         }

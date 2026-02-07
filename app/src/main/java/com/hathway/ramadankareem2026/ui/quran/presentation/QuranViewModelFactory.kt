@@ -51,7 +51,8 @@ class QuranViewModelFactory(
                 getSurahList = getSurahList,
                 getAyahs = getAyahs,
                 bookmarkRepository = bookmarkRepo,
-                lastReadStore = lastReadStore
+                lastReadStore = lastReadStore,
+                appContext = appContext
             ) as T
         }
 

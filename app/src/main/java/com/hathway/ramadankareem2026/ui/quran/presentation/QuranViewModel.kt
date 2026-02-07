@@ -1,9 +1,10 @@
 package com.hathway.ramadankareem2026.ui.quran.presentation
 
-import androidx.lifecycle.ViewModel
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.ui.quran.audio.AyahAudioManager
 import com.hathway.ramadankareem2026.ui.quran.data.local.LastReadDataStore
+import com.hathway.ramadankareem2026.ui.quran.domain.model.Ayah
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
 import com.hathway.ramadankareem2026.ui.quran.domain.repository.BookmarkRepository
 import com.hathway.ramadankareem2026.ui.quran.domain.usecase.GetAyahListUseCase
@@ -13,15 +14,31 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 class QuranViewModel(
     private val getSurahList: GetSurahListUseCase,
     private val getAyahs: GetAyahListUseCase,
     private val bookmarkRepository: BookmarkRepository,
     private val lastReadStore: LastReadDataStore,
-    private val audioManager: AyahAudioManager = AyahAudioManager()
-) : ViewModel() {
+    private val audioManager: AyahAudioManager = AyahAudioManager(),
+    private val  appContext : Context
+) : ViewModel(){
+
+    private val audioController = QuranAudioController(appContext)
+
+    val currentPlayingIndex: StateFlow<Int> = audioController.currentIndex
+
+    fun playSurah(ayahs: List<Ayah>, startIndex: Int = 0) {
+        val urls = ayahs.mapNotNull { it.audio }
+        audioController.playAyahs(urls, startIndex)
+    }
+
+    fun pauseAudio() = audioController.pause()
+    fun resumeAudio() = audioController.resume()
+    fun stopAudio() = audioController.stop()
+
 
     private val _state = MutableStateFlow(QuranUiState())
     val state = _state.asStateFlow()
@@ -121,5 +138,6 @@ class QuranViewModel(
     override fun onCleared() {
         super.onCleared()
         audioManager.release()
+        audioController.release()
     }
 }
