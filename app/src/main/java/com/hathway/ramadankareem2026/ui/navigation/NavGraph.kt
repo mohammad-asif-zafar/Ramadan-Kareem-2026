@@ -42,7 +42,6 @@ import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueBookmarksRoute
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueRoute
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
-import com.hathway.ramadankareem2026.ui.qibla.QiblaSettingsScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahAyahsScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranSurahListScreen
 import com.hathway.ramadankareem2026.ui.quran.presentation.QuranViewModel
@@ -52,7 +51,6 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookma
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
-import com.hathway.ramadankareem2026.ui.navigation.RamadanCalendarRoute
 import com.hathway.ramadankareem2026.ui.settings.SettingsScreen
 import com.hathway.ramadankareem2026.ui.settings.ThemeViewModel
 import com.hathway.ramadankareem2026.ui.splash.SplashScreen
@@ -139,14 +137,6 @@ private fun HomeScaffold(themeViewModel: ThemeViewModel) {
 
             composable("manual_city_picker") {
                 ManualCityPickerScreen(navController, {}, {}, {})
-            }
-
-            composable(Routes.QIBLA_SETTINGS) {
-                QiblaSettingsScreen(
-                    navController,
-                    onBack = {},
-                    onSettings = {},
-                    onViewFullCalendar = {})
             }
 
             composable(Routes.RAMADAN_CALENDAR) {

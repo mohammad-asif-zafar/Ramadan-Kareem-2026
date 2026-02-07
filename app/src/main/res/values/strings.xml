@@ -348,18 +348,57 @@ Isha is the night prayer, performed after twilight disappears.
 </string>
 
 
-        <string name="iftar_time">Iftar Time</string>
-        <string name="iftar_hint">Time to break your fast</string>
+    <string name="iftar_time">Iftar Time</string>
+    <string name="iftar_hint">Time to break your fast</string>
 
-        <string name="suhoor_time">Suhoor Time</string>
-        <string name="suhoor_hint">Time for pre-dawn meal</string>
+    <string name="suhoor_time">Suhoor Time</string>
+    <string name="suhoor_hint">Time for pre-dawn meal</string>
 
-        <string name="daily_reminder">Daily Reminder</string>
+    <string name="daily_reminder">Daily Reminder</string>
 
-        <string name="alarm_playing">Alarm Playing</string>
-        <string name="alarm_playing_subtitle">Tap to stop alarm</string>
-        <string name="alarm_playing_hint">Alarm is currently playing</string>
+    <string name="alarm_playing">Alarm Playing</string>
+    <string name="alarm_playing_subtitle">Tap to stop alarm</string>
+    <string name="alarm_playing_hint">Alarm is currently playing</string>
+
+    <string name="prayer_direction_title">📿 Prayer Direction Guide</string>
+
+    <string name="prayer_direction_step_1">Stand on your prayer mat</string>
+    <string name="prayer_direction_step_2">Face the direction indicated by the green needle</string>
+    <string name="prayer_direction_step_3">Ensure your entire body faces the Qibla</string>
+    <string name="prayer_direction_step_4">Begin your prayer with confidence</string>
+
+    <string name="qibla_why_title">Why Qibla Matters</string>
+    <string name="qibla_why_desc">
+        • Facing the Qibla during prayer is essential in Islam. \n• It unifies Muslims worldwide, directing all prayers toward the Kaaba in Makkah.
+    </string>
+
+    <string name="qibla_how_title">How to Use</string>
+
+    <string name="qibla_how_desc">• Hold your device flat \n•  Rotate until the green needle aligns with the Kaaba \n•  Ensure you re on a flat surface away from metal objects</string>
 
 
+    <string name="qibla_tips_title">Tips for Accuracy</string>
+    <string name="qibla_tips_desc">
+        • Calibrate your device compass\n• Stay away from magnetic interference\n• Use in open spaces for better accuracy\n• Check alignment multiple times
+
+    </string>
+
+    <string name="qibla_aligned_location">Qibla Aligned - Makkah, Saudi Arabia</string>
+
+    <string name="time_dash">—</string>
+    <string name="time_now">Now</string>
+    <string name="time_passed">Passed</string>
+    <string name="time_starts_in">Starts in %1$s</string>
+
+    <string name="calculating_prayer">Calculating prayer time…</string>
+
+    <string name="prayer_hint_format">%1$s • %2$s • %3$s</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="coming_in">Coming in %1$s</string>
+    <string name="tip_delay_suhoor_title">Delay Suhoor and Hasten Iftar</string>
+    <string name="tip_delay_suhoor_content">
+The Prophet (ﷺ) said: "The people will continue to prosper as long as they hasten in breaking the fast."
+Delay suhoor until just before Fajr and break your fast immediately at sunset.
+</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.prayer
 
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import java.time.Duration
 import java.time.LocalTime
@@ -50,12 +51,7 @@ object PrayerTimeUiMapper {
         }
     }
 
-    fun formatRemaining(minutes: Int?, isCurrent: Boolean): String = when {
-        minutes == null -> "—"
-        isCurrent -> "Now"
-        minutes < 0 -> "Passed"
-        else -> "Starts in ${formatDuration(minutes)}"
-    }
+
 
     fun formatDuration(minutes: Int): String {
         val h = minutes / 60

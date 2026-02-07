@@ -144,7 +144,7 @@ private fun CompassDirectionLabels() {
     Box(modifier = Modifier.size(320.dp)) {
         // North
         Text(
-            text = "N",
+            text = "W",
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             color = RamadanGreen,
@@ -155,7 +155,7 @@ private fun CompassDirectionLabels() {
 
         // East
         Text(
-            text = "E",
+            text = "S",
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -166,7 +166,7 @@ private fun CompassDirectionLabels() {
 
         // South
         Text(
-            text = "S",
+            text = "E",
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -177,7 +177,7 @@ private fun CompassDirectionLabels() {
 
         // West
         Text(
-            text = "W",
+            text = "N",
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

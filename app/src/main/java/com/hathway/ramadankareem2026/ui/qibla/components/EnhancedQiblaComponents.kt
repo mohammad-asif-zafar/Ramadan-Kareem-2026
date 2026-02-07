@@ -24,13 +24,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 
@@ -43,11 +44,12 @@ fun QiblaInformationCards() {
             .padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         // Importance Card
         InfoCard(
             icon = Icons.Default.Star,
-            title = "Why Qibla Matters",
-            description = "Facing the Qibla during prayer is essential in Islam. It unifies Muslims worldwide, directing all prayers toward the Kaaba in Makkah.",
+            title = stringResource(R.string.qibla_why_title),
+            description = stringResource(R.string.qibla_why_desc),
             backgroundColor = RamadanGreen.copy(alpha = 0.1f),
             iconColor = RamadanGreen
         )
@@ -55,8 +57,8 @@ fun QiblaInformationCards() {
         // How to Use Card
         InfoCard(
             icon = Icons.Default.Help,
-            title = "How to Use",
-            description = "1. Hold your device flat\n2. Rotate until the green needle aligns with the Kaaba\n3. Ensure you're on a flat surface away from metal objects",
+            title = stringResource(R.string.qibla_how_title),
+            description = stringResource(R.string.qibla_how_desc),
             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
             iconColor = MaterialTheme.colorScheme.primary
         )
@@ -64,13 +66,14 @@ fun QiblaInformationCards() {
         // Tips Card
         InfoCard(
             icon = Icons.Default.Lightbulb,
-            title = "Tips for Accuracy",
-            description = "• Calibrate your device compass\n• Stay away from magnetic interference\n• Use in open spaces for better accuracy\n• Check alignment multiple times",
+            title = stringResource(R.string.qibla_tips_title),
+            description = stringResource(R.string.qibla_tips_desc),
             backgroundColor = RamadanGold.copy(alpha = 0.1f),
             iconColor = RamadanGold
         )
     }
 }
+
 
 @Composable
 private fun InfoCard(
@@ -130,14 +133,7 @@ fun PrayerDirectionGuide() {
             .padding(horizontal = 16.dp)
             .padding(bottom = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Brush.horizontalGradient(
-                colors = listOf(
-                    RamadanGreen.copy(alpha = 0.1f),
-                    RamadanGold.copy(alpha = 0.1f)
-                )
-            ).let { brush ->
-                MaterialTheme.colorScheme.surface
-            }
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Column(
@@ -146,7 +142,7 @@ fun PrayerDirectionGuide() {
                 .padding(20.dp)
         ) {
             Text(
-                text = "📿 Prayer Direction Guide",
+                text = stringResource(R.string.prayer_direction_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = RamadanGreen,
@@ -157,10 +153,10 @@ fun PrayerDirectionGuide() {
             Spacer(modifier = Modifier.height(16.dp))
 
             val steps = listOf(
-                "Stand on your prayer mat",
-                "Face the direction indicated by the green needle",
-                "Ensure your entire body faces the Qibla",
-                "Begin your prayer with confidence"
+                stringResource(R.string.prayer_direction_step_1),
+                stringResource(R.string.prayer_direction_step_2),
+                stringResource(R.string.prayer_direction_step_3),
+                stringResource(R.string.prayer_direction_step_4)
             )
 
             steps.forEachIndexed { index, step ->
@@ -202,3 +198,4 @@ fun PrayerDirectionGuide() {
         }
     }
 }
+

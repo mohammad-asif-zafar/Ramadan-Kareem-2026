@@ -396,4 +396,44 @@
     <string name="alarm_playing">الارم چل رہا ہے</string>
     <string name="alarm_playing_subtitle">الارم بند کرنے کے لیے ٹیپ کریں</string>
     <string name="alarm_playing_hint">الارم اس وقت چل رہا ہے</string>
+    <string name="prayer_direction_title">📿 قبلہ کی سمت رہنمائی</string>
+
+    <string name="prayer_direction_step_1">اپنی جائے نماز پر کھڑے ہوں</string>
+    <string name="prayer_direction_step_2">سبز سوئی کی طرف رخ کریں</string>
+    <string name="prayer_direction_step_3">یقینی بنائیں کہ آپ کا پورا جسم قبلہ کی طرف ہو</string>
+    <string name="prayer_direction_step_4">اعتماد کے ساتھ نماز شروع کریں</string>
+
+    <string name="qibla_why_title">قبلہ کی اہمیت</string>
+    <string name="qibla_why_desc">
+        نماز کے دوران قبلہ رخ ہونا اسلام میں ضروری ہے۔ یہ دنیا بھر کے مسلمانوں کو متحد کرتا ہے اور تمام نمازوں کو مکہ میں واقع کعبہ کی طرف رخ دیتا ہے۔
+    </string>
+
+    <string name="qibla_how_title">استعمال کرنے کا طریقہ</string>
+    <string name="qibla_how_desc">1. اپنے آلے کو سیدھا رکھیں\n2. سبز سوئی کو کعبہ کی سمت آنے تک گھمائیں\n3. دھاتی اشیاء سے دور ہموار سطح پر رہیں</string>
+
+
+    <string name="qibla_tips_title">درستگی کے مشورے</string>
+    <string name="qibla_tips_desc">
+        • اپنے ڈیوائس کے کمپاس کو کیلیبریٹ کریں\n
+        • مقناطیسی مداخلت سے دور رہیں\n
+        • بہتر درستگی کے لیے کھلی جگہ استعمال کریں\n
+        • سمت کو کئی بار چیک کریں
+    </string>
+    <string name="qibla_aligned_location">قبلہ درست - مکہ، سعودی عرب</string>
+    <string name="time_dash">—</string>
+    <string name="time_now">ابھی</string>
+    <string name="time_passed">گزر چکا</string>
+    <string name="time_starts_in">%1$s میں شروع ہوگا</string>
+    <string name="calculating_prayer">نماز کا وقت معلوم کیا جا رہا ہے…</string>
+
+    <string name="prayer_hint_format">%1$s • %2$s • %3$s</string>
+    <string name="upcoming">آنے والا</string>
+
+    <string name="coming_in">%1$s میں آنے والا</string>
+    <string name="tip_delay_suhoor_title">سحری میں تاخیر اور افطار میں جلدی کریں</string>
+    <string name="tip_delay_suhoor_content">
+نبی ﷺ نے فرمایا: "لوگ خیر پر رہیں گے جب تک افطار میں جلدی کریں گے۔"
+فجر سے پہلے سحری کریں اور سورج غروب ہوتے ہی افطار کریں۔
+</string>
+
 </resources>

@@ -76,25 +76,10 @@ fun QiblaScreen(
                 )
                 .verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Spacer(modifier = Modifier.height(16.dp))
-
-            // Enhanced Header with more information
-            /* EnhancedQiblaHeader(
-                 degree = 81,
-                 location = "Makkah, Saudi Arabia",
-                 currentCity = "Your Location", // This should come from location services
-                 distanceToMakkah = "1,234 km", // This should be calculated
-                 isAligned = isAligned
-             )
- */
-            //  Spacer(modifier = Modifier.height(4.dp))
-
-            // Decorative elements
-            // QiblaCompassDecorations()
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Enhanced Compass
+
             EnhancedQiblaCompassCircle(
                 deviceRotation = -state.deviceAzimuth,
                 qiblaRotation = snappedRotation,

@@ -385,4 +385,43 @@
     <string name="alarm_playing">Penggera Berbunyi</string>
     <string name="alarm_playing_subtitle">Ketik untuk hentikan penggera</string>
     <string name="alarm_playing_hint">Penggera sedang berbunyi</string>
+
+    <string name="prayer_direction_step_1">Berdiri di atas sejadah anda</string>
+    <string name="prayer_direction_step_2">Hadap ke arah yang ditunjukkan oleh jarum hijau</string>
+    <string name="prayer_direction_step_3">Pastikan seluruh badan anda menghadap Kiblat</string>
+    <string name="prayer_direction_step_4">Mulakan solat dengan yakin</string>
+    <string name="qibla_why_title">Mengapa Kiblat Penting</string>
+    <string name="qibla_why_desc">
+        Menghadap Kiblat semasa solat adalah penting dalam Islam. Ia menyatukan umat Islam di seluruh dunia, mengarahkan semua solat ke Kaabah di Mekah.
+    </string>
+
+    <string name="qibla_how_title">Cara Menggunakan</string>
+    <string name="qibla_how_desc">1. Pegang peranti anda secara rata\n2. Pusing sehingga jarum hijau sejajar dengan Kaabah\n3. Pastikan berada di permukaan rata dan jauh dari objek logam</string>
+
+
+    <string name="qibla_tips_title">Petua Ketepatan</string>
+    <string name="qibla_tips_desc">
+        • Kalibrasi kompas peranti anda\n
+        • Jauhi gangguan magnet\n
+        • Gunakan di kawasan terbuka untuk ketepatan lebih baik\n
+        • Semak penjajaran beberapa kali
+    </string>
+
+    <string name="qibla_aligned_location">Kiblat Sejajar - Makkah, Arab Saudi</string>
+    <string name="time_dash">—</string>
+    <string name="time_now">Sekarang</string>
+    <string name="time_passed">Telah Berlalu</string>
+    <string name="time_starts_in">Bermula dalam %1$s</string>
+
+    <string name="calculating_prayer">Mengira waktu solat…</string>
+
+    <string name="prayer_hint_format">%1$s • %2$s • %3$s</string>
+    <string name="upcoming">Akan Datang</string>
+    <string name="coming_in">Akan tiba dalam %1$s</string>
+    <string name="tip_delay_suhoor_title">Lewatkan Sahur dan Seegerakan Berbuka</string>
+    <string name="tip_delay_suhoor_content">
+Rasulullah ﷺ bersabda: "Umat akan terus berada dalam kebaikan selagi mereka menyegerakan berbuka."
+Akhirkan sahur dan berbukalah sebaik matahari terbenam.
+</string>
+
 </resources>

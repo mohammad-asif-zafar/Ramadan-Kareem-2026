@@ -5,35 +5,42 @@ import com.hathway.ramadankareem2026.core.util.timeFormatter
 import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
 import com.hathway.ramadankareem2026.ui.home.model.HeaderType
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
-import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatRemaining
 import java.time.LocalDate
 
 
 fun buildDynamicPrayerHeader(
-    prayer: PrayerDomain?, gregorianDate: LocalDate, hijriDate: String
+    prayer: PrayerDomain?,
+    gregorianDate: LocalDate,
+    hijriDate: String,
+    title: String,
+    calculatingText: String,
+    prayerTypeText: String,
+    remainingText: String
 ): HeaderPage {
 
-    // Date line (small text)
-    val dateLine = "${gregorianDate.format(gregorianFormatter)} • $hijriDate"
+    val dateLine =
+        "${gregorianDate.format(gregorianFormatter)} • $hijriDate"
 
-    // Fallback (loading / demo)
     if (prayer == null || prayer.remainingMinutes == null) {
         return HeaderPage(
             type = HeaderType.DYNAMIC_PRAYER,
-            title = "Ramadan Kareem 🌙",
+            title = title,
             subtitle = dateLine,
-            hint = "Calculating prayer time…"
+            hint = calculatingText
         )
     }
 
-    // Next prayer time
     val prayerTime = prayer.time.format(timeFormatter)
 
     return HeaderPage(
         type = HeaderType.DYNAMIC_PRAYER,
-        title = "Ramadan Kareem 🌙",
+        title = title,
         subtitle = dateLine,
-        hint = "${prayer.type} • $prayerTime • ${formatRemaining(prayer.remainingMinutes, false)}"
-
+        hint = listOf(
+            prayerTypeText,
+            prayerTime,
+            remainingText
+        ).joinToString(" • ")
     )
 }
+

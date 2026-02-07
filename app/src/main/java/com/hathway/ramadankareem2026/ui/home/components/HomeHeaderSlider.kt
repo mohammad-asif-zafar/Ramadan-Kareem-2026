@@ -35,6 +35,7 @@ import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatDuration
 
 private const val TAG = "HomeHeaderSlider"
 
@@ -115,6 +116,29 @@ fun HomeHeaderSlider() {
     val alarmPlayingTitle = stringResource(R.string.alarm_playing)
     val alarmPlayingSubtitle = stringResource(R.string.alarm_playing_subtitle)
     val alarmPlayingHint = stringResource(R.string.alarm_playing_hint)
+
+    val ramadanTitle = stringResource(R.string.ramadan_kareem)
+    val calculatingText = stringResource(R.string.calculating_prayer)
+
+    val prayerTypeText = nextPrayer?.type?.let {
+        when (it) {
+            PrayerType.FAJR -> stringResource(R.string.prayer_fajr)
+            PrayerType.DHUHR -> stringResource(R.string.prayer_dhuhr)
+            PrayerType.ASR -> stringResource(R.string.prayer_asr)
+            PrayerType.MAGHRIB -> stringResource(R.string.prayer_maghrib)
+            PrayerType.ISHA -> stringResource(R.string.prayer_isha)
+        }
+    } ?: ""
+
+    val remainingText = nextPrayer?.remainingMinutes?.let { minutes ->
+        formatRemaining(
+            minutes = minutes,
+            isCurrent = nextPrayer.isCurrent,
+            getString = { id, args ->
+                stringResource(id, *args)
+            }
+        )
+    } ?: ""
     // Pages
     val pages = remember(
         alarmTrigger, isAlarmPlaying, iftarTimeText, suhoorTimeText
@@ -125,7 +149,11 @@ fun HomeHeaderSlider() {
             buildDynamicPrayerHeader(
                 prayer = nextPrayer,
                 gregorianDate = prayerState.gregorianDate,
-                hijriDate = prayerState.hijriDate
+                hijriDate = prayerState.hijriDate,
+                title = ramadanTitle,
+                calculatingText = calculatingText,
+                prayerTypeText = prayerTypeText,
+                remainingText = remainingText
             ),
 
             HeaderPage(
@@ -215,4 +243,26 @@ fun HomeHeaderSlider() {
         )
     }
 }
+@Composable
+fun formatRemaining(
+    minutes: Int?,
+    isCurrent: Boolean,
+    getString: @Composable (resId: Int, args: Array<out Any>) -> String
+): String = when {
+    minutes == null ->
+        getString(R.string.time_dash, emptyArray())
+
+    isCurrent ->
+        getString(R.string.time_now, emptyArray())
+
+    minutes < 0 ->
+        getString(R.string.time_passed, emptyArray())
+
+    else ->
+        getString(
+            R.string.time_starts_in,
+            arrayOf(formatDuration(minutes))
+        )
+}
+
 

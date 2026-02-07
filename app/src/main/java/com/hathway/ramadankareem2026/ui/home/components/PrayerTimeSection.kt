@@ -202,18 +202,17 @@ fun PrayerItem(
 
         Spacer(Modifier.height(6.dp))
 
-        // 🔒 Fixed-height status area
+        //  Fixed-height status area
         Box(
             modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center
         ) {
             when {
-                prayer.isCurrent -> Text("Now", color = highlight)
-
+                prayer.isCurrent -> Text(stringResource(R.string.time_now), color = highlight)
                 prayer.isNext -> CountdownText(prayer)
-
-                prayer.isPast -> Text("Passed", color = Color.Gray)
-
-                else -> Text("Upcoming", color = Color.Gray)
+                prayer.isPast -> Text(stringResource(R.string.time_passed), color = Color.Gray)
+                else -> Text(
+                    stringResource(R.string.upcoming), color = Color.Gray
+                )
             }
 
         }
@@ -331,9 +330,11 @@ private fun CountdownText(prayer: PrayerDomain) {
     }
 
     Text(
-        text = "Coming in ${PrayerTimeUiMapper.formatDuration(minutesLeft)}",
-        color = Color.Gray,
-        style = MaterialTheme.typography.labelSmall
+        text = stringResource(
+            R.string.coming_in, PrayerTimeUiMapper.formatDuration(minutesLeft)
+        ),
+
+        color = Color.Gray, style = MaterialTheme.typography.labelSmall
     )
 }
 
