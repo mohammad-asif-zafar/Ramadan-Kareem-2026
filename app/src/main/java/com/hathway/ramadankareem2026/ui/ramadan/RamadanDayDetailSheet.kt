@@ -1,39 +1,55 @@
 package com.hathway.ramadankareem2026.ui.ramadan
 
 import android.app.Application
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.components.CountdownCircularProgress
-import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
-import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
-import kotlinx.coroutines.delay
-import java.time.LocalDate
-import java.time.LocalTime
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hathway.ramadankareem2026.core.location.LocationUiState
+import com.hathway.ramadankareem2026.ui.home.components.displayName
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
+import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
+import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
+import kotlinx.coroutines.delay
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private const val TAG = "RamadanDayDetailSheet"
@@ -52,12 +68,7 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
     val locationState by homeViewModel.locationState.collectAsState()
 
     LaunchedEffect(locationState) {
-        if (locationState is LocationUiState.Success) {
-            val success = locationState as LocationUiState.Success
-            prayerViewModel.load(
-                lat = success.latitude, lng = success.longitude, date = day.date
-            )
-        }
+        prayerViewModel.loadWithLocation(locationState, day.date)
     }
 
 
@@ -68,12 +79,9 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
     val prayers = remember(prayerState, now) {
         PrayerTimeUiMapper.map(prayerState, now)
     }
-
-    val mappedPrayers = remember(prayerState) {
-        PrayerTimeUiMapper.map(
-            state = prayerState, now = now
-        )
-    }
+    
+    // Show loading state
+    val isLoading = prayerState == null
 
 
     val hijri = remember(day.date) { day.date.toHijriDate() }
@@ -99,10 +107,11 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
         }
 
         Spacer(Modifier.height(16.dp))
+        val lang = LanguageManager.current(context)
 
         // Header
         Text(
-            text = "Ramadan Day ${day.ramadanDay}",
+            text = "${RamadanStrings.ramadanDay(lang)} ${day.ramadanDay}",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -155,14 +164,27 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
         }
 
         Text(
-            text = "Prayer Times", fontSize = 16.sp, fontWeight = FontWeight.SemiBold
+            text = RamadanStrings.prayerTimes(lang),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold
         )
 
         Spacer(Modifier.height(12.dp))
-
-        PrayerTimeCard("Imsak", day.imsak.toString())
-        PrayerTimeCard("Fajr", day.fajr.toString())
-        PrayerTimeCard("Maghrib", day.maghrib.toString())
+        
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+            ) {
+                Text("Loading prayer times...", color = Color.Gray)
+            }
+        } else {
+            prayers.forEach { prayer ->
+                PrayerTimeCard(
+                    label = prayer.type.displayName(),
+                    time = prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a"))
+                )
+            }
+        }
 
         Spacer(Modifier.height(16.dp))
     }
@@ -170,15 +192,27 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
 
 @Composable
 private fun StatusChip(status: FastingDayStatus) {
+
+    val context = LocalContext.current
+    val lang = LanguageManager.current(context)
+
     val (text, color) = when (status) {
-        FastingDayStatus.TODAY -> "Today" to Color(0xFFFF9800)
-        FastingDayStatus.FASTING -> "Fasting" to Color(0xFF0F9D58)
-        FastingDayStatus.UPCOMING -> "Upcoming" to Color.Gray
-        FastingDayStatus.COMPLETED -> "Completed" to Color(0xFF0B6E3E)
+        FastingDayStatus.TODAY ->
+            RamadanStrings.today(lang) to Color(0xFFFF9800)
+
+        FastingDayStatus.FASTING ->
+            RamadanStrings.fasting(lang) to Color(0xFF0F9D58)
+
+        FastingDayStatus.UPCOMING ->
+            RamadanStrings.upcoming(lang) to Color.Gray
+
+        FastingDayStatus.COMPLETED ->
+            RamadanStrings.completed(lang) to Color(0xFF0B6E3E)
     }
 
     Box(
-        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
@@ -190,6 +224,7 @@ private fun StatusChip(status: FastingDayStatus) {
         }
     }
 }
+
 
 @Composable
 private fun PrayerTimeCard(label: String, time: String) {
@@ -256,4 +291,111 @@ private fun previewRamadanDay(): RamadanDayUiModel {
         totalMinutes = 780,
         remainingMinutes = 150
     )
+}
+enum class AppLanguage {
+    ENGLISH,
+    HINDI,
+    URDU,
+    MALAY
+}
+object LanguageManager {
+
+    fun current(context: android.content.Context): AppLanguage {
+        // You can later connect this to DataStore / Settings
+        val locale = context.resources.configuration.locales[0].language
+
+        return when (locale) {
+            "hi" -> AppLanguage.HINDI
+            "ur" -> AppLanguage.URDU
+            "ms" -> AppLanguage.MALAY
+            else -> AppLanguage.ENGLISH
+        }
+    }
+}
+object RamadanStrings {
+
+    fun ramadanDay(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Ramadan Day"
+        AppLanguage.HINDI -> "रमज़ान का दिन"
+        AppLanguage.URDU -> "رمضان کا دن"
+        AppLanguage.MALAY -> "Hari Ramadan"
+    }
+
+    fun prayerTimes(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Prayer Times"
+        AppLanguage.HINDI -> "नमाज़ के समय"
+        AppLanguage.URDU -> "نماز کے اوقات"
+        AppLanguage.MALAY -> "Waktu Solat"
+    }
+
+    fun today(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Today"
+        AppLanguage.HINDI -> "आज"
+        AppLanguage.URDU -> "آج"
+        AppLanguage.MALAY -> "Hari Ini"
+    }
+
+    fun fasting(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Fasting"
+        AppLanguage.HINDI -> "रोज़ा"
+        AppLanguage.URDU -> "روزہ"
+        AppLanguage.MALAY -> "Berpuasa"
+    }
+
+    fun upcoming(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Upcoming"
+        AppLanguage.HINDI -> "आगामी"
+        AppLanguage.URDU -> "آنے والا"
+        AppLanguage.MALAY -> "Akan Datang"
+    }
+
+    fun completed(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Completed"
+        AppLanguage.HINDI -> "पूर्ण"
+        AppLanguage.URDU -> "مکمل"
+        AppLanguage.MALAY -> "Selesai"
+    }
+
+    fun loadingPrayerTimes(lang: AppLanguage) = when (lang) {
+        AppLanguage.ENGLISH -> "Loading prayer times..."
+        AppLanguage.HINDI -> "नमाज़ के समय लोड हो रहे हैं..."
+        AppLanguage.URDU -> "نماز کے اوقات لوڈ ہو رہے ہیں..."
+        AppLanguage.MALAY -> "Memuat waktu solat..."
+    }
+}
+fun PrayerType.displayName(lang: AppLanguage): String = when (this) {
+    PrayerType.FAJR -> when (lang) {
+        AppLanguage.ENGLISH -> "Fajr"
+        AppLanguage.HINDI -> "फ़ज्र"
+        AppLanguage.URDU -> "فجر"
+        AppLanguage.MALAY -> "Subuh"
+    }
+
+    PrayerType.DHUHR -> when (lang) {
+        AppLanguage.ENGLISH -> "Dhuhr"
+        AppLanguage.HINDI -> "ज़ुहर"
+        AppLanguage.URDU -> "ظہر"
+        AppLanguage.MALAY -> "Zohor"
+    }
+
+    PrayerType.ASR -> when (lang) {
+        AppLanguage.ENGLISH -> "Asr"
+        AppLanguage.HINDI -> "असर"
+        AppLanguage.URDU -> "عصر"
+        AppLanguage.MALAY -> "Asar"
+    }
+
+    PrayerType.MAGHRIB -> when (lang) {
+        AppLanguage.ENGLISH -> "Maghrib"
+        AppLanguage.HINDI -> "मग़रिब"
+        AppLanguage.URDU -> "مغرب"
+        AppLanguage.MALAY -> "Maghrib"
+    }
+
+    PrayerType.ISHA -> when (lang) {
+        AppLanguage.ENGLISH -> "Isha"
+        AppLanguage.HINDI -> "इशा"
+        AppLanguage.URDU -> "عشاء"
+        AppLanguage.MALAY -> "Isyak"
+    }
 }

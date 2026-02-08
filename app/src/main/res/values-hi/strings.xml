@@ -450,5 +450,14 @@
     <string name="ramadan_collections">रमज़ान संग्रह</string>
 
     <string name="nearest_mosque_near_me">मेरे पास सबसे नज़दीकी मस्जिद</string>
+    <string name="ramadan_title">रमज़ान 2026</string>
+    <string name="ramadan_progress_subtitle">पवित्र महीने की प्रगति</string>
 
+    <string name="ramadan_day">दिन %1$d</string>
+
+    <string name="days_completed">पूरे किए गए दिन</string>
+    <string name="progress">प्रगति</string>
+    <string name="completed">पूर्ण</string>
+
+    <string name="fasting">रोज़ा</string>
 </resources>

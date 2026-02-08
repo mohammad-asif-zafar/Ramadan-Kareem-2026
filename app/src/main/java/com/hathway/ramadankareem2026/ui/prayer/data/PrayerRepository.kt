@@ -4,6 +4,8 @@ package com.hathway.ramadankareem2026.ui.prayer.data
 import android.content.Context
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
+import com.hathway.ramadankareem2026.core.location.LocationUiState
+import com.hathway.ramadankareem2026.core.util.TimezoneDetector
 import com.hathway.ramadankareem2026.data.datastore.PrayerCacheStore
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
@@ -13,7 +15,7 @@ import com.hathway.ramadankareem2026.ui.prayer.mapper.PrayerApiMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class PrayerRepository(context: Context, private val api: PrayerApiService) {
+class PrayerRepository(private val context: Context, private val api: PrayerApiService) {
 
     private val cache = PrayerCacheStore(context)
     suspend fun load(
@@ -51,10 +53,23 @@ class PrayerRepository(context: Context, private val api: PrayerApiService) {
         date: String, lat: Double, lng: Double
     ): PrayerTimeUiState {
         return try {
-            PrayerApiMapper.map(
-                api.getTimings(date, lat, lng)
-            )
+            // Detect timezone automatically based on location
+
+            val timezone = TimezoneDetector.detectTimezone(context, lat, lng)
+            android.util.Log.d("PrayerRepository", "Detected timezone: $timezone for coordinates: $lat, $lng")
+            
+            // Only pass timezone if it's not null and not empty
+            if (timezone.isNotBlank()) {
+                PrayerApiMapper.map(
+                    api.getTimings(date, lat, lng, timezone = timezone)
+                )
+            } else {
+                PrayerApiMapper.map(
+                    api.getTimings(date, lat, lng)
+                )
+            }
         } catch (e: Exception) {
+            android.util.Log.e("PrayerRepository", "Failed to load prayer times from API", e)
             PrayerDemoData.demo()
         }
     }

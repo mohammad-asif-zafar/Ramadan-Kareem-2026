@@ -1,8 +1,10 @@
 package com.hathway.ramadankareem2026.ui.prayer
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.hathway.ramadankareem2026.core.location.LocationUiState
 import com.hathway.ramadankareem2026.core.service.PrayerNotificationScheduler
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
 import com.hathway.ramadankareem2026.core.util.minuteTicker
@@ -16,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+private const val TAG = "PrayerViewModel"
 
 /**
  * PrayerViewModel
@@ -84,26 +88,49 @@ class PrayerViewModel(
                 val formattedDate =
                     date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
 
+                Log.d(TAG, "Loading prayer times for date: $formattedDate, lat: $lat, lng: $lng")
 
                 runCatching {
                     repository.loadFromApi(formattedDate, lat, lng)
-                }.onSuccess {
-                    _state.value = it
+                }.onSuccess { prayerTimes ->
+                    Log.d(TAG, "Successfully loaded prayer times from API")
+                    _state.value = prayerTimes
                     
                     // Schedule prayer notifications if enabled
                     if (_notificationsEnabled.value) {
                         PrayerNotificationScheduler.schedulePrayerNotifications(
                             getApplication(),
-                            it,
+                            prayerTimes,
                             true
                         )
                     }
-                }.onFailure {
+                }.onFailure { exception ->
+                    Log.e(TAG, "Failed to load prayer times from API", exception)
+                    // Keep demo data as fallback
                 }
+            } else {
+                Log.w(TAG, "No internet connection, using demo data")
             }
 
             // 3️⃣ Start countdown
             startCountdown()
+        }
+    }
+    
+    /**
+     * Load prayer times with location state for better timezone detection
+     */
+    fun loadWithLocation(locationState: LocationUiState, date: LocalDate = LocalDate.now()) {
+        when (locationState) {
+            is LocationUiState.Success -> {
+                load(locationState.latitude, locationState.longitude, date)
+            }
+            is LocationUiState.Loading -> {
+                Log.d(TAG, "Location still loading, using demo data")
+            }
+            is LocationUiState.Error -> {
+                Log.w(TAG, "Location error: ${locationState.message}, using demo data")
+            }
         }
     }
 

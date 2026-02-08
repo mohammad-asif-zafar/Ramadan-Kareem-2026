@@ -415,5 +415,19 @@ This tip changes daily based on the calendar date. Check back tomorrow for a new
     <string name="ramadan_collections">Ramadan Collections</string>
 
 <string name="nearest_mosque_near_me">Nearest Mosque Near Me</string>
+    <string name="ramadan_title">Ramadan 2026</string>
+    <string name="ramadan_progress_subtitle">Holy Month Progress</string>
+
+    <string name="ramadan_day">Day %1$d</string>
+
+    <string name="days_completed">Days Completed</string>
+    <string name="progress">Progress</string>
+
+    <string name="today">Today</string>
+    <string name="fasting">Fasting</string>
+
+    <string name="date">Date</string>
+    <string name="day">Day</string>
+    <string name="completed">Completed</string>
 
 </resources>

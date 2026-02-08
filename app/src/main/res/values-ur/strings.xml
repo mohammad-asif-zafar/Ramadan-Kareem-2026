@@ -441,5 +441,14 @@
     <string name="read_more">اقرأ المزيد</string>
     <string name="ramadan_collections">رمضان مجموعے</string>
     <string name="nearest_mosque_near_me">میرے قریب ترین مسجد</string>
+    <string name="ramadan_title">رمضان 2026</string>
+    <string name="ramadan_progress_subtitle">مقدس مہینے کی پیش رفت</string>
 
+    <string name="ramadan_day">دن %1$d</string>
+
+    <string name="days_completed">مکمل کیے گئے دن</string>
+    <string name="progress">پیش رفت</string>
+    <string name="completed">مکمل</string>
+
+    <string name="fasting">روزہ</string>
 </resources>

@@ -34,6 +34,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 
 
 @Composable
@@ -52,8 +55,8 @@ fun RamadanDayCard(
         day.date.toHijriDate()
     }
     val backgroundColor = when (day.status) {
-        FastingDayStatus.TODAY, FastingDayStatus.FASTING -> Color(0xFFE8F5E9)
-
+        FastingDayStatus.TODAY,
+        FastingDayStatus.FASTING -> Color(0xFFE8F5E9)
         FastingDayStatus.COMPLETED -> Color(0xFFF5F5F5)
         FastingDayStatus.UPCOMING -> Color(0xFFF0F0F5)
     }
@@ -68,7 +71,7 @@ fun RamadanDayCard(
                 else Color.Transparent, shape = RoundedCornerShape(20.dp)
             )
             .padding(2.dp) // glow spacing
-        .clickable { onClick(day) }
+            .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 0.dp,
                 color = RamadanGreen,
@@ -80,38 +83,33 @@ fun RamadanDayCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
+                .padding(2.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Text(
-                text = "Day ${day.ramadanDay}", fontSize = 11.sp, color = Color.Gray
+                text = stringResource(
+                    R.string.ramadan_day, day.ramadanDay
+                ),
+
+                fontSize = 12.sp, color = RamadanGold
             )
 
             Spacer(Modifier.height(4.dp))
 
-            Text(
-                text = day.weekday.uppercase(),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF2E7D32)
-            )
-
-            Spacer(Modifier.height(6.dp))
-
-            Text(
+              Text(
                 text = day.date.dayOfMonth.toString(),
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = day.month, fontSize = 11.sp, color = Color.Gray
+                text =day.weekday.uppercase()+" "+ day.month, fontSize = 11.sp, color = Color.Gray
             )
-            // 🌙 Hijri date (NEW)
+            //  Hijri date (NEW)
             Text(
                 text = "${hijri.day} ${hijri.month}",
-                fontSize = 10.sp,
+                fontSize = 8.sp,
                 color = RamadanGreen,
                 fontWeight = FontWeight.SemiBold
             )
@@ -126,7 +124,9 @@ fun RamadanDayCard(
 @Composable
 private fun DayStatusSection(day: RamadanDayUiModel) {
     when (day.status) {
-        FastingDayStatus.FASTING, FastingDayStatus.TODAY -> {
+
+        FastingDayStatus.FASTING,
+        FastingDayStatus.TODAY -> {
             CountdownCircularProgress(
                 totalMinutes = day.totalMinutes,
                 remainingMinutes = day.remainingMinutes,
@@ -135,14 +135,21 @@ private fun DayStatusSection(day: RamadanDayUiModel) {
         }
 
         FastingDayStatus.UPCOMING -> {
-            StatusLabel("Upcoming", Color.Gray)
+            StatusLabel(
+                text = stringResource(R.string.upcoming),
+                color = Color.Gray
+            )
         }
 
         FastingDayStatus.COMPLETED -> {
-            StatusLabel("Completed", Color(0xFF2E7D32))
+            StatusLabel(
+                text = stringResource(R.string.completed),
+                color = Color(0xFF2E7D32)
+            )
         }
     }
 }
+
 
 @Composable
 fun StatusLabel(text: String, color: Color) {

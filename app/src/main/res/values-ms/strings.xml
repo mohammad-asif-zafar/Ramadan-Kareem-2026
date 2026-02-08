@@ -431,5 +431,14 @@ Tip ini berubah setiap hari berdasarkan tarikh kalendar. Semak semula esok untuk
 
     <string name="ramadan_collections">Koleksi Ramadan</string>
     <string name="nearest_mosque_near_me">Masjid Terdekat Berhampiran Saya</string>
+    <string name="ramadan_title">Ramadan 2026</string>
+    <string name="ramadan_progress_subtitle">Kemajuan Bulan Suci</string>
 
+    <string name="ramadan_day">Hari ke-%1$d</string>
+
+    <string name="days_completed">Hari Selesai</string>
+    <string name="progress">Kemajuan</string>
+    <string name="completed">Selesai</string>
+
+    <string name="fasting">Berpuasa</string>
 </resources>

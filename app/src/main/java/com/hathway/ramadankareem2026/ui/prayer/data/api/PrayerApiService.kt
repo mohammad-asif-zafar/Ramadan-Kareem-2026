@@ -13,7 +13,7 @@ interface PrayerApiService {
         @Query("latitude") lat: Double,
         @Query("longitude") lng: Double,
         @Query("method") method: Int = 3,
-        @Query("timezonestring") timezone: String = "Asia/Kuala_Lumpur",
+        @Query("timezone") timezone: String? = null,
         @Query("calendarMethod") calendarMethod: String = "UAQ"
     ): PrayerApiResponse
 }
