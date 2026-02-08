@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.DailyTipCard
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModel
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModelFactory
@@ -35,7 +37,8 @@ import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewMode
 @Composable
 fun TodayTipSection(
     onTipClick: (Int) -> Unit = {},
-    viewModel: TipsViewModel = viewModel(factory = TipsViewModelFactory())
+    viewModel: TipsViewModel = viewModel(factory = TipsViewModelFactory()),
+    language: String = "en"
 ) {
     val dailyTip by viewModel.dailyTip.collectAsStateWithLifecycle()
 
@@ -45,16 +48,14 @@ fun TodayTipSection(
             .padding(horizontal = 16.dp)
     ) {
         // Section header
-        SectionTitle("Today's Tip")
+        SectionTitle(stringResource(R.string.todays_tip))
 
         Spacer(modifier = Modifier.height(8.dp))
 
         // Daily tip card with real data
         DailyTipCard(
-            tip = dailyTip,
-            onClick = { onTipClick(dailyTip.id) }
-        )
-        
+            language = language, tip = dailyTip, onClick = { onTipClick(dailyTip.id) })
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -69,8 +70,7 @@ fun TodayTipSectionPreview() {
             SectionTitle("Today's Tip")
             Spacer(modifier = Modifier.height(8.dp))
             Card(
-                shape = RoundedCornerShape(16.dp), 
-                modifier = Modifier.fillMaxWidth()
+                shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = "Preview: Real daily tip will appear here with MVVM architecture",

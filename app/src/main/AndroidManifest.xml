@@ -50,6 +50,16 @@
         <receiver
             android:name=".ui.widget.PrayerWidgetUpdateReceiver"
             android:exported="false" />
+        
+        <!-- Prayer Time Notifications -->
+        <receiver
+            android:name="com.hathway.ramadankareem2026.core.service.PrayerTimeNotificationReceiver"
+            android:exported="false" />
+        
+        <receiver
+            android:name="com.hathway.ramadankareem2026.core.service.PrayerNotificationRefreshReceiver"
+            android:exported="false" />
+        
         <service
             android:name=".core.service.DuaTtsService"
             android:exported="false" />

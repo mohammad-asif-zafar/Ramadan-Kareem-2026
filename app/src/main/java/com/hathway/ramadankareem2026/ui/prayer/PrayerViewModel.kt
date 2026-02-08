@@ -3,6 +3,7 @@ package com.hathway.ramadankareem2026.ui.prayer
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.hathway.ramadankareem2026.core.service.PrayerNotificationScheduler
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
 import com.hathway.ramadankareem2026.core.util.minuteTicker
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerDemoData
@@ -43,6 +44,30 @@ class PrayerViewModel(
     /** 🔹 Active countdown job */
     private var countdownJob: Job? = null
 
+    /** 🔹 Prayer notifications enabled state */
+    private val _notificationsEnabled = MutableStateFlow(true)
+    val notificationsEnabled: StateFlow<Boolean> = _notificationsEnabled
+
+    /**
+     * Toggle prayer notifications
+     */
+    fun togglePrayerNotifications(enabled: Boolean) {
+        _notificationsEnabled.value = enabled
+        if (enabled) {
+            // Schedule notifications for current prayer times
+            _state.value?.let { prayerTimes ->
+                PrayerNotificationScheduler.schedulePrayerNotifications(
+                    getApplication(),
+                    prayerTimes,
+                    enabled
+                )
+            }
+        } else {
+            // Cancel all prayer notifications
+            PrayerNotificationScheduler.cancelAllPrayerNotifications(getApplication())
+        }
+    }
+
     /**
      * ENTRY POINT from UI
      */
@@ -61,6 +86,15 @@ class PrayerViewModel(
                     repository.loadFromApi(today, lat, lng)
                 }.onSuccess {
                     _state.value = it
+                    
+                    // Schedule prayer notifications if enabled
+                    if (_notificationsEnabled.value) {
+                        PrayerNotificationScheduler.schedulePrayerNotifications(
+                            getApplication(),
+                            it,
+                            true
+                        )
+                    }
                 }.onFailure {
                 }
             }

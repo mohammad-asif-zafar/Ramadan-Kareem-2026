@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -59,7 +60,7 @@ fun HeaderCard(
     // Reminder card stays unchanged
     if (type == HeaderType.REMINDER) {
         DynamicReminderCard(
-            title = title, subtitle = subtitle, hint = hint
+            title = title, subtitle = subtitle, hint = hint,language
         )
         return
     }
@@ -83,7 +84,7 @@ fun HeaderCard(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                // 🔝 Icon + Title + Alarm
+                // Icon + Title + Alarm
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -107,7 +108,7 @@ fun HeaderCard(
                         )
                     }
 
-                    // 🔔 Alarm icon
+                    // Alarm icon
                     if (type == HeaderType.IFTAR_TIME || type == HeaderType.SUHOOR_TIME) {
                         Icon(
                             imageVector = if (isAlarmEnabled) Icons.Outlined.Alarm
@@ -123,7 +124,7 @@ fun HeaderCard(
                     }
                 }
 
-                // 🔹 Main content
+                // Main content
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.headlineMedium,
@@ -191,7 +192,7 @@ private fun headerGradient(type: HeaderType): Brush = when (type) {
  */
 @Composable
 private fun DynamicReminderCard(
-    title: String, subtitle: String, hint: String
+    title: String, subtitle: String, hint: String,  language: String = "en"
 ) {
     val viewModel: com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel =
         viewModel(factory = RandomRamadanTipsViewModelFactory())
@@ -253,22 +254,22 @@ private fun DynamicReminderCard(
                 Column {
                     val tip = currentTip
                     Text(
-                        text = tip?.title?.getText("en") ?: subtitle, // TODO: Pass actual language parameter
+                        text = tip?.title?.getText(language) ?: subtitle,
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = tip?.content?.getText("en") ?: hint, // TODO: Pass actual language parameter
+                        text = tip?.content?.getText(language) ?: hint,
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.White.copy(alpha = 0.9f),
                         maxLines = 2,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

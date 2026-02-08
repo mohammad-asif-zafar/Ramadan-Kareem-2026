@@ -23,20 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 
 @Composable
 fun DailyTipCard(
-    tip: Tip,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    language: String = "en"
+    tip: Tip, onClick: () -> Unit, modifier: Modifier = Modifier, language: String = "en"
 ) {
     Card(
         modifier = modifier
@@ -69,34 +68,31 @@ fun DailyTipCard(
                         color = RamadanGold.copy(alpha = 0.15f)
                     ) {
                         Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "✨",
-                                style = MaterialTheme.typography.labelMedium
+                                text = "✨", style = MaterialTheme.typography.labelMedium
                             )
                         }
                     }
-                    
+
                     Spacer(modifier = Modifier.width(10.dp))
-                    
+
                     Text(
-                        text = "Today's Tip",
+                        text = stringResource(R.string.todays_tip),
                         style = MaterialTheme.typography.labelMedium,
                         color = RamadanGold,
                         fontWeight = FontWeight.Bold
                     )
                 }
-                
+
                 if (tip.isDaily) {
                     Surface(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp)),
+                        modifier = Modifier.clip(RoundedCornerShape(12.dp)),
                         color = RamadanGreen.copy(alpha = 0.1f)
                     ) {
                         Text(
-                            text = "Daily",
+                            text = stringResource(R.string.daily),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = RamadanGreen,
@@ -105,9 +101,9 @@ fun DailyTipCard(
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(14.dp))
-            
+
             // Title
             Text(
                 text = tip.title.getText(language),
@@ -117,9 +113,9 @@ fun DailyTipCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            
+
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             // Content
             Text(
                 text = tip.content.getText(language),
@@ -129,17 +125,17 @@ fun DailyTipCard(
                 overflow = TextOverflow.Ellipsis,
                 lineHeight = 1.5.em
             )
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // Bottom section with divider and CTA
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
-            
+
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             // Tap to read more indicator
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -147,16 +143,14 @@ fun DailyTipCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Read more",
+                    text = stringResource(R.string.read_more),
                     style = MaterialTheme.typography.labelSmall,
                     color = RamadanGold,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "→",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = RamadanGold
+                    text = "→", style = MaterialTheme.typography.labelSmall, color = RamadanGold
                 )
             }
         }

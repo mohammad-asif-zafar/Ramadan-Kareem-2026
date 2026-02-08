@@ -202,7 +202,7 @@ fun HomeHeaderSlider() {
         }
     }
 
-    // 📜 Pager
+    // Pager
     val pagerState = rememberPagerState(
         pageCount = { pages.size })
 

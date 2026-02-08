@@ -151,7 +151,14 @@
     <string name="system">सिस्टम</string>
     <string name="preferences">प्राथमिकताएं</string>
     <string name="notification_settings">सूचना सेटिंग्स</string>
-    <string name="prayer_reminders">प्रार्थना अनुस्मारक</string>
+    <string name="prayer_notifications_enabled">प्रार्थना अनुस्मारक सक्षम हैं</string>
+    <string name="prayer_notifications_disabled">प्रार्थना अनुस्मारक अक्षम हैं</string>
+    <string name="prayer_notification_title">प्रार्थना का समय</string>
+    <string name="fajr_time">फज्र का समय</string>
+    <string name="dhuhr_time">ज़ुहर का समय</string>
+    <string name="asr_time">अस्र का समय</string>
+    <string name="maghrib_time">मग़रिब का समय</string>
+    <string name="isha_time">इशा का समय</string>
     <string name="manage_prayer_reminders">प्रार्थना अनुस्मारक प्रबंधित करें</string>
     <string name="azan_sound">अज़ान ध्वनि</string>
     <string name="choose_azan_audio_prayer">अज़ान ऑडियो चुनें</string>
@@ -439,6 +446,7 @@
     <string name="daily_tip_info">
 यह टिप कैलेंडर की तारीख के अनुसार रोज़ बदलती है। नई रमज़ान टिप के लिए कल फिर देखें।
 </string>
+    <string name="read_more">और पढ़ें</string>
 
 
 </resources>

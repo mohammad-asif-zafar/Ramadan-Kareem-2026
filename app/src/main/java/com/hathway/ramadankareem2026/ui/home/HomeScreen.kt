@@ -16,6 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -42,6 +45,7 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 // 🔹 Preview only
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 
 private const val TAG = "HomeScreen"
@@ -50,6 +54,7 @@ private const val TAG = "HomeScreen"
 fun HomeScreen(
     navController: NavController
 ) {
+
     val homeViewModel: HomeViewModel = viewModel()
 
     val context = LocalContext.current
@@ -58,7 +63,12 @@ fun HomeScreen(
     val prayerViewModel: PrayerViewModel = viewModel(
         factory = PrayerViewModelFactory(app)
     )
+    val localizationManager = remember { LocalizationManager(context) }
+    var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
 
+    LaunchedEffect(Unit) {
+        selectedLanguage = localizationManager.getCurrentLanguage()
+    }
     // Sealed UI state
     val locationState by homeViewModel.locationState.collectAsState()
 
@@ -116,7 +126,7 @@ fun HomeScreen(
             item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
             item { Spacer(modifier = Modifier.height(16.dp)) }
-            item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
+            item { TodayTipSection(language = selectedLanguage,onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
