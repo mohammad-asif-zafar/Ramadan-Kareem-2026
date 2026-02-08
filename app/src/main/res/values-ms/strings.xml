@@ -430,5 +430,6 @@ Tip ini berubah setiap hari berdasarkan tarikh kalendar. Semak semula esok untuk
     <string name="read_more">Baca lagi</string>
 
     <string name="ramadan_collections">Koleksi Ramadan</string>
+    <string name="nearest_mosque_near_me">Masjid Terdekat Berhampiran Saya</string>
 
 </resources>

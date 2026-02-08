@@ -22,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.mosques.domain.model.Mosque
 import com.hathway.ramadankareem2026.ui.mosques.presentation.MosqueListItem
 import com.hathway.ramadankareem2026.ui.mosques.presentation.viewmodel.MosqueBookmarkViewModel
@@ -34,7 +36,7 @@ fun MosqueList(
     bookmarkViewModel: MosqueBookmarkViewModel,
     onMosqueClick: (Mosque) -> Unit,
     onDirectionsClick: (Mosque) -> Unit,
-    title: String = "Nearest Mosque Near Me",
+    title: String = stringResource(R.string.nearest_mosque_near_me),
     onClose: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(16.dp),
     chipSpacing: Dp = 8.dp

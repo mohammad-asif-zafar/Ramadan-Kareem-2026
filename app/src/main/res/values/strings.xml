@@ -414,5 +414,6 @@ This tip changes daily based on the calendar date. Check back tomorrow for a new
     <string name="read_more">Read more</string>
     <string name="ramadan_collections">Ramadan Collections</string>
 
+<string name="nearest_mosque_near_me">Nearest Mosque Near Me</string>
 
 </resources>
