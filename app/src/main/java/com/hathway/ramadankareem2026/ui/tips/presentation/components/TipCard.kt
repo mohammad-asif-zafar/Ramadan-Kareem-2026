@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,8 @@ import androidx.compose.ui.unit.em
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import androidx.compose.ui.res.stringResource
+import com.hathway.ramadankareem2026.R
 
 @Composable
 fun SimpleTipCard(
@@ -78,7 +81,7 @@ fun SimpleTipCard(
                 
                 if (tip.isDaily) {
                     Text(
-                        text = "Daily",
+                        text = stringResource(R.string.daily),
                         style = MaterialTheme.typography.labelSmall,
                         color = RamadanGold,
                         fontWeight = FontWeight.Medium
@@ -90,6 +93,7 @@ fun SimpleTipCard(
 }
 
 
+/*
 @Composable
 fun TipDetailCard(
     tip: Tip,
@@ -140,7 +144,7 @@ fun TipDetailCard(
                         color = Color.Transparent
                     ) {
                         Text(
-                            text = "Daily Tip",
+                            text = stringResource(R.string.daily_tip),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = RamadanGold,
@@ -172,3 +176,4 @@ fun TipDetailCard(
         }
     }
 }
+*/

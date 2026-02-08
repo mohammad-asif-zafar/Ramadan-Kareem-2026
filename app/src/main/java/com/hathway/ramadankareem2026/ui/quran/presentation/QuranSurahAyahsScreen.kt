@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Ayah
@@ -67,6 +69,10 @@ fun QuranSurahAyahsScreen(
     quranBookmarkCountViewModel: QuranBookmarkCountViewModel,
     navController: NavController
 ) {
+    val context = LocalContext.current
+    val localizationManager = LocalizationManager(context)
+    val currentLanguage = localizationManager.getCurrentLanguage()
+    
     val state by viewModel.state.collectAsState()
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
 
@@ -77,6 +83,25 @@ fun QuranSurahAyahsScreen(
     val bookmarkCount by quranBookmarkCountViewModel.quranBookmarkCount.collectAsStateWithLifecycle(
         initialValue = 0
     )
+    
+    // Helper function to get localized bookmark text
+    fun getBookmarkText(isBookmarked: Boolean): String {
+        return if (isBookmarked) {
+            when (currentLanguage) {
+                "hi" -> "✅ बुकमार्क किया गया! टैप करके हटाएं"
+                "ur" -> "✅ بک مارک کردہ! ہٹانے کے لیے ٹیپ کریں"
+                "ms" -> "✅ Ditanda! Ketik untuk keluarkan"
+                else -> "✅ Bookmarked! Tap to remove"
+            }
+        } else {
+            when (currentLanguage) {
+                "hi" -> "अपने बुकमार्क में जोड़ने के लिए टैप करें"
+                "ur" -> "اپنے بک مارکس میں شامل کرنے کے لیے ٹیپ کریں"
+                "ms" -> "Ketik untuk tambah ke penanda buku"
+                else -> "Tap to add to your bookmarks"
+            }
+        }
+    }
 
     val listState = rememberLazyListState()
 
@@ -271,17 +296,18 @@ fun QuranSurahAyahsScreen(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(
-                                    text = "Bookmark this Surah",
+                                    text = when (currentLanguage) {
+                                        "hi" -> "इस सूरह को बुकमार्क करें"
+                                        "ur" -> "اس سورہ کو بک مارک کریں"
+                                        "ms" -> "Tanda Surah ini"
+                                        else -> "Bookmark this Surah"
+                                    },
                                     style = MaterialTheme.typography.titleMedium,
                                     color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
                                     else MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = if (isBookmarked) {
-                                        "✅ Bookmarked! Tap to remove"
-                                    } else {
-                                        "Tap to add to your bookmarks"
-                                    },
+                                    text = getBookmarkText(isBookmarked),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer.copy(
                                         alpha = 0.8f
@@ -303,7 +329,21 @@ fun QuranSurahAyahsScreen(
                             ) {
                                 Icon(
                                     imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                                    contentDescription = if (isBookmarked) "Remove bookmark" else "Add bookmark",
+                                    contentDescription = if (isBookmarked) {
+                                    when (currentLanguage) {
+                                        "hi" -> "बुकमार्क हटाएं"
+                                        "ur" -> "بک مارک ہٹائیں"
+                                        "ms" -> "Keluarkan penanda"
+                                        else -> "Remove bookmark"
+                                    }
+                                } else {
+                                    when (currentLanguage) {
+                                        "hi" -> "बुकमार्क जोड़ें"
+                                        "ur" -> "بک مارک شامل کریں"
+                                        "ms" -> "Tambah penanda"
+                                        else -> "Add bookmark"
+                                    }
+                                },
                                     tint = bookmarkIconColor,
                                     modifier = Modifier.size(28.dp)
                                 )

@@ -11,10 +11,6 @@ import javax.inject.Singleton
 class TipsRepository(
     private val dataSource: TipsDataSource = TipsDataSource
 ) {
-    
-    private val _dailyTip = MutableStateFlow(dataSource.getDailyTip())
-
-    private val _hadithAyahOfTheDay = MutableStateFlow(dataSource.getHadithOrAyahOfTheDay())
 
     fun getAllTips(): List<Tip> {
         return dataSource.getAllTips()

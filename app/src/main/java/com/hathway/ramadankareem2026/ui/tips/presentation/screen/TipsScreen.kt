@@ -13,10 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.tips.data.model.TipCategory
@@ -42,7 +44,7 @@ fun TipsScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = "Ramadan Tips",
+                title = stringResource(R.string.ramadan_tip),
                 showBack = true,
                 onBackClick = onBack,
                 backgroundColor = MaterialTheme.colorScheme.surface,
@@ -136,7 +138,7 @@ private fun CategoryChipsRow(
         // Category chips
         items(categories) { category ->
             SimpleCategoryChip(
-                text = category.displayName.getName("en"), // TODO: Pass actual language parameter
+                text = category.displayName.getName("en"),
                 isSelected = selectedCategory == category,
                 onClick = { onCategorySelected(category) }
             )

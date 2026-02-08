@@ -79,9 +79,9 @@ data class LocalizedCategoryNames(
 ) {
     fun getName(language: String): String {
         return when (language.lowercase()) {
-            "hi", "hindi" -> hindi.ifBlank { english }
-            "ur", "urdu" -> urdu.ifBlank { english }
-            "ms", "malaysian" -> malaysian.ifBlank { english }
+            "hi", "hindi" -> if (hindi.isNotBlank()) hindi else english
+            "ur", "urdu" -> if (urdu.isNotBlank()) urdu else english
+            "ms", "malaysian" -> if (malaysian.isNotBlank()) malaysian else english
             "en", "english" -> english
             else -> english
         }

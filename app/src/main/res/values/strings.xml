@@ -400,5 +400,7 @@ Isha is the night prayer, performed after twilight disappears.
 The Prophet (ﷺ) said: "The people will continue to prosper as long as they hasten in breaking the fast."
 Delay suhoor until just before Fajr and break your fast immediately at sunset.
 </string>
-
+    <string name="daily_tip_info">
+This tip changes daily based on the calendar date. Check back tomorrow for a new Ramadan tip!
+</string>
 </resources>

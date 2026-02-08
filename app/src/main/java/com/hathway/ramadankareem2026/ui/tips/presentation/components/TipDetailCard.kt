@@ -7,11 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 
@@ -71,7 +72,7 @@ fun TipDetailCard(
                 
                 if (tip.isDaily) {
                     Text(
-                        text = "Daily",
+                        text = stringResource(R.string.daily),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,

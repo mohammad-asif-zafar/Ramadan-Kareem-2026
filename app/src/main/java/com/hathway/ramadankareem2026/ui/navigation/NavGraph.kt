@@ -37,8 +37,6 @@ import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCo
 import com.hathway.ramadankareem2026.ui.dua.route.DuaRoute
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.home.HomeScreen
-import com.hathway.ramadankareem2026.ui.home.LocationPickerScreen
-import com.hathway.ramadankareem2026.ui.home.ManualCityPickerScreen
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueBookmarksRoute
 import com.hathway.ramadankareem2026.ui.mosques.presentation.route.MosqueRoute
 import com.hathway.ramadankareem2026.ui.qibla.QiblaScreen
@@ -129,14 +127,6 @@ private fun HomeScaffold(themeViewModel: ThemeViewModel) {
 
             composable(Routes.CALENDAR) {
                 SimpleScreen(Routes.CALENDAR)
-            }
-
-            composable("location_picker") {
-                LocationPickerScreen(navController, {}, {}, {})
-            }
-
-            composable("manual_city_picker") {
-                ManualCityPickerScreen(navController, {}, {}, {})
             }
 
             composable(Routes.RAMADAN_CALENDAR) {

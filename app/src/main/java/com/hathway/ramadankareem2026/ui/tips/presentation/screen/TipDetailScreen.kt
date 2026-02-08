@@ -19,10 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.theme.RamadanGold
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.TipDetailCard
@@ -103,14 +105,14 @@ fun TipDetailScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = "Daily Reminder",
+                            text = stringResource(R.string.daily_reminder),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = RamadanGold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "This tip changes daily based on calendar date. Check back tomorrow for a new Ramadan tip!",
+                            text = stringResource(R.string.daily_tip_info),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

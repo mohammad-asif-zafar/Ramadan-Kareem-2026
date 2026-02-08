@@ -62,21 +62,15 @@ fun DuaScreen(
 
     Scaffold(
 
-        /*  Top App Bar */
         topBar = {
             RamadanToolbar(
-                title = stringResource(R.string.feature_dua),     // ✅ string resource ID
+                title = stringResource(R.string.feature_dua),
                 showBack = true, onBackClick = onBack, onRightIcon1Click = {
-                    // Navigate to dua bookmarks list
                     navController.navigate(Routes.DUA_BOOKMARKS)
                 }, rightIcon1Badge = bookmarkCount,
                 // Bookmarks
                 rightIcon1 = R.drawable.ic_saved,
-
-                //  Notification  icon
-                /*rightIcon2 = R.drawable.bell, onRightIcon2Click = {
-                    navController.navigate(Routes.QIBLA_SETTINGS)
-                }*/)
+)
         }
 
     ) { padding ->
