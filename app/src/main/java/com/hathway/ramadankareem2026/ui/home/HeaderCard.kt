@@ -60,7 +60,7 @@ fun HeaderCard(
     // Reminder card stays unchanged
     if (type == HeaderType.REMINDER) {
         DynamicReminderCard(
-            title = title, subtitle = subtitle, hint = hint,language
+            title = title, subtitle = subtitle, hint = hint, language
         )
         return
     }
@@ -68,7 +68,8 @@ fun HeaderCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp).padding(end = 4.dp),
+            .height(150.dp)
+            .padding(end = 4.dp),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = if (type == HeaderType.DYNAMIC_PRAYER) 8.dp else 4.dp
@@ -192,7 +193,7 @@ private fun headerGradient(type: HeaderType): Brush = when (type) {
  */
 @Composable
 private fun DynamicReminderCard(
-    title: String, subtitle: String, hint: String,  language: String = "en"
+    title: String, subtitle: String, hint: String, language: String = "en"
 ) {
     val viewModel: com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel =
         viewModel(factory = RandomRamadanTipsViewModelFactory())

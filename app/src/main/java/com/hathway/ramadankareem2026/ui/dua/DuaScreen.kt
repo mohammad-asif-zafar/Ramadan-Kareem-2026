@@ -87,9 +87,8 @@ fun DuaScreen(
                 Spacer(modifier = Modifier.height(4.dp))
             }
 
-            /*  Ramadan Collections label */
             item {
-                SectionTitle("Ramadan Collections")
+                SectionTitle(stringResource(R.string.ramadan_collections))
             }
 
             /*  Ramadan Duas – horizontal cards */
@@ -102,7 +101,7 @@ fun DuaScreen(
 
             /*  All Duʿāʾs label */
             item {
-                SectionTitle("All Duʿāʾs")
+                SectionTitle(stringResource(R.string.all)+" "+ stringResource(R.string.dua))
             }
 
             /*  Dua Categories – 2×2 grid */
