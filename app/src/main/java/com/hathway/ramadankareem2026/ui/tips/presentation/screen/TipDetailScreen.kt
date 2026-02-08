@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +35,10 @@ fun TipDetailScreen(
     onBack: () -> Unit,
     viewModel: TipsViewModel = viewModel(factory = TipsViewModelFactory())
 ) {
+    val context = LocalContext.current
+    val localizationManager = LocalizationManager(context)
+    val currentLanguage = localizationManager.getCurrentLanguage()
+    
     val tip = remember(tipId) { viewModel.getTipById(tipId) }
     if (tip == null) {
         // Show error state
@@ -66,7 +72,7 @@ fun TipDetailScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = tip.category.displayName,
+                title = tip.category.displayName.getName("en"), // TODO: Pass actual language parameter
                 showBack = true,
                 onBackClick = onBack,
                 backgroundColor = MaterialTheme.colorScheme.surface,
@@ -81,7 +87,7 @@ fun TipDetailScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            TipDetailCard(tip = tip)
+            TipDetailCard(tip = tip, language = currentLanguage)
             
             Spacer(modifier = Modifier.height(24.dp))
             

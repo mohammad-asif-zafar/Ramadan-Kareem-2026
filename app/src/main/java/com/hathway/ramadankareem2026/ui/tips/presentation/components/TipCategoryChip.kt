@@ -35,7 +35,8 @@ import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 fun DailyTipCard(
     tip: Tip,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    language: String = "en"
 ) {
     Card(
         modifier = modifier
@@ -109,7 +110,7 @@ fun DailyTipCard(
             
             // Title
             Text(
-                text = tip.title,
+                text = tip.title.getText(language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -121,7 +122,7 @@ fun DailyTipCard(
             
             // Content
             Text(
-                text = tip.content,
+                text = tip.content.getText(language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,

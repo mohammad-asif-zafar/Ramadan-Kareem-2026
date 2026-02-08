@@ -22,7 +22,8 @@ import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 fun SimpleTipCard(
     tip: Tip,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    language: String = "en"
 ) {
     Card(
         modifier = modifier
@@ -41,7 +42,7 @@ fun SimpleTipCard(
         ) {
             // Title
             Text(
-                text = tip.title,
+                text = tip.title.getText(language),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -53,7 +54,7 @@ fun SimpleTipCard(
             
             // Content
             Text(
-                text = tip.content,
+                text = tip.content.getText(language),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 3,
@@ -69,7 +70,7 @@ fun SimpleTipCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = tip.category.displayName,
+                    text = tip.category.displayName.getName(language),
                     style = MaterialTheme.typography.labelSmall,
                     color = RamadanGreen,
                     fontWeight = FontWeight.Medium
@@ -92,7 +93,8 @@ fun SimpleTipCard(
 @Composable
 fun TipDetailCard(
     tip: Tip,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    language: String = "en"
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -121,7 +123,7 @@ fun TipDetailCard(
                     color = Color.Transparent
                 ) {
                     Text(
-                        text = tip.category.displayName,
+                        text = tip.category.displayName.getName(language),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = RamadanGreen,
@@ -152,7 +154,7 @@ fun TipDetailCard(
             
             // Title
             Text(
-                text = tip.title,
+                text = tip.title.getText(language),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -162,7 +164,7 @@ fun TipDetailCard(
             
             // Content
             Text(
-                text = tip.content,
+                text = tip.content.getText(language),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 1.4.em

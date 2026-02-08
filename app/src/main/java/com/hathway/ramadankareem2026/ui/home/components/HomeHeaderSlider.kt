@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -224,13 +225,18 @@ fun HomeHeaderSlider() {
         HorizontalPager(
             state = pagerState, modifier = Modifier.height(150.dp)
         ) { page ->
+            val context = LocalContext.current
+            val localizationManager = LocalizationManager(context)
+            val currentLanguage = localizationManager.getCurrentLanguage()
+            
             HeaderCard(
                 type = pages[page].type,
                 title = pages[page].title,
                 subtitle = pages[page].subtitle,
                 hint = pages[page].hint,
                 isAlarmEnabled = pages[page].isAlarmEnabled,
-                onAlarmToggle = pages[page].onAlarmToggle
+                onAlarmToggle = pages[page].onAlarmToggle,
+                language = currentLanguage
             )
         }
 

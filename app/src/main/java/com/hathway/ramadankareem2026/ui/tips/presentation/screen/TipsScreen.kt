@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.tips.data.model.TipCategory
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.SimpleTipCard
@@ -30,6 +32,10 @@ fun TipsScreen(
     onTipClick: (Int) -> Unit,
     viewModel: TipsViewModel = viewModel(factory = TipsViewModelFactory())
 ) {
+    val context = LocalContext.current
+    val localizationManager = LocalizationManager(context)
+    val currentLanguage = localizationManager.getCurrentLanguage()
+    
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
     
@@ -99,7 +105,8 @@ fun TipsScreen(
                     items(uiState.filteredTips) { tip ->
                         SimpleTipCard(
                             tip = tip,
-                            onClick = { onTipClick(tip.id) }
+                            onClick = { onTipClick(tip.id) },
+                            language = currentLanguage
                         )
                     }
                 }
@@ -129,7 +136,7 @@ private fun CategoryChipsRow(
         // Category chips
         items(categories) { category ->
             SimpleCategoryChip(
-                text = category.displayName,
+                text = category.displayName.getName("en"), // TODO: Pass actual language parameter
                 isSelected = selectedCategory == category,
                 onClick = { onCategorySelected(category) }
             )

@@ -53,7 +53,8 @@ fun HeaderCard(
     subtitle: String,
     hint: String,
     isAlarmEnabled: Boolean = false,
-    onAlarmToggle: (() -> Unit)? = null // ✅ NORMAL lambda
+    onAlarmToggle: (() -> Unit)? = null, // ✅ NORMAL lambda
+    language: String = "en"
 ) {
     // Reminder card stays unchanged
     if (type == HeaderType.REMINDER) {
@@ -252,7 +253,7 @@ private fun DynamicReminderCard(
                 Column {
                     val tip = currentTip
                     Text(
-                        text = tip?.title ?: subtitle,
+                        text = tip?.title?.getText("en") ?: subtitle, // TODO: Pass actual language parameter
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -263,7 +264,7 @@ private fun DynamicReminderCard(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = tip?.content ?: hint,
+                        text = tip?.content?.getText("en") ?: hint, // TODO: Pass actual language parameter
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.White.copy(alpha = 0.9f),
                         maxLines = 2,
