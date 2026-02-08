@@ -1,5 +1,7 @@
 package com.hathway.ramadankareem2026.ui.ramadan
 
+import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,9 +26,55 @@ import java.time.LocalDate
 import java.time.LocalTime
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hathway.ramadankareem2026.core.location.LocationUiState
+import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
+import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
+import com.hathway.ramadankareem2026.ui.prayer.PrayerType
+import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
+import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
+import java.time.format.DateTimeFormatter
 
+private const val TAG = "RamadanDayDetailSheet"
 @Composable
 fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
+
+    val context = LocalContext.current
+    val app = context.applicationContext as Application
+
+     // Prayer ViewModel
+    val prayerViewModel: PrayerViewModel = viewModel(
+        factory = PrayerViewModelFactory(app)
+    )
+    val homeViewModel: HomeViewModel = viewModel()
+
+    val locationState by homeViewModel.locationState.collectAsState()
+
+    LaunchedEffect(locationState) {
+        if (locationState is LocationUiState.Success) {
+            val success = locationState as LocationUiState.Success
+            prayerViewModel.load(
+                lat = success.latitude, lng = success.longitude, date = day.date
+            )
+        }
+    }
+
+
+    var now by remember { mutableStateOf(LocalTime.now()) }
+
+
+    val prayerState by prayerViewModel.state.collectAsState()
+    val prayers = remember(prayerState, now) {
+        PrayerTimeUiMapper.map(prayerState, now)
+    }
+
+    val mappedPrayers = remember(prayerState) {
+        PrayerTimeUiMapper.map(
+            state = prayerState, now = now
+        )
+    }
+
 
     val hijri = remember(day.date) { day.date.toHijriDate() }
 

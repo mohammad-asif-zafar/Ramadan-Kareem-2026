@@ -92,7 +92,7 @@ fun HomeScreen(
         Log.d(TAG, "HomeScreen2: $locationState")
 
     }
-
+       //zaaff
     // 🔹 Load prayers ONLY when location is SUCCESS
     LaunchedEffect(locationState) {
         if (locationState is LocationUiState.Success) {

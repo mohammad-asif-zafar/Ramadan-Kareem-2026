@@ -71,7 +71,7 @@ class PrayerViewModel(
     /**
      * ENTRY POINT from UI
      */
-    fun load(lat: Double, lng: Double) {
+    fun load(lat: Double, lng: Double, date: LocalDate = LocalDate.now()) {
         viewModelScope.launch {
 
             // 1️⃣ Always show demo immediately
@@ -80,10 +80,13 @@ class PrayerViewModel(
             // 2️⃣ Load from API if internet exists
             if (NetworkUtil.isConnected(getApplication())) {
 
-                val today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                // Format date once
+                val formattedDate =
+                    date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+
 
                 runCatching {
-                    repository.loadFromApi(today, lat, lng)
+                    repository.loadFromApi(formattedDate, lat, lng)
                 }.onSuccess {
                     _state.value = it
                     

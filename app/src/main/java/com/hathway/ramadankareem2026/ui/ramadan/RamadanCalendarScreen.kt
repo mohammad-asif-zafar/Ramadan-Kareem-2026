@@ -63,10 +63,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.core.location.LocationProvider
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
@@ -101,7 +103,7 @@ fun RamadanCalendarScreen(
     
     // Location detection for dynamic prayer times
     val context = LocalContext.current
-    val locationProvider = remember { com.hathway.ramadankareem2026.core.location.LocationProvider(context) }
+    val locationProvider = remember { LocationProvider(context) }
     
     // Auto-detect location on first load
     LaunchedEffect(Unit) {
@@ -241,10 +243,11 @@ fun RamadanCalendarScreen(
                 }
             }
         ) {
-            EnhancedRamadanDayDetailSheet(
+            RamadanDayDetailSheet(day = selectedDay!!)
+           /* EnhancedRamadanDayDetailSheet(
                 day = selectedDay!!,
                 onDismiss = { selectedDay = null }
-            )
+            )*/
         }
     }
 }
@@ -339,6 +342,37 @@ private fun EnhancedRamadanDayDetailSheet(
         EnhancedPrayerTimeCard("Maghrib", day.maghrib.toString())
         
         Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Preview(
+    name = "Ramadan Day Detail Sheet",
+    showBackground = true,
+    device = Devices.PIXEL_6
+)
+@Composable
+private fun EnhancedRamadanDayDetailSheetPreview() {
+
+    val previewDay = RamadanDayUiModel(
+        ramadanDay = 5,
+        weekday = "Friday",
+        date = LocalDate.of(2026, 3, 6),
+        month = "Ramadan",
+        status = FastingDayStatus.TODAY,
+        imsak = LocalTime.of(5, 32),
+        fajr = LocalTime.of(5, 42),
+        maghrib = LocalTime.of(18, 45),
+        totalMinutes = 1232,
+        remainingMinutes =3443234
+    )
+
+    MaterialTheme {
+        Surface {
+            EnhancedRamadanDayDetailSheet(
+                day = previewDay,
+                onDismiss = {}
+            )
+        }
     }
 }
 
