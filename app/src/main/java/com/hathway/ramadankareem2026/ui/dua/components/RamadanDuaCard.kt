@@ -24,15 +24,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
+
+
 
 @Composable
 fun RamadanDuaCard(
-    dua: DuaItem, onClick: () -> Unit
+    dua: DuaItem,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -52,7 +59,7 @@ fun RamadanDuaCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            // Top Row: Icon + Badge
+            // Top Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -65,8 +72,9 @@ fun RamadanDuaCard(
                         .size(40.dp)
                         .background(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-                            shape = RoundedCornerShape(12.dp)
-                        ), contentAlignment = Alignment.Center
+                            RoundedCornerShape(12.dp)
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AutoStories,
@@ -75,7 +83,7 @@ fun RamadanDuaCard(
                     )
                 }
 
-                //  Ramadan badge (optional)
+                // Ramadan badge (localized)
                 Box(
                     modifier = Modifier
                         .background(
@@ -85,7 +93,7 @@ fun RamadanDuaCard(
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "Ramadan",
+                        text = stringResource(R.string.ramadan_kareem),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -94,53 +102,60 @@ fun RamadanDuaCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            //  Arabic (Primary Focus)
+            // Arabic
             Text(
-                text = dua.arabic, style = MaterialTheme.typography.titleLarge, maxLines = 2
+                text = dua.arabic,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 2
             )
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            //  Title
+            // Localized Title ✅
             Text(
-                text = dua.title,
+                text = dua.title.asString(),
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 2
             )
 
-            //  Source
+            // Source
             Text(
                 text = dua.source,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-
-            Spacer(modifier = Modifier.height(6.dp))
         }
+    }
+}
+
+@Composable
+fun LocalizedDuaText.asString(): String {
+    val locale = LocalConfiguration.current.locales[0].language
+    return when (locale) {
+        "hi" -> hindi
+        "ur" -> urdu
+        "ms" -> malaysian
+        else -> english
     }
 }
 
 private val previewDua = DuaItem(
     id = "1",
-    title = "Ramadan Moon Sighting",
+    categoryId = "ramadan",
+    title = LocalizedDuaText(
+        english = "Ramadan Moon Sighting",
+        hindi = "रमज़ान का चाँद",
+        urdu = "رمضان کا چاند",
+        malaysian = "Melihat Anak Bulan Ramadan"
+    ),
     arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ",
     transliteration = "Allahumma ahlilhu ‘alaynā bil-yumni wal-īmān",
-    translation = "O Allah, bring it upon us with blessings and faith",
-    source = "Ramadan Duas",
-    categoryId = "ramadan"
+    translation = LocalizedDuaText(
+        english = "O Allah, bring it upon us with blessings and faith.",
+        hindi = "ऐ अल्लाह, इसे हमारे लिए बरकत और ईमान के साथ लाएं।",
+        urdu = "اے اللہ، اسے ہمارے لیے برکت اور ایمان کے ساتھ لے آ۔",
+        malaysian = "Wahai Allah, hadirkan ia kepada kami dengan keberkatan dan iman."
+    ),
+    source = "Ramadan Duʿāʾs"
 )
-
-@Preview(
-    name = "RamadanDuaCard – Vertical", showBackground = true, device = Devices.PIXEL_6
-)
-@Composable
-fun RamadanDuaCardPreview() {
-    MaterialTheme {
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            RamadanDuaCard(
-                dua = previewDua, onClick = {})
-        }
-    }
-}

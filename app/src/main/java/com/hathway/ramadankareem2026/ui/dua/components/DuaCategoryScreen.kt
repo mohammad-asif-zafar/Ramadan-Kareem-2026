@@ -20,6 +20,7 @@ import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
@@ -72,7 +73,8 @@ fun DuaCategoryScreen(
             items(duas) { dua ->
 
                 DuaCardItem(
-                    title = dua.title, subtitle = dua.source, // e.g. "Qur’an 2:128"
+                    title = dua.title.asString(),
+                    subtitle = dua.source, // e.g. "Qur’an 2:128"
 
                     //  Navigate to Duʿā detail screen
                     onClick = {
@@ -90,51 +92,47 @@ fun DuaCategoryScreen(
 
 
 @Preview(
-    name = "Dua Category Screen", device = Devices.PIXEL_6, showBackground = true
+    name = "Dua Category Screen",
+    device = Devices.PIXEL_6,
+    showBackground = true
 )
 @Composable
 fun DuaCategoryScreenPreview() {
 
-    //  Fake list for preview only
     val previewDuas = listOf(
         DuaItem(
             id = "1",
-            title = "Ramadan Moon Sighting",
+            categoryId = "ramadan",
+            title = LocalizedDuaText(
+                english = "Ramadan Moon Sighting",
+                hindi = "रमज़ान के चाँद की दुआ",
+                urdu = "رمضان کے چاند کی دعا",
+                malaysian = "Doa Melihat Bulan Ramadan"
+            ),
             arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا",
             transliteration = "Allahumma ahlilhu ‘alaynā",
-            translation = "O Allah, bring it upon us with blessings and faith",
-            source = "Ramadan Duʿā",
-            categoryId = "ramadan"
-        ), DuaItem(
-            id = "2",
-            title = "Forgiveness Duʿā",
-            arabic = "رَبِّ اغْفِرْ لِي",
-            transliteration = "Rabbi ighfir li",
-            translation = "My Lord, forgive me",
-            source = "Qur’an 2:286",
-            categoryId = "ramadan"
+            translation = LocalizedDuaText(
+                english = "O Allah, bring it upon us with blessings and faith.",
+                hindi = "ऐ अल्लाह, इसे हमारे लिए बरकत और ईमान के साथ लाएँ।",
+                urdu = "اے اللہ، اسے ہمارے لیے برکت اور ایمان کے ساتھ لائے۔",
+                malaysian = "Wahai Allah, bawakan ia kepada kami dengan keberkatan dan iman."
+            ),
+            source = "Ramadan Duʿā"
         )
     )
 
     RamadanKareemTheme {
-        Scaffold(
-            topBar = {
-                RamadanToolbar(
-                    title = stringResource(id = R.string.duʿās), showBack = true, onBackClick = {})
-            }) { padding ->
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(previewDuas) { dua ->
-                    DuaCardItem(
-                        title = dua.title, subtitle = dua.source, onClick = {})
-                }
+        LazyColumn(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(previewDuas) { dua ->
+                DuaItemCard(
+                    dua = dua,
+                    onClick = {}
+                )
             }
         }
     }
 }
+

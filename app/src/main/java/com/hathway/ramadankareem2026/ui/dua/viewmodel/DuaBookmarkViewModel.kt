@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.data.local.BookmarkManager
 import com.hathway.ramadankareem2026.data.local.database.BookmarkDao
+import com.hathway.ramadankareem2026.data.local.database.BookmarkEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,35 +38,56 @@ class DuaBookmarkViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun toggleBookmark(itemId: String, title: String, content: String?) {
+    fun toggleBookmark(
+        itemId: String,
+        title: String,
+        content: String?
+    ) {
         viewModelScope.launch {
-            val isCurrentlyBookmarked = bookmarkDao.isBookmarked(itemId, "dua")
-            val stateFlow = _isBookmarkedMap.getOrPut(itemId) { MutableStateFlow(false) }
 
-            Log.d("DuaBookmark", "Toggling bookmark for $itemId: currently $isCurrentlyBookmarked")
+            val bookmarkId = "dua_$itemId"
+
+            val isCurrentlyBookmarked =
+                bookmarkDao.isBookmarked(bookmarkId, "dua")
+
+            val stateFlow = _isBookmarkedMap.getOrPut(itemId) {
+                MutableStateFlow(isCurrentlyBookmarked)
+            }
+
+            Log.d(
+                "DuaBookmark",
+                "Toggling bookmark for $itemId: currently $isCurrentlyBookmarked"
+            )
 
             if (isCurrentlyBookmarked) {
-                bookmarkDao.deleteBookmarkById(itemId, "dua")
+
+                bookmarkDao.deleteBookmarkById(bookmarkId, "dua")
                 stateFlow.value = false
+
                 Log.d("DuaBookmark", "Removed bookmark for $itemId")
-                
-                // Trigger immediate dua badge update with delta
+
+                // 🔽 decrement badge
                 onBookmarkCountChanged?.invoke(-1)
+
             } else {
-                val bookmark = com.hathway.ramadankareem2026.data.local.database.BookmarkEntity(
-                    id = "dua_${itemId}",
+
+                val bookmark = BookmarkEntity(
+                    id = bookmarkId,
                     itemId = itemId,
                     itemType = "dua",
                     title = title,
                     content = content
                 )
+
                 bookmarkDao.insertBookmark(bookmark)
                 stateFlow.value = true
+
                 Log.d("DuaBookmark", "Added bookmark for $itemId")
-                
-                // Trigger immediate dua badge update with delta
+
+                // 🔼 increment badge
                 onBookmarkCountChanged?.invoke(1)
             }
         }
     }
+
 }

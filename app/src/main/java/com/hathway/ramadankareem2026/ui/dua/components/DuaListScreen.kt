@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 
 /**
  * Screen that displays a list of Duʿās.
@@ -79,35 +80,72 @@ fun DuaListScreen(
 @Composable
 fun DuaListScreenPreview() {
 
-    // Demo preview data
     val previewDuas = listOf(
         DuaItem(
             id = "sehri",
             categoryId = "ramadan",
-            title = "Intention for Fasting (Sehri)",
+            title = LocalizedDuaText(
+                english = "Intention for Fasting (Sehri)",
+                hindi = "रोज़े की नियत (सेहरी)",
+                urdu = "روزے کی نیت (سحری)",
+                malaysian = "Niat Berpuasa (Sahur)"
+            ),
             arabic = "وَبِصَوْمِ غَدٍ نَوَيْتُ مِنْ شَهْرِ رَمَضَانَ",
             transliteration = "Wa bisawmi ghadin nawaitu min shahri Ramaḍān",
-            translation = "I intend to keep the fast for tomorrow in the month of Ramadan.",
+            translation = LocalizedDuaText(
+                english = "I intend to keep the fast for tomorrow in the month of Ramadan.",
+                hindi = "मैं रमज़ान के महीने में कल रोज़ा रखने की नियत करता हूँ।",
+                urdu = "میں رمضان کے مہینے میں کل روزہ رکھنے کی نیت کرتا ہوں۔",
+                malaysian = "Saya berniat berpuasa esok dalam bulan Ramadan."
+            ),
             source = "Fiqh"
-        ), DuaItem(
+        ),
+
+        DuaItem(
             id = "iftar",
             categoryId = "ramadan",
-            title = "Duʿāʾ at Iftar",
+            title = LocalizedDuaText(
+                english = "Duʿāʾ at Iftar",
+                hindi = "इफ्तार की दुआ",
+                urdu = "افطار کی دعا",
+                malaysian = "Doa Berbuka Puasa"
+            ),
             arabic = "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ",
             transliteration = "Dhahabaẓ-ẓama’u wabtallatil-‘urūq wa thabatal-ajru",
-            translation = "The thirst has gone, the veins are moistened, and the reward is assured.",
+            translation = LocalizedDuaText(
+                english = "The thirst has gone, the veins are moistened, and the reward is assured.",
+                hindi = "प्यास बुझ गई, नसें तर हो गईं और सवाब साबित हो गया।",
+                urdu = "پیاس بجھ گئی، رگیں تر ہو گئیں اور اجر ثابت ہو گیا۔",
+                malaysian = "Dahaga telah hilang, urat-urat menjadi basah, dan pahala telah ditetapkan."
+            ),
             source = "Abu Dawood"
-        ), DuaItem(
+        ),
+
+        DuaItem(
             id = "laylat_qadr",
             categoryId = "ramadan",
-            title = "Laylat al-Qadr",
+            title = LocalizedDuaText(
+                english = "Laylat al-Qadr",
+                hindi = "लैलतुल क़द्र",
+                urdu = "لیلۃ القدر",
+                malaysian = "Lailatul Qadr"
+            ),
             arabic = "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
             transliteration = "Allahumma innaka ‘afuwwun tuḥibbul-‘afwa fa‘fu ‘annī",
-            translation = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+            translation = LocalizedDuaText(
+                english = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+                hindi = "ऐ अल्लाह, आप क्षमाशील हैं और क्षमा को पसंद करते हैं, तो मुझे क्षमा करें।",
+                urdu = "اے اللہ، تو بہت معاف کرنے والا ہے اور معافی کو پسند کرتا ہے، پس مجھے معاف فرما۔",
+                malaysian = "Wahai Allah, Engkau Maha Pengampun dan menyukai keampunan, maka ampunkanlah aku."
+            ),
             source = "Tirmidhi"
         )
     )
 
     DuaListScreen(
-        title = "Duʿāʾs", duas = previewDuas, onBack = {})
+        title = "Duʿāʾs", // fine for preview
+        duas = previewDuas,
+        onBack = {}
+    )
 }
+

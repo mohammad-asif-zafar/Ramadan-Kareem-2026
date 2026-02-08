@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.dua.components
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 
 /**
  * Displays a horizontally scrollable list of Duʿā cards.
@@ -15,68 +17,80 @@ import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
  * Used on:
  * - Home screen (Ramadan highlights)
  * - Featured / recommended duʿās section
- *
  */
 @Composable
 fun RamadanDuaHorizontal(
-    duas: List<DuaItem>,              // List of duʿās to display
-    onClick: (DuaItem) -> Unit        // Click callback for each duʿā
+    duas: List<DuaItem>,
+    onClick: (DuaItem) -> Unit
 ) {
-
-    /**
-     * LazyRow is the horizontal version of LazyColumn.
-     * Only visible items are composed → efficient scrolling.
-     */
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp), // Space between cards
-        contentPadding = PaddingValues(horizontal = 16.dp)   // Padding on screen edges
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
 
-        /**
-         * Each duʿā is rendered as a RamadanDuaCard.
-         */
-        items(duas) { dua ->
-            RamadanDuaCard(dua = dua, onClick = { onClick(dua) } // Forward clicked item
+        // ✅ Stable key improves scroll + recomposition performance
+        items(
+            items = duas,
+            key = { it.id }
+        ) { dua ->
+            RamadanDuaCard(
+                dua = dua,
+                onClick = { onClick(dua) }
             )
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun RamadanDuaHorizontalPreview() {
 
-    // Demo data for preview
-
     val previewDuas = listOf(
         DuaItem(
-            id = "laylat_qadr",
+            id = "laylat_qadr_1",
             categoryId = "ramadan",
-            title = "Laylat al-Qadr",
+            title = LocalizedDuaText(
+                english = "Laylat al-Qadr",
+                hindi = "लैलतुल क़द्र",
+                urdu = "لیلة القدر",
+                malaysian = "Lailatul Qadar"
+            ),
             arabic = "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
             transliteration = "Allahumma innaka ‘afuwwun tuḥibbul-‘afwa fa‘fu ‘annī",
-            translation = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+            translation = LocalizedDuaText(
+                english = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+                hindi = "ऐ अल्लाह, आप क्षमाशील हैं और क्षमा पसंद करते हैं, मुझे क्षमा करें।",
+                urdu = "اے اللہ، تو معاف کرنے والا ہے اور معافی کو پسند کرتا ہے، مجھے معاف فرما۔",
+                malaysian = "Wahai Allah, Engkau Maha Pengampun dan menyukai keampunan, maka ampunilah aku."
+            ),
             source = "Tirmidhi"
-        ), DuaItem(
-            id = "laylat_qadr",
+        ),
+        DuaItem(
+            id = "laylat_qadr_2",
             categoryId = "ramadan",
-            title = "Laylat al-Qadr",
+            title = LocalizedDuaText(
+                english = "Laylat al-Qadr",
+                hindi = "लैलतुल क़द्र",
+                urdu = "لیلة القدر",
+                malaysian = "Lailatul Qadar"
+            ),
             arabic = "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
             transliteration = "Allahumma innaka ‘afuwwun tuḥibbul-‘afwa fa‘fu ‘annī",
-            translation = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
-            source = "Tirmidhi"
-        ), DuaItem(
-            id = "laylat_qadr",
-            categoryId = "ramadan",
-            title = "Laylat al-Qadr",
-            arabic = "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
-            transliteration = "Allahumma innaka ‘afuwwun tuḥibbul-‘afwa fa‘fu ‘annī",
-            translation = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+            translation = LocalizedDuaText(
+                english = "O Allah, You are Most Forgiving, and You love forgiveness, so forgive me.",
+                hindi = "ऐ अल्लाह, आप क्षमाशील हैं और क्षमा पसंद करते हैं, मुझे क्षमा करें।",
+                urdu = "اے اللہ، تو معاف کرنے والا ہے اور معافی کو پسند کرتا ہے، مجھے معاف فرما۔",
+                malaysian = "Wahai Allah, Engkau Maha Pengampun dan menyukai keampunan, maka ampunilah aku."
+            ),
             source = "Tirmidhi"
         )
     )
 
     RamadanDuaHorizontal(
-        duas = previewDuas, onClick = {})
+        duas = previewDuas,
+        onClick = {}
+    )
 }
+
 

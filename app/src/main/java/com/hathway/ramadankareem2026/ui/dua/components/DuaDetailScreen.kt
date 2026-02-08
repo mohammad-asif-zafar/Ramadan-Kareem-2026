@@ -54,6 +54,7 @@ import com.hathway.ramadankareem2026.core.service.DuaTtsService
 import com.hathway.ramadankareem2026.core.tts.TtsActions
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
@@ -115,7 +116,8 @@ fun DuaDetailScreen(
                 }
                 item {
                     Text(
-                        text = dua.title,
+                        text = dua.title.asString(),
+
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -153,19 +155,26 @@ fun DuaDetailScreen(
                                 )
                             }
                         }
+                        val localizedTitle = dua.title.asString()
 
                         TextButton(
                             onClick = {
                                 bookmarkViewModel.toggleBookmark(
-                                    itemId = dua.id, title = dua.title, content = dua.arabic
+                                    itemId = dua.id,
+                                    title = localizedTitle,   // ✅ localized, safe to store
+                                    content = dua.arabic            // ✅ Arabic text for context
                                 )
-                            }) {
+                            }
+                        ) {
                             Text(
-                                text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
-                                    R.string.add_bookmark
-                                ), style = MaterialTheme.typography.labelMedium
+                                text = if (isBookmarked)
+                                    stringResource(R.string.remove_bookmark)
+                                else
+                                    stringResource(R.string.add_bookmark),
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
+
                     }
                 }
 
@@ -199,7 +208,7 @@ fun DuaDetailScreen(
 
                 item {
                     Text(
-                        text = dua.translation,
+                        text = dua.translation.asString(),
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         lineHeight = 24.sp
@@ -279,18 +288,29 @@ fun DuaDetailScreenPreview() {
         // Create mock ViewModels for preview
         val mockDuaBookmarkCountViewModel = DuaBookmarkCountViewModel(Application())
         val mockBookmarkViewModel = DuaBookmarkViewModel(Application())
-        
+
         DuaDetailScreen(
             dua = DuaItem(
                 id = "1",
-                title = "Ramadan Moon Sighting Duʿāʾ",
+                categoryId = "ramadan",
+                title = LocalizedDuaText(
+                    english = "Ramadan Moon Sighting Duʿāʾ",
+                    hindi = "रमज़ान का चाँद देखने की दुआ",
+                    urdu = "رمضان کا چاند دیکھنے کی دعا",
+                    malaysian = "Doa Melihat Anak Bulan Ramadan"
+                ),
                 arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ",
                 transliteration = "Allahumma ahlilhu 'alaynā bil-yumni wal-īmān",
-                translation = "O Allah, bring it upon us with blessings and faith.",
-                source = "Tirmidhi",
-                categoryId = "ramadan"
-            ), 
-            onBack = {}, 
+                translation = LocalizedDuaText(
+                    english = "O Allah, bring it upon us with blessings and faith.",
+                    hindi = "ऐ अल्लाह, इसे हमारे लिए बरकत और ईमान के साथ लाएं।",
+                    urdu = "اے اللہ، اسے ہمارے لیے برکت اور ایمان کے ساتھ لے آ۔",
+                    malaysian = "Wahai Allah, hadirkan ia kepada kami dengan keberkatan dan iman."
+                ),
+                source = "Tirmidhi"
+            )
+            ,
+            onBack = {},
             navController = rememberNavController(),
             bookmarkViewModel = mockBookmarkViewModel,
             duaBookmarkCountViewModel = mockDuaBookmarkCountViewModel

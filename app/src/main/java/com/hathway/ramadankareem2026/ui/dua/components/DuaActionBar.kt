@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
+import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaTtsViewModel
 import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
 
@@ -31,6 +32,7 @@ fun DuaActionBar(
     dua: DuaItem, viewModel: DuaTtsViewModel = viewModel()
 ) {
     val isSpeaking by viewModel.isSpeaking
+    val localizedTranslation = dua.translation.asString()
 
     Surface(tonalElevation = 3.dp) {
         Row(
@@ -55,7 +57,8 @@ fun DuaActionBar(
                         viewModel.stop()
                     } else {
                         viewModel.speakArabicThenTranslation(
-                            arabic = dua.arabic, translation = dua.translation
+                            arabic = dua.arabic, translation = localizedTranslation   // ✅ FIXED
+
                         )
                     }
                 }) {
@@ -78,10 +81,20 @@ fun DuaActionBar(
 
 private val previewDua = DuaItem(
     id = "1",
-    title = "Ramadan Moon Sighting",
+    title = LocalizedDuaText(
+        english = "Ramadan Moon Sighting",
+        hindi = "रमज़ान के चांद देखने की दुआ",
+        urdu = "رمضان کے چاند دیکھنے کی دعا",
+        malaysian = "Doa Melihat Bulan Ramadan"
+    ),
     arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ",
-    transliteration = "Allahumma ahlilhu ‘alaynā bil-yumni wal-īmān",
-    translation = "O Allah, bring it upon us with blessings and faith",
+    transliteration = "Allahumma ahlilhu 'alaynā bil-yumni wal-īmān",
+    translation = LocalizedDuaText(
+        english = "O Allah, bring it upon us with blessings and faith.",
+        hindi = "ऐ अल्लाह, हम पर बरकत, ईमान, सुरक्षा और इस्लाम लाएं।",
+        urdu = "اے اللہ، ہمیں پر برکت، ایمان، حفاظت اور اسلام لا۔",
+        malaysian = "Wahai Allah, bawakan kami dengan keberkatan, iman, keselamatan, dan Islam."
+    ),
     source = "Ramadan Duas",
     categoryId = "ramadan"
 )
