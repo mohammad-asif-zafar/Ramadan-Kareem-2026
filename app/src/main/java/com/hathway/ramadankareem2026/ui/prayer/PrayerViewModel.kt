@@ -59,11 +59,11 @@ class PrayerViewModel(
         _notificationsEnabled.value = enabled
         if (enabled) {
             // Schedule notifications for current prayer times
-            _state.value?.let { prayerTimes ->
+            _state.value.let { prayerTimes ->
                 PrayerNotificationScheduler.schedulePrayerNotifications(
                     getApplication(),
                     prayerTimes,
-                    enabled
+                    true
                 )
             }
         } else {
