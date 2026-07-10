@@ -1,5 +1,23 @@
 package com.hathway.ramadankareem2026.ui.allahnames
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,11 +29,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -24,15 +37,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
@@ -41,9 +45,12 @@ import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkV
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.TextPrimaryLight
-import com.hathway.ramadankareem2026.ui.theme.Gold
-import com.hathway.ramadankareem2026.ui.theme.Emerald
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun AllahNameDetailScreen(
@@ -55,156 +62,202 @@ fun AllahNameDetailScreen(
 ) {
     val isBookmarked by bookmarkViewModel.isBookmarked(name.id.toString())
         .collectAsStateWithLifecycle(initialValue = false)
-    val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
+    val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(
+        initialValue = 0
+    )
 
     LaunchedEffect(name.id) {
         bookmarkViewModel.checkBookmarkStatus(name.id.toString())
-        // Set up callback for immediate badge updates with delta
         bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
             allahNameBookmarkCountViewModel.updateAllahNameBookmarkCountImmediate(delta)
         }
     }
 
-    Scaffold(
-        topBar = {
-            RamadanToolbar(
-                title = name.transliteration,
-                showBack = true,
-                onBackClick = onBack,
-                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
-                rightIcon1Badge = bookmarkCount,
-                onRightIcon1Click = {
-                    // Navigate to allah name bookmarks list
-                    navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
-                }
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // 1. Background Image Layer (rendered at the bottom)
+        Image(
+            painter = painterResource(id = R.drawable.bg_allah_detail_screen),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
 
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-        ) {
+        // 2. Foreground User Interface
+        Scaffold(
+            topBar = {
+                RamadanToolbar(
+                    title = name.transliteration,
+                    showBack = true,
+                    onBackClick = onBack,
+                    rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
+                    rightIcon1Badge = bookmarkCount,
+                    onRightIcon1Click = {
+                        navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
+                    })
+            },
+            // FIX: Set to Transparent so the background image shows through
+            containerColor = Color.Transparent
+        ) { innerPadding ->
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .padding(horizontal = 14.dp) // Slightly increased for a cleaner card footprint
             ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
 
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
+                    item {
+                        OrnamentalNameBox(
+                            arabicText = name.arabic,
+                            modifier = Modifier// Clean proportional sizing
+                        )
+                    }
 
-                item {
-                    Text(
-                        text = name.arabic,
-                        style = MaterialTheme.typography.displayLarge,
-                        color = TextPrimaryLight,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                    item {
+                        Text(
+                            text = name.transliteration,
+                            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Emerald,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
 
-                item {
-                    Text(
-                        text = name.transliteration,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Emerald,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                    item {
+                        Text(
+                            text = name.meaning,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
 
-                item {
-                    Text(
-                        text = name.meaning,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Surface(
-                            shape = MaterialTheme.shapes.small,
-                            color = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
-                            else MaterialTheme.colorScheme.surfaceVariant
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            Surface(
+                                shape = androidx.compose.foundation.shape.CircleShape, // Smooth pill layout
+                                color = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
+                                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
                             ) {
-                                androidx.compose.material3.Icon(
-                                    imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp),
-                                    tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                                    else MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
+                                Row(
+                                    modifier = Modifier.padding(
+                                        horizontal = 16.dp, vertical = 8.dp
+                                    ), verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                        tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                                        else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = if (isBookmarked) stringResource(R.string.bookmarked) else stringResource(
+                                            R.string.not_bookmarked
+                                        ),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
+                                        else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+
+                            TextButton(
+                                onClick = {
+                                    bookmarkViewModel.toggleBookmark(
+                                        itemId = name.id.toString(),
+                                        title = "${name.transliteration} - ${name.english}",
+                                        content = name.arabic
+                                    )
+                                }) {
                                 Text(
-                                    text = if (isBookmarked) stringResource(R.string.bookmarked) else stringResource(
-                                        R.string.not_bookmarked
-                                    ),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                                    else MaterialTheme.colorScheme.onSurfaceVariant
+                                    text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
+                                        R.string.add_bookmark
+                                    ), style = MaterialTheme.typography.labelLarge, color = Emerald
                                 )
                             }
                         }
+                    }
 
-                        TextButton(
-                            onClick = {
-                                bookmarkViewModel.toggleBookmark(
-                                    itemId = name.id.toString(),
-                                    title = "${name.transliteration} - ${name.english}",
-                                    content = name.arabic
-                                )
-                                // Badge update is now handled by callback
-                            }) {
+                    item {
+                        // High-contrast translucent surface card overlay
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(24.dp),
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
+                            shadowElevation = 3.dp
+                        ) {
                             Text(
-                                text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
-                                    R.string.add_bookmark
-                                ), style = MaterialTheme.typography.labelMedium
+                                text = name.english,
+                                modifier = Modifier.padding(28.dp),
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface, // Changed to darker legible shade
+                                textAlign = TextAlign.Center,
+                                lineHeight = 28.sp
                             )
                         }
                     }
-                }
 
-                item {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(20.dp),
-                        color = MaterialTheme.colorScheme.surfaceVariant
-                    ) {
-                        Text(
-                            text = name.english,
-                            modifier = Modifier.padding(24.dp),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Gold,
-                            textAlign = TextAlign.Center,
-                            lineHeight = 26.sp
-                        )
+                    item {
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
     }
 }
 
+@Composable
+fun OrnamentalNameBox(
+    arabicText: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(340.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        // 1. Background Ring Image Asset Layer
+        Image(
+            painter = painterResource(R.drawable.bg_ornamental_ring),
+            contentDescription = null,
+            modifier = Modifier.size(320.dp),
+            contentScale = ContentScale.Fit
+        )
+
+        // 2. Foreground Dynamic Text Content Layer (Perfectly Centered)
+        Text(
+            text = arabicText,
+            fontSize = 32.sp, // 💡 Upscaled to match the bold presence of the larger ring frame
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Serif,
+            color = Color(0xFF0F5A3E),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(36.dp) // 💡 Expanded inner safety walls to keep text from touching the edge lines
+        )
+    }
+}
 
 @Preview(
     name = "Allah Name Detail – Light", showBackground = true
@@ -215,7 +268,7 @@ fun AllahNameDetailPreviewLight() {
         // Create mock ViewModels for preview
         val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(Application())
         val mockBookmarkViewModel = AllahNamesBookmarkViewModel(Application())
-        
+
         AllahNameDetailScreen(
             name = AllahName(
                 id = 4,
@@ -223,10 +276,14 @@ fun AllahNameDetailPreviewLight() {
                 transliteration = "Al-Quddoos",
                 english = "The Most Holy",
                 meaning = "The One who is pure from any imperfection and clear from children and adversaries."
-            ), 
+            ),
             onBack = {},
             navController = rememberNavController(),
             bookmarkViewModel = mockBookmarkViewModel,
-            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
+            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel
+        )
     }
 }
+
+
+
