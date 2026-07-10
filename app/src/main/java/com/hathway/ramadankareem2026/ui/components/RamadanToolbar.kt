@@ -22,9 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,35 +33,37 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.core.util.capitalizeFirst
 
 @Composable
 fun RamadanToolbar(
     title: String,
+    modifier: Modifier = Modifier,
     subtitle: String? = null,
     meta: String? = null,
     metaAlpha: Float = 1f,
-    metaOffsetY: Dp = 0.dp,
     toolbarHeight: Dp = 56.dp,
     subtitleAlpha: Float = 1f,
+    metaOffsetY: Dp = 0.dp, // 💡 Added back missing offset parameter slot
     showBack: Boolean = true,
     onBackClick: () -> Unit = {},
-    leftIcon: Int? = null,
+    leftIcon: ToolbarIcon? = null, // Accepts both vector and drawable
     onLeftIconClick: () -> Unit = {},
-    rightIcon1: Int? = null,
+    rightIcon1: ToolbarIcon? = null, // Accepts both vector and drawable
     onRightIcon1Click: () -> Unit = {},
     rightIcon1Badge: Int? = null,
-    rightIcon2: Int? = null,
+    rightIcon2: ToolbarIcon? = null, // Accepts both vector and drawable
     onRightIcon2Click: () -> Unit = {},
+    rightIcon2Badge: Int? = null,
     backgroundColor: Color = Color.White,
     contentColor: Color = Color.Black
 ) {
     Surface(
-        shadowElevation = 6.dp, color = backgroundColor
+        shadowElevation = 4.dp,
+        color = backgroundColor,
+        modifier = modifier
     ) {
         Column {
-
-            // 🔹 MAIN TOOLBAR ROW (UNCHANGED HEIGHT)
+            // MAIN TOOLBAR ROW
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -69,8 +71,7 @@ fun RamadanToolbar(
                     .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                // Back button or Left icon
+                // Back Button or Custom Left Icon
                 if (showBack) {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -81,88 +82,63 @@ fun RamadanToolbar(
                     }
                 } else if (leftIcon != null) {
                     IconButton(onClick = onLeftIconClick) {
-                        Icon(
-                            painter = painterResource(leftIcon),
-                            contentDescription = stringResource(R.string.left_action),
-                            tint = contentColor
-                        )
+                        ToolbarIconRenderer(icon = leftIcon, tint = contentColor, contentDescription = "Left Action")
                     }
                 } else {
                     Spacer(modifier = Modifier.width(48.dp))
                 }
 
-                // TITLE + OPTIONAL SUBTITLE
+                // Title + Subtitle Column
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 8.dp)
                 ) {
                     Text(
-                        text = title.capitalizeFirst(),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = contentColor
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                        color = contentColor,
+                        maxLines = 1
                     )
 
-                    // OPTIONAL subtitle (English name)
                     subtitle?.let {
                         Text(
                             text = it,
                             modifier = Modifier.graphicsLayer { alpha = subtitleAlpha },
                             style = MaterialTheme.typography.bodySmall,
-                            color = contentColor.copy(alpha = 0.7f)
+                            color = contentColor.copy(alpha = 0.6f),
+                            maxLines = 1
                         )
                     }
                 }
 
-                // Right icon 1 with badge
-                rightIcon1?.let {
-                    Box {
+                // Right Icon 1 with Badge Support
+                rightIcon1?.let { icon ->
+                    Box(modifier = Modifier.padding(end = 4.dp)) {
                         IconButton(onClick = onRightIcon1Click) {
-                            Icon(
-                                painter = painterResource(it),
-                                contentDescription = stringResource(R.string.right_action),
-                                tint = contentColor
-                            )
+                            ToolbarIconRenderer(icon = icon, tint = contentColor, contentDescription = "Right Action 1")
                         }
-
-                        rightIcon1Badge?.let { badgeCount ->
-                            if (badgeCount > 0) {
-                                Surface(
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .clip(CircleShape)
-                                        .align(Alignment.TopEnd), color = Color.Red
-                                ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        Text(
-                                            text = if (badgeCount > 99) "99+" else badgeCount.toString(),
-                                            color = Color.White,
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    }
-                                }
-                            }
-                        }
+                        ToolbarBadge(badgeCount = rightIcon1Badge, modifier = Modifier.align(Alignment.TopEnd))
                     }
                 }
 
-                // Right icon 2
-                rightIcon2?.let {
-                    IconButton(onClick = onRightIcon2Click) {
-                        Icon(
-                            painter = painterResource(it),
-                            contentDescription = stringResource(R.string.right_action_second),
-                            tint = contentColor
-                        )
+                // Right Icon 2 with Badge Support
+                rightIcon2?.let { icon ->
+                    Box {
+                        IconButton(onClick = onRightIcon2Click) {
+                            ToolbarIconRenderer(icon = icon, tint = contentColor, contentDescription = "Right Action 2")
+                        }
+                        ToolbarBadge(badgeCount = rightIcon2Badge, modifier = Modifier.align(Alignment.TopEnd))
                     }
                 }
             }
 
-            // OPTIONAL META ROW (Ayahs • Meccan)
+            // Meta Rows (Metadata info chips)
             meta?.let {
                 Box(
-                    modifier = Modifier.graphicsLayer { alpha = metaAlpha }
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer { alpha = metaAlpha }
                 ) {
                     Row(
                         modifier = Modifier
@@ -172,25 +148,78 @@ fun RamadanToolbar(
                     ) {
                         meta.split("•").forEach { item ->
                             Surface(
-                                shape = RoundedCornerShape(50),
-                                color = contentColor.copy(alpha = 0.08f)
+                                shape = RoundedCornerShape(6.dp),
+                                color = contentColor.copy(alpha = 0.06f)
                             ) {
                                 Text(
                                     text = item.trim(),
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                    style = MaterialTheme.typography.labelSmall
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium, fontSize = 11.sp),
+                                    color = contentColor.copy(alpha = 0.8f)
                                 )
                             }
                         }
                     }
                 }
             }
-
-
         }
     }
 }
 
+/**
+ * Shared Dynamic Renderer component dealing with Vector / Drawable wrapper variations cleanly.
+ */
+@Composable
+private fun ToolbarIconRenderer(
+    icon: ToolbarIcon,
+    tint: Color,
+    contentDescription: String
+) {
+    when (icon) {
+        is ToolbarIcon.Vector -> {
+            Icon(
+                imageVector = icon.imageVector,
+                contentDescription = contentDescription,
+                tint = tint
+            )
+        }
+        is ToolbarIcon.Drawable -> {
+            Icon(
+                painter = painterResource(id = icon.resId),
+                contentDescription = contentDescription,
+                tint = tint
+            )
+        }
+    }
+}
+
+/**
+ * Shared Badge Layout used for action indicators.
+ */
+@Composable
+private fun ToolbarBadge(badgeCount: Int?, modifier: Modifier = Modifier) {
+    if (badgeCount != null && badgeCount > 0) {
+        Surface(
+            modifier = modifier.size(18.dp),
+            shape = CircleShape,
+            color = Color(0xFFD32F2F)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = if (badgeCount > 99) "99+" else badgeCount.toString(),
+                    color = Color.White,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
+}
+
+sealed class ToolbarIcon {
+    data class Vector(val imageVector: ImageVector) : ToolbarIcon()
+    data class Drawable(val resId: Int) : ToolbarIcon()
+}
 
 @Preview(
     name = "Ramadan Toolbar – Dua", showBackground = true
@@ -198,13 +227,5 @@ fun RamadanToolbar(
 @Composable
 fun RamadanToolbarPreview() {
     MaterialTheme {
-        RamadanToolbar(
-            title = stringResource(R.string.dua),
-            showBack = true,
-            rightIcon1 = R.drawable.ic_favorite_outline,
-            rightIcon2 = R.drawable.ic_notification,
-            onBackClick = {},
-            onRightIcon1Click = {},
-            onRightIcon2Click = {})
     }
 }

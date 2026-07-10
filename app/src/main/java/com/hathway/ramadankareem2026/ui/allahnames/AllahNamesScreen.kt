@@ -4,16 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,25 +18,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hathway.ramadankareem2026.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
+import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.allahnames.components.AllahNameCard
+import com.hathway.ramadankareem2026.ui.allahnames.components.NamesDisplaySection
+import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
+import com.hathway.ramadankareem2026.ui.commoncomponents.SearchFieldOutlinedText
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
+import com.hathway.ramadankareem2026.ui.icons.RamadanIcons
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 
 @Composable
 fun AllahNamesScreen(
-    names: List<AllahName>, 
-    onBack: () -> Unit, 
+    names: List<AllahName>,
+    onBack: () -> Unit,
     onNameClick: (AllahName) -> Unit,
     navController: NavController,
     allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel
@@ -49,17 +47,17 @@ fun AllahNamesScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
-    
+
     // Create bookmark ViewModel for immediate updates
     val bookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
-    
+    var isGridView by remember { mutableStateOf(true) } // Layout mode state flag
     // Set up callback for immediate badge updates
     LaunchedEffect(Unit) {
         bookmarkViewModel.setBookmarkCountChangedCallback { delta ->
             allahNameBookmarkCountViewModel.updateAllahNameBookmarkCountImmediate(delta)
         }
     }
-    
+
     val filteredNames = names.filter {
         searchQuery.isBlank() ||
         it.arabic.contains(searchQuery, ignoreCase = true) ||
@@ -71,15 +69,25 @@ fun AllahNamesScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = stringResource(R.string.allah_name), 
-                showBack = true, 
+                title = stringResource(R.string.allah_name),
+                showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1 =  ToolbarIcon.Drawable(R.drawable.ic_saved),
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
                     // Navigate to allah name bookmarks list
                     navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
+                },
+                // 💡 Dynamically changes the icon shape to match the next available layout view
+                rightIcon2 = if (isGridView) {
+                    ToolbarIcon.Vector(RamadanIcons.GridViewIcon)
+                } else {
+                    ToolbarIcon.Vector(RamadanIcons.ListViewIcon)
+                },
+                onRightIcon2Click = {
+                    isGridView = !isGridView
                 }
+
             )
         }, containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -89,31 +97,20 @@ fun AllahNamesScreen(
                 .padding(padding)
         ) {
             // Search field
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text(stringResource(R.string.search_allah_names)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(
-                    onSearch = { keyboardController?.hide() }
-                )
+
+            SearchFieldOutlinedText(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholderText = stringResource(R.string.search_allah_names),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(filteredNames, key = { it.id }) { name ->
-                    AllahNameCard(
-                        name = name, onClick = { onNameClick(name) }
-                    )
-                }
-            }
+            NamesDisplaySection(
+                isGridView = isGridView,
+                filteredNames = filteredNames,
+                onNameClick = onNameClick,
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }

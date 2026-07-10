@@ -26,10 +26,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // ✅ REQUIRED for Android 12+ splash screen support
         installSplashScreen()
-
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
 
         localizationManager = LocalizationManager(this)
         localizationManager.applySavedLanguage()

@@ -5,32 +5,70 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val LightColorScheme = lightColorScheme(
-    primary = RamadanGreen,
-    secondary = RamadanGold,
-    background = LightBackground,
-    surface = LightSurface,
+private val LightColors = lightColorScheme(
 
+    primary = Emerald,
     onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = LightTextPrimary,
-    onSurface = LightTextPrimary,
 
-    error = ErrorRed
+    primaryContainer = EmeraldContainer,
+    onPrimaryContainer = EmeraldDark,
+
+    secondary = Gold,
+    onSecondary = Color.White,
+
+    secondaryContainer = GoldContainer,
+    onSecondaryContainer = Gold,
+
+    tertiary = Sky,
+
+    background = BackgroundLight,
+    onBackground = TextPrimaryLight,
+
+    surface = SurfaceLight,
+    onSurface = TextPrimaryLight,
+
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = TextSecondaryLight,
+
+    outline = BorderLight,
+
+    error = Error,
+    onError = Color.White
 )
 
-private val DarkColorScheme = darkColorScheme(
-    primary = RamadanGreen,
-    secondary = RamadanGold,
-    background = DarkBackground,
-    surface = DarkSurface,
+private val DarkColors = darkColorScheme(
+
+    primary = Emerald,
 
     onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = DarkTextPrimary,
-    onSurface = DarkTextPrimary,
 
-    error = ErrorRed
+    primaryContainer = EmeraldDark,
+
+    onPrimaryContainer = Color.White,
+
+    secondary = Gold,
+
+    onSecondary = Color.Black,
+
+    tertiary = Sky,
+
+    background = BackgroundDark,
+
+    onBackground = TextPrimaryDark,
+
+    surface = SurfaceDark,
+
+    onSurface = TextPrimaryDark,
+
+    surfaceVariant = SurfaceVariantDark,
+
+    onSurfaceVariant = TextSecondaryDark,
+
+    outline = BorderDark,
+
+    error = Error,
+
+    onError = Color.White
 )
 
 @Composable
@@ -39,7 +77,7 @@ fun RamadanKareemTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
+        colorScheme = if (darkTheme) DarkColors else LightColors,
         typography = RamadanTypography,
         content = content
     )

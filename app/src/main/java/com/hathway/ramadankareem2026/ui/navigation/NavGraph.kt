@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,6 +53,8 @@ import com.hathway.ramadankareem2026.ui.quran.presentation.route.QuranBookmarksR
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.quran.route.NavRoutes
+import com.hathway.ramadankareem2026.ui.onboarding.OnboardingScreen
+import com.hathway.ramadankareem2026.ui.onboarding.LocationPermissionScreen
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
 import com.hathway.ramadankareem2026.ui.settings.SettingsScreen
 import com.hathway.ramadankareem2026.ui.settings.ThemeViewModel
@@ -62,17 +69,52 @@ import com.hathway.ramadankareem2026.ui.zakat.route.ZakatRoute
 fun NavGraph(themeViewModel: ThemeViewModel) {
 
     val navController = rememberNavController()
+    val navViewModel: NavViewModel = viewModel()
+    val isOnboardingCompleted by navViewModel.isOnboardingCompleted.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController, startDestination = "fake_splash"
     ) {
 
         composable("fake_splash") {
+            var splashFinished by remember { mutableStateOf(false) }
+
             SplashScreen {
-                navController.navigate("home_root") {
-                    popUpTo("fake_splash") { inclusive = true }
+                splashFinished = true
+            }
+
+            LaunchedEffect(splashFinished, isOnboardingCompleted) {
+                if (splashFinished && isOnboardingCompleted != null) {
+                    val target = if (isOnboardingCompleted == false) Routes.ONBOARDING else "home_root"
+                    navController.navigate(target) {
+                        popUpTo("fake_splash") { inclusive = true }
+                    }
                 }
             }
+        }
+
+        composable(Routes.ONBOARDING) {
+            OnboardingScreen(onFinished = {
+                navViewModel.completeOnboarding()
+                navController.navigate(Routes.LOCATION_PERMISSION) {
+                    popUpTo(Routes.ONBOARDING) { inclusive = true }
+                }
+            })
+        }
+
+        composable(Routes.LOCATION_PERMISSION) {
+            LocationPermissionScreen(
+                onPermissionResult = { granted ->
+                    navController.navigate("home_root") {
+                        popUpTo(Routes.LOCATION_PERMISSION) { inclusive = true }
+                    }
+                },
+                onSkip = {
+                    navController.navigate("home_root") {
+                        popUpTo(Routes.LOCATION_PERMISSION) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable("home_root") {

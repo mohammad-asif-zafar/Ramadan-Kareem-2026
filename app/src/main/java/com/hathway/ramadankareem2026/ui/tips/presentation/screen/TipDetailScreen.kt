@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.Gold
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.TipDetailCard
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModel
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModelFactory
@@ -98,7 +98,7 @@ fun TipDetailScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = RamadanGold.copy(alpha = 0.05f)
+                        containerColor = Gold.copy(alpha = 0.05f)
                     )
                 ) {
                     Column(
@@ -108,7 +108,7 @@ fun TipDetailScreen(
                             text = stringResource(R.string.daily_reminder),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = RamadanGold
+                            color = Gold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(

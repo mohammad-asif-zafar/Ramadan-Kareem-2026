@@ -23,8 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
+import com.hathway.ramadankareem2026.ui.theme.Gold
 
 data class Language(
     val code: String,
@@ -133,7 +133,7 @@ private fun LanguageDialog(
                         text = stringResource(R.string.select_language),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = RamadanGreen
+                        color = Emerald
                     )
                     
                     TextButton(onClick = onDismiss) {
@@ -178,13 +178,13 @@ private fun LanguageItem(
     onSelected: () -> Unit
 ) {
     val backgroundColor = if (isSelected) {
-        RamadanGreen.copy(alpha = 0.1f)
+        Emerald.copy(alpha = 0.1f)
     } else {
         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     }
     
     val borderColor = if (isSelected) {
-        RamadanGreen
+        Emerald
     } else {
         MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
     }
@@ -223,7 +223,7 @@ private fun LanguageItem(
                     text = language.nativeName,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                    color = if (isSelected) RamadanGreen else MaterialTheme.colorScheme.onSurface
+                    color = if (isSelected) Emerald else MaterialTheme.colorScheme.onSurface
                 )
                 
                 Text(
@@ -236,7 +236,7 @@ private fun LanguageItem(
                     Text(
                         text = stringResource(R.string.rtl_support),
                         style = MaterialTheme.typography.labelSmall,
-                        color = RamadanGold,
+                        color = Gold,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -247,7 +247,7 @@ private fun LanguageItem(
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = stringResource(R.string.selected),
-                    tint = RamadanGreen,
+                    tint = Emerald,
                     modifier = Modifier.size(24.dp)
                 )
             }

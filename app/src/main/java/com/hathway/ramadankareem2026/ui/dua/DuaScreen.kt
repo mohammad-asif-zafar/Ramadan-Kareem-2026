@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.dua.components.DuaCategoriesGrid
 import com.hathway.ramadankareem2026.ui.dua.components.RamadanDuaHorizontal
 import com.hathway.ramadankareem2026.ui.dua.data.DuaCategoryData
@@ -69,7 +70,7 @@ fun DuaScreen(
                     navController.navigate(Routes.DUA_BOOKMARKS)
                 }, rightIcon1Badge = bookmarkCount,
                 // Bookmarks
-                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
 )
         }
 

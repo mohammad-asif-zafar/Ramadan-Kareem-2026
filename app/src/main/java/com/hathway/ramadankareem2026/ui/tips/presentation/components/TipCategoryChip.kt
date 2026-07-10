@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
 
 @Composable
@@ -65,7 +65,7 @@ fun DailyTipCard(
                     Surface(
                         modifier = Modifier.size(28.dp),
                         shape = RoundedCornerShape(8.dp),
-                        color = RamadanGold.copy(alpha = 0.15f)
+                        color = Gold.copy(alpha = 0.15f)
                     ) {
                         Box(
                             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
@@ -81,7 +81,7 @@ fun DailyTipCard(
                     Text(
                         text = stringResource(R.string.todays_tip),
                         style = MaterialTheme.typography.labelMedium,
-                        color = RamadanGold,
+                        color = Gold,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -89,13 +89,13 @@ fun DailyTipCard(
                 if (tip.isDaily) {
                     Surface(
                         modifier = Modifier.clip(RoundedCornerShape(12.dp)),
-                        color = RamadanGreen.copy(alpha = 0.1f)
+                        color = Emerald.copy(alpha = 0.1f)
                     ) {
                         Text(
                             text = stringResource(R.string.daily),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = RamadanGreen,
+                            color = Emerald,
                             fontWeight = FontWeight.Medium
                         )
                     }
@@ -145,12 +145,12 @@ fun DailyTipCard(
                 Text(
                     text = stringResource(R.string.read_more),
                     style = MaterialTheme.typography.labelSmall,
-                    color = RamadanGold,
+                    color = Gold,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "→", style = MaterialTheme.typography.labelSmall, color = RamadanGold
+                    text = "→", style = MaterialTheme.typography.labelSmall, color = Gold
                 )
             }
         }

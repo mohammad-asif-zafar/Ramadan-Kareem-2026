@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 import androidx.compose.ui.res.stringResource
 import com.hathway.ramadankareem2026.R
 
@@ -75,7 +75,7 @@ fun SimpleTipCard(
                 Text(
                     text = tip.category.displayName.getName(language),
                     style = MaterialTheme.typography.labelSmall,
-                    color = RamadanGreen,
+                    color = Emerald,
                     fontWeight = FontWeight.Medium
                 )
                 
@@ -83,7 +83,7 @@ fun SimpleTipCard(
                     Text(
                         text = stringResource(R.string.daily),
                         style = MaterialTheme.typography.labelSmall,
-                        color = RamadanGold,
+                        color = Gold,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -123,14 +123,14 @@ fun TipDetailCard(
                 Surface(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(RamadanGreen.copy(alpha = 0.1f)),
+                        .background(Emerald.copy(alpha = 0.1f)),
                     color = Color.Transparent
                 ) {
                     Text(
                         text = tip.category.displayName.getName(language),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = RamadanGreen,
+                        color = Emerald,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -140,14 +140,14 @@ fun TipDetailCard(
                     Surface(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
-                            .background(RamadanGold.copy(alpha = 0.1f)),
+                            .background(Gold.copy(alpha = 0.1f)),
                         color = Color.Transparent
                     ) {
                         Text(
                             text = stringResource(R.string.daily_tip),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = RamadanGold,
+                            color = Gold,
                             fontWeight = FontWeight.Medium
                         )
                     }

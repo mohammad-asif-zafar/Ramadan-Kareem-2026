@@ -55,6 +55,7 @@ import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Ayah
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
@@ -169,7 +170,7 @@ fun QuranSurahAyahsScreen(
             metaOffsetY = lerp(0.dp, (-16).dp, collapseProgress),
             showBack = true,
             onBackClick = onBack,
-            rightIcon1 = R.drawable.ic_saved,
+            rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
             rightIcon1Badge = bookmarkCount,
             onRightIcon1Click = {
                 navController.navigate(Routes.QURAN_BOOKMARKS)

@@ -4,35 +4,31 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
 
 @Composable
 fun HomeBackground() {
     Box(modifier = Modifier.fillMaxSize()) {
 
         Image(
-            painter = painterResource(id = R.drawable.mosque_online),
+            painter = painterResource(id = R.drawable.top_left_mosque_home_graound),
             contentDescription = null,
-            contentScale = ContentScale.Fit,
-            colorFilter = ColorFilter.tint(
-                RamadanGreen.copy(alpha = 0.07f)
-            ),
+            // 1. Crop fills the width and cuts off nicely like the design
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .padding(top = 24.dp)
+                // 2. Set an explicit height for the top background area
+                .height(150.dp)
+                // 3. Anchor it exactly to the top center/left
+                .align(Alignment.TopCenter)
         )
-
-        // Foreground content
-       // content()
     }
 }
+

@@ -68,8 +68,8 @@ import com.hathway.ramadankareem2026.core.location.LocationProvider
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
+import com.hathway.ramadankareem2026.ui.theme.Gold
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -302,14 +302,14 @@ private fun RamadanProgressHeader(
                 ) {
                     Surface(
                         shape = CircleShape,
-                        color = RamadanGold.copy(alpha = 0.15f),
+                        color = Gold.copy(alpha = 0.15f),
                         modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.NightsStay,
                             contentDescription = null,
                             modifier = Modifier.padding(8.dp),
-                            tint = RamadanGold
+                            tint = Gold
                         )
                     }
 
@@ -340,8 +340,8 @@ private fun RamadanProgressHeader(
                     }
 
                     val statusColor = when (day.status) {
-                        FastingDayStatus.TODAY -> RamadanGold
-                        FastingDayStatus.FASTING -> RamadanGreen
+                        FastingDayStatus.TODAY -> Gold
+                        FastingDayStatus.FASTING -> Emerald
                         else -> MaterialTheme.colorScheme.primary
                     }
 
@@ -390,7 +390,7 @@ private fun RamadanProgressHeader(
                         .background(
                             Brush.horizontalGradient(
                                 listOf(
-                                    RamadanGreen.copy(alpha = 0.8f), RamadanGreen, RamadanGold
+                                    Emerald.copy(alpha = 0.8f), Emerald, Gold
                                 )
                             )
                         )

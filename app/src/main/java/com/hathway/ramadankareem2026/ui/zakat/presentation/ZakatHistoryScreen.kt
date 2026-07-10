@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.data.local.database.entity.ZakatCalculationEntity
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.Gold
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +62,7 @@ fun ZakatHistoryScreen(
                         text = stringResource(R.string.previous_calculations),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = RamadanGold
+                        color = Gold
                     )
                     Text(
                         text = stringResource(R.string.total) + ": ${calculations.size} " + stringResource(
@@ -163,7 +163,7 @@ private fun ZakatCalculationItem(
                         text = calculation.formattedDate,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
-                        color = RamadanGold
+                        color = Gold
                     )
                     if (calculation.country.isNotEmpty()) {
                         Text(
@@ -208,7 +208,7 @@ private fun ZakatCalculationItem(
             // Zakat payable - highlight
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = RamadanGold.copy(alpha = 0.09f),
+                color = Gold.copy(alpha = 0.09f),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
@@ -222,14 +222,14 @@ private fun ZakatCalculationItem(
                         text = stringResource(R.string.zakat_payable),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = RamadanGold
+                        color = Gold
                     )
 
                     Text(
                         text = formatCurrency(calculation.zakatPayable),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = RamadanGold
+                        color = Gold
                     )
                 }
             }

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -143,7 +144,8 @@ private fun HomeScreenPreviewContent(
         HomeBackground()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)
+            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             item {
                 HomeTopBarSection(
@@ -152,11 +154,8 @@ private fun HomeScreenPreviewContent(
                     onProfileClick = {})
             }
             item { HomeHeaderSlider() }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
             item { FeatureSection(navController) }
-            item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
             item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }

@@ -32,8 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
+import com.hathway.ramadankareem2026.ui.theme.Gold
 
 @Composable
 fun QiblaInformationCards() {
@@ -50,8 +50,8 @@ fun QiblaInformationCards() {
             icon = Icons.Default.Star,
             title = stringResource(R.string.qibla_why_title),
             description = stringResource(R.string.qibla_why_desc),
-            backgroundColor = RamadanGreen.copy(alpha = 0.1f),
-            iconColor = RamadanGreen
+            backgroundColor = Emerald.copy(alpha = 0.1f),
+            iconColor = Emerald
         )
 
         // How to Use Card
@@ -68,8 +68,8 @@ fun QiblaInformationCards() {
             icon = Icons.Default.Lightbulb,
             title = stringResource(R.string.qibla_tips_title),
             description = stringResource(R.string.qibla_tips_desc),
-            backgroundColor = RamadanGold.copy(alpha = 0.1f),
-            iconColor = RamadanGold
+            backgroundColor = Gold.copy(alpha = 0.1f),
+            iconColor = Gold
         )
     }
 }
@@ -145,7 +145,7 @@ fun PrayerDirectionGuide() {
                 text = stringResource(R.string.prayer_direction_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = RamadanGreen,
+                color = Emerald,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -168,7 +168,7 @@ fun PrayerDirectionGuide() {
                         modifier = Modifier
                             .size(24.dp)
                             .background(
-                                RamadanGreen,
+                                Emerald,
                                 RoundedCornerShape(12.dp)
                             ),
                         contentAlignment = Alignment.Center

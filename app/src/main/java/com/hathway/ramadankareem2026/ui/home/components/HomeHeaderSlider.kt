@@ -223,7 +223,7 @@ fun HomeHeaderSlider() {
     ) {
 
         HorizontalPager(
-            state = pagerState, modifier = Modifier.height(150.dp)
+            state = pagerState, modifier = Modifier.height(190.dp)
         ) { page ->
             val context = LocalContext.current
             val localizationManager = LocalizationManager(context)

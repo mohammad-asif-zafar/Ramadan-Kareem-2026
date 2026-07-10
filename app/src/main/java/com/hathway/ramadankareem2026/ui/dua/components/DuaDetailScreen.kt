@@ -53,6 +53,7 @@ import com.hathway.ramadankareem2026.core.service.DuaTtsNotification
 import com.hathway.ramadankareem2026.core.service.DuaTtsService
 import com.hathway.ramadankareem2026.core.tts.TtsActions
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
@@ -88,7 +89,7 @@ fun DuaDetailScreen(
                 title = dua.categoryId,
                 showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
                     // Navigate to dua bookmarks list

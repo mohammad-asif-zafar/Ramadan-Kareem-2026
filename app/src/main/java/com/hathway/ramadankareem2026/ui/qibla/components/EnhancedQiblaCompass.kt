@@ -34,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 @Composable
 fun EnhancedQiblaCompassCircle(
@@ -88,7 +88,7 @@ fun EnhancedQiblaCompassCircle(
                     .background(
                         brush = Brush.radialGradient(
                             colors = listOf(
-                                RamadanGreen.copy(alpha = 0.3f),
+                                Emerald.copy(alpha = 0.3f),
                                 Color.Transparent
                             )
                         ),
@@ -147,7 +147,7 @@ private fun CompassDirectionLabels() {
             text = "W",
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = RamadanGreen,
+            color = Emerald,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .offset(y = 8.dp)
@@ -191,7 +191,7 @@ private fun CompassDirectionLabels() {
 @Composable
 private fun EnhancedCenterCap(isAligned: Boolean) {
     val capColor by animateColorAsState(
-        targetValue = if (isAligned) RamadanGreen else MaterialTheme.colorScheme.primary,
+        targetValue = if (isAligned) Emerald else MaterialTheme.colorScheme.primary,
         animationSpec = tween(300)
     )
 

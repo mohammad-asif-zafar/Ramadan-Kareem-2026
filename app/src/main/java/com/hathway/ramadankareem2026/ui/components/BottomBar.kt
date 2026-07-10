@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 sealed class BottomNavItem(
     val route: String, val title: String, val icon: ImageVector, val badgeCount: Int? = null
@@ -64,9 +64,9 @@ fun RamadanBottomBar(navController: NavController) {
                 }, label = {
                     Text(text = item.title)
                 }, colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = RamadanGreen,
-                    selectedTextColor = RamadanGreen,
-                    indicatorColor = RamadanGreen.copy(alpha = 0.15f),
+                    selectedIconColor = Emerald,
+                    selectedTextColor = Emerald,
+                    indicatorColor = Emerald.copy(alpha = 0.15f),
                     unselectedIconColor = Color.Gray,
                     unselectedTextColor = Color.Gray
                 ), alwaysShowLabel = false

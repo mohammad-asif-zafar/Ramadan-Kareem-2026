@@ -41,11 +41,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 @Composable
 fun QuranSurahListScreen(
@@ -87,7 +88,7 @@ fun QuranSurahListScreen(
                 showBack = true,
                 onBackClick = onBack,
                 // Bookmarks
-                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
                     // Navigate to Quran bookmarks list
@@ -178,14 +179,14 @@ private fun SurahCard(
                 modifier = Modifier
                     .size(36.dp)
                     .background(
-                        color = RamadanGreen.copy(alpha = 0.12f), shape = CircleShape
+                        color = Emerald.copy(alpha = 0.12f), shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = surah.id.toString(),
                     style = MaterialTheme.typography.labelMedium,
-                    color = RamadanGreen
+                    color = Emerald
                 )
             }
 
@@ -196,7 +197,7 @@ private fun SurahCard(
                 Text(
                     text = surah.name,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = RamadanGold
+                    color = Gold
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))

@@ -6,15 +6,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 @Composable
 fun PrayerNotificationToggle(
@@ -64,8 +61,8 @@ fun PrayerNotificationToggle(
                     viewModel.togglePrayerNotifications(enabled)
                 },
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = RamadanGreen,
-                    checkedTrackColor = RamadanGreen.copy(alpha = 0.3f),
+                    checkedThumbColor = Emerald,
+                    checkedTrackColor = Emerald.copy(alpha = 0.3f),
                     uncheckedThumbColor = MaterialTheme.colorScheme.outline,
                     uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
                 )

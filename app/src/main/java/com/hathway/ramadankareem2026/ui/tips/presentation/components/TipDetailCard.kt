@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.tips.data.model.Tip
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.Gold
 
 @Composable
 fun TipDetailCard(
@@ -66,7 +66,7 @@ fun TipDetailCard(
                 Text(
                     text = tip.category.displayName.getName(language),
                     style = MaterialTheme.typography.labelMedium,
-                    color = RamadanGold,
+                    color = Gold,
                     fontWeight = FontWeight.Medium
                 )
                 
@@ -79,7 +79,7 @@ fun TipDetailCard(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.small)
                             .background(
-                                RamadanGold.copy(alpha = 0.1f)
+                                Gold.copy(alpha = 0.1f)
                             )
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )

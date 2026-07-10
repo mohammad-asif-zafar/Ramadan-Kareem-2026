@@ -25,8 +25,8 @@ import com.hathway.ramadankareem2026.ui.tips.data.model.TipCategory
 import com.hathway.ramadankareem2026.ui.tips.presentation.components.SimpleTipCard
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModel
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.TipsViewModelFactory
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 @Composable
 fun TipsScreen(
@@ -80,7 +80,7 @@ fun TipsScreen(
                                 .padding(32.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(color = RamadanGold)
+                            CircularProgressIndicator(color = Gold)
                         }
                     }
                 }
@@ -156,7 +156,7 @@ private fun SimpleCategoryChip(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .clickable { onClick() },
-        color = if (isSelected) RamadanGreen else MaterialTheme.colorScheme.surfaceVariant,
+        color = if (isSelected) Emerald else MaterialTheme.colorScheme.surfaceVariant,
         contentColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
     ) {
         Text(

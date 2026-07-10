@@ -39,14 +39,15 @@ import com.hathway.ramadankareem2026.ui.allahnames.domain.model.AllahName
 import com.hathway.ramadankareem2026.ui.allahnames.presentation.viewmodel.AllahNameBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.allahnames.viewmodel.AllahNamesBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.LightTextPrimary
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.TextPrimaryLight
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 @Composable
 fun AllahNameDetailScreen(
-    name: AllahName, 
+    name: AllahName,
     onBack: () -> Unit,
     navController: NavController,
     bookmarkViewModel: AllahNamesBookmarkViewModel,
@@ -67,17 +68,17 @@ fun AllahNameDetailScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = name.transliteration, 
-                showBack = true, 
+                title = name.transliteration,
+                showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = R.drawable.ic_saved,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
                 rightIcon1Badge = bookmarkCount,
                 onRightIcon1Click = {
                     // Navigate to allah name bookmarks list
                     navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
                 }
             )
-        }, 
+        },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
 
@@ -101,7 +102,7 @@ fun AllahNameDetailScreen(
                     Text(
                         text = name.arabic,
                         style = MaterialTheme.typography.displayLarge,
-                        color = LightTextPrimary,
+                        color = TextPrimaryLight,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -111,7 +112,7 @@ fun AllahNameDetailScreen(
                     Text(
                         text = name.transliteration,
                         style = MaterialTheme.typography.titleMedium,
-                        color = RamadanGreen,
+                        color = Emerald,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -164,8 +165,8 @@ fun AllahNameDetailScreen(
                         TextButton(
                             onClick = {
                                 bookmarkViewModel.toggleBookmark(
-                                    itemId = name.id.toString(), 
-                                    title = "${name.transliteration} - ${name.english}", 
+                                    itemId = name.id.toString(),
+                                    title = "${name.transliteration} - ${name.english}",
                                     content = name.arabic
                                 )
                                 // Badge update is now handled by callback
@@ -189,7 +190,7 @@ fun AllahNameDetailScreen(
                             text = name.english,
                             modifier = Modifier.padding(24.dp),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = RamadanGold,
+                            color = Gold,
                             textAlign = TextAlign.Center,
                             lineHeight = 26.sp
                         )

@@ -44,8 +44,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 import com.hathway.ramadankareem2026.ui.zakat.domain.model.NisabType
 import kotlinx.coroutines.launch
 
@@ -90,7 +91,7 @@ fun ZakatScreen(
                 title = stringResource(R.string.zakat),
                 showBack = true,
                 onBackClick = onBack,
-                rightIcon1 = R.drawable.ic_calculator,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_calculator),
                 rightIcon1Badge = if (zakatHistoryCount > 0) zakatHistoryCount else null,
                 onRightIcon1Click = onCalculatorIconClick,
                 /*rightIcon2 = R.drawable.ic_ai_search,
@@ -115,7 +116,7 @@ fun ZakatScreen(
                     Text(
                         text = stringResource(R.string.zakat_calculator_title),
                         style = MaterialTheme.typography.headlineSmall,
-                        color = RamadanGold,
+                        color = Gold,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -137,7 +138,7 @@ fun ZakatScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_zakat_history),
                         contentDescription = stringResource(R.string.zakat_history_description),
-                        tint = RamadanGold,
+                        tint = Gold,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -158,10 +159,10 @@ fun ZakatScreen(
                 Text(
                     text = stringResource(R.string.assets),
                     style = MaterialTheme.typography.titleMedium,
-                    color = RamadanGold
+                    color = Gold
                 )
                 Surface(
-                    shape = RoundedCornerShape(8.dp), color = RamadanGold.copy(alpha = 0.1f)
+                    shape = RoundedCornerShape(8.dp), color = Gold.copy(alpha = 0.1f)
                 ) {
                     Text(
                         text = "💰",
@@ -210,10 +211,10 @@ fun ZakatScreen(
                 Text(
                     text = stringResource(R.string.liabilities),
                     style = MaterialTheme.typography.titleMedium,
-                    color = RamadanGold
+                    color = Gold
                 )
                 Surface(
-                    shape = RoundedCornerShape(8.dp), color = RamadanGold.copy(alpha = 0.1f)
+                    shape = RoundedCornerShape(8.dp), color = Gold.copy(alpha = 0.1f)
                 ) {
                     Text(
                         text = "📋",
@@ -247,7 +248,7 @@ fun ZakatScreen(
                 onClick = onCalculate,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = RamadanGreen, contentColor = Color.White
+                    containerColor = Emerald, contentColor = Color.White
                 )
             ) {
                 Text(stringResource(R.string.calculate_zakat), fontWeight = FontWeight.Medium)
@@ -267,7 +268,7 @@ fun ZakatScreen(
                         Text(
                             text = stringResource(R.string.zakat_breakdown),
                             style = MaterialTheme.typography.titleMedium,
-                            color = RamadanGold
+                            color = Gold
                         )
 
                         HorizontalDivider()
@@ -324,7 +325,7 @@ fun ZakatScreen(
                         // Final Zakat
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            color = RamadanGold.copy(alpha = 0.1f),
+                            color = Gold.copy(alpha = 0.1f),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -339,7 +340,7 @@ fun ZakatScreen(
                                 Text(
                                     text = "${state.currency.symbol}${result.zakatAmount}",
                                     style = MaterialTheme.typography.headlineMedium,
-                                    color = RamadanGold,
+                                    color = Gold,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(

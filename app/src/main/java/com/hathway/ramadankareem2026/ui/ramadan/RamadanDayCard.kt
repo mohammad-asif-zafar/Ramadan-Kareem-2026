@@ -28,7 +28,7 @@ import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.components.CountdownCircularProgress
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalDate
 import java.time.LocalTime
@@ -36,7 +36,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
+import com.hathway.ramadankareem2026.ui.theme.Gold
 
 
 @Composable
@@ -67,14 +67,14 @@ fun RamadanDayCard(
         modifier = modifier
             .aspectRatio(1f)
             .background(
-                if (isToday) RamadanGreen.copy(alpha = pulseAlpha)
+                if (isToday) Emerald.copy(alpha = pulseAlpha)
                 else Color.Transparent, shape = RoundedCornerShape(20.dp)
             )
             .padding(2.dp) // glow spacing
             .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 0.dp,
-                color = RamadanGreen,
+                color = Emerald,
                 shape = RoundedCornerShape(18.dp)
             ),
         shape = RoundedCornerShape(18.dp),
@@ -92,7 +92,7 @@ fun RamadanDayCard(
                     R.string.ramadan_day, day.ramadanDay
                 ),
 
-                fontSize = 12.sp, color = RamadanGold
+                fontSize = 12.sp, color = Gold
             )
 
             Spacer(Modifier.height(4.dp))
@@ -110,7 +110,7 @@ fun RamadanDayCard(
             Text(
                 text = "${hijri.day} ${hijri.month}",
                 fontSize = 8.sp,
-                color = RamadanGreen,
+                color = Emerald,
                 fontWeight = FontWeight.SemiBold
             )
 

@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.ui.home.model.HeaderType
-import com.hathway.ramadankareem2026.ui.theme.RamadanGold
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreen
-import com.hathway.ramadankareem2026.ui.theme.RamadanGreenDark
+import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
+import com.hathway.ramadankareem2026.ui.theme.EmeraldDark
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModelFactory
 
 private const val TAG = "HeaderCard"
@@ -68,7 +68,7 @@ fun HeaderCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(190.dp)
             .padding(end = 4.dp),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(
@@ -159,19 +159,19 @@ private fun headerGradient(type: HeaderType): Brush = when (type) {
 
     HeaderType.DYNAMIC_PRAYER -> Brush.linearGradient(
         colors = listOf(
-            RamadanGreen, RamadanGreenDark
+            Emerald, EmeraldDark
         )
     )
 
     HeaderType.NEXT_PRAYER -> Brush.linearGradient(
         colors = listOf(
-            RamadanGreenDark, RamadanGreen
+            EmeraldDark, Emerald
         )
     )
 
     HeaderType.REMINDER -> Brush.linearGradient(
         colors = listOf(
-            RamadanGold, RamadanGreen
+            Gold, Emerald
         )
     )
 
