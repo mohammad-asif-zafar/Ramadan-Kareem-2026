@@ -13,6 +13,7 @@ data class HeaderPage(
     val title: String,
     val subtitle: String,
     val hint: String,
+    val footer: String = "",
     val isAlarmEnabled: Boolean = false,
     val onAlarmToggle: (() -> Unit)? = null
 )

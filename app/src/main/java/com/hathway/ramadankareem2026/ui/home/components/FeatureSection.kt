@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -63,13 +64,6 @@ private val featureList = listOf(
     FeatureModel(
         R.string.feature_dua, FeatureIcon.Vector(RamadanIcons.PrayingHandsFromImage), Routes.DUA
     ),
-    FeatureModel(
-        R.string.feature_zakat, FeatureIcon.Vector(RamadanIcons.Zakat), Routes.ZAKAT,
-        color = Gold
-    ),
-    FeatureModel(
-        R.string.mosque, FeatureIcon.Vector(RamadanIcons.Mosque), Routes.MOSQUES
-    ),
     FeatureModel(R.string.feature_tips, FeatureIcon.Vector(RamadanIcons.Tips), Routes.TIPS),
     FeatureModel(
         R.string.allah, FeatureIcon.Text("ﷲ"), Routes.ALLAH_NAMES,
@@ -105,7 +99,7 @@ fun FeatureSection(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             userScrollEnabled = false,
-            modifier = Modifier.height(340.dp)
+            modifier = Modifier.height(220.dp)
         ) {
             items(featureList) { item ->
                 FeatureItem(

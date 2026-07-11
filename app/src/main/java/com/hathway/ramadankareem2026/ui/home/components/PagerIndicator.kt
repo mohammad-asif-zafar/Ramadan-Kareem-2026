@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.Emerald
 
 /**
  * Pager indicator (dots) used with HorizontalPager.
@@ -59,7 +59,7 @@ fun PagerIndicator(
                     )
                     .clip(CircleShape)
                     .background(
-                        color = if (index == currentPage) Gold                     // Active dot
+                        color = if (index == currentPage) Emerald                     // Active dot
                         else Color.Gray.copy(alpha = 0.4f), // Inactive dot
                         shape = RoundedCornerShape(50)
                     )

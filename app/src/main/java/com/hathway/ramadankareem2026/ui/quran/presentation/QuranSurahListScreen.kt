@@ -40,13 +40,31 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.ui.allahnames.components.NamesDisplaySection
+import com.hathway.ramadankareem2026.ui.commoncomponents.SearchFieldOutlinedText
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
+import com.hathway.ramadankareem2026.ui.icons.RamadanIcons
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.quran.domain.model.Surah
 import com.hathway.ramadankareem2026.ui.quran.presentation.viewmodel.QuranBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.theme.Gold
 import com.hathway.ramadankareem2026.ui.theme.Emerald
+
+import androidx.compose.animation.Crossfade
+
+import androidx.compose.foundation.layout.aspectRatio
+
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+
 
 @Composable
 fun QuranSurahListScreen(
@@ -57,7 +75,7 @@ fun QuranSurahListScreen(
     navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
-
+    var isGridView by remember { mutableStateOf(true) } // Layout mode state flag
     LaunchedEffect(Unit) {
         if (state.surahList.isEmpty() && !state.isLoading) {
             viewModel.loadSurahs()
@@ -65,7 +83,6 @@ fun QuranSurahListScreen(
     }
 
     var searchQuery by remember { mutableStateOf("") }
-    val keyboardController = LocalSoftwareKeyboardController.current
     val filteredSurahs = state.surahList.filter {
         searchQuery.isBlank() ||
         it.name.contains(searchQuery, ignoreCase = true) ||
@@ -93,6 +110,15 @@ fun QuranSurahListScreen(
                 onRightIcon1Click = {
                     // Navigate to Quran bookmarks list
                     navController.navigate(Routes.QURAN_BOOKMARKS)
+                },
+                // 💡 Dynamically changes the icon shape to match the next available layout view
+                rightIcon2 = if (isGridView) {
+                    ToolbarIcon.Vector(RamadanIcons.GridViewIcon)
+                } else {
+                    ToolbarIcon.Vector(RamadanIcons.ListViewIcon)
+                },
+                onRightIcon2Click = {
+                    isGridView = !isGridView
                 }
             )
         }
@@ -122,39 +148,26 @@ fun QuranSurahListScreen(
                         .fillMaxSize()
                         .padding(padding)
                 ) {
-                    // Search field
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        placeholder = { Text(stringResource(R.string.search_surahs)) },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                        keyboardActions = KeyboardActions(
-                            onSearch = { keyboardController?.hide() }
-                        )
+                    SearchFieldOutlinedText(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it },
+                        placeholderText = stringResource(R.string.search_surahs),
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
 
-                    LazyColumn(
-                        modifier = Modifier.weight(1f),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(filteredSurahs, key = { it.id }) { surah ->
-                            SurahCard(
-                                surah = surah,
-                                onClick = { onSurahClick(surah) }
-                            )
-                        }
-                    }
+                    SurahsDisplaySection(
+                        isGridView = isGridView,
+                        filteredSurahs = filteredSurahs,
+                        onSurahClick = onSurahClick,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
     }
 }
 
+/*
 @Composable
 private fun SurahCard(
     surah: Surah,
@@ -207,6 +220,211 @@ private fun SurahCard(
                     text = "${surah.englishName} • ${surah.numberOfAyahs} ayahs • ${surah.revelationType}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+*/
+
+
+
+
+@Composable
+fun SurahsDisplaySection(
+    isGridView: Boolean,
+    filteredSurahs: List<Surah>,
+    onSurahClick: (Surah) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(
+        targetState = isGridView,
+        modifier = modifier,
+        label = "SurahsLayoutSwitch"
+    ) { gridActive ->
+        if (gridActive) {
+            // 🎴 OPTION 1: 2-by-2 Grid View Layout Pattern
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(items = filteredSurahs, key = { it.id }) { surah ->
+                    SurahGridCard(
+                        surah = surah,
+                        onClick = { onSurahClick(surah) }
+                    )
+                }
+            }
+        } else {
+            // 📜 OPTION 2: Standard Full Width List View Layout Pattern
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(items = filteredSurahs, key = { it.id }) { surah ->
+                    SurahListRow(
+                        surah = surah,
+                        onClick = { onSurahClick(surah) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 🎴 Grid Item Component (2x2 Grid View layout)
+ */
+@Composable
+private fun SurahGridCard(
+    surah: Surah,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(0.85f),
+        shape = RoundedCornerShape(24.dp),
+        color = Color(0xFFF9F9F8),
+        shadowElevation = 0.5.dp,
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Centered ID Badge
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(color = Emerald.copy(alpha = 0.1f), shape = CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = surah.id.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                    color = Emerald,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Arabic Name
+            Text(
+                text = surah.name,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                color = Gold,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // English Title Transliteration
+            Text(
+                text = surah.englishName,
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = 13.sp, fontWeight = FontWeight.Bold),
+                color = Color(0xFF222222),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            // Translation Metadata Text Details (Stacked vertically for grid compactness)
+            Text(
+                text = "${surah.numberOfAyahs} Ayahs • ${surah.revelationType}",
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+/**
+ * 📜 Row Item Component (Full Width List layout)
+ */
+@Composable
+private fun SurahListRow(
+    surah: Surah,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = Color(0xFFF9F9F8),
+        shadowElevation = 0.5.dp,
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .background(color = Emerald.copy(alpha = 0.1f), shape = CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = surah.id.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Emerald,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = surah.name,
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                        color = Gold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Text(
+                        text = "•  ${surah.englishName}",
+                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp, fontWeight = FontWeight.SemiBold),
+                        color = Color(0xFF222222),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "${surah.numberOfAyahs} ayahs • ${surah.revelationType}",
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    textAlign = TextAlign.Start,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

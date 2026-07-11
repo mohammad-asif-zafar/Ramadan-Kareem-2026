@@ -121,7 +121,7 @@ fun HomeScreen(
                 })
             }
 
-            item { HomeHeaderSlider() }
+            item { HomeHeaderSlider(locationState = locationState) }
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item { FeatureSection(navController) }
             item { Spacer(modifier = Modifier.height(12.dp)) }
@@ -153,7 +153,7 @@ private fun HomeScreenPreviewContent(
                     onLocationClick = {},
                     onProfileClick = {})
             }
-            item { HomeHeaderSlider() }
+            item { HomeHeaderSlider(locationState = locationState) }
             item { FeatureSection(navController) }
             item { PrayerTimeSection() }
             item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
@@ -228,7 +228,6 @@ private fun PreviewHome_Dark() {
         )
     )
 }
-
 
 
 

@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
+import com.hathway.ramadankareem2026.core.location.LocationUiState
 import com.hathway.ramadankareem2026.ui.home.HeaderCard
 import com.hathway.ramadankareem2026.ui.home.mapper.buildDynamicPrayerHeader
 import com.hathway.ramadankareem2026.ui.home.model.HeaderPage
@@ -34,6 +35,7 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 import kotlinx.coroutines.delay
+import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatDuration
@@ -41,7 +43,9 @@ import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper.formatDuration
 private const val TAG = "HomeHeaderSlider"
 
 @Composable
-fun HomeHeaderSlider() {
+fun HomeHeaderSlider(
+    locationState: LocationUiState? = null
+) {
 
     val context = LocalContext.current
     val app = context.applicationContext as Application
@@ -67,18 +71,30 @@ fun HomeHeaderSlider() {
 
     // Prayer state
     val prayerState by prayerViewModel.state.collectAsState()
-    val prayers = remember(prayerState, now) {
-        PrayerTimeUiMapper.map(prayerState, now)
+    val mappedPrayers = remember(prayerState, now) {
+        PrayerTimeUiMapper.map(
+            state = prayerState, now = now
+        )
     }
 
-    val iftarPrayer = prayers.firstOrNull { it.type == PrayerType.MAGHRIB }
-    val suhoorPrayer = prayers.firstOrNull { it.type == PrayerType.FAJR }
-
+    val iftarPrayer = mappedPrayers.firstOrNull { it.type == PrayerType.MAGHRIB }
+    val suhoorPrayer = mappedPrayers.firstOrNull { it.type == PrayerType.FAJR }
+    val nextPrayer = remember(mappedPrayers) {
+        mappedPrayers.firstOrNull { it.isNext }
+    }
 
     val formatter = remember { DateTimeFormatter.ofPattern("hh:mm a") }
 
     val iftarTimeText = iftarPrayer?.time?.format(formatter) ?: "--:--"
     val suhoorTimeText = suhoorPrayer?.time?.format(formatter) ?: "--:--"
+    val iftarCountdownText = iftarPrayer?.time?.let { formatCountdownTo(it, now) } ?: ""
+    val suhoorCountdownText = suhoorPrayer?.time?.let { formatCountdownTo(it, now) } ?: ""
+    val locationLabel = when (locationState) {
+        is LocationUiState.Success -> "${locationState.city}, ${locationState.country}"
+        is LocationUiState.Error -> locationState.message
+        LocationUiState.Loading -> calculatingTextPlaceholder()
+        null -> ""
+    }
 
     // Alarm states
     LaunchedEffect(Unit) {
@@ -88,7 +104,6 @@ fun HomeHeaderSlider() {
     val isIftarAlarmEnabled by alarmViewModel.isIftarAlarmEnabled
     val isSuhoorAlarmEnabled by alarmViewModel.isSuhoorAlarmEnabled
     val isAlarmPlaying by alarmViewModel.isAlarmPlaying
-    val alarmTrigger by alarmViewModel.alarmTrigger
 
     //  Pending action for permission
     var pendingAlarmAction by remember { mutableStateOf<(() -> Unit)?>(null) }
@@ -96,16 +111,6 @@ fun HomeHeaderSlider() {
     NotificationPermissionHandler(
         pendingAction = pendingAlarmAction, onActionConsumed = { pendingAlarmAction = null })
 
-
-    val mappedPrayers = remember(prayerState) {
-        PrayerTimeUiMapper.map(
-            state = prayerState, now = now
-        )
-    }
-
-    val nextPrayer = remember(mappedPrayers) {
-        mappedPrayers.firstOrNull { it.isNext }
-    }
     val iftarTitle = stringResource(R.string.iftar_time)
     val iftarHint = stringResource(R.string.iftar_hint)
 
@@ -140,73 +145,70 @@ fun HomeHeaderSlider() {
             }
         )
     } ?: ""
-    // Pages
-    val pages = remember(
-        alarmTrigger, isAlarmPlaying, iftarTimeText, suhoorTimeText
-    ) {
+    val basePages = listOf(
+        buildDynamicPrayerHeader(
+            prayer = nextPrayer,
+            gregorianDate = prayerState.gregorianDate,
+            hijriDate = prayerState.hijriDate,
+            title = ramadanTitle,
+            calculatingText = calculatingText,
+            prayerTypeText = prayerTypeText,
+            remainingText = remainingText
+        ),
 
-        val basePages = listOf(
+        HeaderPage(
+            type = HeaderType.IFTAR_TIME,
+            title = iftarTitle,
+            subtitle = iftarTimeText,
+            hint = iftarHint,
+            footer = iftarCountdownText,
+            isAlarmEnabled = isIftarAlarmEnabled,
+            onAlarmToggle = {
+                pendingAlarmAction = {
+                    alarmViewModel.toggleIftarAlarm(context)
+                }
+            }),
 
-            buildDynamicPrayerHeader(
-                prayer = nextPrayer,
-                gregorianDate = prayerState.gregorianDate,
-                hijriDate = prayerState.hijriDate,
-                title = ramadanTitle,
-                calculatingText = calculatingText,
-                prayerTypeText = prayerTypeText,
-                remainingText = remainingText
-            ),
+        HeaderPage(
+            type = HeaderType.SUHOOR_TIME,
+            title = suhoorTitle,
+            subtitle = suhoorTimeText,
+            hint = suhoorHint,
+            footer = suhoorCountdownText,
+            isAlarmEnabled = isSuhoorAlarmEnabled,
+            onAlarmToggle = {
+                pendingAlarmAction = {
+                    alarmViewModel.toggleSuhoorAlarm(context)
+                }
+            }),
 
-            HeaderPage(
-                type = HeaderType.IFTAR_TIME,
-                title = iftarTitle,
-                subtitle = iftarTimeText,
-                hint = iftarHint,
-                isAlarmEnabled = isIftarAlarmEnabled,
-                onAlarmToggle = {
-                    pendingAlarmAction = {
-                        alarmViewModel.toggleIftarAlarm(context)
-                    }
-                }),
-
-            HeaderPage(
-                type = HeaderType.SUHOOR_TIME,
-                title = suhoorTitle,
-                subtitle = suhoorTimeText,
-                hint = suhoorHint,
-                isAlarmEnabled = isSuhoorAlarmEnabled,
-                onAlarmToggle = {
-                    pendingAlarmAction = {
-                        alarmViewModel.toggleSuhoorAlarm(context)
-                    }
-                }),
-
-            HeaderPage(
-                type = HeaderType.REMINDER, title = dailyReminderTitle, subtitle = "", hint = ""
-            )
+        HeaderPage(
+            type = HeaderType.REMINDER, title = dailyReminderTitle, subtitle = "", hint = ""
         )
+    )
 
-        if (isAlarmPlaying) {
-            listOf(
-                HeaderPage(
-                    type = HeaderType.REMINDER,
-                    title = alarmPlayingTitle,
-                    subtitle = alarmPlayingSubtitle,
-                    hint = alarmPlayingHint,
-                    onAlarmToggle = {
-                        alarmViewModel.stopAlarm(context)
-                    })
-            ) + basePages
-        } else {
-            basePages
-        }
+    // Pages
+    val pages = if (isAlarmPlaying) {
+        listOf(
+            HeaderPage(
+                type = HeaderType.REMINDER,
+                title = alarmPlayingTitle,
+                subtitle = alarmPlayingSubtitle,
+                hint = alarmPlayingHint,
+                footer = "",
+                onAlarmToggle = {
+                    alarmViewModel.stopAlarm(context)
+                })
+        ) + basePages
+    } else {
+        basePages
     }
 
     // Pager
     val pagerState = rememberPagerState(
         pageCount = { pages.size })
 
-    LaunchedEffect(pagerState) {
+    LaunchedEffect(pagerState, pages.size) {
         while (true) {
             delay(4_000)
             pagerState.animateScrollToPage(
@@ -223,7 +225,7 @@ fun HomeHeaderSlider() {
     ) {
 
         HorizontalPager(
-            state = pagerState, modifier = Modifier.height(190.dp)
+            state = pagerState, modifier = Modifier.height(214.dp)
         ) { page ->
             val context = LocalContext.current
             val localizationManager = LocalizationManager(context)
@@ -234,6 +236,8 @@ fun HomeHeaderSlider() {
                 title = pages[page].title,
                 subtitle = pages[page].subtitle,
                 hint = pages[page].hint,
+                footer = pages[page].footer,
+                locationLabel = locationLabel,
                 isAlarmEnabled = pages[page].isAlarmEnabled,
                 onAlarmToggle = pages[page].onAlarmToggle,
                 language = currentLanguage
@@ -249,6 +253,23 @@ fun HomeHeaderSlider() {
         )
     }
 }
+
+private fun formatCountdownTo(time: LocalTime, now: LocalTime): String {
+    var duration = Duration.between(now, time)
+    if (duration.isNegative || duration.isZero) {
+        duration = duration.plusHours(24)
+    }
+
+    val totalSeconds = duration.seconds
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    return "%02d:%02d:%02d remaining".format(hours, minutes, seconds)
+}
+
+@Composable
+private fun calculatingTextPlaceholder(): String = stringResource(R.string.calculating_prayer)
 @Composable
 fun formatRemaining(
     minutes: Int?,
@@ -270,5 +291,3 @@ fun formatRemaining(
             arrayOf(formatDuration(minutes))
         )
 }
-
-
