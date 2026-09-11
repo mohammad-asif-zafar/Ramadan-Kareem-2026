@@ -90,6 +90,34 @@
         }
         .btn:hover { opacity: 0.9; }
 
+        .screenshots-section {
+            margin-top: 80px;
+        }
+        .screenshots-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        }
+        .screenshots-container::-webkit-scrollbar { height: 8px; }
+        .screenshots-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        .screenshot-card {
+            flex: 0 0 280px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            background: white;
+            transition: transform 0.3s;
+        }
+        .screenshot-card:hover { transform: scale(1.02); }
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         footer {
             text-align: center;
             padding: 40px;
@@ -143,8 +171,36 @@
                 <p>Explore and memorize the 99 beautiful names of Allah (Asma-ul-Husna) with meanings and details.</p>
             </div>
             <div class="feature-card">
+                <h3>🤲 Essential Duas</h3>
+                <p>Access a comprehensive collection of daily and special occasion Duas with translations and audio.</p>
+            </div>
+            <div class="feature-card">
                 <h3>📅 Ramadan Tools</h3>
                 <p>Dynamic Ramadan calendar, Suhoor & Iftar timings, and daily inspirational tips for your journey.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots-section">
+        <h2 style="text-align: center; color: var(--emerald-dark);">App Showcase</h2>
+        <div class="screenshots-container">
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_000816.png" alt="Home Screen">
+            </div>
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_000924.png" alt="Prayer Times">
+            </div>
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_001010.png" alt="Quran List">
+            </div>
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_001049.png" alt="Quran Reading">
+            </div>
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_001134.png" alt="Allah Names">
+            </div>
+            <div class="screenshot-card">
+                <img src="Noor%20Muslim%20companion/Noor20260912_001210.png" alt="Qibla Finder">
             </div>
         </div>
     </section>
