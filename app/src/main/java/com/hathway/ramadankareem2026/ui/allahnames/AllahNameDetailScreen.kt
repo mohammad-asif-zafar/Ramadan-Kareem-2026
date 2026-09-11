@@ -126,56 +126,50 @@ fun AllahNameDetailScreen(
                     item {
                         Text(
                             text = name.transliteration,
-                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 28.sp
+                            ),
+                            color = Color(0xFF0F5A3E),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
 
                     item {
-                        Text(
-                            text = name.meaning,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
 
                     item {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .padding(horizontal = 4.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Surface(
-                                shape = androidx.compose.foundation.shape.CircleShape, // Smooth pill layout
-                                color = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
-                                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isBookmarked) Color(0xFF0F5A3E) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                             ) {
                                 Row(
                                     modifier = Modifier.padding(
-                                        horizontal = 16.dp, vertical = 8.dp
+                                        horizontal = 16.dp, vertical = 10.dp
                                     ), verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
                                         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp),
-                                        tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                                        else MaterialTheme.colorScheme.onSurfaceVariant
+                                        tint = if (isBookmarked) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         text = if (isBookmarked) stringResource(R.string.bookmarked) else stringResource(
                                             R.string.not_bookmarked
                                         ),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                                        else MaterialTheme.colorScheme.onSurfaceVariant
+                                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                                        color = if (isBookmarked) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
@@ -192,30 +186,36 @@ fun AllahNameDetailScreen(
                                     text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
                                         R.string.add_bookmark
                                     ), 
-                                    style = MaterialTheme.typography.labelLarge, 
-                                    color = MaterialTheme.colorScheme.primary
+                                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold), 
+                                    color = Color(0xFF0F5A3E)
                                 )
                             }
                         }
                     }
 
                     item {
-                        // High-contrast translucent surface card overlay
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+
+                    item {
+                        // Premium deep dark card for the meaning
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(24.dp),
-                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
-                            shadowElevation = 3.dp
+                            shape = RoundedCornerShape(32.dp),
+                            color = Color(0xFF1B252E),
+                            shadowElevation = 8.dp
                         ) {
                             Text(
-                                text = name.english,
-                                modifier = Modifier.padding(28.dp),
+                                text = name.meaning,
+                                modifier = Modifier.padding(horizontal = 28.dp, vertical = 36.dp),
                                 style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp
+                                    fontSize = 17.sp,
+                                    lineHeight = 26.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    letterSpacing = 0.25.sp
                                 ),
-                                color = MaterialTheme.colorScheme.onSurface, // Changed to darker legible shade
-                                textAlign = TextAlign.Center,
-                                lineHeight = 28.sp
+                                color = Color.White.copy(alpha = 0.9f),
+                                textAlign = TextAlign.Center
                             )
                         }
                     }
@@ -254,7 +254,7 @@ fun OrnamentalNameBox(
             fontSize = 42.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Serif,
-            color = MaterialTheme.colorScheme.primary,
+            color = Color(0xFF0F5A3E),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(36.dp)
         )

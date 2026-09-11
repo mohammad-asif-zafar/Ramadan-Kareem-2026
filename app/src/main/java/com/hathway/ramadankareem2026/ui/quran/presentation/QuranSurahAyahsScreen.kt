@@ -77,6 +77,8 @@ fun QuranSurahAyahsScreen(
     
     val state by viewModel.state.collectAsState()
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
+    val currentPlayingIndex by viewModel.currentPlayingIndex.collectAsState()
+    val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
 
     // Surah-level bookmark state
     val isBookmarked by quranBookmarkViewModel.isBookmarked(surahId.toString())
@@ -143,9 +145,17 @@ fun QuranSurahAyahsScreen(
         }
     }
 
-    // Resume last read within current surah
-    LaunchedEffect(state.ayahs, lastReadAyah, state.selectedSurah?.id) {
+    // Resume last read within current surah OR scroll to playing ayah
+    LaunchedEffect(state.ayahs, lastReadAyah, currentPlayingIndex, state.selectedSurah?.id) {
         val currentSurahId = state.selectedSurah?.id ?: return@LaunchedEffect
+        
+        // Priority 1: Scroll to currently playing
+        if (isAudioPlaying && currentPlayingIndex >= 0 && currentPlayingIndex < state.ayahs.size) {
+            listState.animateScrollToItem(currentPlayingIndex)
+            return@LaunchedEffect
+        }
+
+        // Priority 2: Scroll to last read
         val key = lastReadAyah ?: return@LaunchedEffect
         val parts = key.split(":")
         val keySurahId = parts.getOrNull(0)?.toIntOrNull() ?: return@LaunchedEffect
@@ -157,56 +167,54 @@ fun QuranSurahAyahsScreen(
     }
 
 
-    Scaffold(topBar = {
-        val surah = state.selectedSurah
+    Scaffold(
+        topBar = {
+            val surah = state.selectedSurah
 
-        RamadanToolbar(
-            title = surah?.name ?: stringResource(R.string.feature_quran),
-            subtitle = surah?.englishName,/*meta = surah?.let {
-                "${it.numberOfAyahs} verses • ${it.revelationType}"
-            },*/
-            toolbarHeight = toolbarHeight,
-            subtitleAlpha = subtitleAlpha,
-            metaAlpha = 1f - collapseProgress,
-            metaOffsetY = lerp(0.dp, (-16).dp, collapseProgress),
-            showBack = true,
-            onBackClick = onBack,
-            rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
-            rightIcon1Badge = bookmarkCount,
-            onRightIcon1Click = {
-                navController.navigate(Routes.QURAN_BOOKMARKS)
-            },
-            onRightIcon2Click = {
-                surah?.let {
-                    quranBookmarkViewModel.toggleBookmark(
-                        surahId = it.id.toString(), title = it.englishName, content = it.name
-                    )
+            RamadanToolbar(
+                title = surah?.name ?: stringResource(R.string.feature_quran),
+                subtitle = surah?.englishName,
+                toolbarHeight = toolbarHeight,
+                subtitleAlpha = subtitleAlpha,
+                metaAlpha = 1f - collapseProgress,
+                metaOffsetY = lerp(0.dp, (-16).dp, collapseProgress),
+                showBack = true,
+                onBackClick = onBack,
+                rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
+                rightIcon1Badge = bookmarkCount,
+                onRightIcon1Click = {
+                    navController.navigate(Routes.QURAN_BOOKMARKS)
+                },
+                onRightIcon2Click = {
+                    surah?.let {
+                        quranBookmarkViewModel.toggleBookmark(
+                            surahId = it.id.toString(), title = it.englishName, content = it.name
+                        )
+                    }
+                })
+        },
+        bottomBar = {
+            val isPlaying by viewModel.isAudioPlaying.collectAsState()
+            val hasStarted by viewModel.hasStartedPlayback.collectAsState()
+
+            SurahAudioPlayerBar(
+                isPlaying = isPlaying,
+                onPlay = {
+                    if (hasStarted) {
+                        viewModel.resumeAudio()
+                    } else {
+                        viewModel.playSurah(state.ayahs)
+                    }
+                },
+                onPause = {
+                    viewModel.pauseAudio()
+                },
+                onStop = {
+                    viewModel.stopAudio()
                 }
-            })
-
-
-    }, bottomBar = {
-        val isPlaying by viewModel.isAudioPlaying.collectAsState()
-        val hasStarted by viewModel.hasStartedPlayback.collectAsState()
-
-        SurahAudioPlayerBar(
-            isPlaying = isPlaying,
-            onPlay = {
-                if (hasStarted) {
-                    viewModel.resumeAudio()
-                } else {
-                    viewModel.playSurah(state.ayahs)
-                }
-            },
-            onPause = {
-                viewModel.pauseAudio()
-            },
-            onStop = {
-                viewModel.stopAudio()
-            }
-        )
-    }
-
+            )
+        },
+        containerColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0D1B16) else MaterialTheme.colorScheme.background
     ) { padding ->
         when {
             state.isLoading && state.ayahs.isEmpty() -> {
@@ -232,144 +240,81 @@ fun QuranSurahAyahsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
-                        .padding(top = 12.dp, start = 24.dp, end = 24.dp)
                 ) {
+                    //  AYAH LIST
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(0.dp),
+                        contentPadding = PaddingValues(bottom = 100.dp)
+                    ) {
+                        item {
+                            // SURAH BOOKMARK BUTTON - Refined and moved inside LazyColumn
+                            val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+                            
+                            val bookmarkScale by animateFloatAsState(
+                                targetValue = if (isBookmarked) 1.1f else 1.0f,
+                                animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+                                label = "bookmark_scale"
+                            )
 
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                                    .clickable {
+                                        val surah = state.selectedSurah
+                                        if (surah != null) {
+                                            quranBookmarkViewModel.toggleBookmark(
+                                                surahId = surah.id.toString(),
+                                                title = surah.englishName,
+                                                content = surah.name
+                                            )
+                                        }
+                                    },
+                                shape = RoundedCornerShape(20.dp),
+                                color = if (isBookmarked) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                border = if (isBookmarked) androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)) else null
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(16.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = if (isBookmarked) "Surah Bookmarked" else "Bookmark this Surah",
+                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                            color = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                        )
+                                        Text(
+                                            text = getBookmarkText(isBookmarked),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
 
-                    // SURAH BOOKMARK BUTTON - Enhanced with animations
-                    val bookmarkScale by animateFloatAsState(
-                        targetValue = if (isBookmarked) 1.2f else 1.0f,
-                        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
-                        label = "bookmark_scale"
-                    )
-
-                    val bookmarkBackgroundColor by animateColorAsState(
-                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surface,
-                        animationSpec = tween(durationMillis = 300),
-                        label = "bookmark_background_color"
-                    )
-
-                    val bookmarkIconColor by animateColorAsState(
-                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                        else MaterialTheme.colorScheme.primary,
-                        animationSpec = tween(durationMillis = 300),
-                        label = "bookmark_icon_color"
-                    )
-
-                    val bookmarkBorderColor by animateColorAsState(
-                        targetValue = if (isBookmarked) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.outline,
-                        animationSpec = tween(durationMillis = 300),
-                        label = "bookmark_border_color"
-                    )
-
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                            .clickable {
-                                val surah = state.selectedSurah
-                                if (surah != null) {
-                                    quranBookmarkViewModel.toggleBookmark(
-                                        surahId = surah.id.toString(),
-                                        title = surah.englishName,
-                                        content = surah.name
+                                    Icon(
+                                        imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                                        contentDescription = null,
+                                        tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.size(24.dp).scale(bookmarkScale)
                                     )
                                 }
                             }
-                            .shadow(
-                                elevation = if (isBookmarked) 8.dp else 2.dp,
-                                shape = RoundedCornerShape(12.dp)
-                            ),
-                        shape = RoundedCornerShape(12.dp),
-                        color = bookmarkBackgroundColor,
-                        border = androidx.compose.foundation.BorderStroke(
-                            width = if (isBookmarked) 2.dp else 1.dp, color = bookmarkBorderColor
-                        )) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Text(
-                                    text = when (currentLanguage) {
-                                        "hi" -> "इस सूरह को बुकमार्क करें"
-                                        "ur" -> "اس سورہ کو بک مارک کریں"
-                                        "ms" -> "Tanda Surah ini"
-                                        else -> "Bookmark this Surah"
-                                    },
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer
-                                    else MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = getBookmarkText(isBookmarked),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = if (isBookmarked) MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = 0.8f
-                                    )
-                                    else MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .scale(bookmarkScale)
-                                    .background(
-                                        color = if (isBookmarked) MaterialTheme.colorScheme.primary.copy(
-                                            alpha = 0.1f
-                                        )
-                                        else Color.Transparent, shape = CircleShape
-                                    )
-                                    .padding(8.dp)
-                            ) {
-                                Icon(
-                                    imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                                    contentDescription = if (isBookmarked) {
-                                    when (currentLanguage) {
-                                        "hi" -> "बुकमार्क हटाएं"
-                                        "ur" -> "بک مارک ہٹائیں"
-                                        "ms" -> "Keluarkan penanda"
-                                        else -> "Remove bookmark"
-                                    }
-                                } else {
-                                    when (currentLanguage) {
-                                        "hi" -> "बुकमार्क जोड़ें"
-                                        "ur" -> "بک مارک شامل کریں"
-                                        "ms" -> "Tambah penanda"
-                                        else -> "Add bookmark"
-                                    }
-                                },
-                                    tint = bookmarkIconColor,
-                                    modifier = Modifier.size(28.dp)
-                                )
-                            }
                         }
-                    }
 
-                    //  AYAH LIST
-                    LazyColumn(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(0.dp),
-                        contentPadding = PaddingValues(bottom = 24.dp)
-                    ) {
-                        items(state.ayahs, key = { it.number }) { ayah ->
+                        items(state.ayahs.size) { index ->
+                            val ayah = state.ayahs[index]
                             val currentSurahId = state.selectedSurah?.id ?: surahId
-                            val key = "$currentSurahId:${ayah.number}"
 
                             AyahCard(
                                 ayah = ayah,
-                                isPlaying = true,
+                                isPlaying = isAudioPlaying && currentPlayingIndex == index,
                                 onClick = {
                                     viewModel.saveLastRead(currentSurahId, ayah.number)
+                                    viewModel.playSurah(state.ayahs, index)
                                 })
-
                         }
                     }
                 }
@@ -380,59 +325,64 @@ fun QuranSurahAyahsScreen(
 
 @Composable
 private fun AyahCard(
-    ayah: Ayah, isPlaying: Boolean, onClick: () -> Unit
+    ayah: Ayah, 
+    isPlaying: Boolean, 
+    onClick: () -> Unit
 ) {
+    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val backgroundColor = if (isPlaying) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+    } else {
+        Color.Transparent
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = if (isPlaying) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-        else MaterialTheme.colorScheme.background
+        color = backgroundColor
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 18.dp, horizontal = 12.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         ) {
-
-            // AYAH NUMBER (SUBTLE, QURAN STYLE)
+            // AYAH NUMBER
             Row(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 3.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Surface(
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.08f)
-                ) {
-                    Text(
-                        text = ayah.number.toString(),
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Text(
+                    text = ayah.number.toString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    modifier = Modifier
+                        .background(
+                            color = (if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline).copy(alpha = 0.1f),
+                            shape = CircleShape
+                        )
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // ARABIC TEXT (PRIMARY FOCUS)
+            // ARABIC TEXT
             Text(
                 text = ayah.arabicText,
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    lineHeight = 48.sp,
-                    fontSize = 28.sp,
+                    lineHeight = 52.sp,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 ),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // OPTIONAL TRANSLATION (SOFTER)
+            // TRANSLATION
             if (ayah.translation.isNotBlank()) {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
                     text = ayah.translation,
@@ -440,19 +390,18 @@ private fun AyahCard(
                         lineHeight = 26.sp,
                         fontSize = 16.sp
                     ),
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    color = if (isPlaying) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                 )
             }
 
-            // SOFT DIVIDER
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
+            // DIVIDER
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.04f))
-
+                    .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
             )
         }
     }

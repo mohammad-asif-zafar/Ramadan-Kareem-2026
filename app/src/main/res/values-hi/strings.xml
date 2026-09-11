@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">रमज़ान करीम 2026</string>
+    <string name="app_name">नूर मुस्लिम कंपेनियन</string>
     <string name="widget_description">नमाज़ समय और रमज़ान काउंटडाउन विजेट</string>
 
     <!-- Navigation -->
@@ -337,7 +337,7 @@
     <string name="developer">डेवलपर</string>
     <string name="mohammad_asif_zafar">मोहम्मद आसिफ़ ज़फ़र</string>
     <string name="design_ui_ux">डिज़ाइन और UI/UX</string>
-    <string name="ramadan_kareem_team">रमज़ान करीम टीम</string>
+    <string name="ramadan_kareem_team">नूर मुस्लिम कंपेनियन टीम</string>
     <string name="islamic_scholars_community_contributors">इस्लामिक विद्वान और समुदाय योगदानकर्ता</string>
     <string name="data_sources">डेटा स्रोत</string>
     <string name="next_prayer_time">अगली नमाज़ समय</string>

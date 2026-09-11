@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Navigation -->
-    <string name="app_name">رمضان كريم 2026</string>
+    <string name="app_name">نور رفيق المسلم</string>
     <string name="dua">الدعاء</string>
     <string name="zakat">الزكاة</string>
     <string name="settings">الإعدادات</string>
@@ -39,7 +39,7 @@
     <!-- About -->
     <string name="about">عن التطبيق</string>
     <string name="version">الإصدار 1.0.0</string>
-    <string name="about_app">تعرف على تطبيق رمضان كريم 2026</string>
+    <string name="about_app">تعرف على تطبيق نور رفيق المسلم</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="read_privacy_policy">اقرأ سياسة الخصوصية</string>
     <string name="terms_use">شروط الاستخدام</string>
@@ -57,7 +57,7 @@
     <string name="developer">المطور</string>
     <string name="mohammad_asif_zafar">محمد أسيف ظفر</string>
     <string name="design_ui_ux">التصميم وواجهة المستخدم</string>
-    <string name="ramadan_kareem_team">فريق رمضان كريم</string>
+    <string name="ramadan_kareem_team">فريق نور رفيق المسلم</string>
     <string name="special_thanks">شكر خاص</string>
     <string name="islamic_scholars_community_contributors">العلماء الإسلاميون والمساهمون في المجتمع</string>
     <string name="data_sources">مصادر البيانات</string>

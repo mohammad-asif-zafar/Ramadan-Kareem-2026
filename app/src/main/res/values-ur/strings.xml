@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">رمضان کریم 2026</string>
+    <string name="app_name">نور مسلم کمپینین</string>
     <string name="widget_description">نماز کے اوقات اور رمضان کاؤنٹ ڈاؤن ویجیٹ</string>
 
     <!-- Navigation -->
@@ -330,7 +330,7 @@
     <string name="developer">ڈویلپر</string>
     <string name="mohammad_asif_zafar">محمد آصف ظفر</string>
     <string name="design_ui_ux">ڈیزائن اور UI/UX</string>
-    <string name="ramadan_kareem_team">رمضان کریم ٹیم</string>
+    <string name="ramadan_kareem_team">نور مسلم کمپینین ٹیم</string>
     <string name="islamic_scholars_community_contributors">اسلامی علما اور برادری حصہ دار</string>
     <string name="data_sources">ڈیٹا ذرائع</string>
     <string name="next_prayer_time">اگلی نماز وقت</string>

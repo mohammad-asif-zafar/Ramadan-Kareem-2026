@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -127,30 +128,49 @@ private fun InfoCard(
 
 @Composable
 fun PrayerDirectionGuide() {
+    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = if (isDark) Color(0xFF1B252E) else Color.White
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            Text(
-                text = stringResource(R.string.prayer_direction_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = Emerald,
-                textAlign = TextAlign.Center,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(Emerald.copy(alpha = 0.1f), androidx.compose.foundation.shape.CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_saved), // Assuming ic_saved is used as a placeholder or exists
+                        contentDescription = null,
+                        tint = Emerald,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = stringResource(R.string.prayer_direction_title),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = if (isDark) Color.White else Color(0xFF1B3D36)
+                )
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             val steps = listOf(
                 stringResource(R.string.prayer_direction_step_1),
@@ -168,31 +188,31 @@ fun PrayerDirectionGuide() {
                         modifier = Modifier
                             .size(24.dp)
                             .background(
-                                Emerald,
-                                RoundedCornerShape(12.dp)
+                                Emerald.copy(alpha = 0.1f),
+                                androidx.compose.foundation.shape.CircleShape
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "${index + 1}",
-                            color = Color.White,
+                            color = Emerald,
                             style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.ExtraBold
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Text(
                         text = step,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
                         modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = (if (isDark) Color.White else Color.Black).copy(alpha = 0.7f)
                     )
                 }
 
                 if (index < steps.size - 1) {
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }

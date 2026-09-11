@@ -17,9 +17,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -29,25 +32,34 @@ fun SurahAudioPlayerBar(
     onPause: () -> Unit,
     onStop: () -> Unit
 ) {
+    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val backgroundColor = if (isDark) {
+        Color(0xFF121212)
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+
     Surface(
         tonalElevation = 8.dp,
-        shadowElevation = 12.dp,
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+        shadowElevation = 16.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        color = backgroundColor,
+        shape = RoundedCornerShape(32.dp)
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Stop button
+            // Stop button (Red Square in Circle)
             IconButton(
                 onClick = onStop,
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(52.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f),
+                        color = MaterialTheme.colorScheme.error.copy(alpha = 0.15f),
                         shape = CircleShape
                     )
             ) {
@@ -55,25 +67,33 @@ fun SurahAudioPlayerBar(
                     imageVector = Icons.Default.Stop, 
                     contentDescription = "Stop",
                     tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(26.dp)
                 )
             }
 
-            // Play/Pause button
+            // Status Text or Progress could go here
+            Text(
+                text = if (isPlaying) "Playing Surah..." else "Audio Paused",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                fontWeight = FontWeight.Medium
+            )
+
+            // Play/Pause button (Emerald Circle)
             IconButton(
                 onClick = if (isPlaying) onPause else onPlay,
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(52.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary,
                         shape = CircleShape
                     )
             ) {
                 Icon(
                     imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                     contentDescription = "Play/Pause",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(32.dp)
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }

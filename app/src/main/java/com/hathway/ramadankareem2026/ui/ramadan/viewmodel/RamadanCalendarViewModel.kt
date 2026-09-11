@@ -56,7 +56,7 @@ class RamadanCalendarViewModel(
                 _error.value = null
                 
                 val now = clock.now()
-                val ramadanStartDate = LocalDate.of(2026, 2, 18) // February 18, 2026
+                val ramadanStartDate = LocalDate.of(2027, 3, 10) // Ramadan 2027 starts approx March 10
                 val totalDays = 30
 
                 // Default prayer times
@@ -125,7 +125,7 @@ class RamadanCalendarViewModel(
                 // Only update if we have data and it's currently Ramadan
                 if (_days.value.isNotEmpty()) {
                     val now = clock.now()
-                    val ramadanStartDate = LocalDate.of(2026, 2, 18)
+                    val ramadanStartDate = LocalDate.of(2027, 3, 10)
                     val totalDays = 30
 
                     // Default prayer times

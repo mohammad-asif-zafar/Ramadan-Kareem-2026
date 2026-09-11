@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">Ramadan Kareem 2026</string>
+    <string name="app_name">Noor Muslim Companion</string>
     <string name="widget_description">Waktu Solat &amp; Widget Kiraan Detik Ramadan</string>
 
     <!-- Navigation -->
@@ -330,7 +330,7 @@
     <string name="developer">Pembangun</string>
     <string name="mohammad_asif_zafar">Mohammad Asif Zafar</string>
     <string name="design_ui_ux">Reka Bentuk &amp; UI/UX</string>
-    <string name="ramadan_kareem_team">Pasukan Ramadan Kareem</string>
+    <string name="ramadan_kareem_team">Pasukan Noor Muslim Companion</string>
     <string name="islamic_scholars_community_contributors">Ulama Islam dan penyumbang komuniti</string>
     <string name="data_sources">Sumber Data</string>
     <string name="next_prayer_time">Waktu Solat Seterusnya</string>
