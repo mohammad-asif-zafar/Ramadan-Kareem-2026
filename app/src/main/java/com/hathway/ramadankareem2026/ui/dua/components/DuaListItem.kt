@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 /**
  * A reusable card UI for showing a single Duʿā item in a list.
@@ -129,7 +129,7 @@ fun DuaCardItem(
 )
 @Composable
 fun DuaCardItemPreview() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
 
         /**
          * Column used to show multiple variations

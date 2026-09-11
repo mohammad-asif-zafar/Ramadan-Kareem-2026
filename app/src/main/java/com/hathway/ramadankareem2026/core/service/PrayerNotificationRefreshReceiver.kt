@@ -11,8 +11,6 @@ import android.content.Intent
 class PrayerNotificationRefreshReceiver : BroadcastReceiver() {
     
     override fun onReceive(context: Context, intent: Intent) {
-        println("DEBUG: Prayer notification refresh triggered")
-        // TODO: Implement daily prayer notification refresh
-        // This would typically load prayer times from API and reschedule notifications
+
     }
 }

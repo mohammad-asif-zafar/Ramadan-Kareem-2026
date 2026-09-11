@@ -12,13 +12,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 @Composable
 fun DuaItemCard(
@@ -81,7 +79,7 @@ fun DuaItemCard(
 @Preview(showBackground = true)
 @Composable
 fun DuaItemCardPreview_Clickable() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         DuaItemCard(
             dua = DuaItem(
                 id = "sehri",

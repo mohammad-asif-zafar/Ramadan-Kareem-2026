@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
-// 🔹 Core location models
+
 import com.hathway.ramadankareem2026.core.location.LocationUiState
 
 import com.hathway.ramadankareem2026.core.location.LocationSource
@@ -140,7 +140,7 @@ fun HomeScreen(
                         navController.navigate(route) 
                     },
                     onViewAllClick = {
-                        // TODO: Navigate to all features screen
+                       // nothing
                     }
                 ) 
             }
@@ -187,7 +187,7 @@ private fun HomeScreenPreviewContent(
                         navController.navigate(route) 
                     },
                     onViewAllClick = {
-                        // TODO: Navigate to all features screen
+
                     }
                 ) 
             }

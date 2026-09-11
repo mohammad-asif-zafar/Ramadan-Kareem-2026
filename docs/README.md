@@ -1,10 +1,10 @@
-# 🌙 Ramadan Kareem 2026 - Privacy Policy & Legal
+# 🌙 Noor Muslim Companion - Privacy Policy & Legal
 
 This repository contains the privacy policy and legal information for the Ramadan Kareem 2026 mobile application.
 
 ## 📱 App Information
 
-- **App Name:** Ramadan Kareem 2026
+- **App Name:** Noor Muslim Companion
 - **Package Name:** com.hathway.ramadankareem2026
 - **Developer:** Mohammad Asif Zafar
 - **Category:** Lifestyle & Religion

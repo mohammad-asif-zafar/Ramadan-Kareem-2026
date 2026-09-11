@@ -22,7 +22,7 @@ import com.hathway.ramadankareem2026.ui.dua.data.DuaRepository
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 /**
  *  Screen that shows all Duʿās for a selected category
@@ -121,7 +121,7 @@ fun DuaCategoryScreenPreview() {
         )
     )
 
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         LazyColumn(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)

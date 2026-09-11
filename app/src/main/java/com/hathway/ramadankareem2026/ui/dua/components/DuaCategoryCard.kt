@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.dua.model.DuaCategory
 import com.hathway.ramadankareem2026.ui.dua.model.LocalizedCategoryNames
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 /**
  *  Dua Category Card
@@ -109,7 +109,7 @@ private val previewCategory = DuaCategory(
 )
 @Composable
 fun DuaCategoryCardPreview() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)

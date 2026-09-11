@@ -152,7 +152,7 @@ fun SettingsScreen(
                     SettingsItem(
                         icon = Icons.Default.Person,
                         title = stringResource(R.string.about_app),
-                        subtitle = "Learn more about Ramadan Kareem 2026",
+                        subtitle = "Learn more about Noor Muslim Companion",
                         onClick = { /* Navigate to about */ }
                     )
 

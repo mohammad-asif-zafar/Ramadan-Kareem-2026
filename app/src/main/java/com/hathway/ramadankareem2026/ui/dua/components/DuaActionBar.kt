@@ -25,7 +25,7 @@ import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.dua.model.DuaItem
 import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaTtsViewModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 @Composable
 fun DuaActionBar(
@@ -104,7 +104,7 @@ private val previewDua = DuaItem(
 )
 @Composable
 fun DuaActionBarPreview() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         DuaActionBar(
             dua = previewDua
         )

@@ -74,7 +74,7 @@ fun TipDetailScreen(
     Scaffold(
         topBar = {
             RamadanToolbar(
-                title = tip.category.displayName.getName("en"), // TODO: Pass actual language parameter
+                title = tip.category.displayName.getName("en"),
                 showBack = true,
                 onBackClick = onBack,
                 backgroundColor = MaterialTheme.colorScheme.surface,

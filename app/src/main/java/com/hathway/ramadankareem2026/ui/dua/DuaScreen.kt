@@ -30,7 +30,7 @@ import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaViewModel
 import com.hathway.ramadankareem2026.ui.home.components.SectionTitle
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 /**
  *  Dua Main Screen
@@ -125,7 +125,7 @@ fun DuaScreen(
 )
 @Composable
 fun DuaScreenPreview() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         DuaScreen(
             navController = rememberNavController(), 
             onBack = {}

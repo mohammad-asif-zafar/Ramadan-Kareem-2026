@@ -59,7 +59,7 @@ import com.hathway.ramadankareem2026.ui.dua.model.LocalizedDuaText
 import com.hathway.ramadankareem2026.ui.dua.presentation.viewmodel.DuaBookmarkCountViewModel
 import com.hathway.ramadankareem2026.ui.dua.viewmodel.DuaBookmarkViewModel
 import com.hathway.ramadankareem2026.ui.navigation.Routes
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -285,7 +285,7 @@ fun DuaDetailScreen(
 )
 @Composable
 fun DuaDetailScreenPreview() {
-    RamadanKareemTheme {
+    NoorMuslimCompanionTheme {
         // Create mock ViewModels for preview
         val mockDuaBookmarkCountViewModel = DuaBookmarkCountViewModel(Application())
         val mockBookmarkViewModel = DuaBookmarkViewModel(Application())

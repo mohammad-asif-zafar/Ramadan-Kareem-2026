@@ -17,7 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.settings.AppTheme
 import com.hathway.ramadankareem2026.ui.settings.ThemeViewModel
-import com.hathway.ramadankareem2026.ui.theme.RamadanKareemTheme
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var localizationManager: LocalizationManager
@@ -43,9 +43,9 @@ class MainActivity : ComponentActivity() {
                 AppTheme.SYSTEM -> isSystemInDarkTheme()
             }
 
-            RamadanKareemTheme(darkTheme = isDarkTheme) {
+            NoorMuslimCompanionTheme(darkTheme = isDarkTheme) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    RamadanKareemApp(themeViewModel)
+                    NoorMuslimCompanionApp(themeViewModel)
                 }
             }
         }
@@ -58,8 +58,8 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     val themeViewModel: ThemeViewModel = viewModel()
 
-    RamadanKareemTheme {
-        RamadanKareemApp(
+    NoorMuslimCompanionTheme {
+        NoorMuslimCompanionApp(
             themeViewModel = themeViewModel
         )
     }

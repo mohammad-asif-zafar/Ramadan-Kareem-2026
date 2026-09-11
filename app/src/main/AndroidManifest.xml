@@ -16,12 +16,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.RamadanKareem.Splash"
+        android:theme="@style/Theme.NoorMuslimCompanion.Splash"
         android:supportsRtl="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.RamadanKareem2026">
+            android:theme="@style/Theme.NoorMuslimCompanion.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

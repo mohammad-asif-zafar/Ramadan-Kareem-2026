@@ -72,7 +72,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun RamadanKareemTheme(
+fun NoorMuslimCompanionTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
