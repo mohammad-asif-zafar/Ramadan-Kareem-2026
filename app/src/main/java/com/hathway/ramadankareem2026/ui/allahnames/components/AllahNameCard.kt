@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,44 +51,47 @@ fun AllahNameCard(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(0.85f), // Guarantees balanced square proportion framing matching your layout image
-        shape = RoundedCornerShape(24.dp), // Enhanced deep corner roundness
-        color = Color(0xFFF9F9F8), // Soft off-white tint background layer
-        shadowElevation = 1.dp,
+            .aspectRatio(0.85f),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 2.dp,
+        tonalElevation = 1.dp,
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Centered Number Badge
+            // Centered ID Badge
             Box(
                 modifier = Modifier
                     .size(36.dp)
                     .background(
-                        color = Emerald.copy(alpha = 0.1f),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), 
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = name.id.toString(),
-                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
-                    color = Emerald,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Centered Golden Arabic Script
             Text(
                 text = name.arabic,
                 style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 22.sp,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 ),
                 color = Gold,
@@ -98,13 +100,28 @@ fun AllahNameCard(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Transliteration
+            Text(
+                text = name.transliteration,
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontSize = 14.sp, 
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
 
             // Centered Meaning Details Label Block
             Text(
-                text = name.meaning,
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                text = name.english,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -127,30 +144,30 @@ fun AllahNameRow(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(20.dp), // Clean smooth edge mapping matching image snippet
-        color = Color(0xFFF9F9F8),
-        shadowElevation = 1.dp,
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 2.dp,
+        tonalElevation = 1.dp,
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Left Number Badge Container
             Box(
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(40.dp)
                     .background(
-                        color = Emerald.copy(alpha = 0.1f),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), 
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = name.id.toString(),
-                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 13.sp),
-                    color = Emerald,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -161,21 +178,41 @@ fun AllahNameRow(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = name.arabic,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = Gold,
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = name.transliteration,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 16.sp, 
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
 
-                Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = name.arabic,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold, 
+                            fontSize = 22.sp
+                        ),
+                        color = Gold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = name.meaning,
+                    text = name.english,
                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Start,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

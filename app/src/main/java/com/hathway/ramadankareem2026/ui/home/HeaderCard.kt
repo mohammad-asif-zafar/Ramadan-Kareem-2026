@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.Icons
@@ -29,6 +28,7 @@ import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +50,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.home.model.HeaderType
-import com.hathway.ramadankareem2026.ui.theme.Emerald
 import com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModelFactory
 
 private const val TAG = "HeaderCard"
@@ -65,6 +64,7 @@ fun HeaderCard(
     locationLabel: String = "",
     isAlarmEnabled: Boolean = false,
     onAlarmToggle: (() -> Unit)? = null,
+    onReminderClick: ((Int) -> Unit)? = null,
     language: String = "en"
 ) {
     if (type == HeaderType.REMINDER) {
@@ -73,7 +73,7 @@ fun HeaderCard(
             subtitle = subtitle,
             hint = hint,
             language = language,
-            onClick = onAlarmToggle
+            onClick = onReminderClick
         )
         return
     }
@@ -81,12 +81,12 @@ fun HeaderCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(214.dp)
+            .height(180.dp)
             .padding(end = 4.dp),
         shape = RoundedCornerShape(26.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (type == HeaderType.DYNAMIC_PRAYER) 8.dp else 4.dp
+            defaultElevation = if (type == HeaderType.DYNAMIC_PRAYER) 6.dp else 2.dp
         )
     ) {
         Box(
@@ -232,7 +232,7 @@ private fun PrayerHeroContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 16.dp),
+            .padding(start = 16.dp, top = 14.dp, end = 16.dp, bottom = 12.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.Top) {
@@ -243,44 +243,44 @@ private fun PrayerHeroContent(
                 border = Color(0xFF73C7A0)
             )
 
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     color = Color(0xFFFFC84A),
-                    fontSize = 18.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(4.dp))
 
                 Text(
                     text = subtitle,
                     color = Color.White,
-                    fontSize = 25.sp,
-                    lineHeight = 31.sp,
+                    fontSize = 20.sp,
+                    lineHeight = 24.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 if (locationLabel.isNotBlank()) {
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(4.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Outlined.LocationOn,
                             contentDescription = null,
                             tint = Color.White.copy(alpha = 0.70f),
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(14.dp)
                         )
-                        Spacer(Modifier.width(5.dp))
+                        Spacer(Modifier.width(4.dp))
                         Text(
                             text = locationLabel,
                             color = Color.White.copy(alpha = 0.78f),
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -295,8 +295,8 @@ private fun PrayerHeroContent(
             background = Color(0xFF168477).copy(alpha = 0.76f),
             contentColor = Color.White,
             modifier = Modifier
-                .padding(start = 82.dp)
-                .widthIn(max = 250.dp),
+                .padding(start = 62.dp)
+                .fillMaxWidth(),
             showChevron = true
         )
     }
@@ -324,7 +324,7 @@ private fun FastingTimeContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 18.dp, top = 22.dp, end = 18.dp, bottom = 18.dp),
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 14.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.Top) {
@@ -335,29 +335,29 @@ private fun FastingTimeContent(
                     border = badgeBorder
                 )
 
-                Spacer(Modifier.width(18.dp))
+                Spacer(Modifier.width(12.dp))
 
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(top = 7.dp)
+                        .padding(top = 2.dp)
                 ) {
                     Text(
                         text = title,
                         color = titleColor,
-                        fontSize = 18.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(4.dp))
 
                     Text(
                         text = subtitle,
                         color = textColor,
-                        fontSize = 42.sp,
-                        lineHeight = 46.sp,
+                        fontSize = 28.sp,
+                        lineHeight = 32.sp,
                         fontWeight = FontWeight.ExtraBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -366,7 +366,7 @@ private fun FastingTimeContent(
                     Text(
                         text = hint,
                         color = mutedColor,
-                        fontSize = 17.sp,
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -381,8 +381,8 @@ private fun FastingTimeContent(
                     background = chipBackground,
                     contentColor = textColor,
                     modifier = Modifier
-                        .padding(start = 82.dp)
-                        .widthIn(max = 230.dp),
+                        .padding(start = 62.dp)
+                        .fillMaxWidth(),
                     showChevron = false
                 )
             }
@@ -391,14 +391,14 @@ private fun FastingTimeContent(
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(18.dp)
-                .size(42.dp)
-                .clip(RoundedCornerShape(21.dp))
+                .padding(14.dp)
+                .size(32.dp)
+                .clip(RoundedCornerShape(16.dp))
                 .background(Color.White.copy(alpha = if (isIftar) 0.54f else 0.12f))
                 .border(
                     width = 1.dp,
                     color = if (isIftar) Color.White.copy(alpha = 0.38f) else Color.White.copy(alpha = 0.28f),
-                    shape = RoundedCornerShape(21.dp)
+                    shape = RoundedCornerShape(16.dp)
                 )
                 .clickable(enabled = onAlarmToggle != null) { onAlarmToggle?.invoke() },
             contentAlignment = Alignment.Center
@@ -407,7 +407,7 @@ private fun FastingTimeContent(
                 imageVector = if (isAlarmEnabled) Icons.Outlined.Alarm else Icons.Outlined.ChevronRight,
                 contentDescription = null,
                 tint = if (isIftar) Color(0xFF3A1908) else Color.White,
-                modifier = Modifier.size(26.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
     }
@@ -422,17 +422,17 @@ private fun IconBadge(
 ) {
     Box(
         modifier = Modifier
-            .size(70.dp)
-            .clip(RoundedCornerShape(35.dp))
+            .size(50.dp)
+            .clip(RoundedCornerShape(25.dp))
             .background(background)
-            .border(1.dp, border.copy(alpha = 0.82f), RoundedCornerShape(35.dp)),
+            .border(1.dp, border.copy(alpha = 0.82f), RoundedCornerShape(25.dp)),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = tint,
-            modifier = Modifier.size(34.dp)
+            modifier = Modifier.size(24.dp)
         )
     }
 }
@@ -490,7 +490,7 @@ private fun DynamicReminderCard(
     subtitle: String,
     hint: String,
     language: String = "en",
-    onClick: (() -> Unit)? = null
+    onClick: ((Int) -> Unit)? = null
 ) {
     val viewModel: com.hathway.ramadankareem2026.ui.tips.presentation.viewmodel.RandomRamadanTipsViewModel =
         viewModel(factory = RandomRamadanTipsViewModelFactory())
@@ -504,78 +504,90 @@ private fun DynamicReminderCard(
         }
     }
 
+    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val cardBackground = if (isDark) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primaryContainer
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val onSurfaceColor = MaterialTheme.colorScheme.onSurface
+    val onSurfaceVariantColor = MaterialTheme.colorScheme.onSurfaceVariant
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(214.dp),
+            .height(180.dp)
+            .padding(end = 4.dp),
         shape = RoundedCornerShape(26.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+        colors = CardDefaults.cardColors(containerColor = cardBackground),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .background(headerGradient(HeaderType.REMINDER))
-                .fillMaxSize()
-        ) {
-            SliderBackgroundImage(HeaderType.REMINDER)
-            Box(
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(R.drawable.serenquran),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .matchParentSize()
-                    .background(foregroundScrim(HeaderType.REMINDER))
+                    .fillMaxSize()
+                    .alpha(if (isDark) 0.05f else 0.12f)
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 18.dp, top = 22.dp, end = 18.dp, bottom = 18.dp),
+                    .padding(14.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    verticalAlignment = Alignment.Top
-                ) {
-                    IconBadge(
-                        icon = headerIcon(HeaderType.REMINDER),
-                        background = Emerald,
-                        tint = Color.White,
-                        border = Color(0xFF0FBFA5)
-                    )
+                Row(verticalAlignment = Alignment.Top) {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(25.dp))
+                            .background(primaryColor)
+                            .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(25.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = headerIcon(HeaderType.REMINDER),
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
 
-                    Spacer(Modifier.width(18.dp))
+                    Spacer(Modifier.width(14.dp))
 
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(top = 7.dp)
+                            .padding(top = 2.dp)
                     ) {
                         val tip = currentTip
                         Text(
                             text = title,
-                            color = Color(0xFF0B766C),
-                            fontSize = 17.sp,
+                            color = primaryColor,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
                             text = tip?.title?.getText(language) ?: subtitle,
-                            color = Color(0xFF101820),
-                            fontSize = 22.sp,
-                            lineHeight = 27.sp,
+                            color = onSurfaceColor,
+                            fontSize = 18.sp,
+                            lineHeight = 22.sp,
                             fontWeight = FontWeight.ExtraBold,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
 
-                        Spacer(modifier = Modifier.height(7.dp))
+                        Spacer(modifier = Modifier.height(2.dp))
 
                         Text(
                             text = tip?.content?.getText(language) ?: hint,
-                            color = Color(0xFF5B6670),
-                            fontSize = 15.sp,
-                            lineHeight = 20.sp,
+                            color = onSurfaceVariantColor,
+                            fontSize = 13.sp,
+                            lineHeight = 17.sp,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -585,12 +597,14 @@ private fun DynamicReminderCard(
                 PillButton(
                     text = "Read More",
                     icon = null,
-                    background = Color(0xFFC9ECDE).copy(alpha = 0.88f),
-                    contentColor = Color(0xFF123C35),
+                    background = primaryColor.copy(alpha = 0.15f),
+                    contentColor = primaryColor,
                     modifier = Modifier
-                        .padding(start = 88.dp)
-                        .width(156.dp)
-                        .clickable(enabled = onClick != null) { onClick?.invoke() },
+                        .padding(start = 62.dp)
+                        .width(130.dp)
+                        .clickable(enabled = onClick != null) {
+                            currentTip?.id?.let { id -> onClick?.invoke(id) }
+                        },
                     showChevron = true
                 )
             }

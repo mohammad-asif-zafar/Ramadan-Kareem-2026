@@ -72,10 +72,10 @@ fun QuranSurahListScreen(
     quranBookmarkCountViewModel: QuranBookmarkCountViewModel,
     onBack: () -> Unit,
     onSurahClick: (Surah) -> Unit,
-    navController: NavController
+    navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
-    var isGridView by remember { mutableStateOf(true) } // Layout mode state flag
+    var isGridView by remember { mutableStateOf(value = true) } // Layout mode state flag
     LaunchedEffect(Unit) {
         if (state.surahList.isEmpty() && !state.isLoading) {
             viewModel.loadSurahs()
@@ -128,7 +128,7 @@ fun QuranSurahListScreen(
                 QuranSurahListSkeleton(modifier = Modifier.padding(padding))
             }
 
-            state.errorMessage != null && state.surahList.isEmpty() -> {
+            (state.errorMessage != null && state.surahList.isEmpty()) -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -252,10 +252,9 @@ fun SurahsDisplaySection(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(items = filteredSurahs, key = { it.id }) { surah ->
-                    SurahGridCard(
-                        surah = surah,
-                        onClick = { onSurahClick(surah) }
-                    )
+                    SurahGridCard(surah = surah) {
+                        onSurahClick(surah)
+                    }
                 }
             }
         } else {
@@ -266,10 +265,9 @@ fun SurahsDisplaySection(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(items = filteredSurahs, key = { it.id }) { surah ->
-                    SurahListRow(
-                        surah = surah,
-                        onClick = { onSurahClick(surah) }
-                    )
+                    SurahListRow(surah = surah) {
+                        onSurahClick(surah)
+                    }
                 }
             }
         }
@@ -289,38 +287,47 @@ private fun SurahGridCard(
             .fillMaxWidth()
             .aspectRatio(0.85f),
         shape = RoundedCornerShape(24.dp),
-        color = Color(0xFFF9F9F8),
-        shadowElevation = 0.5.dp,
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 2.dp,
+        tonalElevation = 1.dp,
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(14.dp),
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             // Centered ID Badge
             Box(
                 modifier = Modifier
-                    .size(32.dp)
-                    .background(color = Emerald.copy(alpha = 0.1f), shape = CircleShape),
+                    .size(36.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), 
+                        shape = CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = surah.id.toString(),
-                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp),
-                    color = Emerald,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Arabic Name
             Text(
                 text = surah.name,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 24.sp, 
+                    fontWeight = FontWeight.Bold
+                ),
                 color = Gold,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
@@ -332,20 +339,23 @@ private fun SurahGridCard(
             // English Title Transliteration
             Text(
                 text = surah.englishName,
-                style = MaterialTheme.typography.labelMedium.copy(fontSize = 13.sp, fontWeight = FontWeight.Bold),
-                color = Color(0xFF222222),
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontSize = 14.sp, 
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-            // Translation Metadata Text Details (Stacked vertically for grid compactness)
+            // Translation Metadata Text Details
             Text(
                 text = "${surah.numberOfAyahs} Ayahs • ${surah.revelationType}",
                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -367,25 +377,28 @@ private fun SurahListRow(
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         shape = RoundedCornerShape(20.dp),
-        color = Color(0xFFF9F9F8),
-        shadowElevation = 0.5.dp,
+        color = MaterialTheme.colorScheme.surface,
+        shadowElevation = 2.dp,
+        tonalElevation = 1.dp,
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(38.dp)
-                    .background(color = Emerald.copy(alpha = 0.1f), shape = CircleShape),
+                    .size(40.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), 
+                        shape = CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = surah.id.toString(),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Emerald,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -397,20 +410,28 @@ private fun SurahListRow(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = surah.name,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp),
-                        color = Gold,
+                        text = surah.englishName,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 16.sp, 
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
 
                     Text(
-                        text = "•  ${surah.englishName}",
-                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp, fontWeight = FontWeight.SemiBold),
-                        color = Color(0xFF222222),
+                        text = surah.name,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold, 
+                            fontSize = 20.sp
+                        ),
+                        color = Gold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -421,7 +442,7 @@ private fun SurahListRow(
                 Text(
                     text = "${surah.numberOfAyahs} ayahs • ${surah.revelationType}",
                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Start,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

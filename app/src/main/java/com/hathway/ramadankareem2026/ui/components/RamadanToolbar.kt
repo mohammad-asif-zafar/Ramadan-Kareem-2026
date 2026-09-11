@@ -54,11 +54,11 @@ fun RamadanToolbar(
     rightIcon2: ToolbarIcon? = null, // Accepts both vector and drawable
     onRightIcon2Click: () -> Unit = {},
     rightIcon2Badge: Int? = null,
-    backgroundColor: Color = Color.White,
-    contentColor: Color = Color.Black
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Surface(
-        shadowElevation = 4.dp,
+        shadowElevation = 2.dp,
         color = backgroundColor,
         modifier = modifier
     ) {
@@ -96,7 +96,10 @@ fun RamadanToolbar(
                 ) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold, 
+                            fontSize = 20.sp
+                        ),
                         color = contentColor,
                         maxLines = 1
                     )

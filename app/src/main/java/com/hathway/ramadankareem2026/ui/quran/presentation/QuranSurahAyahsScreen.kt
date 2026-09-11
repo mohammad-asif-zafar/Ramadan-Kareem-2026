@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
@@ -419,8 +420,10 @@ private fun AyahCard(
             // ARABIC TEXT (PRIMARY FOCUS)
             Text(
                 text = ayah.arabicText,
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    lineHeight = 40.sp
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    lineHeight = 48.sp,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
                 ),
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.End,
@@ -429,13 +432,15 @@ private fun AyahCard(
 
             // OPTIONAL TRANSLATION (SOFTER)
             if (ayah.translation.isNotBlank()) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = ayah.translation,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.65f),
-                    lineHeight = 20.sp
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 26.sp,
+                        fontSize = 16.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                 )
             }
 

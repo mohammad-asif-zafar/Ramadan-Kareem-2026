@@ -2,12 +2,11 @@ package com.hathway.ramadankareem2026.ui.home.components
 
 import android.app.Application
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -33,7 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,34 +41,45 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.home.model.PrayerDomain
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
+import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiState
 import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
+import com.hathway.ramadankareem2026.ui.prayer.data.PrayerDemoData
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import androidx.compose.runtime.State
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun PrayerTimeSection() {
     val context = LocalContext.current
-    val app = context.applicationContext as android.app.Application
+    
+    // Safety check for previews/layoutlib
+    val app = try {
+        context.applicationContext as? Application
+    } catch (e: Exception) {
+        null
+    }
 
-    val viewModel: PrayerViewModel = viewModel(
-        factory = PrayerViewModelFactory(app)
-    )
+    val state = if (app != null) {
+        val viewModel: PrayerViewModel = viewModel(
+            factory = PrayerViewModelFactory(app)
+        )
+        viewModel.state.collectAsState().value
+    } else {
+        PrayerDemoData.demo()
+    }
 
-    val state by viewModel.state.collectAsState()
     val now = remember { LocalTime.now() }
-
     val prayers = remember(state) {
         PrayerTimeUiMapper.map(state, now)
     }
@@ -85,42 +91,29 @@ fun PrayerTimeSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Card(
-            shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Row with intrinsic height to allow divider lines to scale accurately
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                    .padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 prayers.forEachIndexed { index, prayer ->
-                    Row(
+                    PrayerItem(
                         modifier = Modifier.weight(1f),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        PrayerItem(
-                            prayer = prayer,
-                            onClick = { selectedPrayer = prayer }
-                        )
-
-                        // Render separating vertical rail unless it is the last item or the current item
-                        if (index < prayers.lastIndex && !prayer.isCurrent && !prayers[index + 1].isCurrent) {
-                            Box(
-                                modifier = Modifier
-                                    .width(1.dp)
-                                    .height(36.dp)
-                                    .background(Color(0xFFEBEBEB))
-                            )
-                        }
-                    }
+                        prayer = prayer,
+                        onClick = { selectedPrayer = prayer }
+                    )
                 }
             }
         }
@@ -134,28 +127,30 @@ fun PrayerTimeSection() {
 @Composable
 fun PrayerItem(
     prayer: PrayerDomain,
+    modifier: Modifier = Modifier,
     onClick: (PrayerDomain) -> Unit
 ) {
-    val emeraldActive = Color(0xFF1B5E20)
-    val standardDarkText = Color(0xFF222222)
-
-    val background = when {
-        prayer.isCurrent -> Color(0xFFE8F5E9) // Soft tint container color block matching image snippet
-        else -> Color.Transparent
+    val isDark = isSystemInDarkTheme()
+    
+    val activeBackgroundColor = if (isDark) {
+        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+    } else {
+        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
     }
+    
+    val activeContentColor = MaterialTheme.colorScheme.primary
+    val inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val inactiveTimeColor = MaterialTheme.colorScheme.outline
 
-    val contentColor = when {
-        prayer.isCurrent -> emeraldActive
-        else -> standardDarkText
-    }
+    val background = if (prayer.isCurrent) activeBackgroundColor else Color.Transparent
+    val contentColor = if (prayer.isCurrent) activeContentColor else inactiveContentColor
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
             .background(background)
             .clickable { onClick(prayer) }
-            .padding(vertical = 14.dp, horizontal = 4.dp),
+            .padding(vertical = 12.dp, horizontal = 2.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -163,7 +158,7 @@ fun PrayerItem(
             imageVector = iconForPrayer(prayer.type),
             contentDescription = prayer.type.displayName(),
             tint = contentColor,
-            modifier = Modifier.size(26.dp)
+            modifier = Modifier.size(24.dp)
         )
 
         Spacer(Modifier.height(8.dp))
@@ -175,6 +170,7 @@ fun PrayerItem(
                 fontSize = 12.sp
             ),
             color = contentColor,
+            textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -184,27 +180,25 @@ fun PrayerItem(
         Text(
             text = prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a")),
             style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = 11.sp,
+                fontSize = 10.sp,
                 fontWeight = if (prayer.isCurrent) FontWeight.SemiBold else FontWeight.Normal
             ),
-            color = if (prayer.isCurrent) emeraldActive else Color.Gray,
+            color = if (prayer.isCurrent) activeContentColor else inactiveTimeColor,
+            textAlign = TextAlign.Center,
             maxLines = 1
         )
 
-        // Conditional display for the active timer tag block below time
         if (prayer.isCurrent) {
             Spacer(Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.time_now),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 11.sp
+                    fontSize = 10.sp
                 ),
-                color = emeraldActive
+                color = activeContentColor,
+                textAlign = TextAlign.Center
             )
-        } else if (prayer.isNext) {
-            Spacer(Modifier.height(4.dp))
-            CountdownText(prayer)
         }
     }
 }
@@ -227,7 +221,12 @@ fun PrayerDetailsDialog(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Card(shape = RoundedCornerShape(16.dp)) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
             Column(
                 Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -238,27 +237,33 @@ fun PrayerDetailsDialog(
                         Icon(
                             imageVector = iconForPrayer(prayer.type),
                             contentDescription = prayer.type.displayName(),
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(Modifier.width(12.dp))
                         Text(
                             prayer.type.displayName(),
-                            style = MaterialTheme.typography.headlineSmall
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Icon(
                         Icons.Outlined.Close,
                         contentDescription = "Close",
-                        modifier = Modifier.clickable { onDismiss() })
+                        modifier = Modifier.clickable { onDismiss() },
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
                 }
                 Text(
                     prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a")),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     prayer.type.description(),
                     style = MaterialTheme.typography.bodyMedium,
-                    lineHeight = 20.sp
+                    lineHeight = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -285,20 +290,6 @@ fun PrayerType.description(): String = stringResource(
         PrayerType.MAGHRIB -> R.string.prayer_desc_maghrib
         PrayerType.ISHA -> R.string.prayer_desc_isha})
 
-
-@Composable
-private fun CountdownText(prayer: PrayerDomain) {
-    if (!prayer.isNext) return
-    val ticker by rememberMinuteTicker()
-    val minutesLeft =
-        remember(ticker) { PrayerTimeUiMapper.minutesUntil(prayer.time).coerceAtLeast(0) }
-    Text(
-        text = stringResource(R.string.coming_in, PrayerTimeUiMapper.formatDuration(minutesLeft)),
-        color = Color.Gray,
-        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-        maxLines = 1
-    )
-}
 
 @Composable
 fun rememberMinuteTicker(): State<Long> {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,13 +19,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.MenuBook
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material.icons.outlined.Mosque
-import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -36,8 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,11 +39,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.home.model.FeatureIcon
 import com.hathway.ramadankareem2026.ui.home.model.FeatureModel
-import com.hathway.ramadankareem2026.ui.icons.ComposeIcons
 import com.hathway.ramadankareem2026.ui.icons.RamadanIcons
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.Gold
@@ -79,32 +68,42 @@ private val featureList = listOf(
 )
 
 @Composable
-fun FeatureSection(navController: NavController) {
+fun FeatureSection(
+    onFeatureClick: (String) -> Unit,
+    onViewAllClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             SectionTitle(stringResource(R.string.features))
-            SectionTitle(stringResource(R.string.view_all))
+            Text(
+                text = stringResource(R.string.view_all),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable { onViewAllClick() }
+            )
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             userScrollEnabled = false,
-            modifier = Modifier.height(220.dp)
+            modifier = Modifier.height(210.dp) 
         ) {
             items(featureList) { item ->
                 FeatureItem(
                     item = item, onClick = {
-                        navController.navigate(item.route)
+                        onFeatureClick(item.route)
                     })
             }
         }
@@ -119,33 +118,27 @@ fun FeatureItem(
     Card(
         modifier = Modifier
             .aspectRatio(1f)
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(24.dp),
-                ambientColor = Color.Black.copy(alpha = 0.03f),
-                spotColor = Color.Black.copy(alpha = 0.06f)
-            )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = onClick
             ),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 20.dp, bottom = 14.dp, start = 12.dp, end = 12.dp), // Rebalanced padding to push elements slightly closer
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             // Icon rendering container
             Box(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(40.dp),
                 contentAlignment = Alignment.Center
             ) {
                 when (val icon = item.icon) {
@@ -153,7 +146,7 @@ fun FeatureItem(
                         Icon(
                             imageVector = icon.imageVector,
                             contentDescription = stringResource(item.titleRes),
-                            modifier = Modifier.size(36.dp),
+                            modifier = Modifier.size(28.dp),
                             tint = item.color
                         )
                     }
@@ -162,7 +155,7 @@ fun FeatureItem(
                         Image(
                             painter = painterResource(icon.resId),
                             contentDescription = stringResource(item.titleRes),
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(30.dp),
                             contentScale = ContentScale.Fit
                         )
                     }
@@ -170,9 +163,9 @@ fun FeatureItem(
                     is FeatureIcon.Text -> {
                         Text(
                             text = icon.value,
-                            fontSize = 28.sp,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color =  item.color,
+                            color = item.color,
                             fontFamily = FontFamily.Serif,
                             textAlign = TextAlign.Center
                         )
@@ -180,15 +173,15 @@ fun FeatureItem(
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp)) // Reduced significantly from 14.dp to 6.dp for tight design alignment
+            Spacer(modifier = Modifier.height(4.dp))
 
             // Clean text label
             Text(
                 text = stringResource(item.titleRes),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
-                    color = Color(0xFF111111)
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 ),
                 textAlign = TextAlign.Center,
                 maxLines = 1,

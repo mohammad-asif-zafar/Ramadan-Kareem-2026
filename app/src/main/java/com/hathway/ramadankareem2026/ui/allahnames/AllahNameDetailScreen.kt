@@ -126,8 +126,8 @@ fun AllahNameDetailScreen(
                     item {
                         Text(
                             text = name.transliteration,
-                            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                            color = Emerald,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -191,7 +191,9 @@ fun AllahNameDetailScreen(
                                 Text(
                                     text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
                                         R.string.add_bookmark
-                                    ), style = MaterialTheme.typography.labelLarge, color = Emerald
+                                    ), 
+                                    style = MaterialTheme.typography.labelLarge, 
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -249,12 +251,12 @@ fun OrnamentalNameBox(
         // 2. Foreground Dynamic Text Content Layer (Perfectly Centered)
         Text(
             text = arabicText,
-            fontSize = 32.sp, // 💡 Upscaled to match the bold presence of the larger ring frame
+            fontSize = 42.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Serif,
-            color = Color(0xFF0F5A3E),
+            color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(36.dp) // 💡 Expanded inner safety walls to keep text from touching the edge lines
+            modifier = Modifier.padding(36.dp)
         )
     }
 }

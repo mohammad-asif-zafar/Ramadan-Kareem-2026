@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,26 +41,30 @@ fun SearchFieldOutlinedText(
     onSearchAction: () -> Unit = {}
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val colorScheme = MaterialTheme.colorScheme
 
     BasicTextField(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp) // Exact height matching the compact design ratio
+            .height(52.dp)
             .background(
-                color = Color(0xFFF9F9F8), // Subtle, off-white container fill color
-                shape = RoundedCornerShape(23.dp)
+                color = colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(26.dp)
             )
             .border(
-                width = 1.dp, color = Color(0xFFEFEFEF), // Very light soft boundary gray outline
-                shape = RoundedCornerShape(23.dp)
+                width = 1.dp, 
+                color = colorScheme.outline.copy(alpha = 0.2f),
+                shape = RoundedCornerShape(26.dp)
             ),
         singleLine = true,
         textStyle = TextStyle(
-            color = Color(0xFF2C2C2C), fontSize = 15.sp, fontWeight = FontWeight.Normal
+            color = colorScheme.onSurface, 
+            fontSize = 15.sp, 
+            fontWeight = FontWeight.Normal
         ),
-        cursorBrush = SolidColor(Color(0xFF1B3D36)),
+        cursorBrush = SolidColor(colorScheme.primary),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
             onSearch = {
@@ -70,25 +75,23 @@ fun SearchFieldOutlinedText(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 14.dp),
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Left Icon: Thin light placeholder search graphic
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = Color(0xFF9EA0A2), // Muted slate gray
-                    modifier = Modifier.size(18.dp)
+                    tint = colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp)
                 )
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
-                // Input field + Placeholder stacking logic
                 Box(modifier = Modifier.weight(1f)) {
                     if (query.isEmpty()) {
                         Text(
                             text = placeholderText,
-                            color = Color(0xFF757779), // Medium-neutral gray matching image text contrast
+                            color = colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Normal
                         )
@@ -96,19 +99,19 @@ fun SearchFieldOutlinedText(
                     innerTextField()
                 }
 
-                Spacer(modifier = Modifier.width(10.dp))
-
-                // Right Icon: High contrast dark search action button
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search button",
-                    tint = Color(0xFF2C2E30), // Dark charcoal gray icon matching layout target
-                    modifier = Modifier
-                        .size(18.dp)
-                        .clickable(enabled = query.isNotEmpty()) {
-                            onSearchAction()
-                            keyboardController?.hide()
-                        })
+                if (query.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Default.Search, // Should probably be a 'clear' icon if query is not empty, but staying consistent with original for now
+                        contentDescription = "Search button",
+                        tint = colorScheme.primary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                onSearchAction()
+                                keyboardController?.hide()
+                            }
+                    )
+                }
             }
         })
 }

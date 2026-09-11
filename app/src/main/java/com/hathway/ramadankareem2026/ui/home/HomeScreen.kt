@@ -59,11 +59,11 @@ fun HomeScreen(
     val homeViewModel: HomeViewModel = viewModel()
 
     val context = LocalContext.current
-    val app = context.applicationContext as Application
+    val app = context.applicationContext as? Application
 
-    val prayerViewModel: PrayerViewModel = viewModel(
+    val prayerViewModel: PrayerViewModel? = if (app != null) viewModel(
         factory = PrayerViewModelFactory(app)
-    )
+    ) else null
     val localizationManager = remember { LocalizationManager(context) }
     var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
 
@@ -96,7 +96,7 @@ fun HomeScreen(
        //zaaff
     // 🔹 Load prayers ONLY when location is SUCCESS
     LaunchedEffect(locationState) {
-        if (locationState is LocationUiState.Success) {
+        if (locationState is LocationUiState.Success && prayerViewModel != null) {
             val success = locationState as LocationUiState.Success
             prayerViewModel.load(
                 lat = success.latitude, lng = success.longitude
@@ -121,9 +121,25 @@ fun HomeScreen(
                 })
             }
 
-            item { HomeHeaderSlider(locationState = locationState) }
+            item { 
+                HomeHeaderSlider(
+                    locationState = locationState,
+                    onReminderClick = { tipId -> 
+                        navController.navigate("tip_detail/$tipId") 
+                    }
+                ) 
+            }
             item { Spacer(modifier = Modifier.height(16.dp)) }
-            item { FeatureSection(navController) }
+            item { 
+                FeatureSection(
+                    onFeatureClick = { route -> 
+                        navController.navigate(route) 
+                    },
+                    onViewAllClick = {
+                        // TODO: Navigate to all features screen
+                    }
+                ) 
+            }
             item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
             item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -153,8 +169,24 @@ private fun HomeScreenPreviewContent(
                     onLocationClick = {},
                     onProfileClick = {})
             }
-            item { HomeHeaderSlider(locationState = locationState) }
-            item { FeatureSection(navController) }
+            item { 
+                HomeHeaderSlider(
+                    locationState = locationState,
+                    onReminderClick = { tipId -> 
+                        navController.navigate("tip_detail/$tipId") 
+                    }
+                ) 
+            }
+            item { 
+                FeatureSection(
+                    onFeatureClick = { route -> 
+                        navController.navigate(route) 
+                    },
+                    onViewAllClick = {
+                        // TODO: Navigate to all features screen
+                    }
+                ) 
+            }
             item { PrayerTimeSection() }
             item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }

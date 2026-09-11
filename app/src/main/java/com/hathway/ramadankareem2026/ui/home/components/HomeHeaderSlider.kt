@@ -1,6 +1,7 @@
 package com.hathway.ramadankareem2026.ui.home.components
 
 import android.app.Application
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -44,19 +46,30 @@ private const val TAG = "HomeHeaderSlider"
 
 @Composable
 fun HomeHeaderSlider(
-    locationState: LocationUiState? = null
+    locationState: LocationUiState? = null,
+    onReminderClick: (Int) -> Unit = {},
+    prayerViewModel: PrayerViewModel? = null
 ) {
 
     val context = LocalContext.current
-    val app = context.applicationContext as Application
+    val app = context.applicationContext as? Application
 
     // Alarm ViewModel
     val alarmViewModel: AlarmViewModel = viewModel(
         factory = AlarmViewModelFactory()
     )
 
-    // Prayer ViewModel
-    val prayerViewModel: PrayerViewModel = viewModel(
+    // Handle preview context (which is not an Application)
+    if (app == null) {
+        // Simple placeholder for preview
+        Box(modifier = Modifier.fillMaxWidth().height(180.dp), contentAlignment = Alignment.Center) {
+             Text("Header Slider Preview")
+        }
+        return
+    }
+
+    // Resolve ViewModel
+    val resolvedPrayerViewModel: PrayerViewModel = prayerViewModel ?: viewModel(
         factory = PrayerViewModelFactory(app)
     )
 
@@ -69,8 +82,17 @@ fun HomeHeaderSlider(
         }
     }
 
+    // 🔹 Load prayers ONLY when location is SUCCESS if ViewModel is internal
+    LaunchedEffect(locationState) {
+        if (locationState is LocationUiState.Success && prayerViewModel == null) {
+            resolvedPrayerViewModel.load(
+                lat = locationState.latitude, lng = locationState.longitude
+            )
+        }
+    }
+
     // Prayer state
-    val prayerState by prayerViewModel.state.collectAsState()
+    val prayerState by resolvedPrayerViewModel.state.collectAsState()
     val mappedPrayers = remember(prayerState, now) {
         PrayerTimeUiMapper.map(
             state = prayerState, now = now
@@ -225,7 +247,7 @@ fun HomeHeaderSlider(
     ) {
 
         HorizontalPager(
-            state = pagerState, modifier = Modifier.height(214.dp)
+            state = pagerState, modifier = Modifier.height(180.dp)
         ) { page ->
             val context = LocalContext.current
             val localizationManager = LocalizationManager(context)
@@ -240,6 +262,7 @@ fun HomeHeaderSlider(
                 locationLabel = locationLabel,
                 isAlarmEnabled = pages[page].isAlarmEnabled,
                 onAlarmToggle = pages[page].onAlarmToggle,
+                onReminderClick = onReminderClick,
                 language = currentLanguage
             )
         }
