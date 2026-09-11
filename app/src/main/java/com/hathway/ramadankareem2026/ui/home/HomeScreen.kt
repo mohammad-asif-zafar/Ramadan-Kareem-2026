@@ -77,21 +77,25 @@ fun HomeScreen(
 
     // Permission launcher (upgrade path)
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        val granted = result.values.all { it }
         if (granted) {
             homeViewModel.loadLocation()
             Log.d(TAG, "HomeScreen:2 $locationState")
-
         }
     }
 
     // Initial load (DEMO → REAL)
     LaunchedEffect(Unit) {
         homeViewModel.loadLocation()
-        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
         Log.d(TAG, "HomeScreen2: $locationState")
-
     }
        //zaaff
     // 🔹 Load prayers ONLY when location is SUCCESS

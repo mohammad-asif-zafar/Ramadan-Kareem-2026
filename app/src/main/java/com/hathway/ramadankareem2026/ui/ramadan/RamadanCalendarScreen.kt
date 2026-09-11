@@ -32,6 +32,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.NightsStay
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -55,17 +57,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.location.LocationProvider
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
+import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
 import com.hathway.ramadankareem2026.ui.theme.Emerald
@@ -155,9 +161,13 @@ fun RamadanCalendarScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(
+                    if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0F1720) 
+                    else Color(0xFFF7F8F5)
+                )
                 .padding(16.dp)
-                .padding(top = 48.dp), // More space after toolbar
-            verticalArrangement = Arrangement.spacedBy(8.dp) // Reduced from 16dp to 8dp
+                .padding(top = 48.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Loading State
             if (days.isEmpty() && isRefreshing) {
@@ -194,11 +204,11 @@ fun RamadanCalendarScreen(
                         state = gridState,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(if (expanded) 600.dp else 240.dp), // Increased collapsed height
-                        contentPadding = PaddingValues(16.dp),
+                            .weight(1f), // Changed to weight(1f) to take available space
+                        contentPadding = PaddingValues(bottom = 80.dp), // Space for FAB
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
-                        userScrollEnabled = expanded
+                        userScrollEnabled = expanded // Keep scroll disabled if only showing top 6
                     ) {
                         items(if (expanded) days.size else 6) { index ->
                             val day = days[index]
@@ -251,10 +261,12 @@ private fun EnhancedRamadanCalendarToolbar(
         title = title,
         showBack = showBack,
         onBackClick = onBackClick,
+        rightIcon1 = ToolbarIcon.Vector(Icons.Default.Refresh),
         onRightIcon1Click = { if (!isRefreshing) onRefreshClick() },
+        rightIcon2 = ToolbarIcon.Vector(Icons.Default.Settings),
         onRightIcon2Click = onSettingsClick,
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        backgroundColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0F1720) else Color.White,
+        contentColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color.Black
     )
 }
 
@@ -264,9 +276,6 @@ private fun RamadanProgressHeader(
     days: List<RamadanDayUiModel>
 ) {
     val completedDays = days.count { it.status == FastingDayStatus.COMPLETED }
-    val currentDay = days.find {
-        it.status == FastingDayStatus.TODAY || it.status == FastingDayStatus.FASTING
-    }
     val totalDays = days.size
     val progress = if (totalDays > 0) completedDays.toFloat() / totalDays.toFloat() else 0f
 
@@ -278,14 +287,15 @@ private fun RamadanProgressHeader(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
+        color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF1B252E) else Color.White,
         shadowElevation = 8.dp,
-        tonalElevation = 4.dp
+        tonalElevation = 2.dp
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
+                .padding(20.dp)
         ) {
 
             /* ---------------- Header ---------------- */
@@ -298,17 +308,18 @@ private fun RamadanProgressHeader(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Surface(
-                        shape = CircleShape,
-                        color = Gold.copy(alpha = 0.15f),
-                        modifier = Modifier.size(40.dp)
+                    Box(
+                        modifier = Modifier
+                            .size(52.dp)
+                            .background(Gold.copy(alpha = 0.1f), CircleShape),
+                        contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Filled.NightsStay,
                             contentDescription = null,
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.size(28.dp),
                             tint = Gold
                         )
                     }
@@ -316,121 +327,89 @@ private fun RamadanProgressHeader(
                     Column {
                         Text(
                             text = stringResource(R.string.ramadan_title),
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 22.sp
+                            ),
+                            color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF101820)
                         )
                         Text(
                             text = stringResource(R.string.ramadan_progress_subtitle),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                         )
-                    }
-                }
-
-                /* -------- Current Day Badge -------- */
-
-                currentDay?.let { day ->
-
-                    val statusText = when (day.status) {
-                        FastingDayStatus.TODAY -> stringResource(R.string.today)
-
-                        FastingDayStatus.FASTING -> stringResource(R.string.fasting)
-
-                        else -> ""
-                    }
-
-                    val statusColor = when (day.status) {
-                        FastingDayStatus.TODAY -> Gold
-                        FastingDayStatus.FASTING -> Emerald
-                        else -> MaterialTheme.colorScheme.primary
-                    }
-
-                    Surface(
-                        shape = RoundedCornerShape(16.dp),
-                        color = statusColor.copy(alpha = 0.15f),
-                        border = BorderStroke(1.5.dp, statusColor)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(
-                                horizontal = 16.dp, vertical = 8.dp
-                            ),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Text(
-                                text = stringResource(
-                                    R.string.ramadan_day, day.ramadanDay
-                                ),
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = statusColor
-                            )
-                        }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             /* ---------------- Progress Bar ---------------- */
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(12.dp)
-                    .clip(RoundedCornerShape(6.dp))
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                    )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(animatedProgress)
-                        .fillMaxHeight()
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Emerald.copy(alpha = 0.8f), Emerald, Gold
-                                )
-                            )
-                        )
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            /* ---------------- Stats Row ---------------- */
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     Text(
                         text = completedDays.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        ),
+                        color = Emerald
                     )
-                    Text(
-                        text = stringResource(R.string.days_completed),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-
-                Column(horizontalAlignment = Alignment.End) {
+                    
                     Text(
                         text = "${(animatedProgress * 100).toInt()}%",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        ),
+                        color = Gold
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(14.dp)
+                        .clip(RoundedCornerShape(7.dp))
+                        .background(
+                            if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.05f) 
+                            else Color(0xFFF1F4F2)
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(animatedProgress)
+                            .fillMaxHeight()
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(Emerald, Gold)
+                                )
+                            )
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.days_completed),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
                     Text(
                         text = stringResource(R.string.progress),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
                 }
             }
@@ -460,12 +439,15 @@ private fun ExpandCollapseFloatingButton(
 
     FloatingActionButton(
         onClick = onClick,
-        modifier = Modifier.scale(scale),
+        modifier = Modifier
+            .padding(bottom = 16.dp, end = 16.dp)
+            .scale(scale),
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        shape = RoundedCornerShape(20.dp)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -482,8 +464,7 @@ private fun ExpandCollapseFloatingButton(
 
             Text(
                 text = if (expanded) "Less" else "More",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
@@ -492,7 +473,7 @@ private fun ExpandCollapseFloatingButton(
 
 
 private fun previewRamadanMonth(): List<RamadanDayUiModel> {
-    val startDate = LocalDate.of(2026, 3, 1)
+    val startDate = LocalDate.of(2027, 2, 8)
 
     return (1..30).map { day ->
         RamadanDayUiModel(

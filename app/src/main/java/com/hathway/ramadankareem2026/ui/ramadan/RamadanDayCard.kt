@@ -3,6 +3,7 @@ package com.hathway.ramadankareem2026.ui.ramadan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,16 +13,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.core.util.toHijriDate
@@ -45,12 +53,6 @@ fun RamadanDayCard(
 ) {
     val isToday = day.status == FastingDayStatus.TODAY || day.status == FastingDayStatus.FASTING
 
-    val pulseAlpha by animateFloatAsState(
-        targetValue = if (isToday) 0.35f else 0f, animationSpec = infiniteRepeatable(
-            animation = tween(1400, easing = FastOutSlowInEasing), repeatMode = RepeatMode.Reverse
-        ), label = "TodayPulse"
-    )
-
     val hijri = remember(day.date) {
         day.date.toHijriDate()
     }
@@ -61,62 +63,90 @@ fun RamadanDayCard(
         FastingDayStatus.UPCOMING -> Color(0xFFF0F0F5)
     }
 
-    val elevation = if (isToday) 8.dp else 2.dp
-
     Card(
         modifier = modifier
             .aspectRatio(1f)
-            .background(
-                if (isToday) Emerald.copy(alpha = pulseAlpha)
-                else Color.Transparent, shape = RoundedCornerShape(20.dp)
+            .shadow(
+                elevation = if (isToday) 12.dp else 2.dp,
+                shape = RoundedCornerShape(24.dp),
+                ambientColor = if (isToday) Emerald.copy(alpha = 0.4f) else Color.Black.copy(alpha = 0.1f),
+                spotColor = if (isToday) Emerald.copy(alpha = 0.4f) else Color.Black.copy(alpha = 0.1f)
             )
-            .padding(2.dp) // glow spacing
             .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 0.dp,
                 color = Emerald,
-                shape = RoundedCornerShape(18.dp)
+                shape = RoundedCornerShape(24.dp)
             ),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(elevation)) {
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (androidx.compose.foundation.isSystemInDarkTheme()) {
+                if (isToday) Color(0xFF1B2D27) else Color(0xFF1B252E)
+            } else {
+                backgroundColor
+            }
+        )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(2.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-
             Text(
-                text = stringResource(
-                    R.string.ramadan_day, day.ramadanDay
+                text = stringResource(R.string.ramadan_day, day.ramadanDay),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp
                 ),
-
-                fontSize = 12.sp, color = Gold
+                color = Gold
             )
 
-            Spacer(Modifier.height(4.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = day.date.dayOfMonth.toString(),
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    ),
+                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF101820)
+                )
 
-              Text(
-                text = day.date.dayOfMonth.toString(),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
+                Text(
+                    text = day.weekday.uppercase() + " " + day.month,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Gray,
+                    textAlign = TextAlign.Center
+                )
+            }
 
-            Text(
-                text =day.weekday.uppercase()+" "+ day.month, fontSize = 11.sp, color = Color.Gray
-            )
-            //  Hijri date (NEW)
             Text(
                 text = "${hijri.day} ${hijri.month}",
-                fontSize = 8.sp,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = Emerald,
-                fontWeight = FontWeight.SemiBold
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(Modifier.height(8.dp))
-
-            DayStatusSection(day)
+            if (isToday) {
+                DayStatusSection(day)
+            } else if (day.status == FastingDayStatus.COMPLETED) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = Emerald,
+                    modifier = Modifier.size(14.dp)
+                )
+            } else {
+                Spacer(modifier = Modifier.height(14.dp))
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.hathway.ramadankareem2026.ui.onboarding
 
+import android.Manifest
 import android.content.res.Configuration
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +50,13 @@ fun LocationPermissionScreen(
     onSkip: () -> Unit
 ) {
     val isPreview = androidx.compose.ui.platform.LocalInspectionMode.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        val granted = result.values.all { it }
+        onPermissionResult(granted)
+    }
 
     Column(
         modifier = Modifier
@@ -113,7 +123,16 @@ fun LocationPermissionScreen(
 
         // Allow Button
         Button(
-            onClick = { if (!isPreview) { /* Handle permission launcher */ } },
+            onClick = {
+                if (!isPreview) {
+                    permissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),

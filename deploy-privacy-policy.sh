@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🌙 Ramadan Kareem 2026 - Privacy Policy Deployment Script
+# 🌙 Noor Muslim companion - Privacy Policy Deployment Script
 # This script helps deploy the privacy policy to GitHub Pages
 
 echo "🚀 Deploying Privacy Policy to GitHub Pages..."

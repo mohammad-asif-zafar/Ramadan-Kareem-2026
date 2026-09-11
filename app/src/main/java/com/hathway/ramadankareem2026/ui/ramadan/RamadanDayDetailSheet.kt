@@ -281,7 +281,7 @@ private fun PreviewRamadanDayDetailSheet() {
 private fun previewRamadanDay(): RamadanDayUiModel {
     return RamadanDayUiModel(
         ramadanDay = 5,
-        date = LocalDate.of(2026, 3, 5),
+        date = LocalDate.of(2027, 2, 8),
         weekday = "Thu",
         month = "March",
         imsak = LocalTime.of(5, 30),

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Ramadan Kareem 2026"
+rootProject.name = "Noor Muslim companion"
 include(":app")
 include(":baselineprofile")

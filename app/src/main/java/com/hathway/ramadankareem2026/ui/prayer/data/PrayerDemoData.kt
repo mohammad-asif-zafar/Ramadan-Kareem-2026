@@ -78,6 +78,6 @@ object PrayerDemoData {
         maghrib = LocalTime.of(18, 10),
         isha = LocalTime.of(19, 30),
         gregorianDate = LocalDate.now(),
-        hijriDate = "1 Ramadan 1447 AH"
+        hijriDate = "1 Ramadan 1448 AH"
     )
 }
