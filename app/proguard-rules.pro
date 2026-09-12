@@ -16,6 +16,9 @@
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Google Places SDK / gRPC
+-dontwarn io.grpc.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+-dontwarn com.google.appengine.**
+-dontwarn com.google.errorprone.annotations.**

@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         // ✅ REQUIRED for Android 12+ splash screen support
-        installSplashScreen()
+        //installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
