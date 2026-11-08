@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -15,17 +16,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.core.localization.LocalizationManager
+import com.hathway.ramadankareem2026.ui.navigation.NavViewModel
 import com.hathway.ramadankareem2026.ui.settings.AppTheme
 import com.hathway.ramadankareem2026.ui.settings.ThemeViewModel
 import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 class MainActivity : ComponentActivity() {
+    private val navViewModel: NavViewModel by viewModels()
     private lateinit var localizationManager: LocalizationManager
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
-        // ✅ REQUIRED for Android 12+ splash screen support
-        //installSplashScreen()
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            navViewModel.isOnboardingCompleted.value == null
+        }
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 

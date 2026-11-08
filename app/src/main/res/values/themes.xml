@@ -2,11 +2,14 @@
 <resources>
 
     <style name="Theme.NoorMuslimCompanion" parent="android:Theme.Material.Light.NoActionBar" >
-
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- App Theme (POST splash) -->
     <style name="Theme.NoorMuslimCompanion.Main"  parent="android:Theme.Material.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!-- Compose controls UI -->
     </style>
 
@@ -22,6 +25,9 @@
 
         <!-- Smooth exit -->
         <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 
         <item name="postSplashScreenTheme">@style/Theme.NoorMuslimCompanion.Main</item>
     </style>

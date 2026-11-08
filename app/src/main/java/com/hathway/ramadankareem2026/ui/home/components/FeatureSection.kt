@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -24,11 +21,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +45,7 @@ import com.hathway.ramadankareem2026.ui.home.model.FeatureModel
 import com.hathway.ramadankareem2026.ui.icons.RamadanIcons
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import com.hathway.ramadankareem2026.ui.theme.Gold
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 private val featureList = listOf(
     FeatureModel(
@@ -55,8 +56,7 @@ private val featureList = listOf(
     ),
     FeatureModel(R.string.feature_tips, FeatureIcon.Vector(RamadanIcons.Tips), Routes.TIPS),
     FeatureModel(
-        R.string.allah, FeatureIcon.Text("ﷲ"), Routes.ALLAH_NAMES,
-        color = Gold
+        R.string.allah, FeatureIcon.Text("ﷲ"), Routes.ALLAH_NAMES, color = Gold
     ),
     FeatureModel(R.string.feature_qibla, FeatureIcon.Vector(RamadanIcons.Qibla), Routes.QIBLA),
 
@@ -70,13 +70,15 @@ private val featureList = listOf(
 @Composable
 fun FeatureSection(
     onFeatureClick: (String) -> Unit,
-    onViewAllClick: () -> Unit
+    onViewAllClick: () -> Unit,
+    modifier: Modifier.Companion = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
+        // Section Header Layout
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -85,26 +87,46 @@ fun FeatureSection(
             SectionTitle(stringResource(R.string.features))
             Text(
                 text = stringResource(R.string.view_all),
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable { onViewAllClick() }
-            )
+                modifier = Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .clickable { onViewAllClick() }
+                    .padding(horizontal = 4.dp, vertical = 2.dp))
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            userScrollEnabled = false,
-            modifier = Modifier.height(210.dp) 
+        // Dynamic Height Grid Implementation (3 Items Per Row Chunks)
+        val columns = 3
+        val rows = featureList.chunked(columns)
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()
         ) {
-            items(featureList) { item ->
-                FeatureItem(
-                    item = item, onClick = {
-                        onFeatureClick(item.route)
-                    })
+            rows.forEach { rowItems ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    rowItems.forEach { item ->
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            FeatureItem(
+                                item = item, onClick = { onFeatureClick(item.route) })
+                        }
+                    }
+
+                    // Appends matching filler spaces if a row is incomplete
+                    if (rowItems.size < columns) {
+                        repeat(columns - rowItems.size) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
             }
         }
     }
@@ -112,41 +134,39 @@ fun FeatureSection(
 
 @Composable
 fun FeatureItem(
-    item: FeatureModel,
-    onClick: () -> Unit = {}
+    item: FeatureModel, onClick: () -> Unit, modifier: Modifier.Companion = Modifier
 ) {
+    val cardShape = RoundedCornerShape(16.dp)
+
     Card(
-        modifier = Modifier
+        modifier = modifier
             .aspectRatio(1f)
+            .clip(cardShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick
-            ),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
+                // Custom targeted M3 touch feedback layout bounds
+                indication = ripple(bounded = true), onClick = onClick
+            ), shape = cardShape, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(horizontal = 6.dp, vertical = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Icon rendering container
+            // Balanced graphic element frame
             Box(
-                modifier = Modifier.size(40.dp),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(36.dp), contentAlignment = Alignment.Center
             ) {
                 when (val icon = item.icon) {
                     is FeatureIcon.Vector -> {
                         Icon(
                             imageVector = icon.imageVector,
                             contentDescription = stringResource(item.titleRes),
-                            modifier = Modifier.size(28.dp),
+                            modifier = Modifier.size(26.dp),
                             tint = item.color
                         )
                     }
@@ -155,7 +175,7 @@ fun FeatureItem(
                         Image(
                             painter = painterResource(icon.resId),
                             contentDescription = stringResource(item.titleRes),
-                            modifier = Modifier.size(30.dp),
+                            modifier = Modifier.size(28.dp),
                             contentScale = ContentScale.Fit
                         )
                     }
@@ -163,7 +183,7 @@ fun FeatureItem(
                     is FeatureIcon.Text -> {
                         Text(
                             text = icon.value,
-                            fontSize = 24.sp,
+                            fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             color = item.color,
                             fontFamily = FontFamily.Serif,
@@ -173,18 +193,19 @@ fun FeatureItem(
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
-            // Clean text label
+            // Robust text description constraints
             Text(
                 text = stringResource(item.titleRes),
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 ),
                 textAlign = TextAlign.Center,
-                maxLines = 1,
+                maxLines = 2, // Allowed multi-line wrap to safely contain complex language lengths
+                minLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
@@ -199,7 +220,23 @@ fun FeatureItemPreview() {
             titleRes = R.string.feature_dua,
             icon = FeatureIcon.Vector(Icons.Outlined.FavoriteBorder),
             route = Routes.DUA
-        )
+        ), onClick = TODO(), modifier = TODO()
     )
 }
 
+
+/* ----------------------------------------------------
+ * OPTIMIZED HIGH CONTRAST PREVIEWS
+ * ---------------------------------------------------*/
+
+@Preview(name = "Dark Theme Grid Layout", showBackground = true, widthDp = 360)
+@Composable
+fun FeatureSectionDarkPreview() {
+    NoorMuslimCompanionTheme(darkTheme = true) {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Box(modifier = Modifier.padding(vertical = 16.dp)) {
+                FeatureSection(onFeatureClick = {}, onViewAllClick = {})
+            }
+        }
+    }
+}

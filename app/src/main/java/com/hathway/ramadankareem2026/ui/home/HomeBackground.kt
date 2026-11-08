@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +16,11 @@ import com.hathway.ramadankareem2026.R
 
 @Composable
 fun HomeBackground() {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
 
         Image(
             painter = painterResource(id = R.drawable.top_left_mosque_home_graound),
@@ -31,4 +36,3 @@ fun HomeBackground() {
         )
     }
 }
-

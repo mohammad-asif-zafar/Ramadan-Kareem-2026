@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 class NavViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = OnboardingRepository(application)
@@ -18,7 +19,15 @@ class NavViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            _isOnboardingCompleted.value = repository.isOnboardingCompleted.first()
+            try {
+                @Suppress("DEPRECATION")
+                val completed = withTimeoutOrNull(1500L) {
+                    repository.isOnboardingCompleted.first()
+                } ?: false
+                _isOnboardingCompleted.value = completed
+            } catch (_: Exception) {
+                _isOnboardingCompleted.value = false
+            }
         }
     }
 

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,7 +57,6 @@ import com.hathway.ramadankareem2026.ui.onboarding.LocationPermissionScreen
 import com.hathway.ramadankareem2026.ui.quran.route.QuranRoute
 import com.hathway.ramadankareem2026.ui.settings.SettingsScreen
 import com.hathway.ramadankareem2026.ui.settings.ThemeViewModel
-import com.hathway.ramadankareem2026.ui.splash.SplashScreen
 import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipDetailScreen
 import com.hathway.ramadankareem2026.ui.tips.presentation.screen.TipsScreen
 import com.hathway.ramadankareem2026.ui.zakat.route.ZakatBreakdownRoute
@@ -72,26 +70,15 @@ fun NavGraph(themeViewModel: ThemeViewModel) {
     val navViewModel: NavViewModel = viewModel()
     val isOnboardingCompleted by navViewModel.isOnboardingCompleted.collectAsStateWithLifecycle()
 
+    if (isOnboardingCompleted == null) {
+        return
+    }
+
+    val startDestination = if (isOnboardingCompleted == true) "home_root" else Routes.ONBOARDING
+
     NavHost(
-        navController = navController, startDestination = "fake_splash"
+        navController = navController, startDestination = startDestination
     ) {
-
-        composable("fake_splash") {
-            var splashFinished by remember { mutableStateOf(false) }
-
-            SplashScreen {
-                splashFinished = true
-            }
-
-            LaunchedEffect(splashFinished, isOnboardingCompleted) {
-                if (splashFinished && isOnboardingCompleted != null) {
-                    val target = if (isOnboardingCompleted == false) Routes.ONBOARDING else "home_root"
-                    navController.navigate(target) {
-                        popUpTo("fake_splash") { inclusive = true }
-                    }
-                }
-            }
-        }
 
         composable(Routes.ONBOARDING) {
             OnboardingScreen(onFinished = {

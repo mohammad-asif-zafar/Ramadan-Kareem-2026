@@ -152,8 +152,6 @@ fun HomeScreen(
         }
     }
 }
-
-
 @Composable
 private fun HomeScreenPreviewContent(
     locationState: LocationUiState
@@ -164,35 +162,38 @@ private fun HomeScreenPreviewContent(
         HomeBackground()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 24.dp)
         ) {
-            item {
+            item(key = "top_bar") {
                 HomeTopBarSection(
                     locationState = locationState,
                     onLocationClick = {},
-                    onProfileClick = {})
+                    onProfileClick = {}
+                )
             }
-            item { 
+            item {
                 HomeHeaderSlider(
                     locationState = locationState,
-                    onReminderClick = { tipId -> 
-                        navController.navigate("tip_detail/$tipId") 
-                    }
-                ) 
+                    onReminderClick = {}
+                )
             }
-            item { 
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item {
                 FeatureSection(
-                    onFeatureClick = { route -> 
-                        navController.navigate(route) 
-                    },
-                    onViewAllClick = {
-
-                    }
-                ) 
+                    onFeatureClick = {},
+                    onViewAllClick = {}
+                )
             }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { TodayTipSection(onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item {
+                TodayTipSection(
+                    language = "en", // Added fallback string resource marker to align signatures
+                    onTipClick = {}
+                )
+            }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }

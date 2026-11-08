@@ -1,5 +1,6 @@
 package com.hathway.ramadankareem2026.ui.allahnames
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,14 +43,13 @@ fun AllahNamesScreen(
     onBack: () -> Unit,
     onNameClick: (AllahName) -> Unit,
     navController: NavController,
-    allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel
+    allahNameBookmarkCountViewModel: AllahNameBookmarkCountViewModel,
+    bookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val bookmarkCount by allahNameBookmarkCountViewModel.allahNameBookmarkCount.collectAsStateWithLifecycle(initialValue = 0)
 
-    // Create bookmark ViewModel for immediate updates
-    val bookmarkViewModel: AllahNamesBookmarkViewModel = viewModel()
     var isGridView by remember { mutableStateOf(true) } // Layout mode state flag
     // Set up callback for immediate badge updates
     LaunchedEffect(Unit) {
@@ -119,7 +119,8 @@ fun AllahNamesScreen(
 @Composable
 fun AllahNamesScreenPreview() {
     MaterialTheme {
-        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(Application())
+        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(Application())
         AllahNamesScreen(
             names = listOf(
             AllahName(
@@ -145,7 +146,9 @@ fun AllahNamesScreenPreview() {
             onBack = {}, 
             onNameClick = {},
             navController = rememberNavController(),
-            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
+            allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel,
+            bookmarkViewModel = mockBookmarkViewModel
+        )
     }
 }
 
@@ -155,7 +158,8 @@ fun AllahNamesScreenPreview() {
 @Composable
 fun AllahNamesScreenDarkPreview() {
     MaterialTheme {
-        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(android.app.Application())
+        val mockAllahNameBookmarkCountViewModel = AllahNameBookmarkCountViewModel(Application())
+        val mockBookmarkViewModel = AllahNamesBookmarkViewModel(Application())
         AllahNamesScreen(
             names = listOf(
             AllahName(
@@ -165,6 +169,6 @@ fun AllahNamesScreenDarkPreview() {
                 english = "The Most Merciful",
                 meaning = "The One who has plenty of mercy for the believers."
             )
-        ), onBack = {}, onNameClick = {}, navController = rememberNavController(), allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel)
+        ), onBack = {}, onNameClick = {}, navController = rememberNavController(), allahNameBookmarkCountViewModel = mockAllahNameBookmarkCountViewModel, bookmarkViewModel = mockBookmarkViewModel)
     }
 }

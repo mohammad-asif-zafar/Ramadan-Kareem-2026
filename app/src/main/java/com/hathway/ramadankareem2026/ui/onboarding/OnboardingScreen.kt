@@ -22,10 +22,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.theme.Emerald
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 import kotlinx.coroutines.launch
 
 data class OnboardingPage(
@@ -38,8 +40,8 @@ data class OnboardingPage(
 fun OnboardingScreen(
     onFinished: () -> Unit
 ) {
-    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
-    
+    val isDark = true
+
     val pages = listOf(
         OnboardingPage(
             title = R.string.assalamu_alaykum,
@@ -71,7 +73,7 @@ fun OnboardingScreen(
                 .padding(horizontal = 24.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Bar
+            // Top Bar Navigation
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,10 +119,9 @@ fun OnboardingScreen(
                 OnboardingPageContent(page = pages[position], isDark = isDark)
             }
 
-            // Pager Indicator
+            // Pager Selection Indicators
             Row(
-                modifier = Modifier
-                    .padding(vertical = 40.dp),
+                modifier = Modifier.padding(vertical = 40.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -135,14 +136,14 @@ fun OnboardingScreen(
                             .size(width, 8.dp)
                             .clip(CircleShape)
                             .background(
-                                if (isActive) Emerald 
+                                if (isActive) Emerald
                                 else (if (isDark) Color.White else Color.Black).copy(alpha = 0.1f)
                             )
                     )
                 }
             }
 
-            // Next / Get Started Button
+            // Next / Core Finish CTA Call
             Button(
                 onClick = {
                     if (pagerState.currentPage < pages.size - 1) {
@@ -168,7 +169,7 @@ fun OnboardingScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
@@ -177,8 +178,7 @@ fun OnboardingScreen(
 @Composable
 private fun OnboardingPageContent(page: OnboardingPage, isDark: Boolean) {
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -188,24 +188,22 @@ private fun OnboardingPageContent(page: OnboardingPage, isDark: Boolean) {
                 .aspectRatio(1f),
             contentAlignment = Alignment.Center
         ) {
-            // Circular background decoration
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 shape = CircleShape,
                 color = Emerald.copy(alpha = if (isDark) 0.08f else 0.05f)
             ) {}
-            
+
             Image(
                 painter = painterResource(id = page.image),
                 contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize(0.85f),
+                modifier = Modifier.fillMaxSize(0.85f),
                 contentScale = ContentScale.Fit
             )
         }
-        
+
         Spacer(modifier = Modifier.height(60.dp))
-        
+
         Text(
             text = if (page.title == R.string.assalamu_alaykum) "Welcome to Noor" else androidx.compose.ui.res.stringResource(page.title),
             style = MaterialTheme.typography.headlineMedium.copy(
@@ -215,9 +213,9 @@ private fun OnboardingPageContent(page: OnboardingPage, isDark: Boolean) {
             color = if (isDark) Color.White else Emerald,
             textAlign = TextAlign.Center
         )
-        
+
         Spacer(modifier = Modifier.height(20.dp))
-        
+
         Text(
             text = page.description,
             style = MaterialTheme.typography.bodyLarge.copy(
@@ -228,5 +226,185 @@ private fun OnboardingPageContent(page: OnboardingPage, isDark: Boolean) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 32.dp)
         )
+    }
+}
+
+/* ----------------------------------------------------
+ * ONBOARDING PREVIEW HOOKS (DARK THEME COMPRESSED FIRST)
+ * ---------------------------------------------------*/
+
+@Preview(name = "Dark Mode Theme", showBackground = true, widthDp = 360, heightDp = 740)
+@Composable
+fun OnboardingScreenDarkPreview() {
+    NoorMuslimCompanionTheme(darkTheme = true) {
+        OnboardingScreen(onFinished = {})
+    }
+}
+
+@Preview(name = "Light Mode Theme", showBackground = true, widthDp = 360, heightDp = 740)
+@Composable
+fun OnboardingScreenLightPreview() {
+    NoorMuslimCompanionTheme(darkTheme = true) {
+        OnboardingScreen(onFinished = {})
+    }
+}
+
+
+/* ----------------------------------------------------
+ * MULTI-PAGE DEVELOPMENT PREVIEWS
+ * ---------------------------------------------------*/
+
+@Preview(name = "Dark Theme - All Pages", showBackground = true, widthDp = 360, heightDp = 740)
+@Composable
+fun OnboardingScreenDarkAllPagesPreview() {
+    NoorMuslimCompanionTheme(darkTheme = true) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            // Renders Page 1, Page 2, and Page 3 sequentially in Dark Mode
+            repeat(3) { pageIndex ->
+                Box(modifier = Modifier.height(740.dp)) {
+                    OnboardingScreenPreviewWrapper(initialPage = pageIndex)
+                }
+            }
+        }
+    }
+}
+
+@Preview(name = "Light Theme - All Pages", showBackground = true, widthDp = 360, heightDp = 740)
+@Composable
+fun OnboardingScreenLightAllPagesPreview() {
+    NoorMuslimCompanionTheme(darkTheme = false) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            // Renders Page 1, Page 2, and Page 3 sequentially in Light Mode
+            repeat(3) { pageIndex ->
+                Box(modifier = Modifier.height(740.dp)) {
+                    OnboardingScreenPreviewWrapper(initialPage = pageIndex)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Preview Helper implementation that forces the HorizontalPager
+ * to initialize at a specific page index instead of defaulting to 0.
+ */
+@Composable
+private fun OnboardingScreenPreviewWrapper(initialPage: Int) {
+    val isDark = true
+    val pages = listOf(
+        OnboardingPage(
+            title = R.string.assalamu_alaykum,
+            description = "All the tools you need to strengthen your Imaan - in one beautiful app.",
+            image = R.drawable.mosque_illuminated
+        ),
+        OnboardingPage(
+            title = R.string.feature_quran,
+            description = "Read, listen, and understand the Holy Quran with translations in your language.",
+            image = R.drawable.serenquran
+        ),
+        OnboardingPage(
+            title = R.string.prayer_times,
+            description = "Accurate prayer times, Qibla finder, and Ramadan tools at your fingertips.",
+            image = R.drawable.kaaba_with_mosque_and_serene_court_yard
+        )
+    )
+
+    // Force pager to start at the requested index for visual testing
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { pages.size }
+    )
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        containerColor = if (isDark) Color(0xFF0F1720) else Color(0xFFF7F8F5)
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                if (pagerState.currentPage > 0) {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Back",
+                            modifier = Modifier.size(20.dp),
+                            tint = if (isDark) Color.White.copy(alpha = 0.6f) else Color.DarkGray
+                        )
+                    }
+                }
+
+                TextButton(
+                    onClick = {},
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Text(
+                        text = "Skip",
+                        color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Gray,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) { position ->
+                OnboardingPageContent(page = pages[position], isDark = isDark)
+            }
+
+            Row(
+                modifier = Modifier.padding(vertical = 40.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                repeat(pages.size) { index ->
+                    val isActive = pagerState.currentPage == index
+                    val width by animateDpAsState(
+                        targetValue = if (isActive) 12.dp else 8.dp,
+                        label = "indicator_width"
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(width, 8.dp)
+                            .clip(CircleShape)
+                            .background(
+                                if (isActive) Emerald
+                                else (if (isDark) Color.White else Color.Black).copy(alpha = 0.1f)
+                            )
+                    )
+                }
+            }
+
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(28.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Emerald,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = if (pagerState.currentPage == pages.size - 1) "Get Started" else "Next",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+        }
     }
 }

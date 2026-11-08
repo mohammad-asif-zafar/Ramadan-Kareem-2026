@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.ui.theme.Emerald
 import android.app.Application
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -51,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.ui.layout.ContentScale
+import com.hathway.ramadankareem2026.ui.theme.NoorMuslimCompanionTheme
 
 @Composable
 fun AllahNameDetailScreen(
@@ -73,10 +75,48 @@ fun AllahNameDetailScreen(
         }
     }
 
+    AllahNameDetailContent(
+        name = name,
+        isBookmarked = isBookmarked,
+        bookmarkCount = bookmarkCount,
+        onBack = onBack,
+        onBookmarkToggle = {
+            bookmarkViewModel.toggleBookmark(
+                itemId = name.id.toString(),
+                title = "${name.transliteration} - ${name.english}",
+                content = name.arabic
+            )
+        },
+        onNavigateToBookmarks = {
+            navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
+        })
+}
+
+/**
+ * Pure display composable built entirely without ViewModel initialization hooks,
+ * allowing Android Studio previews to map layouts across themes safely.
+ */
+@Composable
+private fun AllahNameDetailContent(
+    name: AllahName,
+    isBookmarked: Boolean,
+    bookmarkCount: Int,
+    onBack: () -> Unit,
+    onBookmarkToggle: () -> Unit,
+    onNavigateToBookmarks: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val isDark = isSystemInDarkTheme()
+
+    // Smooth adaptive theme-aware dynamic color parameters
+    val brandAccentColor =
+        if (isDark) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary
+    val cardContainerColor = MaterialTheme.colorScheme.surfaceVariant
+
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
-        // 1. Background Image Layer (rendered at the bottom)
+        // 1. Background Image Layer
         Image(
             painter = painterResource(id = R.drawable.bg_allah_detail_screen),
             contentDescription = null,
@@ -93,33 +133,26 @@ fun AllahNameDetailScreen(
                     onBackClick = onBack,
                     rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
                     rightIcon1Badge = bookmarkCount,
-                    onRightIcon1Click = {
-                        navController.navigate(Routes.ALLAH_NAME_BOOKMARKS)
-                    })
-            },
-            // FIX: Set to Transparent so the background image shows through
-            containerColor = Color.Transparent
+                    onRightIcon1Click = onNavigateToBookmarks
+                )
+            }, containerColor = Color.Transparent
         ) { innerPadding ->
-
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-                    .padding(horizontal = 14.dp) // Slightly increased for a cleaner card footprint
+                    .padding(horizontal = 16.dp)
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    item {
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
+                    item { Spacer(modifier = Modifier.height(8.dp)) }
 
                     item {
                         OrnamentalNameBox(
-                            arabicText = name.arabic,
-                            modifier = Modifier// Clean proportional sizing
+                            arabicText = name.arabic, tintColor = brandAccentColor
                         )
                     }
 
@@ -127,17 +160,12 @@ fun AllahNameDetailScreen(
                         Text(
                             text = name.transliteration,
                             style = MaterialTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 28.sp
+                                fontWeight = FontWeight.Bold, fontSize = 28.sp
                             ),
-                            color = Color(0xFF0F5A3E),
+                            color = brandAccentColor,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(20.dp))
                     }
 
                     item {
@@ -150,7 +178,9 @@ fun AllahNameDetailScreen(
                         ) {
                             Surface(
                                 shape = RoundedCornerShape(12.dp),
-                                color = if (isBookmarked) Color(0xFF0F5A3E) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                color = if (isBookmarked) MaterialTheme.colorScheme.primary else cardContainerColor.copy(
+                                    alpha = 0.5f
+                                ),
                             ) {
                                 Row(
                                     modifier = Modifier.padding(
@@ -161,7 +191,7 @@ fun AllahNameDetailScreen(
                                         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp),
-                                        tint = if (isBookmarked) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+                                        tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
@@ -169,60 +199,48 @@ fun AllahNameDetailScreen(
                                             R.string.not_bookmarked
                                         ),
                                         style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                                        color = if (isBookmarked) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = if (isBookmarked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
 
-                            TextButton(
-                                onClick = {
-                                    bookmarkViewModel.toggleBookmark(
-                                        itemId = name.id.toString(),
-                                        title = "${name.transliteration} - ${name.english}",
-                                        content = name.arabic
-                                    )
-                                }) {
+                            TextButton(onClick = onBookmarkToggle) {
                                 Text(
                                     text = if (isBookmarked) stringResource(R.string.remove_bookmark) else stringResource(
                                         R.string.add_bookmark
-                                    ), 
-                                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold), 
-                                    color = Color(0xFF0F5A3E)
+                                    ),
+                                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                                    color = brandAccentColor
                                 )
                             }
                         }
                     }
 
                     item {
-                        Spacer(modifier = Modifier.height(20.dp))
-                    }
-
-                    item {
-                        // Premium deep dark card for the meaning
+                        // Premium responsive dynamic design surface container for the meaning
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(32.dp),
-                            color = Color(0xFF1B252E),
-                            shadowElevation = 8.dp
+                            shape = RoundedCornerShape(24.dp),
+                            color = cardContainerColor,
+                            shadowElevation = 2.dp
                         ) {
                             Text(
                                 text = name.meaning,
-                                modifier = Modifier.padding(horizontal = 28.dp, vertical = 36.dp),
+                                modifier = Modifier.padding(horizontal = 24.dp, vertical = 28.dp),
                                 style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontSize = 17.sp,
+                                    fontSize = 16.sp,
                                     lineHeight = 26.sp,
                                     fontWeight = FontWeight.Medium,
                                     letterSpacing = 0.25.sp
                                 ),
-                                color = Color.White.copy(alpha = 0.9f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
                             )
                         }
                     }
 
-                    item {
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
+
                 }
             }
         }
@@ -231,35 +249,57 @@ fun AllahNameDetailScreen(
 
 @Composable
 fun OrnamentalNameBox(
-    arabicText: String,
-    modifier: Modifier = Modifier
+    arabicText: String, tintColor: Color, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(340.dp),
+            .aspectRatio(1.1f), // Dynamically calculates frame aspect footprints over hardcoded sizes
         contentAlignment = Alignment.Center
     ) {
-        // 1. Background Ring Image Asset Layer
+// 1. Background Ring Image Asset Layer
         Image(
             painter = painterResource(R.drawable.bg_ornamental_ring),
             contentDescription = null,
-            modifier = Modifier.size(320.dp),
+            modifier = Modifier.fillMaxSize(0.9f),
             contentScale = ContentScale.Fit
         )
-
-        // 2. Foreground Dynamic Text Content Layer (Perfectly Centered)
+// 2. Foreground Dynamic Text Content Layer (Perfectly Centering Big Script)
         Text(
             text = arabicText,
-            fontSize = 42.sp,
+            fontSize = 48.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Serif,
-            color = Color(0xFF0F5A3E),
+            color = tintColor,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(36.dp)
+            modifier = Modifier.padding(40.dp)
         )
     }
 }
+
+/* ----------------------------------------------------
+• STRUCTURAL DEV PREVIEWS (DARK THEME COMPRESSED FIRST)
+• ---------------------------------------------------*/
+@Preview(name = "Dark Theme Preview", showBackground = true, widthDp = 360, heightDp = 760)
+@Composable
+fun AllahNameDetailPreviewDark() {
+    NoorMuslimCompanionTheme(darkTheme = true) {
+        AllahNameDetailContent(
+            name = AllahName(
+                id = 4,
+                arabic = "الْقُدُّوسُ",
+                transliteration = "Al-Quddoos",
+                english = "The Most Holy",
+                meaning = "The One who is pure from any imperfection and clear from children and adversaries."
+            ),
+            isBookmarked = true,
+            bookmarkCount = 3,
+            onBack = {},
+            onBookmarkToggle = {},
+            onNavigateToBookmarks = {})
+    }
+}
+
 
 @Preview(
     name = "Allah Name Detail – Light", showBackground = true
