@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +37,7 @@ import com.hathway.ramadankareem2026.ui.home.components.HomeHeaderSlider
 import com.hathway.ramadankareem2026.ui.home.components.HomeTopBarSection
 import com.hathway.ramadankareem2026.ui.home.components.PrayerTimeSection
 import com.hathway.ramadankareem2026.ui.home.components.TodayTipSection
+import com.hathway.ramadankareem2026.ui.home.components.HomeSponsoredAdCard
 
 // 🔹 ViewModels
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
@@ -134,7 +134,21 @@ fun HomeScreen(
                 ) 
             }
             item { Spacer(modifier = Modifier.height(16.dp)) }
-            item { 
+            item {
+                TodayTipSection(language = selectedLanguage, onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") })
+            }
+            item {
+                // Sponsored ad card is displayed only when valid sponsored content is available.
+                // When adItem is null (no active ad campaign configured), the card is hidden without leaving blank space.
+                HomeSponsoredAdCard(
+                    adItem = null,
+                    onAdClick = { route ->
+                        navController.navigate(route)
+                    }
+                )
+            }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
+            item {
                 FeatureSection(
                     onFeatureClick = { route -> 
                         navController.navigate(route) 
@@ -146,8 +160,6 @@ fun HomeScreen(
             }
             item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-            item { TodayTipSection(language = selectedLanguage,onTipClick = { tipId -> navController.navigate("tip_detail/$tipId") }) }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
@@ -180,6 +192,21 @@ private fun HomeScreenPreviewContent(
             }
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item {
+                TodayTipSection(
+                    language = "en",
+                    onTipClick = {}
+                )
+            }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
+            item {
+                // Production preview defaults to null (no ad displayed when unconfigured).
+                HomeSponsoredAdCard(
+                    adItem = null,
+                    onAdClick = {}
+                )
+            }
+            item { Spacer(modifier = Modifier.height(12.dp)) }
+            item {
                 FeatureSection(
                     onFeatureClick = {},
                     onViewAllClick = {}
@@ -187,13 +214,6 @@ private fun HomeScreenPreviewContent(
             }
             item { Spacer(modifier = Modifier.height(12.dp)) }
             item { PrayerTimeSection() }
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-            item {
-                TodayTipSection(
-                    language = "en", // Added fallback string resource marker to align signatures
-                    onTipClick = {}
-                )
-            }
             item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
@@ -265,6 +285,3 @@ private fun PreviewHome_Dark() {
         )
     )
 }
-
-
-

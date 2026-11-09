@@ -2,7 +2,6 @@ package com.hathway.ramadankareem2026.ui.settings
 
 import android.content.Intent
 import android.net.Uri
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +28,6 @@ import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsSystemDaydream
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,7 +38,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,10 +48,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.hathway.ramadankareem2026.BuildConfig
 import com.hathway.ramadankareem2026.R
-import com.hathway.ramadankareem2026.core.localization.LocalizationManager
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
-import com.hathway.ramadankareem2026.ui.settings.components.LanguageSettingsSection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,13 +60,6 @@ fun SettingsScreen(
     onBack: () -> Unit = { navController.popBackStack() }
 ) {
     val context = LocalContext.current
-    val localizationManager = remember { LocalizationManager(context) }
-    var selectedLanguage by remember { mutableStateOf(localizationManager.getCurrentLanguage()) }
-
-    // Update selectedLanguage when it changes in preferences
-    LaunchedEffect(Unit) {
-        selectedLanguage = localizationManager.getCurrentLanguage()
-    }
 
     Scaffold(
         topBar = {
@@ -112,23 +102,10 @@ fun SettingsScreen(
                     )
                 }
             }
-            // Language & Region Section
-            item {
-                LanguageSettingsSection(
-                    currentLanguage = selectedLanguage,
-                    onLanguageChanged = { language ->
-                        selectedLanguage = language
-                        localizationManager.setLanguage(language)
-                        // Force activity recreation to apply language changes
-                        (context as? ComponentActivity)?.recreate()
-                    }
-                )
-            }
 
             // Appearance Section
             item {
                 SettingsSection(title = "🎨 ${stringResource(R.string.appearance)}") {
-                   // var selectedTheme by remember { mutableStateOf("System") }
                     val selectedTheme by themeViewModel.theme
 
                     ThemeSelector(
@@ -138,13 +115,13 @@ fun SettingsScreen(
                 }
             }
 
-            //  About Section
+            // About Section
             item {
                 SettingsSection(title = "ℹ️ ${stringResource(R.string.about)}") {
                     SettingsItem(
                         icon = Icons.Default.Settings,
                         title = stringResource(R.string.version),
-                        subtitle = "Version 1.0.1",
+                        subtitle = BuildConfig.VERSION_NAME,
                         onClick = { /* Show version info */ },
                         showArrow = false
                     )
@@ -353,14 +330,12 @@ private fun SettingsItem(
 private fun ThemeSelector(
     currentTheme: AppTheme,
     onThemeChanged: (AppTheme) -> Unit
-
 ) {
     val themes = listOf(
         ThemeOption(AppTheme.LIGHT, Icons.Default.LightMode, stringResource(R.string.light)),
         ThemeOption(AppTheme.DARK, Icons.Default.DarkMode, stringResource(R.string.dark)),
         ThemeOption(AppTheme.SYSTEM, Icons.Default.SettingsSystemDaydream, stringResource(R.string.system))
     )
-
 
     Column(
         modifier = Modifier
@@ -453,7 +428,6 @@ private fun openPrivacyPolicy(context: android.content.Context) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     } catch (e: Exception) {
-        // Handle error - could show a toast or dialog
         e.printStackTrace()
     }
 }

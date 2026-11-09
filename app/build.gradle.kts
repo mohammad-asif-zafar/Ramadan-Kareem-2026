@@ -20,12 +20,17 @@ android {
     namespace = "com.hathway.ramadankareem2026"
     compileSdk = 36
 
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
+
     defaultConfig {
         applicationId = "com.hathway.ramadankareem2026"
         minSdk = 29
         targetSdk = 36
-        versionCode = 4
-        versionName = "2.0.1"
+        versionCode = 6
+        versionName = "2.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

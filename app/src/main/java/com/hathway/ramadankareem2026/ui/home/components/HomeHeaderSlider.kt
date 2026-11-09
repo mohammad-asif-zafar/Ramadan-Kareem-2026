@@ -101,9 +101,7 @@ fun HomeHeaderSlider(
 
     val iftarPrayer = mappedPrayers.firstOrNull { it.type == PrayerType.MAGHRIB }
     val suhoorPrayer = mappedPrayers.firstOrNull { it.type == PrayerType.FAJR }
-    val nextPrayer = remember(mappedPrayers) {
-        mappedPrayers.firstOrNull { it.isNext }
-    }
+    val nextPrayer = mappedPrayers.firstOrNull { it.isNext }
 
     val formatter = remember { DateTimeFormatter.ofPattern("hh:mm a") }
 

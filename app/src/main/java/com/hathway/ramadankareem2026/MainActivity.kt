@@ -1,6 +1,5 @@
 package com.hathway.ramadankareem2026
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,15 +24,13 @@ class MainActivity : ComponentActivity() {
     private val navViewModel: NavViewModel by viewModels()
     private lateinit var localizationManager: LocalizationManager
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Dismiss the native system splash canvas immediately so Compose animations kick in instantly
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            navViewModel.isOnboardingCompleted.value == null
-        }
+        splashScreen.setKeepOnScreenCondition { false }
+
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
 
         localizationManager = LocalizationManager(this)
         localizationManager.applySavedLanguage()
@@ -56,7 +53,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
