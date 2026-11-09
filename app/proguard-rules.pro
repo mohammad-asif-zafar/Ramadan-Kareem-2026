@@ -22,3 +22,13 @@
 -dontwarn org.conscrypt.**
 -dontwarn com.google.appengine.**
 -dontwarn com.google.errorprone.annotations.**
+
+# Keep Gson / Retrofit DTO models and network responses from obfuscation
+-keep class com.hathway.ramadankareem2026.core.network.** { *; }
+-keep class com.hathway.ramadankareem2026.ui.**.model.** { *; }
+-keep class com.hathway.ramadankareem2026.ui.**.data.remote.model.** { *; }
+-keep class com.hathway.ramadankareem2026.ui.**.data.local.database.** { *; }
+-keep class com.hathway.ramadankareem2026.data.local.** { *; }
+
+# Keep Gson annotations and serialized names
+-keepattributes *Annotation*,Signature,EnclosingMethod
