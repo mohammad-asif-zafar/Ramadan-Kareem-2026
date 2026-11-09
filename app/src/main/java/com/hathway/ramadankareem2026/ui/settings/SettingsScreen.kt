@@ -18,11 +18,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.ContactSupport
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Settings
@@ -77,32 +75,6 @@ fun SettingsScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Preferences Section
-            item {
-                SettingsSection(title = "🔔 ${stringResource(R.string.preferences)}") {
-                    SettingsItem(
-                        icon = Icons.Default.Notifications,
-                        title = stringResource(R.string.notification_settings),
-                        subtitle = stringResource(R.string.manage_prayer_reminders),
-                        onClick = { /* Navigate to notification settings */ }
-                    )
-
-                    SettingsItem(
-                        icon = Icons.AutoMirrored.Filled.VolumeUp,
-                        title = stringResource(R.string.prayer_reminders),
-                        subtitle = stringResource(R.string.configure_azan_prayer_alerts),
-                        onClick = { /* Navigate to prayer reminders */ }
-                    )
-
-                    SettingsItem(
-                        icon = Icons.AutoMirrored.Filled.VolumeUp,
-                        title = stringResource(R.string.azan_sound),
-                        subtitle = stringResource(R.string.choose_azan_audio_prayer),
-                        onClick = { /* Navigate to Azan sound settings */ }
-                    )
-                }
-            }
-
             // Appearance Section
             item {
                 SettingsSection(title = "🎨 ${stringResource(R.string.appearance)}") {
