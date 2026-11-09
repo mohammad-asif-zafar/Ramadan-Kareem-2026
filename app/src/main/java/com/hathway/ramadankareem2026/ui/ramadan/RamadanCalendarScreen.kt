@@ -60,6 +60,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -161,10 +162,7 @@ fun RamadanCalendarScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0F1720) 
-                    else Color(0xFFF7F8F5)
-                )
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
                 .padding(top = 48.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -257,6 +255,7 @@ private fun EnhancedRamadanCalendarToolbar(
     onSettingsClick: () -> Unit,
     isRefreshing: Boolean
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     RamadanToolbar(
         title = title,
         showBack = showBack,
@@ -265,8 +264,8 @@ private fun EnhancedRamadanCalendarToolbar(
         onRightIcon1Click = { if (!isRefreshing) onRefreshClick() },
         rightIcon2 = ToolbarIcon.Vector(Icons.Default.Settings),
         onRightIcon2Click = onSettingsClick,
-        backgroundColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0F1720) else Color.White,
-        contentColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color.Black
+        backgroundColor = if (isDark) Color(0xFF0F1720) else Color.White,
+        contentColor = if (isDark) Color.White else Color.Black
     )
 }
 
@@ -275,6 +274,7 @@ private fun EnhancedRamadanCalendarToolbar(
 private fun RamadanProgressHeader(
     days: List<RamadanDayUiModel>
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val completedDays = days.count { it.status == FastingDayStatus.COMPLETED }
     val totalDays = days.size
     val progress = if (totalDays > 0) completedDays.toFloat() / totalDays.toFloat() else 0f
@@ -288,7 +288,7 @@ private fun RamadanProgressHeader(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF1B252E) else Color.White,
+        color = if (isDark) Color(0xFF1B252E) else Color.White,
         shadowElevation = 8.dp,
         tonalElevation = 2.dp
     ) {
@@ -331,7 +331,7 @@ private fun RamadanProgressHeader(
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 22.sp
                             ),
-                            color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF101820)
+                            color = if (isDark) Color.White else Color(0xFF101820)
                         )
                         Text(
                             text = stringResource(R.string.ramadan_progress_subtitle),
@@ -379,7 +379,7 @@ private fun RamadanProgressHeader(
                         .height(14.dp)
                         .clip(RoundedCornerShape(7.dp))
                         .background(
-                            if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.05f) 
+                            if (isDark) Color.White.copy(alpha = 0.05f)
                             else Color(0xFFF1F4F2)
                         )
                 ) {

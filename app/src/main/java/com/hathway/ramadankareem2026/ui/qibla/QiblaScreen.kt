@@ -17,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,24 +65,18 @@ fun QiblaScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(
-                    if (androidx.compose.foundation.isSystemInDarkTheme()) {
-                        Color(0xFF0F1720)
-                    } else {
-                        Color(0xFFF7F8F5)
-                    }
-                )
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             QiblaHeader(
                 degree = state.qiblaBearing.toInt(),
                 location = "Makkah, Saudi Arabia"
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             EnhancedQiblaCompassCircle(
                 deviceRotation = -state.deviceAzimuth,

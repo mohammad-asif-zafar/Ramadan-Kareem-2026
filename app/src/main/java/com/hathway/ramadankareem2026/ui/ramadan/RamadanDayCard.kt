@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +53,7 @@ fun RamadanDayCard(
     day: RamadanDayUiModel, modifier: Modifier = Modifier, onClick: (RamadanDayUiModel) -> Unit
 ) {
     val isToday = day.status == FastingDayStatus.TODAY || day.status == FastingDayStatus.FASTING
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     val hijri = remember(day.date) {
         day.date.toHijriDate()
@@ -80,7 +82,7 @@ fun RamadanDayCard(
             ),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (androidx.compose.foundation.isSystemInDarkTheme()) {
+            containerColor = if (isDark) {
                 if (isToday) Color(0xFF1B2D27) else Color(0xFF1B252E)
             } else {
                 backgroundColor
@@ -110,7 +112,7 @@ fun RamadanDayCard(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold
                     ),
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF101820)
+                    color = if (isDark) Color.White else Color(0xFF101820)
                 )
 
                 Text(
@@ -119,7 +121,7 @@ fun RamadanDayCard(
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
                     ),
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Gray,
+                    color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Gray,
                     textAlign = TextAlign.Center
                 )
             }
@@ -261,6 +263,3 @@ private fun PreviewRamadanDayCard_Completed() {
             day = previewRamadanDayUiModel(FastingDayStatus.COMPLETED), onClick = {})
     }
 }
-
-
-

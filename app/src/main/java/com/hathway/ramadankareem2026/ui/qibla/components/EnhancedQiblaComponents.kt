@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,7 +31,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
@@ -51,7 +52,7 @@ fun QiblaInformationCards() {
             icon = Icons.Default.Star,
             title = stringResource(R.string.qibla_why_title),
             description = stringResource(R.string.qibla_why_desc),
-            backgroundColor = Emerald.copy(alpha = 0.1f),
+            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             iconColor = Emerald
         )
 
@@ -60,8 +61,8 @@ fun QiblaInformationCards() {
             icon = Icons.Default.Help,
             title = stringResource(R.string.qibla_how_title),
             description = stringResource(R.string.qibla_how_desc),
-            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-            iconColor = MaterialTheme.colorScheme.primary
+            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+            iconColor = Emerald
         )
 
         // Tips Card
@@ -69,7 +70,7 @@ fun QiblaInformationCards() {
             icon = Icons.Default.Lightbulb,
             title = stringResource(R.string.qibla_tips_title),
             description = stringResource(R.string.qibla_tips_desc),
-            backgroundColor = Gold.copy(alpha = 0.1f),
+            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             iconColor = Gold
         )
     }
@@ -86,6 +87,7 @@ private fun InfoCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor
         )
@@ -110,7 +112,7 @@ private fun InfoCard(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = iconColor
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -128,15 +130,13 @@ private fun InfoCard(
 
 @Composable
 fun PrayerDirectionGuide() {
-    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
-    
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDark) Color(0xFF1B252E) else Color.White
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -151,23 +151,30 @@ fun PrayerDirectionGuide() {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(32.dp)
-                        .background(Emerald.copy(alpha = 0.1f), androidx.compose.foundation.shape.CircleShape),
+                        .size(40.dp)
+                        .background(Emerald.copy(alpha = 0.15f), RoundedCornerShape(12.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_saved), // Assuming ic_saved is used as a placeholder or exists
+                        painter = painterResource(R.drawable.ic_saved),
                         contentDescription = null,
                         tint = Emerald,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                 }
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    text = stringResource(R.string.prayer_direction_title),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = if (isDark) Color.White else Color(0xFF1B3D36)
-                )
+                Spacer(Modifier.width(14.dp))
+                Column {
+                    Text(
+                        text = stringResource(R.string.prayer_direction_title).removePrefix("📿 "),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "Follow these simple steps to face the Qibla",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -181,23 +188,25 @@ fun PrayerDirectionGuide() {
 
             steps.forEachIndexed { index, step ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Top
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(24.dp)
+                            .size(28.dp)
                             .background(
-                                Emerald.copy(alpha = 0.1f),
-                                androidx.compose.foundation.shape.CircleShape
+                                Emerald.copy(alpha = 0.2f),
+                                CircleShape
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "${index + 1}",
                             color = Emerald,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.ExtraBold
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold
                         )
                     }
 
@@ -207,15 +216,18 @@ fun PrayerDirectionGuide() {
                         text = step,
                         style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
                         modifier = Modifier.weight(1f),
-                        color = (if (isDark) Color.White else Color.Black).copy(alpha = 0.7f)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
                 if (index < steps.size - 1) {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 44.dp),
+                        thickness = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                    )
                 }
             }
         }
     }
 }
-

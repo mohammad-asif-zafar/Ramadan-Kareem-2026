@@ -3,13 +3,12 @@ package com.hathway.ramadankareem2026.ui.qibla.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -31,6 +30,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.ui.theme.Emerald
 import com.hathway.ramadankareem2026.ui.theme.Gold
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun EnhancedQiblaCompassCircle(
@@ -48,12 +50,6 @@ fun EnhancedQiblaCompassCircle(
     isAligned: Boolean,
     accuracy: Int
 ) {
-    val animatedAlignment by animateFloatAsState(
-        targetValue = if (isAligned) 1f else 0f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
-        label = "alignment"
-    )
-
     val pulseAnimation by rememberInfiniteTransition(label = "pulse").animateFloat(
         initialValue = 1f,
         targetValue = 1.05f,
@@ -64,24 +60,25 @@ fun EnhancedQiblaCompassCircle(
         label = "scale"
     )
 
-    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
-
     Box(
         modifier = Modifier
             .size(320.dp)
             .shadow(
-                elevation = if (isAligned) 12.dp else 4.dp,
+                elevation = if (isAligned) 16.dp else 8.dp,
                 shape = CircleShape,
-                ambientColor = if (isAligned) Emerald.copy(alpha = 0.4f) else Color.Black.copy(alpha = 0.1f),
-                spotColor = if (isAligned) Emerald.copy(alpha = 0.4f) else Color.Black.copy(alpha = 0.1f)
+                ambientColor = Emerald.copy(alpha = 0.5f),
+                spotColor = Emerald.copy(alpha = 0.5f)
             )
             .background(
                 brush = Brush.radialGradient(
-                    colors = if (isDark) {
-                        listOf(Color(0xFF1B252E), Color(0xFF0F1720))
-                    } else {
-                        listOf(Color.White, Color(0xFFF1F4F2))
-                    }
+                    colors = listOf(Color(0xFF132B27), Color(0xFF071413))
+                ),
+                shape = CircleShape
+            )
+            .border(
+                width = 2.dp,
+                brush = Brush.sweepGradient(
+                    colors = listOf(Emerald, Emerald.copy(alpha = 0.6f), Emerald)
                 ),
                 shape = CircleShape
             ),
@@ -99,26 +96,42 @@ fun EnhancedQiblaCompassCircle(
                     .border(
                         width = 2.dp,
                         brush = Brush.radialGradient(
-                            colors = listOf(Emerald.copy(alpha = 0.5f), Color.Transparent)
+                            colors = listOf(Emerald.copy(alpha = 0.7f), Color.Transparent)
                         ),
                         shape = CircleShape
                     )
             )
         }
 
-        // Compass background ring
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .border(
-                    width = 1.dp,
-                    color = (if (isDark) Color.White else Color.Black).copy(alpha = 0.05f),
-                    shape = CircleShape
-                )
-        )
+        // Compass dial ticks and marks drawn via Canvas
+        Canvas(modifier = Modifier.fillMaxSize().padding(12.dp)) {
+            val radius = size.minDimension / 2f
+            val centerX = size.width / 2f
+            val centerY = size.height / 2f
 
-        // Direction labels (N, E, S, W)
+            for (i in 0 until 36 step 10) {
+                val angleRad = Math.toRadians(i.toDouble() - 90.0)
+                val isMajor = i % 30 == 0
+                val tickLength = if (isMajor) 12.dp.toPx() else 6.dp.toPx()
+                val strokeWidth = if (isMajor) 2.5.dp.toPx() else 1.5.dp.toPx()
+                val tickColor = if (i == 0) Emerald else Color.White.copy(alpha = if (isMajor) 0.7f else 0.3f)
+
+                val startX = centerX + (radius - tickLength) * cos(angleRad).toFloat()
+                val startY = centerY + (radius - tickLength) * sin(angleRad).toFloat()
+                val endX = centerX + radius * cos(angleRad).toFloat()
+                val endY = centerY + radius * sin(angleRad).toFloat()
+
+                drawLine(
+                    color = tickColor,
+                    start = Offset(startX, startY),
+                    end = Offset(endX, endY),
+                    strokeWidth = strokeWidth,
+                    cap = StrokeCap.Round
+                )
+            }
+        }
+
+        // Direction labels (N, E, S, W) rotated with device rotation
         CompassDirectionLabels(deviceRotation)
 
         // Qibla needle (Main focus)
@@ -130,7 +143,6 @@ fun EnhancedQiblaCompassCircle(
                 },
             contentAlignment = Alignment.Center
         ) {
-            // Arrow pointing to Qibla
             androidx.compose.foundation.Image(
                 painter = painterResource(R.drawable.ic_qibla_needle),
                 contentDescription = stringResource(R.string.qibla_direction),
@@ -141,32 +153,11 @@ fun EnhancedQiblaCompassCircle(
             )
         }
 
-        // Device direction needle (Subtle reference)
-        Box(
-            modifier = Modifier
-                .size(180.dp)
-                .graphicsLayer {
-                    rotationZ = 0f // It's fixed relative to device
-                    alpha = 0.3f
-                },
-            contentAlignment = Alignment.Center
-        ) {
-             androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
-                 drawLine(
-                     color = if (isDark) Color.White else Color.Black,
-                     start = Offset(size.width / 2f, 0f),
-                     end = Offset(size.width / 2f, size.height * 0.2f),
-                     strokeWidth = 4.dp.toPx(),
-                     cap = androidx.compose.ui.graphics.StrokeCap.Round
-                 )
-             }
-        }
-
         // Center cap
         EnhancedCenterCap(isAligned = isAligned)
-        
+
         // Bottom accuracy indicator
-        Box(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 40.dp)) {
+        Box(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 36.dp)) {
             AccuracyIndicator(accuracy = accuracy)
         }
     }
@@ -177,24 +168,24 @@ private fun CompassDirectionLabels(rotation: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp)
+            .padding(32.dp)
             .graphicsLayer { rotationZ = rotation }
     ) {
-        val labelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-        val activeColor = Emerald
+        val labelColor = Color.White.copy(alpha = 0.8f)
+        val northColor = Emerald
 
         // North
         Text(
             text = "N",
-            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.ExtraBold),
-            color = activeColor,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
+            color = northColor,
             modifier = Modifier.align(Alignment.TopCenter)
         )
 
         // East
         Text(
             text = "E",
-            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
             color = labelColor,
             modifier = Modifier.align(Alignment.CenterEnd)
         )
@@ -202,7 +193,7 @@ private fun CompassDirectionLabels(rotation: Float) {
         // South
         Text(
             text = "S",
-            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
             color = labelColor,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -210,7 +201,7 @@ private fun CompassDirectionLabels(rotation: Float) {
         // West
         Text(
             text = "W",
-            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
             color = labelColor,
             modifier = Modifier.align(Alignment.CenterStart)
         )
@@ -227,24 +218,24 @@ private fun EnhancedCenterCap(isAligned: Boolean) {
 
     Box(
         modifier = Modifier
-            .size(24.dp)
-            .shadow(elevation = 4.dp, shape = CircleShape)
+            .size(26.dp)
+            .shadow(elevation = 6.dp, shape = CircleShape)
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(Color.White, capColor)
                 ),
                 shape = CircleShape
             )
-            .border(2.dp, capColor.copy(alpha = 0.5f), CircleShape)
+            .border(2.dp, Color.White.copy(alpha = 0.8f), CircleShape)
     )
 }
 
 @Composable
 private fun AccuracyIndicator(accuracy: Int) {
     val accuracyColor = when (accuracy) {
-        3 -> Emerald // High
-        2 -> Gold    // Medium
-        else -> MaterialTheme.colorScheme.error // Low/Unreliable
+        3 -> Emerald
+        2 -> Gold
+        else -> Color(0xFFEF4444)
     }
 
     val accuracyText = when (accuracy) {
@@ -256,8 +247,9 @@ private fun AccuracyIndicator(accuracy: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .background(accuracyColor.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
+            .border(1.dp, accuracyColor.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+            .padding(horizontal = 10.dp, vertical = 5.dp)
     ) {
         Box(
             modifier = Modifier
@@ -271,9 +263,7 @@ private fun AccuracyIndicator(accuracy: Int) {
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold
             ),
-            color = accuracyColor
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
-
-
