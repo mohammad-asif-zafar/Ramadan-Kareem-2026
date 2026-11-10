@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
@@ -55,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
@@ -87,6 +90,7 @@ import java.util.Locale
 fun RamadanCalendarScreen(
     navController: NavController,
     days: List<RamadanDayUiModel>,
+    ramadanDays: List<RamadanDayUiModel> = emptyList(),
     isLoading: Boolean = false,
     error: String? = null,
     isHijriMode: Boolean = true,
@@ -168,107 +172,6 @@ fun RamadanCalendarScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // Top Tab Switcher: Hijri Calendar vs Gregorian
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = if (isDark) Color(0xFF132220) else Color(0xFFE8ECEB),
-                            shape = RoundedCornerShape(24.dp)
-                        )
-                        .padding(4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(if (isHijriMode) Emerald else Color.Transparent)
-                            .clickable { onTabSelected(true) }
-                            .padding(vertical = 10.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Hijri Calendar",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = if (isHijriMode) Color.White else Color.Gray
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(if (!isHijriMode) Emerald else Color.Transparent)
-                            .clickable { onTabSelected(false) }
-                            .padding(vertical = 10.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Gregorian",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = if (!isHijriMode) Color.White else Color.Gray
-                        )
-                    }
-                }
-
-                // Month Navigation Header matching reference UI (with working < and > clicks)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = if (isDark) Color(0xFF132220).copy(alpha = 0.85f) else Color.White.copy(alpha = 0.85f),
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onPrevMonth) {
-                        Icon(imageVector = Icons.Default.ChevronLeft, contentDescription = "Previous Month", tint = Emerald)
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(text = "🌙", fontSize = 24.sp)
-                        Column(horizontalAlignment = Alignment.Start) {
-                            Text(
-                                text = monthTitle,
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = if (isDark) Color.White else Color(0xFF101820)
-                            )
-                            Text(
-                                text = monthSubtitle,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = Emerald
-                            )
-                        }
-                    }
-                    IconButton(onClick = onNextMonth) {
-                        Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next Month", tint = Emerald)
-                    }
-                }
-
-                // Weekday Header Row (Sun, Mon, Tue, Wed, Thu, Fri, Sat)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    val weekdays = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                    weekdays.forEachIndexed { index, day ->
-                        Text(
-                            text = day,
-                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                            color = if (index == 0) Emerald else Color.White.copy(alpha = 0.6f),
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-
                 // Loading State
                 if (days.isEmpty() && isLoading) {
                     Box(
@@ -289,10 +192,135 @@ fun RamadanCalendarScreen(
                             )
                         }
                     }
+                } else if (showProgressHeader && ramadanDays.isNotEmpty()) {
+                    // When Ramadan Toggle is ON: Show Ramadan Progress Header and 3-Column Ramadan 2027 Grid in a single unified scrollable LazyVerticalGrid
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(3),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        contentPadding = PaddingValues(bottom = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        userScrollEnabled = true
+                    ) {
+                        item(span = { GridItemSpan(3) }) {
+                            RamadanProgressHeader(days = ramadanDays)
+                        }
+                        item(span = { GridItemSpan(3) }) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "🌙 Ramadan 2027 - 30-Day Journey",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                color = if (isDark) Color.White else Color(0xFF101820)
+                            )
+                        }
+                        items(ramadanDays.size) { index ->
+                            val day = ramadanDays[index]
+                            RamadanProgressCard(day = day)
+                        }
+                    }
                 } else {
-                    // Toggleable Ramadan Progress Header Card
-                    if (showProgressHeader && days.isNotEmpty()) {
-                        RamadanProgressHeader(days = days)
+                    // When Ramadan Toggle is OFF: Show Full Calendar view (untouched 7-column calendar)
+                    // Top Tab Switcher: Hijri Calendar vs Gregorian
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isDark) Color(0xFF132220) else Color(0xFFE8ECEB),
+                                shape = RoundedCornerShape(24.dp)
+                            )
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(if (isHijriMode) Emerald else Color.Transparent)
+                                .clickable { onTabSelected(true) }
+                                .padding(vertical = 10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Hijri Calendar",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = if (isHijriMode) Color.White else Color.Gray
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(if (!isHijriMode) Emerald else Color.Transparent)
+                                .clickable { onTabSelected(false) }
+                                .padding(vertical = 10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Gregorian",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = if (!isHijriMode) Color.White else Color.Gray
+                            )
+                        }
+                    }
+
+                    // Month Navigation Header matching reference UI (with working < and > clicks)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isDark) Color(0xFF132220).copy(alpha = 0.85f) else Color.White.copy(alpha = 0.85f),
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = onPrevMonth) {
+                            Icon(imageVector = Icons.Default.ChevronLeft, contentDescription = "Previous Month", tint = Emerald)
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(text = "🌙", fontSize = 24.sp)
+                            Column(horizontalAlignment = Alignment.Start) {
+                                Text(
+                                    text = monthTitle,
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = if (isDark) Color.White else Color(0xFF101820)
+                                )
+                                Text(
+                                    text = monthSubtitle,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Emerald
+                                )
+                            }
+                        }
+                        IconButton(onClick = onNextMonth) {
+                            Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next Month", tint = Emerald)
+                        }
+                    }
+
+                    // Weekday Header Row (Sun, Mon, Tue, Wed, Thu, Fri, Sat)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        val weekdays = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+                        weekdays.forEachIndexed { index, day ->
+                            Text(
+                                text = day,
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                color = if (index == 0) Emerald else Color.White.copy(alpha = 0.6f),
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
 
                     // 7-Column Calendar Grid matching reference UI
@@ -315,127 +343,127 @@ fun RamadanCalendarScreen(
                             }
                         }
                     }
-                }
 
-                // Today / Selected Date Summary Card at Bottom
-                if (todayModel != null) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedDay = todayModel },
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF112220).copy(alpha = 0.95f)
-                        ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, Emerald.copy(alpha = 0.4f))
-                    ) {
-                        Row(
+                    // Today / Selected Date Summary Card at Bottom
+                    if (todayModel != null) {
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .clickable { selectedDay = todayModel },
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFF112220).copy(alpha = 0.95f)
+                            ),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Emerald.copy(alpha = 0.4f))
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(42.dp)
+                                            .background(Emerald.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.CalendarMonth,
+                                            contentDescription = null,
+                                            tint = Emerald,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                    Column {
+                                        val formattedDate = todayModel.date.format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy", Locale.ENGLISH))
+                                        Text(
+                                            text = formattedDate,
+                                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                            color = Color.White
+                                        )
+                                        Text(
+                                            text = "${todayModel.ramadanDay} Ramadan 1448 هـ",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = Emerald
+                                        )
+                                    }
+                                }
+                                Icon(
+                                    imageVector = Icons.Default.ChevronRight,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.6f)
+                                )
+                            }
+                        }
+                    }
+
+                    // Events Section at Bottom
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Event,
+                                    contentDescription = null,
+                                    tint = Emerald,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(
+                                    text = "Events",
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = Color.White
+                                )
+                            }
+                            Text(
+                                text = "View All",
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                color = Emerald,
+                                modifier = Modifier.clickable { }
+                            )
+                        }
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFF112220).copy(alpha = 0.95f)
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(42.dp)
-                                        .background(Emerald.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.CalendarMonth,
-                                        contentDescription = null,
-                                        tint = Emerald,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
+                                Text(text = "🌙", fontSize = 28.sp)
                                 Column {
-                                    val formattedDate = todayModel.date.format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy", Locale.ENGLISH))
                                     Text(
-                                        text = formattedDate,
-                                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        text = "Ramadan (1 – 30 Ramadan)",
+                                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                         color = Color.White
                                     )
                                     Text(
-                                        text = "${todayModel.ramadanDay} Ramadan 1448 هـ",
+                                        text = "8 Feb – 9 Mar 2027",
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = Emerald
+                                        color = Color.White.copy(alpha = 0.6f)
                                     )
                                 }
-                            }
-                            Icon(
-                                imageVector = Icons.Default.ChevronRight,
-                                contentDescription = null,
-                                tint = Color.White.copy(alpha = 0.6f)
-                            )
-                        }
-                    }
-                }
-
-                // Events Section at Bottom
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Event,
-                                contentDescription = null,
-                                tint = Emerald,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Text(
-                                text = "Events",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                color = Color.White
-                            )
-                        }
-                        Text(
-                            text = "View All",
-                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                            color = Emerald,
-                            modifier = Modifier.clickable { }
-                        )
-                    }
-
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF112220).copy(alpha = 0.95f)
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Text(text = "🌙", fontSize = 28.sp)
-                            Column {
-                                Text(
-                                    text = "Ramadan (1 – 30 Ramadan)",
-                                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.White
-                                )
-                                Text(
-                                    text = "8 Feb – 9 Mar 2027",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = Color.White.copy(alpha = 0.6f)
-                                )
                             }
                         }
                     }
@@ -465,6 +493,80 @@ fun RamadanCalendarScreen(
                 }
             }) {
             RamadanDayDetailSheet(day = selectedDay!!)
+        }
+    }
+}
+
+@Composable
+private fun RamadanProgressCard(day: RamadanDayUiModel) {
+    val isToday = day.status == FastingDayStatus.TODAY || day.status == FastingDayStatus.FASTING
+
+    Card(
+        modifier = Modifier
+            .aspectRatio(0.85f)
+            .shadow(
+                elevation = if (isToday) 8.dp else 2.dp,
+                shape = RoundedCornerShape(24.dp),
+                ambientColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent,
+                spotColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent
+            )
+            .border(
+                width = if (isToday) 2.dp else 1.dp,
+                color = if (isToday) Emerald else Color.White.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(24.dp)
+            ),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isToday) Color(0xFF13322B) else Color(0xFF112220).copy(alpha = 0.95f)
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Day X (e.g. Day 1)
+            Text(
+                text = "Day ${day.ramadanDay}",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Gold
+            )
+
+            // Gregorian Day Number (e.g. 8)
+            Text(
+                text = day.date.dayOfMonth.toString(),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.ExtraBold
+                ),
+                color = Color.White
+            )
+
+            // Weekday & Month (e.g. MON February)
+            Text(
+                text = "${day.date.dayOfWeek.name.take(3).uppercase()} ${day.date.month.name.lowercase().replaceFirstChar { it.uppercase() }}",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Medium
+                ),
+                color = Color.White.copy(alpha = 0.6f),
+                textAlign = TextAlign.Center
+            )
+
+            // Ramadan Day (e.g. 1 Ramadan)
+            Text(
+                text = "${day.ramadanDay} Ramadan",
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Emerald
+            )
         }
     }
 }

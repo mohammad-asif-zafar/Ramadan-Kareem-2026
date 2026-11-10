@@ -29,7 +29,10 @@ class RamadanCalendarViewModel(
 
     private val _days = MutableStateFlow<List<RamadanDayUiModel>>(emptyList())
     val days: StateFlow<List<RamadanDayUiModel>> = _days.asStateFlow()
-    
+
+    private val _ramadanDays = MutableStateFlow<List<RamadanDayUiModel>>(emptyList())
+    val ramadanDays: StateFlow<List<RamadanDayUiModel>> = _ramadanDays.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     
@@ -106,6 +109,18 @@ class RamadanCalendarViewModel(
                     }
                 }
 
+                // 1. Always compute the dedicated 30 days of Ramadan starting February 8, 2027 (1 Ramadan 1448 AH)
+                val ramadanStartDate = LocalDate.of(2027, 2, 8)
+                val totalRamadanDays = 30
+                _ramadanDays.value = RamadanMonthlyOverviewCalculator.calculate(
+                    ramadanStartDate = ramadanStartDate,
+                    totalDays = totalRamadanDays,
+                    fajrTime = fajrTime,
+                    maghribTime = maghribTime,
+                    now = now
+                )
+
+                // 2. Load month grid data (Hijri vs Gregorian)
                 var apiLoaded = false
                 if (NetworkUtil.isConnected(getApplication())) {
                     try {
@@ -172,15 +187,7 @@ class RamadanCalendarViewModel(
                 }
 
                 if (!apiLoaded) {
-                    val ramadanStartDate = LocalDate.of(2027, 2, 8)
-                    val totalDays = 30
-                    _days.value = RamadanMonthlyOverviewCalculator.calculate(
-                        ramadanStartDate = ramadanStartDate,
-                        totalDays = totalDays,
-                        fajrTime = fajrTime,
-                        maghribTime = maghribTime,
-                        now = now
-                    )
+                    _days.value = _ramadanDays.value
                 }
                 
                 _isLoading.value = false

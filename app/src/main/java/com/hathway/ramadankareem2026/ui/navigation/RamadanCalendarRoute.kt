@@ -18,6 +18,7 @@ fun RamadanCalendarRoute(
     )
 ) {
     val days by viewModel.days.collectAsState()
+    val ramadanDays by viewModel.ramadanDays.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
     val isHijriMode by viewModel.isHijriMode.collectAsState()
@@ -27,6 +28,7 @@ fun RamadanCalendarRoute(
     RamadanCalendarScreen(
         navController = navController,
         days = days,
+        ramadanDays = ramadanDays,
         isLoading = isLoading,
         error = error,
         isHijriMode = isHijriMode,
