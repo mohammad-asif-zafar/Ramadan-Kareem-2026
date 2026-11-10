@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,12 +41,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.components.CountdownCircularProgress
-import com.hathway.ramadankareem2026.ui.home.components.displayName
 import com.hathway.ramadankareem2026.ui.home.homeViewModel.HomeViewModel
 import com.hathway.ramadankareem2026.ui.prayer.PrayerTimeUiMapper
 import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.PrayerViewModel
-import com.hathway.ramadankareem2026.ui.prayer.data.PrayerViewModelFactory
+import com.hathway.ramadankareem2026.ui. prayer.data.PrayerViewModelFactory
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
 import kotlinx.coroutines.delay
@@ -53,13 +54,14 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private const val TAG = "RamadanDayDetailSheet"
+
 @Composable
 fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
 
     val context = LocalContext.current
     val app = context.applicationContext as Application
 
-     // Prayer ViewModel
+    // Prayer ViewModel
     val prayerViewModel: PrayerViewModel = viewModel(
         factory = PrayerViewModelFactory(app)
     )
@@ -67,28 +69,25 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
 
     val locationState by homeViewModel.locationState.collectAsState()
 
-    LaunchedEffect(locationState) {
+    LaunchedEffect(locationState, day.date) {
         prayerViewModel.loadWithLocation(locationState, day.date)
     }
 
-
     var now by remember { mutableStateOf(LocalTime.now()) }
-
 
     val prayerState by prayerViewModel.state.collectAsState()
     val prayers = remember(prayerState, now) {
         PrayerTimeUiMapper.map(prayerState, now)
     }
     
-    // Show loading state
     val isLoading = prayerState == null
-
-
     val hijri = remember(day.date) { day.date.toHijriDate() }
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(if (isDark) Color(0xFF0F1720) else MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
@@ -109,30 +108,22 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
         Spacer(Modifier.height(16.dp))
         val lang = LanguageManager.current(context)
 
-        // Header
+        // Header: Hijri Date (e.g. 4 Sha'ban 1448 AH)
         Text(
-            text = "${RamadanStrings.ramadanDay(lang)} ${day.ramadanDay}",
+            text = "${hijri.day} ${hijri.month} ${hijri.year} AH",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
+            color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         Spacer(Modifier.height(4.dp))
 
-        // English date
+        // Gregorian Date (e.g. Tue, 12 January 2027)
         Text(
-            text = "${day.weekday}, ${day.date.dayOfMonth} ${day.month}",
+            text = "${day.weekday}, ${day.date.dayOfMonth} ${day.month} ${day.date.year}",
             fontSize = 14.sp,
             color = Color.Gray,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        // 🌙 Hijri date (NEW)
-        Text(
-            text = "${hijri.day} ${hijri.month} ${hijri.year} AH",
-            fontSize = 13.sp,
-            color = Color(0xFF0F9D58),
-            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -144,7 +135,6 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
 
         // Countdown
         if (day.status == FastingDayStatus.FASTING || day.status == FastingDayStatus.TODAY) {
-
             val liveMinutes = rememberLiveRemainingMinutes(
                 initialMinutes = day.remainingMinutes,
                 isActive = day.status == FastingDayStatus.FASTING
@@ -166,21 +156,22 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
         Text(
             text = RamadanStrings.prayerTimes(lang),
             fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(Modifier.height(12.dp))
         
         if (isLoading) {
             Box(
-                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center
             ) {
-                Text("Loading prayer times...", color = Color.Gray)
+                Text(RamadanStrings.loadingPrayerTimes(lang), color = Color.Gray)
             }
         } else {
             prayers.forEach { prayer ->
                 PrayerTimeCard(
-                    label = prayer.type.displayName(),
+                    label = prayer.type.displayName(lang),
                     time = prayer.time.format(DateTimeFormatter.ofPattern("hh:mm a"))
                 )
             }
@@ -192,7 +183,6 @@ fun RamadanDayDetailSheet(day: RamadanDayUiModel) {
 
 @Composable
 private fun StatusChip(status: FastingDayStatus) {
-
     val context = LocalContext.current
     val lang = LanguageManager.current(context)
 
@@ -228,21 +218,34 @@ private fun StatusChip(status: FastingDayStatus) {
 
 @Composable
 private fun PrayerTimeCard(label: String, time: String) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         elevation = CardDefaults.cardElevation(1.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isDark) Color(0xFF1B252E) else MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(label, color = Color.Gray)
-            Text(time, fontWeight = FontWeight.SemiBold)
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                color = if (isDark) Color.White.copy(alpha = 0.7f) else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = time,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
+            )
         }
     }
 }
@@ -292,6 +295,7 @@ private fun previewRamadanDay(): RamadanDayUiModel {
         remainingMinutes = 150
     )
 }
+
 enum class AppLanguage {
     ENGLISH,
     HINDI,
@@ -301,7 +305,6 @@ enum class AppLanguage {
 object LanguageManager {
 
     fun current(context: android.content.Context): AppLanguage {
-        // You can later connect this to DataStore / Settings
         val locale = context.resources.configuration.locales[0].language
 
         return when (locale) {
@@ -313,13 +316,6 @@ object LanguageManager {
     }
 }
 object RamadanStrings {
-
-    fun ramadanDay(lang: AppLanguage) = when (lang) {
-        AppLanguage.ENGLISH -> "Ramadan Day"
-        AppLanguage.HINDI -> "रमज़ान का दिन"
-        AppLanguage.URDU -> "رمضان کا دن"
-        AppLanguage.MALAY -> "Hari Ramadan"
-    }
 
     fun prayerTimes(lang: AppLanguage) = when (lang) {
         AppLanguage.ENGLISH -> "Prayer Times"

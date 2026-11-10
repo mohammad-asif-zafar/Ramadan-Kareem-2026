@@ -193,7 +193,7 @@ fun RamadanCalendarScreen(
                         }
                     }
                 } else if (showProgressHeader && ramadanDays.isNotEmpty()) {
-                    // When Ramadan Toggle is ON: Show Ramadan Progress Header and 3-Column Ramadan 2027 Grid in a single unified scrollable LazyVerticalGrid
+                    // When Ramadan Toggle is ON: Show Ramadan Progress Header and 3-Column Ramadan 2027 Grid in a single unified scrollable LazyVerticalGrid supporting both light and dark themes
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
                         modifier = Modifier
@@ -217,7 +217,7 @@ fun RamadanCalendarScreen(
                         }
                         items(ramadanDays.size) { index ->
                             val day = ramadanDays[index]
-                            RamadanProgressCard(day = day)
+                            RamadanProgressCard(day = day, onClick = { selectedDay = day })
                         }
                     }
                 } else {
@@ -352,7 +352,7 @@ fun RamadanCalendarScreen(
                                 .clickable { selectedDay = todayModel },
                             shape = RoundedCornerShape(16.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color(0xFF112220).copy(alpha = 0.95f)
+                                containerColor = if (isDark) Color(0xFF112220).copy(alpha = 0.95f) else MaterialTheme.colorScheme.surfaceVariant
                             ),
                             border = androidx.compose.foundation.BorderStroke(1.dp, Emerald.copy(alpha = 0.4f))
                         ) {
@@ -385,7 +385,7 @@ fun RamadanCalendarScreen(
                                         Text(
                                             text = formattedDate,
                                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                            color = Color.White
+                                            color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = "${todayModel.ramadanDay} Ramadan 1448 هـ",
@@ -397,7 +397,7 @@ fun RamadanCalendarScreen(
                                 Icon(
                                     imageVector = Icons.Default.ChevronRight,
                                     contentDescription = null,
-                                    tint = Color.White.copy(alpha = 0.6f)
+                                    tint = if (isDark) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -426,7 +426,7 @@ fun RamadanCalendarScreen(
                                 Text(
                                     text = "Events",
                                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.White
+                                    color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
                                 )
                             }
                             Text(
@@ -441,7 +441,7 @@ fun RamadanCalendarScreen(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color(0xFF112220).copy(alpha = 0.95f)
+                                containerColor = if (isDark) Color(0xFF112220).copy(alpha = 0.95f) else MaterialTheme.colorScheme.surfaceVariant
                             )
                         ) {
                             Row(
@@ -456,12 +456,12 @@ fun RamadanCalendarScreen(
                                     Text(
                                         text = "Ramadan (1 – 30 Ramadan)",
                                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                        color = Color.White
+                                        color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = "8 Feb – 9 Mar 2027",
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = Color.White.copy(alpha = 0.6f)
+                                        color = if (isDark) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
@@ -498,8 +498,9 @@ fun RamadanCalendarScreen(
 }
 
 @Composable
-private fun RamadanProgressCard(day: RamadanDayUiModel) {
+private fun RamadanProgressCard(day: RamadanDayUiModel, onClick: (RamadanDayUiModel) -> Unit) {
     val isToday = day.status == FastingDayStatus.TODAY || day.status == FastingDayStatus.FASTING
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Card(
         modifier = Modifier
@@ -510,14 +511,18 @@ private fun RamadanProgressCard(day: RamadanDayUiModel) {
                 ambientColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent,
                 spotColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent
             )
+            .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 1.dp,
-                color = if (isToday) Emerald else Color.White.copy(alpha = 0.1f),
+                color = if (isToday) Emerald else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(24.dp)
             ),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isToday) Color(0xFF13322B) else Color(0xFF112220).copy(alpha = 0.95f)
+            containerColor = when {
+                isToday -> if (isDark) Color(0xFF13322B) else Color(0xFFE8F5E9)
+                else -> if (isDark) Color(0xFF112220).copy(alpha = 0.95f) else MaterialTheme.colorScheme.surfaceVariant
+            }
         )
     ) {
         Column(
@@ -534,7 +539,7 @@ private fun RamadanProgressCard(day: RamadanDayUiModel) {
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 ),
-                color = Gold
+                color = if (isToday && !isDark) Color(0xFF2E7D32) else Gold
             )
 
             // Gregorian Day Number (e.g. 8)
@@ -544,7 +549,7 @@ private fun RamadanProgressCard(day: RamadanDayUiModel) {
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold
                 ),
-                color = Color.White
+                color = if (isToday && !isDark) Color(0xFF1B3D36) else Color.White
             )
 
             // Weekday & Month (e.g. MON February)
@@ -554,7 +559,7 @@ private fun RamadanProgressCard(day: RamadanDayUiModel) {
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Medium
                 ),
-                color = Color.White.copy(alpha = 0.6f),
+                color = if (isDark) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
 
