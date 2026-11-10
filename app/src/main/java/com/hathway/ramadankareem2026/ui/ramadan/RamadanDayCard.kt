@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,6 +43,7 @@ fun RamadanDayCard(
     onClick: (RamadanDayUiModel) -> Unit
 ) {
     val isToday = day.status == FastingDayStatus.TODAY || day.status == FastingDayStatus.FASTING
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     val hijri = remember(day.date) {
         day.date.toHijriDate()
@@ -59,15 +61,14 @@ fun RamadanDayCard(
             .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 1.dp,
-                color = if (isToday) Emerald else Color.White.copy(alpha = 0.1f),
+                color = if (isToday) Emerald else (if (isDark) Color.White.copy(alpha = 0.1f) else Color.Black.copy(alpha = 0.15f)),
                 shape = RoundedCornerShape(12.dp)
             ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isToday) {
-                Color(0xFF13322B)
-            } else {
-                Color(0xFF112220).copy(alpha = 0.9f)
+            containerColor = when {
+                isToday -> if (isDark) Color(0xFF13322B) else Color(0xFFE8F5E9)
+                else -> if (isDark) Color(0xFF112220).copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceVariant
             }
         )
     ) {
@@ -102,7 +103,7 @@ fun RamadanDayCard(
                         fontWeight = FontWeight.Bold,
                         platformStyle = PlatformTextStyle(includeFontPadding = false)
                     ),
-                    color = if (isToday) Emerald else Color.White
+                    color = if (isToday) (if (isDark) Emerald else Color(0xFF2E7D32)) else (if (isDark) Color.White else MaterialTheme.colorScheme.onSurface)
                 )
 
                 Spacer(modifier = Modifier.height(2.dp))
@@ -116,7 +117,7 @@ fun RamadanDayCard(
                         fontWeight = FontWeight.Medium,
                         platformStyle = PlatformTextStyle(includeFontPadding = false)
                     ),
-                    color = Color.White.copy(alpha = 0.6f)
+                    color = if (isDark) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -146,7 +147,7 @@ private fun PreviewRamadanDayCard_Today() {
     Box(
         modifier = Modifier
             .padding(16.dp)
-            .size(48.dp) // Realistic 1:1 size in a 7-column mobile grid
+            .size(48.dp)
     ) {
         RamadanDayCard(
             day = previewRamadanDayUiModel(FastingDayStatus.TODAY),

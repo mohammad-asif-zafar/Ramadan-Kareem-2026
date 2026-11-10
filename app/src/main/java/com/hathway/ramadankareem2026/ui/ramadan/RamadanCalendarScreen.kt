@@ -549,7 +549,7 @@ private fun RamadanProgressCard(day: RamadanDayUiModel, onClick: (RamadanDayUiMo
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold
                 ),
-                color = if (isToday && !isDark) Color(0xFF1B3D36) else Color.White
+                color = if (isToday && !isDark) Color(0xFF1B3D36) else (if (isDark) Color.White else Color(0xFF101820))
             )
 
             // Weekday & Month (e.g. MON February)
