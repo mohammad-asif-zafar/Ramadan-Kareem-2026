@@ -20,12 +20,21 @@ fun RamadanCalendarRoute(
     val days by viewModel.days.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val isHijriMode by viewModel.isHijriMode.collectAsState()
+    val monthTitle by viewModel.currentMonthYearText.collectAsState()
+    val monthSubtitle by viewModel.monthSubtitleText.collectAsState()
 
     RamadanCalendarScreen(
         navController = navController,
         days = days,
         isLoading = isLoading,
         error = error,
+        isHijriMode = isHijriMode,
+        monthTitle = monthTitle,
+        monthSubtitle = monthSubtitle,
+        onTabSelected = { isHijri -> viewModel.setCalendarMode(isHijri) },
+        onNextMonth = { viewModel.nextMonth() },
+        onPrevMonth = { viewModel.previousMonth() },
         onBack = { navController.popBackStack() },
         onViewFullCalendar = { },
         onSettings = { navController.navigate(Routes.SETTINGS) },

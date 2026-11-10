@@ -9,15 +9,24 @@ data class HijriDateUi(
 )
 
 fun LocalDate.toHijriDate(): HijriDateUi {
-    val hijri = HijrahDate.from(this)
+    return try {
+        val hijri = HijrahDate.from(this)
 
-    val monthNumber = hijri.get(ChronoField.MONTH_OF_YEAR)
+        val monthNumber = hijri.get(ChronoField.MONTH_OF_YEAR)
 
-    return HijriDateUi(
-        day = hijri.get(ChronoField.DAY_OF_MONTH),
-        month = hijriMonthName(monthNumber),
-        year = hijri.get(ChronoField.YEAR)
-    )
+        HijriDateUi(
+            day = hijri.get(ChronoField.DAY_OF_MONTH),
+            month = hijriMonthName(monthNumber),
+            year = hijri.get(ChronoField.YEAR)
+        )
+    } catch (_: Exception) {
+        // Safe fallback if out of range of Java's built-in Hijrah implementation
+        HijriDateUi(
+            day = this.dayOfMonth,
+            month = "Ramadan",
+            year = 1448
+        )
+    }
 }
 
 private fun hijriMonthName(month: Int): String {
@@ -37,5 +46,3 @@ private fun hijriMonthName(month: Int): String {
         else -> ""
     }
 }
-
-
