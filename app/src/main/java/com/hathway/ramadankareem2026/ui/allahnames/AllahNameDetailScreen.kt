@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.ui.theme.Emerald
 import android.app.Application
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -47,6 +46,7 @@ import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.navigation.Routes
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 
@@ -106,12 +106,12 @@ private fun AllahNameDetailContent(
     onNavigateToBookmarks: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
-    // Smooth adaptive theme-aware dynamic color parameters
-    val brandAccentColor =
-        if (isDark) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary
-    val cardContainerColor = MaterialTheme.colorScheme.surfaceVariant
+    // Since background asset bg_allah_detail_screen is light cream, accent text must always be dark green for high legibility
+    val brandAccentColor = Color(0xFF0F3D30)
+    val cardContainerColor = if (isDark) Color(0xFF1B252E) else Color.White.copy(alpha = 0.95f)
+    val textColor = if (isDark) Color.White else Color(0xFF101820)
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -133,7 +133,9 @@ private fun AllahNameDetailContent(
                     onBackClick = onBack,
                     rightIcon1 = ToolbarIcon.Drawable(R.drawable.ic_saved),
                     rightIcon1Badge = bookmarkCount,
-                    onRightIcon1Click = onNavigateToBookmarks
+                    onRightIcon1Click = onNavigateToBookmarks,
+                    backgroundColor = if (isDark) Color(0xFF0F1720) else Color.White,
+                    contentColor = if (isDark) Color.White else Color.Black
                 )
             }, containerColor = Color.Transparent
         ) { innerPadding ->
@@ -178,9 +180,8 @@ private fun AllahNameDetailContent(
                         ) {
                             Surface(
                                 shape = RoundedCornerShape(12.dp),
-                                color = if (isBookmarked) MaterialTheme.colorScheme.primary else cardContainerColor.copy(
-                                    alpha = 0.5f
-                                ),
+                                color = if (isBookmarked) Emerald else cardContainerColor,
+                                shadowElevation = 2.dp
                             ) {
                                 Row(
                                     modifier = Modifier.padding(
@@ -191,7 +192,7 @@ private fun AllahNameDetailContent(
                                         imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp),
-                                        tint = if (isBookmarked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                                        tint = if (isBookmarked) Color.White else textColor
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
@@ -199,7 +200,7 @@ private fun AllahNameDetailContent(
                                             R.string.not_bookmarked
                                         ),
                                         style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                                        color = if (isBookmarked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = if (isBookmarked) Color.White else textColor
                                     )
                                 }
                             }
@@ -210,7 +211,7 @@ private fun AllahNameDetailContent(
                                         R.string.add_bookmark
                                     ),
                                     style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                                    color = brandAccentColor
+                                    color = Color(0xFF0F3D30)
                                 )
                             }
                         }
@@ -222,7 +223,7 @@ private fun AllahNameDetailContent(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(24.dp),
                             color = cardContainerColor,
-                            shadowElevation = 2.dp
+                            shadowElevation = 4.dp
                         ) {
                             Text(
                                 text = name.meaning,
@@ -233,7 +234,7 @@ private fun AllahNameDetailContent(
                                     fontWeight = FontWeight.Medium,
                                     letterSpacing = 0.25.sp
                                 ),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = textColor,
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -264,7 +265,7 @@ fun OrnamentalNameBox(
             modifier = Modifier.fillMaxSize(0.9f),
             contentScale = ContentScale.Fit
         )
-// 2. Foreground Dynamic Text Content Layer (Perfectly Centering Big Script)
+// 2. Foreground Dynamic Text Content Layer (Perfecting Centering Big Script)
         Text(
             text = arabicText,
             fontSize = 48.sp,
@@ -326,6 +327,3 @@ fun AllahNameDetailPreviewLight() {
         )
     }
 }
-
-
-

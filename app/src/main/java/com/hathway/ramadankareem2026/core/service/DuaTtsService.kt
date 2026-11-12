@@ -28,21 +28,29 @@ class DuaTtsService : Service(), TextToSpeech.OnInitListener {
 
             @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
             override fun onStart(utteranceId: String?) {
-                // 🔴 Change icon to STOP
                 updateNotification(isPlaying = true)
+                sendStateBroadcast(true)
             }
 
             @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
             override fun onDone(utteranceId: String?) {
-                // 🟢 Finished → switch back to PLAY
                 updateNotification(isPlaying = false)
+                sendStateBroadcast(false)
             }
 
             @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
             override fun onError(utteranceId: String?) {
                 updateNotification(isPlaying = false)
+                sendStateBroadcast(false)
             }
         })
+    }
+
+    private fun sendStateBroadcast(isPlaying: Boolean) {
+        val broadcastIntent = Intent("com.hathway.ramadankareem2026.TTS_STATE_CHANGED").apply {
+            putExtra("isPlaying", isPlaying)
+        }
+        sendBroadcast(broadcastIntent)
     }
 
     override fun onInit(status: Int) {
@@ -68,6 +76,7 @@ class DuaTtsService : Service(), TextToSpeech.OnInitListener {
             TtsActions.STOP -> {
                 tts.stop()
                 updateNotification(isPlaying = false)
+                sendStateBroadcast(false)
             }
         }
 
@@ -85,7 +94,10 @@ class DuaTtsService : Service(), TextToSpeech.OnInitListener {
     }
 
     override fun onDestroy() {
-        tts.shutdown()
+        try {
+            tts.stop()
+            tts.shutdown()
+        } catch (_: Exception) {}
         super.onDestroy()
     }
 

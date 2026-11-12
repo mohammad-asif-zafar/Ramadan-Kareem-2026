@@ -2,7 +2,11 @@ package com.hathway.ramadankareem2026.ui.dua.components
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,6 +32,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,6 +86,38 @@ fun DuaDetailScreen(
             duaBookmarkCountViewModel.updateDuaBookmarkCountImmediate(delta)
         }
     }
+
+    val context = LocalContext.current
+    var isPlaying by remember { mutableStateOf(false) }
+
+    DisposableEffect(context) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == "com.hathway.ramadankareem2026.TTS_STATE_CHANGED") {
+                    isPlaying = intent.getBooleanExtra("isPlaying", false)
+                }
+            }
+        }
+        val filter = IntentFilter("com.hathway.ramadankareem2026.TTS_STATE_CHANGED")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            context.registerReceiver(receiver, filter)
+        }
+
+        onDispose {
+            try {
+                context.unregisterReceiver(receiver)
+            } catch (_: Exception) {}
+
+            val intent = Intent(context, DuaTtsService::class.java).apply {
+                action = TtsActions.STOP
+            }
+            context.startService(intent)
+            NotificationManagerCompat.from(context).cancel(DuaTtsNotification.NOTIFICATION_ID)
+        }
+    }
+
     Scaffold(
 
         /*  Top App Bar */
@@ -99,9 +136,6 @@ fun DuaDetailScreen(
         },
 
         ) { padding ->
-
-        val context = LocalContext.current
-        var isPlaying by remember { mutableStateOf(false) }
 
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
@@ -298,7 +332,7 @@ fun DuaDetailScreenPreview() {
                     english = "Ramadan Moon Sighting Duʿāʾ",
                     hindi = "रमज़ान का चाँद देखने की दुआ",
                     urdu = "رمضان کا چاند دیکھنے کی دعا",
-                    malaysian = "Doa Melihat Anak Bulan Ramadan"
+                    malaysian = "Doa Melihat Bulan Ramadan"
                 ),
                 arabic = "اللَّهُمَّ أَهْلِلْهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ",
                 transliteration = "Allahumma ahlilhu 'alaynā bil-yumni wal-īmān",
