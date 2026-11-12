@@ -30,6 +30,7 @@ class QuranViewModel(
     // AUDIO STATE (SOURCE OF TRUTH)
     val isAudioPlaying: StateFlow<Boolean> = audioController.isPlaying
     val currentPlayingIndex: StateFlow<Int> = audioController.currentIndex
+    val isAudioEnded: Boolean get() = audioController.isEnded
 
     // PLAYBACK LIFECYCLE
     private val _hasStartedPlayback = MutableStateFlow(false)
@@ -63,6 +64,14 @@ class QuranViewModel(
 
         audioController.playAyahs(urls, startIndex)
         _hasStartedPlayback.value = true
+    }
+
+    fun playOrResume(ayahs: List<Ayah>) {
+        if (!_hasStartedPlayback.value || audioController.isEnded) {
+            playSurah(ayahs)
+        } else {
+            resumeAudio()
+        }
     }
 
     fun pauseAudio() {

@@ -17,19 +17,35 @@ class QuranAudioController(context: Context) {
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying
 
+    var isEnded: Boolean = false
+        private set
+
     init {
         player.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 _isPlaying.value = isPlaying
+                if (isPlaying) {
+                    isEnded = false
+                }
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 _currentIndex.value = player.currentMediaItemIndex
             }
+
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    isEnded = true
+                    _isPlaying.value = false
+                    player.seekTo(0, 0)
+                    player.pause()
+                }
+            }
         })
     }
 
     fun playAyahs(audioUrls: List<String>, startIndex: Int = 0) {
+        isEnded = false
         player.clearMediaItems()
         audioUrls.forEach {
             player.addMediaItem(MediaItem.fromUri(it))
@@ -40,14 +56,27 @@ class QuranAudioController(context: Context) {
     }
 
     fun pause() = player.pause()
-    fun resume() = player.play()
+    fun resume() {
+        if (isEnded) {
+            isEnded = false
+            player.seekTo(0, 0)
+        }
+        player.play()
+    }
 
     fun stop() {
         player.stop()
+        player.clearMediaItems()
         _currentIndex.value = -1
+        _isPlaying.value = false
+        isEnded = false
     }
 
     fun release() {
-        player.release()
+        try {
+            player.stop()
+            player.clearMediaItems()
+            player.release()
+        } catch (_: Exception) {}
     }
 }

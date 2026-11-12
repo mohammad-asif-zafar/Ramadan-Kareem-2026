@@ -33,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -43,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -79,6 +81,13 @@ fun QuranSurahAyahsScreen(
     val lastReadAyah by viewModel.lastReadAyah.collectAsState()
     val currentPlayingIndex by viewModel.currentPlayingIndex.collectAsState()
     val isAudioPlaying by viewModel.isAudioPlaying.collectAsState()
+
+    // Stop audio when exiting this screen
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.stopAudio()
+        }
+    }
 
     // Surah-level bookmark state
     val isBookmarked by quranBookmarkViewModel.isBookmarked(surahId.toString())
@@ -166,6 +175,7 @@ fun QuranSurahAyahsScreen(
         if (index >= 0) listState.scrollToItem(index)
     }
 
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Scaffold(
         topBar = {
@@ -195,16 +205,11 @@ fun QuranSurahAyahsScreen(
         },
         bottomBar = {
             val isPlaying by viewModel.isAudioPlaying.collectAsState()
-            val hasStarted by viewModel.hasStartedPlayback.collectAsState()
 
             SurahAudioPlayerBar(
                 isPlaying = isPlaying,
                 onPlay = {
-                    if (hasStarted) {
-                        viewModel.resumeAudio()
-                    } else {
-                        viewModel.playSurah(state.ayahs)
-                    }
+                    viewModel.playOrResume(state.ayahs)
                 },
                 onPause = {
                     viewModel.pauseAudio()
@@ -214,7 +219,7 @@ fun QuranSurahAyahsScreen(
                 }
             )
         },
-        containerColor = if (androidx.compose.foundation.isSystemInDarkTheme()) Color(0xFF0D1B16) else MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         when {
             state.isLoading && state.ayahs.isEmpty() -> {
@@ -249,9 +254,7 @@ fun QuranSurahAyahsScreen(
                         contentPadding = PaddingValues(bottom = 100.dp)
                     ) {
                         item {
-                            // SURAH BOOKMARK BUTTON - Refined and moved inside LazyColumn
-                            val isDark = androidx.compose.foundation.isSystemInDarkTheme()
-                            
+                            // SURAH BOOKMARK BUTTON
                             val bookmarkScale by animateFloatAsState(
                                 targetValue = if (isBookmarked) 1.1f else 1.0f,
                                 animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
@@ -329,7 +332,7 @@ private fun AyahCard(
     isPlaying: Boolean, 
     onClick: () -> Unit
 ) {
-    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val backgroundColor = if (isPlaying) {
         MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
     } else {
