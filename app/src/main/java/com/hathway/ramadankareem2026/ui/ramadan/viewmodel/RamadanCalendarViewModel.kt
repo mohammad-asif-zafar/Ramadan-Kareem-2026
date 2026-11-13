@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.hathway.ramadankareem2026.core.time.AppClock
 import com.hathway.ramadankareem2026.core.time.SystemAppClock
 import com.hathway.ramadankareem2026.core.util.NetworkUtil
+import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.prayer.PrayerType
 import com.hathway.ramadankareem2026.ui.prayer.data.PrayerRepository
 import com.hathway.ramadankareem2026.ui.prayer.data.api.NetworkModule
@@ -42,14 +43,18 @@ class RamadanCalendarViewModel(
     private val _isHijriMode = MutableStateFlow(true)
     val isHijriMode: StateFlow<Boolean> = _isHijriMode.asStateFlow()
 
-    private val _currentMonthYearText = MutableStateFlow("Ramadan 1448 هـ")
+    private val _currentMonthYearText = MutableStateFlow("Jumādá al-ūlá 1448 هـ")
     val currentMonthYearText: StateFlow<String> = _currentMonthYearText.asStateFlow()
 
-    private val _monthSubtitleText = MutableStateFlow("February – March 2027")
+    private val _monthSubtitleText = MutableStateFlow("November – December 2026")
     val monthSubtitleText: StateFlow<String> = _monthSubtitleText.asStateFlow()
 
-    private var currentYear = LocalDate.now().year
-    private var currentMonth = LocalDate.now().monthValue
+    private val todayHijri = LocalDate.now().toHijriDate()
+    private var hijriMonth = todayHijri.monthNumber
+    private var hijriYear = todayHijri.year
+
+    private var gregorianMonth = LocalDate.now().monthValue
+    private var gregorianYear = LocalDate.now().year
 
     private val _currentLocation = MutableStateFlow<Pair<Double, Double>?>(null)
 
@@ -64,19 +69,35 @@ class RamadanCalendarViewModel(
     }
 
     fun nextMonth() {
-        currentMonth++
-        if (currentMonth > 12) {
-            currentMonth = 1
-            currentYear++
+        if (_isHijriMode.value) {
+            hijriMonth++
+            if (hijriMonth > 12) {
+                hijriMonth = 1
+                hijriYear++
+            }
+        } else {
+            gregorianMonth++
+            if (gregorianMonth > 12) {
+                gregorianMonth = 1
+                gregorianYear++
+            }
         }
         loadCalendarData()
     }
 
     fun previousMonth() {
-        currentMonth--
-        if (currentMonth < 1) {
-            currentMonth = 12
-            currentYear--
+        if (_isHijriMode.value) {
+            hijriMonth--
+            if (hijriMonth < 1) {
+                hijriMonth = 12
+                hijriYear--
+            }
+        } else {
+            gregorianMonth--
+            if (gregorianMonth < 1) {
+                gregorianMonth = 12
+                gregorianYear--
+            }
         }
         loadCalendarData()
     }
@@ -120,14 +141,14 @@ class RamadanCalendarViewModel(
                     now = now
                 )
 
-                // 2. Load month grid data (Hijri vs Gregorian)
+                // 2. Load month grid data (Hijri vs Gregorian) using actual Hijri or Gregorian months/years
                 var apiLoaded = false
                 if (NetworkUtil.isConnected(getApplication())) {
                     try {
                         val calendarResponse = if (_isHijriMode.value) {
-                            NetworkModule.prayerApi.getHijriToGregorianCalendar(currentMonth, currentYear)
+                            NetworkModule.prayerApi.getHijriToGregorianCalendar(hijriMonth, hijriYear)
                         } else {
-                            NetworkModule.prayerApi.getGregorianToHijriCalendar(currentMonth, currentYear)
+                            NetworkModule.prayerApi.getGregorianToHijriCalendar(gregorianMonth, gregorianYear)
                         }
 
                         if (calendarResponse.code == 200 && calendarResponse.data.isNotEmpty()) {
@@ -136,9 +157,9 @@ class RamadanCalendarViewModel(
 
                             if (_isHijriMode.value) {
                                 _currentMonthYearText.value = "${firstDay.hijri.month.en} ${firstDay.hijri.year} هـ"
-                                _monthSubtitleText.value = "${firstDay.gregorian.month.en} – ${lastDay.gregorian.month.en} $currentYear"
+                                _monthSubtitleText.value = "${firstDay.gregorian.month.en} – ${lastDay.gregorian.month.en} ${firstDay.gregorian.year}"
                             } else {
-                                _currentMonthYearText.value = "${firstDay.gregorian.month.en} $currentYear"
+                                _currentMonthYearText.value = "${firstDay.gregorian.month.en} $gregorianYear"
                                 _monthSubtitleText.value = "${firstDay.hijri.month.en} – ${lastDay.hijri.month.en} ${firstDay.hijri.year} هـ"
                             }
 

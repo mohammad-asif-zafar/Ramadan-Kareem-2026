@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.hathway.ramadankareem2026.R
 import com.hathway.ramadankareem2026.core.location.LocationProvider
+import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.components.RamadanToolbar
 import com.hathway.ramadankareem2026.ui.components.ToolbarIcon
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
@@ -193,7 +194,7 @@ fun RamadanCalendarScreen(
                         }
                     }
                 } else if (showProgressHeader && ramadanDays.isNotEmpty()) {
-                    // When Ramadan Toggle is ON: Show Ramadan Progress Header and 3-Column Ramadan 2027 Grid in a single unified scrollable LazyVerticalGrid supporting both light and dark themes
+                    // When Ramadan Toggle is ON: Show Ramadan Progress Header and 3-Column Ramadan 2027 Grid
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(3),
                         modifier = Modifier
@@ -221,7 +222,7 @@ fun RamadanCalendarScreen(
                         }
                     }
                 } else {
-                    // When Ramadan Toggle is OFF: Show Full Calendar view (untouched 7-column calendar)
+                    // When Ramadan Toggle is OFF: Show Full Calendar view (5 columns per row)
                     // Top Tab Switcher: Hijri Calendar vs Gregorian
                     Row(
                         modifier = Modifier
@@ -304,36 +305,17 @@ fun RamadanCalendarScreen(
                         }
                     }
 
-                    // Weekday Header Row (Sun, Mon, Tue, Wed, Thu, Fri, Sat)
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        val weekdays = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-                        weekdays.forEachIndexed { index, day ->
-                            Text(
-                                text = day,
-                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                                color = if (index == 0) Emerald else Color.White.copy(alpha = 0.6f),
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-
-                    // 7-Column Calendar Grid matching reference UI
+                    // 5-Column Calendar Grid (reduced items per row to 5 for larger cards)
                     if (days.isNotEmpty()) {
                         LazyVerticalGrid(
-                            columns = GridCells.Fixed(7),
+                            columns = GridCells.Fixed(5),
                             state = gridState,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f),
-                            contentPadding = PaddingValues(bottom = 12.dp),
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            contentPadding = PaddingValues(bottom = 16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
                             userScrollEnabled = true
                         ) {
                             items(days.size) { index ->
@@ -380,6 +362,7 @@ fun RamadanCalendarScreen(
                                             modifier = Modifier.size(24.dp)
                                         )
                                     }
+                                    val hijriSummary = remember(todayModel.date) { todayModel.date.toHijriDate() }
                                     Column {
                                         val formattedDate = todayModel.date.format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy", Locale.ENGLISH))
                                         Text(
@@ -388,7 +371,7 @@ fun RamadanCalendarScreen(
                                             color = if (isDark) Color.White else MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
-                                            text = "${todayModel.ramadanDay} Ramadan 1448 هـ",
+                                            text = "${hijriSummary.day} ${hijriSummary.month} ${hijriSummary.year} هـ",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = Emerald
                                         )
@@ -759,7 +742,7 @@ private fun PreviewRamadanCalendarGrid() {
         val days = previewRamadanMonth()
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(7),
+            columns = GridCells.Fixed(5),
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),

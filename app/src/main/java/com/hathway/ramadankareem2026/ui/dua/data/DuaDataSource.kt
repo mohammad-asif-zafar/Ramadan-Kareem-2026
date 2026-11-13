@@ -1038,21 +1038,75 @@ object DuaDataSource {
             id = "adhkar_three_quls",
             categoryId = "adhkar",
             title = LocalizedDuaText(
-                english = "The Three Quls",
-                hindi = "तीन क़ुल",
-                urdu = "تین قل",
-                malaysian = "Tiga Qul"
+                english = "The Three Quls (3x)",
+                hindi = "तीन क़ुल (3 बार)",
+                urdu = "تین قل (3 مرتبہ)",
+                malaysian = "Tiga Qul (3x)"
             ),
-            arabic = "قُلْ هُوَ اللَّهُ أَحَدٌ...",
-            transliteration = "Qul huwa Allāhu aḥad…",
+            arabic = """
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ
+
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ
+
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ
+            """.trimIndent(),
+            transliteration = """
+                (Recite each Surah 3 times)
+
+                Bismillāhir-Raḥmānir-Raḥīm.
+                Qul huwa Allāhu aḥad. Allāhuṣ-Ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahu kufuwan aḥad.
+
+                Bismillāhir-Raḥmānir-Raḥīm.
+                Qul a‘ūdhu bi-Rabbil-falaq. Min sharri mā khalaq. Wa min sharri ghāsiqin idhā waqab. Wa min sharrin-naffāthāti fil-‘uqad. Wa min sharri ḥāsidin idhā ḥasad.
+
+                Bismillāhir-Raḥmānir-Raḥīm.
+                Qul a‘ūdhu bi-Rabbin-nās. Malikin-nās. Ilāhin-nās. Min sharril-waswāsil-khannās. Alladhī yuwaswisu fī ṣudūrin-nās. Minal-jinnati wan-nās.
+            """.trimIndent(),
             translation = LocalizedDuaText(
-                english = "Say: He is Allah, the One…",
-                hindi = "कहिए: वह अल्लाह एक है…",
-                urdu = "کہہ دیجیے: وہ اللہ ایک ہے…",
-                malaysian = "Katakanlah: Dialah Allah Yang Maha Esa…"
+                english = """
+                    (Recite each Surah 3 times in the morning and evening)
+
+                    Surah Al-Ikhlas: Say, "He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, nor is there to Him any equivalent."
+
+                    Surah Al-Falaq: Say, "I seek refuge in the Lord of daybreak, from the evil of that which He created, and from the evil of darkness when it settles, and from the evil of the blowers in knots, and from the evil of an envier when he envies."
+
+                    Surah An-Nas: Say, "I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the retreating whisperer—who whispers [evil] into the breasts of mankind—from among the jinn and mankind."
+                """.trimIndent(),
+                hindi = """
+                    (सुबह और शाम प्रत्येक सूरह को 3 बार पढ़ें)
+
+                    सूरह अल-इख़लास: कह दो कि वह अल्लाह एक है। अल्लाह बेनियाज़ (निःस्पृह) है। न उसकी कोई संतान है और न वह किसी की संतान है। और उसके बराबर का कोई नहीं है।
+
+                    सूरह अल-फ़लक़: कह दो कि मैं सुबह के पालनहार की शरण मांगता हूँ। हर उस चीज़ की बुराई से जो उसने पैदा की है। और अंधेरी रात की बुराई से जब वह छा जाए। और गिरहों (गाँठों) में फूँकने वालियों की बुराई से। और ईर्ष्या करने वाले की बुराई से जब वह ईर्ष्या करे।
+
+                    सूरह अन-नास: कह दो कि मैं मनुष्यों के पालनहार की शरण मांगता हूँ। मनुष्यों के बादशाह की। मनुष्यों के पूज्य की। पीछे हटकर वसवसा डालने वाले की बुराई से। जो मनुष्यों के सीनों में वसवसा डालता है। जिन्नों में से हो या मनुष्यों में से।
+                """.trimIndent(),
+                urdu = """
+                    (صبح اور شام ہر سورت کو 3 مرتبہ پڑھیں)
+
+                    سورۃ الاخلاص: کہہ دیجیے کہ وہ اللہ ایک ہے۔ اللہ بے نیاز ہے۔ نہ اس کی کوئی اولاد ہے اور نہ وہ کسی کی اولاد ہے۔ اور اس کے برابر کا کوئی نہیں ہے۔
+
+                    سورۃ الفلق: کہہ دیجیے کہ میں صبح کے رب کی پناہ مانگتا ہوں۔ ہر اس چیز کے شر سے جو اس نے پیدا کی۔ اور اندھیری رات کے شر سے جب وہ چھا جائے۔ اور گرہوں میں پھونکنے والیوں کے شر سے۔ اور حسد کرنے والے کے شر سے جب وہ حسد کرے۔
+
+                    سورۃ الناس: کہہ دیجیے کہ میں انسانوں کے رب کی پناہ مانگتا ہوں۔ انسانوں کے بادشاہ کی۔ انسانوں کے معبود کی۔ پیچھے ہٹ کر وسوسہ ڈالنے والے کے شر سے۔ جو انسانوں کے سینوں میں وسوسہ ڈالتا ہے۔ جنوں میں سے ہو یا انسانوں میں سے۔
+                """.trimIndent(),
+                malaysian = """
+                    (Baca setiap surah sebanyak 3 kali pada waktu pagi dan petang)
+
+                    Surah Al-Ikhlas: Katakanlah: "Dialah Allah Yang Maha Esa. Allah tempat meminta segala sesuatu. Dia tidak beranak dan tidak pula diperanakkan. Dan tidak ada seorang pun yang setara dengan Dia."
+
+                    Surah Al-Falaq: Katakanlah: "Aku berlindung kepada Tuhan yang menguasai subuh, dari kejahatan makhluk-Nya, dan dari kejahatan malam apabila telah gelap gelita, dan dari kejahatan wanita-wanita tukang sihir yang menghembus pada buhul-buhul, dan dari kejahatan orang yang dengki apabila dia dengki."
+
+                    Surah An-Nas: Katakanlah: "Aku berlindung kepada Tuhan manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) syaitan yang biasa bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia."
+                """.trimIndent()
             ),
-            source = "Bukhari & Muslim"
+            source = "Qur’an 112, 113, 114 (Abu Dawud & Tirmidhi – 3x)"
         ),
+
+
 
         DuaItem(
             id = "adhkar_bismillah",

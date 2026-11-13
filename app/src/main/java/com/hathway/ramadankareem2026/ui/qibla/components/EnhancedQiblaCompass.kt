@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -60,18 +61,24 @@ fun EnhancedQiblaCompassCircle(
         label = "scale"
     )
 
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+
     Box(
         modifier = Modifier
             .size(320.dp)
             .shadow(
                 elevation = if (isAligned) 16.dp else 8.dp,
                 shape = CircleShape,
-                ambientColor = Emerald.copy(alpha = 0.5f),
-                spotColor = Emerald.copy(alpha = 0.5f)
+                ambientColor = if (isDark) Emerald.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.1f),
+                spotColor = if (isDark) Emerald.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.1f)
             )
             .background(
                 brush = Brush.radialGradient(
-                    colors = listOf(Color(0xFF132B27), Color(0xFF071413))
+                    colors = if (isDark) {
+                        listOf(Color(0xFF132B27), Color(0xFF071413))
+                    } else {
+                        listOf(Color.White, Color(0xFFF1F4F2))
+                    }
                 ),
                 shape = CircleShape
             )
@@ -114,7 +121,7 @@ fun EnhancedQiblaCompassCircle(
                 val isMajor = i % 30 == 0
                 val tickLength = if (isMajor) 12.dp.toPx() else 6.dp.toPx()
                 val strokeWidth = if (isMajor) 2.5.dp.toPx() else 1.5.dp.toPx()
-                val tickColor = if (i == 0) Emerald else Color.White.copy(alpha = if (isMajor) 0.7f else 0.3f)
+                val tickColor = if (i == 0) Emerald else (if (isDark) Color.White else Color.Black).copy(alpha = if (isMajor) 0.7f else 0.3f)
 
                 val startX = centerX + (radius - tickLength) * cos(angleRad).toFloat()
                 val startY = centerY + (radius - tickLength) * sin(angleRad).toFloat()
@@ -132,7 +139,7 @@ fun EnhancedQiblaCompassCircle(
         }
 
         // Direction labels (N, E, S, W) rotated with device rotation
-        CompassDirectionLabels(deviceRotation)
+        CompassDirectionLabels(deviceRotation, isDark)
 
         // Qibla needle (Main focus)
         Box(
@@ -164,14 +171,14 @@ fun EnhancedQiblaCompassCircle(
 }
 
 @Composable
-private fun CompassDirectionLabels(rotation: Float) {
+private fun CompassDirectionLabels(rotation: Float, isDark: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(32.dp)
             .graphicsLayer { rotationZ = rotation }
     ) {
-        val labelColor = Color.White.copy(alpha = 0.8f)
+        val labelColor = if (isDark) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.7f)
         val northColor = Emerald
 
         // North

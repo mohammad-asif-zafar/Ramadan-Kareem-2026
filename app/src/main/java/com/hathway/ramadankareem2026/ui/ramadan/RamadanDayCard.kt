@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,16 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.ramadankareem2026.core.util.toHijriDate
 import com.hathway.ramadankareem2026.ui.ramadan.model.FastingDayStatus
 import com.hathway.ramadankareem2026.ui.ramadan.model.RamadanDayUiModel
 import com.hathway.ramadankareem2026.ui.theme.Emerald
+import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -51,42 +51,40 @@ fun RamadanDayCard(
 
     Card(
         modifier = modifier
-            .aspectRatio(1f) // Strictly square
+            .fillMaxWidth()
+            .aspectRatio(1f)
             .shadow(
                 elevation = if (isToday) 8.dp else 2.dp,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(16.dp),
                 ambientColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent,
                 spotColor = if (isToday) Emerald.copy(alpha = 0.5f) else Color.Transparent
             )
             .clickable { onClick(day) }
             .border(
                 width = if (isToday) 2.dp else 1.dp,
-                color = if (isToday) Emerald else (if (isDark) Color.White.copy(alpha = 0.1f) else Color.Black.copy(alpha = 0.15f)),
-                shape = RoundedCornerShape(12.dp)
+                color = if (isToday) Emerald else (if (isDark) Color.White.copy(alpha = 0.15f) else Color.Black.copy(alpha = 0.15f)),
+                shape = RoundedCornerShape(16.dp)
             ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = when {
                 isToday -> if (isDark) Color(0xFF13322B) else Color(0xFFE8F5E9)
-                else -> if (isDark) Color(0xFF112220).copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceVariant
+                else -> if (isDark) Color(0xFF132220) else MaterialTheme.colorScheme.surfaceVariant
             }
         )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp)
+                .padding(8.dp)
         ) {
             // Crescent moon tucked into top-right corner
             Text(
                 text = "🌙",
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(top = 1.dp, end = 1.dp),
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = 8.sp,
-                    platformStyle = PlatformTextStyle(includeFontPadding = false)
-                )
+                    .padding(top = 2.dp, end = 2.dp),
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp)
             )
 
             // Centered Hijri Day & Gregorian Date
@@ -98,26 +96,24 @@ fun RamadanDayCard(
                 Text(
                     text = hijri.day.toString(),
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        platformStyle = PlatformTextStyle(includeFontPadding = false)
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
                     ),
                     color = if (isToday) (if (isDark) Emerald else Color(0xFF2E7D32)) else (if (isDark) Color.White else MaterialTheme.colorScheme.onSurface)
                 )
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = "${day.date.dayOfMonth} ${day.month.take(3)}",
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Medium,
-                        platformStyle = PlatformTextStyle(includeFontPadding = false)
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
                     ),
-                    color = if (isDark) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (isDark) Color.White.copy(alpha = 0.7f) else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -147,7 +143,7 @@ private fun PreviewRamadanDayCard_Today() {
     Box(
         modifier = Modifier
             .padding(16.dp)
-            .size(48.dp)
+            .size(72.dp)
     ) {
         RamadanDayCard(
             day = previewRamadanDayUiModel(FastingDayStatus.TODAY),

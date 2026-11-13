@@ -29,8 +29,8 @@ android {
         applicationId = "com.hathway.ramadankareem2026"
         minSdk = 29
         targetSdk = 36
-        versionCode = 8
-        versionName = "2.0.5"
+        versionCode = 9
+        versionName = "2.0.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

@@ -53,23 +53,32 @@ fun RamadanBottomBar(navController: NavController) {
 
         items.forEach { item ->
             NavigationBarItem(
-                selected = currentRoute == item.route, onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(route = Routes.HOME) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
+                selected = currentRoute == item.route,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route) {
+                            popUpTo(Routes.HOME) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
                     }
-                }, icon = {
+                },
+                icon = {
                     Icon(item.icon, contentDescription = null)
-                }, label = {
+                },
+                label = {
                     Text(text = item.title)
-                }, colors = NavigationBarItemDefaults.colors(
+                },
+                colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Emerald,
                     selectedTextColor = Emerald,
                     indicatorColor = Emerald.copy(alpha = 0.15f),
                     unselectedIconColor = Color.Gray,
                     unselectedTextColor = Color.Gray
-                ), alwaysShowLabel = false
+                ),
+                alwaysShowLabel = false
             )
         }
     }

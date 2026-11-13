@@ -5,7 +5,7 @@ import java.time.chrono.HijrahDate
 import java.time.temporal.ChronoField
 
 data class HijriDateUi(
-    val day: Int, val month: String, val year: Int
+    val day: Int, val month: String, val monthNumber: Int, val year: Int
 )
 
 fun LocalDate.toHijriDate(): HijriDateUi {
@@ -17,6 +17,7 @@ fun LocalDate.toHijriDate(): HijriDateUi {
         HijriDateUi(
             day = hijri.get(ChronoField.DAY_OF_MONTH),
             month = hijriMonthName(monthNumber),
+            monthNumber = monthNumber,
             year = hijri.get(ChronoField.YEAR)
         )
     } catch (_: Exception) {
@@ -24,6 +25,7 @@ fun LocalDate.toHijriDate(): HijriDateUi {
         HijriDateUi(
             day = this.dayOfMonth,
             month = "Ramadan",
+            monthNumber = 9,
             year = 1448
         )
     }
